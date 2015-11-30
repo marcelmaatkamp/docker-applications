@@ -1,0 +1,13 @@
+volumes:
+  image: tianon/true
+  volumes:
+    - "/etc/localtime:/etc/localtime"
+
+torexit:
+  build: tor-exit
+  command: tor
+  restart: always
+  ports:
+    - "9001:9001"
+  volumes_from:
+    - "volumes"
