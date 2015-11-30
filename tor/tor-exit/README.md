@@ -1,4 +1,4 @@
-#TOR-EXIT
+# TOR-EXIT
 ```
- $ docker-compose up
+$ docker-compose up
 ```
