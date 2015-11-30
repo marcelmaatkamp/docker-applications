@@ -9,5 +9,6 @@ torexit:
   restart: always
   ports:
     - "9001:9001"
+    - "9050:9050"
   volumes_from:
     - "volumes"
