@@ -3,4 +3,7 @@
 $ docker-compose up
 ```
 
-https://<<host>>
+https://<host>/
+
+ username: cn=admin,dc=example,dc=org
+ password: admin
