@@ -1,0 +1,20 @@
+volumes:
+  image: tianon/true
+  volumes:
+    - "./volumes/ldap/:/var/lib/ldap"
+
+# https://github.com/osixia/docker-openldap
+ldap:
+  image: osixia/openldap
+  volumes_from:
+    - "volumes"
+
+# https://github.com/osixia/docker-phpLDAPadmin
+webldap:
+  image: osixia/phpldapadmin
+  environment:
+    PHPLDAPADMIN_LDAP_HOSTS: ldap
+  links:
+    - ldap
+  ports:
+    - "443:443"
