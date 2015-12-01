@@ -2,3 +2,5 @@
 ```
 $ docker-compose up
 ```
+
+https://<<host>>
