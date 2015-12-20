@@ -1,0 +1,36 @@
+volumes:
+  image: tianon/true
+  volumes:
+    - "./volumes/node-red/:/root/.node-red/"
+    - "./volumes/rabbitmq/lib:/var/lib/rabbitmq/"
+#    - "./volumes/rabbitmq/etc:/etc/rabbitmq/"
+    - "./volumes/ldap/:/var/lib/ldap"
+    - "./volumes/slap/:/etc/ldap/slapd.d"
+
+proxy:
+  image: jwilder/nginx-proxy
+  ports:
+    - "80:80"
+  volumes:
+    - "/var/run/docker.sock:/tmp/docker.sock:ro"
+  restart: always
+
+rabbit:
+  build: rabbitmq/
+  restart: always
+  environment:
+    RABBITMQ_NODENAME: rabbitmq
+    VIRTUAL_HOST: rabbitmq
+    VIRTUAL_PORT: 15672
+  hostname: rabbitmq
+  volumes_from:
+    - "volumes"
+  ports:
+    - "1884:1883"
+    - "5673:5672"
+    - "25673:25672"
+    - "1234:1234/udp"
+  expose:
+    - "15672"
+  links:
+    - "proxy" 
