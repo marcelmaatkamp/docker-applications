@@ -1,0 +1,184 @@
+vault:
+ image: voxxit/vault:latest
+ volumes:
+   - ./vault.hcl:/etc/vault.hcl
+ links:
+   - "consul:consul"
+   - "mysql:mysql"
+ ports:
+   - 8200:8200
+ command: "server -config=/etc/vault.hcl"
+ 
+mysql:
+  image: mysql:latest
+  environment:
+    - "MYSQL_ROOT_PASSWORD=secret"
+
+consul:
+ image: voxxit/consul:latest
+ ports:
+  - "8300:8300"
+  - "8301:8301"
+  - "8301:8301/udp"
+  - "8302:8302"
+  - "8302:8302/udp"
+  - "8400:8400"
+  - "8500:8500"
+  - "8600:8600"
+  - "8600:8600/udp"
+ volumes:
+  - ./consul.json:/etc/consul.json
+ links:
+  - zookeeper:zookeeper
+ command: "agent -server -bootstrap-expect 1 -data-dir=/data -ui-dir=/ui -client=0.0.0.0"
+ # command: "--zk=zk://zookeeper:2181/mesos agent -config-file=/etc/consul.json"
+
+registrator: 
+ image: gliderlabs/registrator
+ links:
+  - consul
+ volumes:
+  - /var/run/docker.sock:/tmp/docker.sock
+ command: consul://consul:8500
+
+connectable:
+ image: gliderlabs/connectable
+ volumes:
+  - /var/run/docker.sock:/var/run/docker.sock
+
+resolvable:
+ image: mgood/resolvable
+ volumes:
+  - /var/run/docker.sock:/tmp/docker.sock
+  - /run/systemd:/tmp/systemd
+  - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
+
+ambassadord:
+ image: progrium/ambassadord
+ ports:
+  - "10000:10000"
+ volumes:
+  - /var/run/docker.sock:/var/run/docker.sock
+
+zookeeper:
+  image: jplock/zookeeper
+  ports:
+    - "2181"
+    - "2888"
+    - "3888"
+ 
+master:
+  image: redjack/mesos-master
+  hostname: master
+  links:
+    - zookeeper:zookeeper
+  environment:
+    - MESOS_ZK=zk://zookeeper:2181/mesos
+    - MESOS_QUORUM=1
+    - MESOS_WORK_DIR=/var/lib/mesos
+    - MESOS_LOG_DIR=/var/log
+  ports:
+    - "5050"
+ 
+marathon:
+  image: mesosphere/marathon
+  links:
+    - zookeeper:zookeeper
+  ports:
+    - "8090:8080"
+  command: --master zk://zookeeper:2181/mesos --zk zk://zookeeper:2181/marathon
+ 
+slave:
+  image: redjack/mesos-slave
+  links:
+    - zookeeper:zookeeper
+    - master:master
+  environment:
+    - MESOS_MASTER=zk://zookeeper:2181/mesos
+    - MESOS_EXECUTOR_REGISTRATION_TIMEOUT=5mins
+    - MESOS_CONTAINERIZERS=docker,mesos
+    - MESOS_ISOLATOR=cgroups/cpu,cgroups/mem
+    - MESOS_LOG_DIR=/var/log
+  volumes:
+    - /var/run/docker.sock:/run/docker.sock
+    - /usr/bin/docker:/usr/bin/docker
+    - /sys:/sys:ro
+    - mesosslave-stuff:/var/log
+  expose:
+    - "5051:5051"
+
+elasticsearch:
+ image: elasticsearch
+ ports: 
+  - "9200"
+  - "9300"
+ volumes:
+  - data/elasticsearch:/usr/share/elasticsearch/data
+
+kibana:
+ image: kibana
+ ports:
+  - "5601"
+ links:
+  - elasticsearch
+
+# ====
+# HDFS
+# ====
+
+# --------
+# namenode
+# --------
+# https://github.com/hauptmedia/docker-hdfs-namenode
+#
+#   8020 fs.defaultFS IPC: ClientProtocol
+#   50070 dfs.namenode.http-address HTTP connector
+#   50470 dfs.namenode.https-address HTTPS connector
+
+hdfsnamenode:
+ image: hauptmedia/hdfs-namenode
+ ports: 
+  - "8020"
+  - "50070"
+  - "50470"
+ volumes:
+  - data/hdfs/namenode/:/var/hdfs/namenode
+
+# --------
+# datanode
+# --------
+# https://github.com/hauptmedia/docker-hdfs-datanode 
+#
+#  TCP 50010 dfs.datanode.address port for data transfer
+#  TCP 50020 dfs.datanode.ipc.address ipc server
+#  TCP 50075 dfs.datanode.http.address http server
+#  TCP 50475 dfs.datanode.https.address https server
+
+hdfsdatanode:
+ image: hauptmedia/hdfs-datanode
+ ports:
+  - "50010"
+  - "50020"
+  - "50075"
+  - "50475"
+ links:
+  - hdfsnamenode:namenode
+ volumes:
+  - data/hdfs/datanode:/tmp/hadoop-root
+
+rabbitmq:
+ image: rabbitmq:management
+ hostname: rabbitmq
+ ports:
+  - "5672:5672"
+  - "15672:15672"
+  - "25672:25672"
+ volumes:
+  - data/rabbitmq:/var/lib/rabbitmq
+
+tor: 
+ image: marcelmaatkamp/alpine-tor:latest
+ ports:
+   - "9001"
+   - "9050"
+   - "9053"

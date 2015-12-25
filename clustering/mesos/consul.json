@@ -1,0 +1,12 @@
+{ 
+  "http_api_response_headers": {
+    "Access-Control-Allow-Origin": "*"
+  },
+  "client_addr": "0.0.0.0",
+  "datacenter": "dc1",
+  "acl_datacenter": "dc1",
+  "data_dir": "/data",
+  "server": true,
+  "bootstrap": true,
+  "ui_dir": "/ui"
+}
