@@ -16,9 +16,7 @@ Stream data from a live pcap into Bro IDS into Elasticsearch via port 1969
 ```
 sudo tcpdump -i eth0 -s 0 -w /dev/stdout | nc localhost 1969
 ```
-See results at [http://localhost:5601/](http://localhost:5601/)
-
-Set filter
+See results at [http://localhost:5601/](http://localhost:5601/) but firt set a filter bro-* on field 'ts':
 ![kibana_bro](images/kibana_bro.png)
 
 ## Bro into RabbitMQ
