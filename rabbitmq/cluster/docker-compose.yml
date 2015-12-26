@@ -10,13 +10,15 @@ haproxy:
   - "5672:5672"
 
 rabbit1:
-  build: rabbit1/
+  build: rabbitmq
   hostname: rabbit1
   ports:
    - "15672:15672"
+  environment:
+   - RABBITMQ_ERLANG_COOKIE=SFEWRG34AFDSGAFG35235
 
 rabbit2:
-  build: rabbit2/
+  build: rabbitmq
   hostname: rabbit2
   links:
    - rabbit1
@@ -24,11 +26,12 @@ rabbit2:
    - CLUSTERED=true
    - CLUSTER_WITH=rabbit1
    - RAM_NODE=true
+   - RABBITMQ_ERLANG_COOKIE=SFEWRG34AFDSGAFG35235
   ports:
    - "15673:15672"
 
 rabbit3:
-  build: rabbit3/
+  build: rabbitmq
   hostname: rabbit3
   links:
    - rabbit1
@@ -36,5 +39,6 @@ rabbit3:
   environment: 
    - CLUSTERED=true
    - CLUSTER_WITH=rabbit1   
+   - RABBITMQ_ERLANG_COOKIE=SFEWRG34AFDSGAFG35235
   ports:
    - "15674:15672"

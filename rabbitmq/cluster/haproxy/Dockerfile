@@ -8,5 +8,7 @@ RUN mkdir -p /var/lib/haproxy && mkdir -p /var/log/haproxy && \
 
 COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
 
-USER haproxy
+# USER haproxy
+WORKDIR /var/lib/haproxy
+
 CMD ["haproxy", "-db",  "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
