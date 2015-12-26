@@ -1,17 +1,12 @@
 # Bro + Elastisearch + RabbitMQ
 
-![Bro IDS](https://www.bro.org/images/bro-eyes.png) + ![Elasticsearch](https://www.elastic.co/static/img/elastic-logo-200.png) + ![RabbitMQ](https://www.rabbitmq.com/img/rabbitmq_logo_strap.png) 
+|  Bro IDS   |  Elasticsearch  | RabbitMQ   | 
+| --- | --- | --- | 
+| ![Bro IDS](https://www.bro.org/images/bro-eyes.png) | ![Elasticsearch](https://www.elastic.co/static/img/elastic-logo-200.png) | ![RabbitMQ](https://www.rabbitmq.com/img/rabbitmq_logo_strap.png) |
+|  2.4.1   |  2.1.1   | 3.5.7  | 
 
 Run the following applications with just one docker-compose command with the help of the docker images from
 [danielguerra/bro-debian-elasticsearch](https://hub.docker.com/r/danielguerra/bro-debian-elasticsearch/):
-
-|               |       | 
-| ------------- | ----- |
-| Elasticsearch | 2.1.1 |
-| Lucene        | 5.3.1 |
-| Kibana        | 4.3.  |
-| RabbitMQ      | 3.5.7 | 
-| Bro IDS       | 2.4.1 | 
 
 ## Start all the applications with docker-compose
 ```
