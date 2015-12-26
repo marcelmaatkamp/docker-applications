@@ -1,0 +1,6 @@
+squid:
+ image: poklet/squid
+ restart: always
+ ports:
+  - "3128:3128"
+
