@@ -1,7 +1,7 @@
 # Bro + Elastisearch + RabbitMQ
 
 ```
- docker-compose up
+docker-compose up
 ```
 
 To stream a pcap:
