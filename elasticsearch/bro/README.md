@@ -1,8 +1,8 @@
 # Bro + Elastisearch + RabbitMQ
 
 |  Bro IDS   |  Elasticsearch  | RabbitMQ   | 
-| --- | --- | --- | 
-| ![Bro IDS](https://www.bro.org/images/bro-eyes.png) | ![Elasticsearch](https://www.elastic.co/static/img/elastic-logo-200.png) | ![RabbitMQ](https://www.rabbitmq.com/img/rabbitmq_logo_strap.png) |
+| :--- | :--- | :--- | 
+| ![Bro IDS](https://www.bro.org/images/bro-eyes.png) | ![Elasticsearch](https://www.runabove.com/images/apps/elasticsearch-and-kibana.png) | ![RabbitMQ](https://www.rabbitmq.com/img/rabbitmq_logo_strap.png) |
 |  2.4.1   |  2.1.1   | 3.5.7  | 
 
 Run the following applications with just one docker-compose command with the help of the docker images from
