@@ -1,0 +1,14 @@
+elastic-data-master:
+ image: danielguerra/empty-elastic-data
+ volumes:
+    - "/usr/share/elasticsearch/data:/usr/share/elasticsearch/data"
+
+elastic-data-node01:
+ image: danielguerra/empty-elastic-data
+ volumes:
+    - "/usr/share/elasticsearch/data:/usr/share/elasticsearch/data"
+
+elastic-data-node02:
+ image: danielguerra/empty-elastic-data
+ volumes:
+    - "/usr/share/elasticsearch/data:/usr/share/elasticsearch/data"
