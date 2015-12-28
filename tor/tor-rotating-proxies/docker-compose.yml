@@ -1,0 +1,24 @@
+haproxy:
+ build: haproxy/
+ links:
+  - tor1
+  - tor2
+  - tor3
+ expose:
+  - "9050"
+ ports:
+  - "9050:9050"
+
+
+tor1:
+ image: marcelmaatkamp/alpine-tor
+ expose:
+  - "9050"
+tor2:
+ image: marcelmaatkamp/alpine-tor
+ expose:
+  - "9050"
+tor3:
+ image: marcelmaatkamp/alpine-tor
+ expose:
+  - "9050"
