@@ -4,11 +4,15 @@ haproxy:
   - tor1
   - tor2
   - tor3
+  - tor4 
+  - tor5
+  - tor6 
+  - tor7
+  - tor8
  expose:
   - "9050"
  ports:
   - "9050:9050"
-
 
 tor1:
  image: marcelmaatkamp/alpine-tor
@@ -19,6 +23,26 @@ tor2:
  expose:
   - "9050"
 tor3:
+ image: marcelmaatkamp/alpine-tor
+ expose:
+  - "9050"
+tor4:
+ image: marcelmaatkamp/alpine-tor
+ expose:
+  - "9050"
+tor5:
+ image: marcelmaatkamp/alpine-tor
+ expose:
+  - "9050"
+tor6:
+ image: marcelmaatkamp/alpine-tor
+ expose:
+  - "9050"
+tor7:
+ image: marcelmaatkamp/alpine-tor
+ expose:
+  - "9050"
+tor8:
  image: marcelmaatkamp/alpine-tor
  expose:
   - "9050"
