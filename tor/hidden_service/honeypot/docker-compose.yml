@@ -3,7 +3,6 @@ honey:
 
 tor-hs:
  image: marcelmaatkamp/tor-hidden-service
- # build: hidden-service/
  links:
   - honey
  volumes:
