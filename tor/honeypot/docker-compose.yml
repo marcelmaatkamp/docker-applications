@@ -1,0 +1,10 @@
+honey:
+ image: honeynet/conpot
+
+tor-hs:
+ image:  marcelmaatkamp/tor-hidden-service
+ links:
+  - honey
+ volumes:
+  - "hs/:/var/lib/tor/hidden_service" 
+
