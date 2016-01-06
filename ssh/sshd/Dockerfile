@@ -12,5 +12,13 @@ RUN apk --update add py-pip py-yaml openssh &&\
 # script generates new server key, sets sshd config for keybased auth and starts sshd
 ADD sshd.sh /bin/sshd.sh
 
-#start sshd
+ENV ADMIN marcel 
+RUN addgroup marcel && \ 
+    adduser -S $ADMIN -G $ADMIN -s ash && \
+    passwd -d $ADMIN && \ 
+    mkdir -p /home/marcel/.ssh && \
+    wget -qO- https://api.github.com/users/marcelmaatkamp/keys | grep "\"key\"\: \"" | sed -e 's/    "key\"\: \"//g' | sed -e 's/\"//g' > /home/marcel/.ssh/authorized_keys  && \ 
+    chown marcel:marcel /home/marcel/.ssh/authorized_keys && \
+    chmod 744 /home/marcel/.ssh/authorized_keys
+
 CMD ["/bin/sshd.sh"]
