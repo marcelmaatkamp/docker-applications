@@ -12,13 +12,16 @@ RUN apk --update add py-pip py-yaml openssh &&\
 # script generates new server key, sets sshd config for keybased auth and starts sshd
 ADD sshd.sh /bin/sshd.sh
 
+RUN sed -i "s/UsePrivilegeSeparation.*/UsePrivilegeSeparation no/g" /etc/ssh/sshd_config && \
+    echo "PermitRootLogin no" >> /etc/ssh/sshd_config 
+
 ENV ADMIN marcel 
-RUN addgroup marcel && \ 
-    adduser -S $ADMIN -G $ADMIN -s ash && \
+RUN addgroup $ADMIN && \ 
+    adduser -S $ADMIN -G $ADMIN -s /bin/sh && \
     passwd -d $ADMIN && \ 
-    mkdir -p /home/marcel/.ssh && \
-    wget -qO- https://api.github.com/users/marcelmaatkamp/keys | grep "\"key\"\: \"" | sed -e 's/    "key\"\: \"//g' | sed -e 's/\"//g' > /home/marcel/.ssh/authorized_keys  && \ 
-    chown marcel:marcel /home/marcel/.ssh/authorized_keys && \
-    chmod 744 /home/marcel/.ssh/authorized_keys
+    mkdir -p /home/$ADMIN/.ssh && \
+    wget -qO- https://api.github.com/users/marcelmaatkamp/keys | grep "\"key\"\: \"" | sed -e 's/    "key\"\: \"//g' | sed -e 's/\"//g' > /home/$ADMIN/.ssh/authorized_keys  && \ 
+    chown -R $ADMIN:$ADMIN /home/$ADMIN/.ssh && \
+    chmod 744 /home/$ADMIN/.ssh/authorized_keys
 
 CMD ["/bin/sshd.sh"]
