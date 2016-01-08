@@ -1,13 +1,15 @@
 desktop:
  build: desktop
  command: bash -c "vncserver :1 -geometry 1280x800 -depth 24 && tail -F /root/.vnc/*.log"
- ports:
-  - "5901:5901"
+ expose:
+  - "5901"
  environment: 
   - USER=root
 
 guacd:
  image: mattgruter/guacamole-guacd
+ links:
+  - "desktop:desktop"
 db:
  image: mattgruter/guacamole-db
 server:
