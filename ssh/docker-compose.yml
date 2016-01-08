@@ -1,0 +1,4 @@
+ssh:
+ build: sshd/
+ ports:
+  - "2222:22"
