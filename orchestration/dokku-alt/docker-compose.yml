@@ -1,0 +1,16 @@
+volume:
+ image: busybox:latest
+ volumes:
+   - "/home/dokku"
+   - "/var/lib/docker"
+
+dokku-alt:
+  image: ayufan/dokku-alt:latest
+  hostname: boe.bla.com
+  privileged: true
+  ports:
+    - "2222:22"
+    - "80:80"
+    - "443:443"
+  volumes_from:
+    - volume

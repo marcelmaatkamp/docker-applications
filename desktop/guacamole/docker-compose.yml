@@ -1,0 +1,20 @@
+desktop:
+ build: desktop
+ command: bash -c "vncserver :1 -geometry 1280x800 -depth 24" && echo "bla" && tail -F /root/.vnc/*.log
+ ports:
+  - "5901:5901"
+ environment: 
+  - USER=root
+
+guacd:
+ image: mattgruter/guacamole-guacd
+db:
+ image: mattgruter/guacamole-db
+server:
+ image: mattgruter/guacamole-webserver
+ links:
+  - "guacd:guacd"
+  - "db:db"
+  - "desktop:desktop"
+ ports: 
+  - "8083:8080"
