@@ -8,16 +8,16 @@ from subprocess import call
 def set_conf():
     rtn = []
     links = DockerLinks()
-    print(links.links())
     with open("/etc/tor/torrc", "a") as conf:
         for link in links.links():
-            path = "/var/lib/tor/hidden_service/{service}".format(service=link)
+            path = "/var/lib/tor/hidden_service/{service}".format(service=links.links()[link]['names'][0])
+            print(path)
             # Test if link has ports
             if len(links.links()[link]['ports']) == 0:
                 print("{link} has no port")
                 continue
             conf.write('HiddenServiceDir {path}\n'.format(path=path))
-            rtn.append(link)
+            rtn.append(links.links()[link]['names'][0])
             for port in links.links()[link]['ports']:
                 if links.links()[link]['ports'][port]['protocol'] == 'UDP':
                     continue
@@ -48,5 +48,14 @@ def gen_host(services):
             ))
 
 if __name__ == '__main__':
-    services = set_conf()
-    gen_host(services)
+    # check configured file
+    filename = "/var/lib/tor/hidden_service/.configured"
+
+    # add services only once
+    if not os.path.isfile(filename) : 
+    	services = set_conf()
+    	gen_host(services)
+
+    # create configured file
+    open(filename, 'a').close()
+

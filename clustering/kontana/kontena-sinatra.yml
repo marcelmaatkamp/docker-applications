@@ -1,0 +1,15 @@
+web:
+  image: registry.kontena.local/sinatra-example:latest
+  instances: 2
+  environment:
+    - REDIS_URL=redis://sinatra-example-openredis:6379
+    - PORT=5000
+    - KONTENA_LB_MODE=http
+    - KONTENA_LB_BALANCE=roundrobin
+    - KONTENA_LB_INTERNAL_PORT=5000
+    - KONTENA_LB_VIRTUAL_HOSTS=www.yourdomain.com,yourdomain.com
+  external_links:
+    - internet_lb
+openredis:
+  image: redis:latest
+  stateful: true

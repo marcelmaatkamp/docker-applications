@@ -1,0 +1,11 @@
+cadvisor:
+ image: google/cadvisor:0.19.3
+ privileged: true
+ volumes:
+    - /:/rootfs:ro
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
+    - /var/run/:/var/run:rw
+    - /var/log/docker:/var/log/docker
+ ports:
+  - "8080:8080"

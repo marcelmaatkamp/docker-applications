@@ -1,0 +1,38 @@
+mongodb:
+  image: mongo:2.8
+  command: mongod --smallfiles
+
+kontena-master:
+  image: kontena/server:latest
+  ports:
+    - 9292:9292
+  environment:
+    #RACK_ENV: production
+    MONGODB_URI: mongodb://mongodb:27017/kontena_master
+  links:
+    - mongodb
+
+dockersock:
+  image: busybox:latest
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+
+kontena-agent-01:
+  image: kontena/agent:latest
+  environment:
+    KONTENA_PEER_INTERFACE: eth1
+  env_file: ./kontena-master.env
+  volumes_from:
+    - dockersock
+  net: host
+
+kontena-master-haproxy:
+  image: kontena/haproxy:latest
+  links:
+    - kontena-master::kontena-server-api
+  ports:
+    - "8081:80"
+    - "8443:43"
+  environment:
+    - SSL_CERT=/bla.cert
+    - BACKEND_PORT=9292
