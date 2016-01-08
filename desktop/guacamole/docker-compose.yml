@@ -1,6 +1,6 @@
 desktop:
  build: desktop
- command: bash -c "vncserver :1 -geometry 1280x800 -depth 24" && echo "bla" && tail -F /root/.vnc/*.log
+ command: bash -c "vncserver :1 -geometry 1280x800 -depth 24 && tail -F /root/.vnc/*.log"
  ports:
   - "5901:5901"
  environment: 
