@@ -1,19 +1,27 @@
 elasticsearch:
   image: elasticsearch:latest
+  # build: elasticsearch/
   command: elasticsearch -Des.network.host=0.0.0.0
   ports:
     - "9200:9200"
     - "9300:9300"
 
 logstash:
-  image: logstash:latest
-  command: logstash -f /etc/logstash/conf.d/logstash.conf
+  image: logstash
+  privileged: true
+  command: logstash -e 'input { syslog { port => 514 } } output { stdout { } }'
+  # command: logstash -f /etc/logstash/conf.d/logstash.conf
   volumes:
-    - ./volumes/logstash/:/etc/logstash/conf.d
+    - ./volumes/logstash:/etc/logstash/conf.d
+  expose:
+    - 514/udp
+    - 5514/udp
+    - 5515
+    - 5515/udp
   ports:
-    - "5000:5000"
-  links:
-    - elasticsearch
+    - 514:5514/udp
+    - 515:5515
+    - 515:5515/udp
 
 kibana:
   build: kibana/
@@ -23,3 +31,20 @@ kibana:
     - "5601:5601"
   links:
     - elasticsearch
+
+rabbitmq:
+ image: rabbitmq:management
+ ports: 
+  - "15672:15672"
+
+fluentd:
+  build: ./fluentd
+  links:
+   - "elasticsearch"
+  ports:
+   - "22422:22422"
+  volumes:
+   - /var/lib/docker/containers:/var/lib/docker/containers
+   - /var/run:var/run
+   - /var/log/docker:/var/log/docker
+
