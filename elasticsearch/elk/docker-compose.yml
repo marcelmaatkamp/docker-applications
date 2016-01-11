@@ -8,9 +8,9 @@ elasticsearch:
 
 logstash:
   image: logstash
-  privileged: true
-  command: logstash -e 'input { syslog { port => 514 } } output { stdout { } }'
-  # command: logstash -f /etc/logstash/conf.d/logstash.conf
+  # privileged: true
+  # command: /opt/logstash/bin/logstash -e 'input { syslog { port => 514 } } output { stdout { } }'
+  command: /opt/logstash/bin/logstash -f /etc/logstash/conf.d/logstash.conf
   volumes:
     - ./volumes/logstash:/etc/logstash/conf.d
   expose:
@@ -33,7 +33,7 @@ kibana:
     - elasticsearch
 
 rabbitmq:
- image: rabbitmq:management
+ build: rabbitmq
  ports: 
   - "15672:15672"
 
@@ -45,6 +45,6 @@ fluentd:
    - "22422:22422"
   volumes:
    - /var/lib/docker/containers:/var/lib/docker/containers
-   - /var/run:var/run
-   - /var/log/docker:/var/log/docker
+   - ./volumes/fluentd/var/run:/var/run
+   - ./volumes/fluentd/var/log/docker:/var/log/docker
 
