@@ -1,0 +1,5 @@
+portscan:
+ build: docker-port-scan/
+ ports:
+   - "80:80"
+
