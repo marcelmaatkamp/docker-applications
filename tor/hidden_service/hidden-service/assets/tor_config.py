@@ -50,14 +50,9 @@ def gen_host(services):
             ))
 
 if __name__ == '__main__':
-    # check configured file
     filename = "/var/lib/tor/hidden_service/.configured"
 
-    # add services only once
     if not os.path.isfile(filename) : 
+        open(filename, 'a').close()
     	services = set_conf()
     	gen_host(services)
-
-    # create configured file
-    open(filename, 'a').close()
-
