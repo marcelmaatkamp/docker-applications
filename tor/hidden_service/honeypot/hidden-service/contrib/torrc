@@ -1,0 +1,6 @@
+HiddenServiceDir volumes/tor/1_hidden_service/
+HiddenServicePort 80 127.0.0.1:80
+
+HiddenServiceDir volumes/tor/2_other_hidden_service/
+HiddenServicePort 80 127.0.0.1:80
+HiddenServicePort 22 127.0.0.1:22

@@ -10,14 +10,14 @@ def set_conf():
     links = DockerLinks()
     with open("/etc/tor/torrc", "a") as conf:
         for link in links.links():
-            path = "/var/lib/tor/hidden_service/{service}".format(service=links.links()[link]['names'][0])
+            path = "/var/lib/tor/hidden_service/{service}".format(service=links.links()[link]['names'][1])
             print(path)
             # Test if link has ports
             if len(links.links()[link]['ports']) == 0:
                 print("{link} has no port")
                 continue
             conf.write('HiddenServiceDir {path}\n'.format(path=path))
-            rtn.append(links.links()[link]['names'][0])
+            rtn.append(links.links()[link]['names'][1])
             for port in links.links()[link]['ports']:
                 if links.links()[link]['ports'][port]['protocol'] == 'UDP':
                     continue
@@ -42,9 +42,9 @@ def gen_host(services):
             service=service
         )
         with open(filename, 'r') as hostfile:
-            print('{service}: {onion}'.format(
-                service=service,
-                onion=hostfile.read()
+            onion=hostfile.read()[:22]
+            print('{onion}'.format(
+                onion=onion
             ))
 
 if __name__ == '__main__':
