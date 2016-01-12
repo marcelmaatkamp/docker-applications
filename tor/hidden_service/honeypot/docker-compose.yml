@@ -2,7 +2,7 @@ honey:
  image: honeynet/conpot
 
 tor-hs:
- build: ../hidden-service
+ build: hidden-service
  links:
   - honey
  external_links:

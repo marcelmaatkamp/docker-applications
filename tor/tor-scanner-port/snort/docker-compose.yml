@@ -1,0 +1,8 @@
+snort:
+ image: jasonish/snort
+ command: /usr/sbin/snort -i eth0 -c /etc/snort/snort.conf
+ volumes:
+  - "./volumes/data:/data"
+ expose:
+  - 80 
+  - 22
