@@ -12,6 +12,7 @@ tor-hs:
 
 tcpdump:
  image: crccheck/tcpdump
+ restart: always
  command: tcpdump -i eth0 -w - | nc localhost 1969
  net: container:honeypot_honey_1
 
