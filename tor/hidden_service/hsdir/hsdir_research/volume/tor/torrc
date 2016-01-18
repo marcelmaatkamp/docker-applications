@@ -92,7 +92,7 @@ ORPort 9001
 
 ## The IP address or full DNS name for incoming connections to your
 ## relay. Leave commented out and Tor will guess.
-Address 83.87.156.188
+Address 0.0.0.0
 
 ## If you have multiple network interfaces, you can specify one for
 ## outgoing traffic to use.
