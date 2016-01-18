@@ -1,0 +1,41 @@
+# cadvisor:
+#   image: google/cadvisor:0.19.3
+#   privileged: true
+#  volumes:
+#     - /:/rootfs:ro
+#     - /sys:/sys:ro
+#     - /var/lib/docker/:/var/lib/docker:ro
+#     - /var/run/:/var/run:rw
+#     - /var/log/docker:/var/log/docker
+#  ports:
+#   - "8080:8080"
+
+prometheus:
+ image: prom/prometheus
+ command: /bin/prometheus -config.file=/etc/prometheus/config/prometheus.yml -storage.local.path=/prometheus -web.console.libraries=/etc/prometheus/console_libraries -web.console.templates=/etc/prometheus/consoles
+ ports:
+  - 9090:9090
+ links:
+  - prometheus-exporter 
+ volumes:
+  - ./volumes/prometheus/config:/etc/prometheus/config
+
+prometheus-exporter:
+ image: prom/container-exporter
+ ports:
+  - 9104:9104
+ volumes:
+  - /sys/fs/cgroup:/cgroup \
+  - /var/run/docker.sock:/var/run/docker.sock
+
+prometheus-dash:
+ image: prom/promdash
+ # command: ./bin/rake db:migrate
+ ports:
+  - 3000:3000
+ volumes:
+  - ./volumes/prometheus/db:/tmp/prom
+ links: 
+  - prometheus:prometheus
+ environment:
+  - DATABASE_URL=sqlite3:/tmp/prom/file.sqlite3

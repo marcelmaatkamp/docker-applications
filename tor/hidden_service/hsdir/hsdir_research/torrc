@@ -1,0 +1,8 @@
+Log notice stdout
+ExitPolicy reject *:*
+ORPort 9001
+
+SocksPort 9050 
+SocksBindAddress 0.0.0.0 
+
+Log debug stderr
