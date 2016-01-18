@@ -1,2 +1,2 @@
 #!/bin/bash
-docker run -ti -v -P $PWD/volume/tor:/etc/tor marcelmaatkamp/alpine-build-tor-logging
+docker run -ti -P -v $PWD/volume/tor/etc:/etc/tor -v $PWD/volume/tor/log:/var/log/tor marcelmaatkamp/alpine-build-tor-logging
