@@ -2,10 +2,8 @@ honey:
  image: honeynet/conpot
 
 tor-hs:
- build: hidden-service
+ image: marcelmaatkamp/tor-hidden-service
  links:
   - honey
- expose:
-  - 80
- volumes:
-  - "./volumes/tor/etc:/etc/tor"
+# volumes:
+#  - "./volumes/tor/etc:/etc/tor"

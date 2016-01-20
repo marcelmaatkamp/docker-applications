@@ -15,5 +15,5 @@ ORPort 9001
 
 Exitpolicy reject *:*
 Nickname 
-ContactInfo 
+ContactInfo
 Address 

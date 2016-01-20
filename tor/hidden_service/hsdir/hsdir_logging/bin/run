@@ -1,2 +1,9 @@
 #!/bin/bash
-docker run -d --restart=always -p 9001:9001 -p 9002:9002 -v $PWD/volume/tor/etc:/etc/tor -v $PWD/volume/tor/log:/var/log/tor marcelmaatkamp/alpine-build-tor-logging tor -f /etc/tor/torrc
+docker run -d \
+  --name=tor-relay-logging \
+  --restart=always \
+  -p 9001:9001 \
+  -p 9002:9002 \
+  -v $PWD/volume/tor/etc:/etc/tor \
+  -v $PWD/volume/tor/log:/var/log/tor \
+  marcelmaatkamp/alpine-build-tor-logging tor -f /etc/tor/torrc

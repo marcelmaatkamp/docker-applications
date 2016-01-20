@@ -13,5 +13,4 @@ ADD   assets/docker-entrypoint.sh /docker-entrypoint.sh
 ADD   assets/tor_config.py /docker/tor_config.py
 RUN   chmod +x /docker-entrypoint.sh 
 VOLUME /var/lib/tor/hidden_service/
-EXPOSE 80
 CMD /docker-entrypoint.sh tor
