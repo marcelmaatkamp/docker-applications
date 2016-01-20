@@ -39,12 +39,14 @@ rabbitmq:
 
 fluentd:
   build: ./fluentd
+  privileged: true
   links:
    - "elasticsearch"
   ports:
    - "22422:22422"
   volumes:
-   - /var/lib/docker/containers:/var/lib/docker/containers
+   - /var/run/docker.sock:/var/run/docker.sock
+   - /var/lib/docker:/var/lib/docker 
    - ./volumes/fluentd/var/run:/var/run
    - ./volumes/fluentd/var/log/docker:/var/log/docker
 

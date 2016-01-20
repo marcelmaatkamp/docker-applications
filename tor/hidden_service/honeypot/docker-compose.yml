@@ -5,18 +5,7 @@ tor-hs:
  build: hidden-service
  links:
   - honey
- external_links:
-  - bro_bro-xinitd_1:bro
  expose:
   - 80
-
-# tcpdump:
-#  image: crccheck/tcpdump
-#  restart: always
-#  command: tcpdump -i eth0 -w - | nc localhost 1969
-#  net: container:honeypot_honey_1
-
  volumes:
- # - "./volumes/tor/hidden_service:/var/lib/tor/hidden_service" 
   - "./volumes/tor/etc:/etc/tor"
- 
