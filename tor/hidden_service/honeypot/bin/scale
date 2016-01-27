@@ -1,8 +1,8 @@
 #!/bin/bash
-for i in {2..50}; 
+for i in {4..50}; 
 do 
  echo `date`: $i
  docker-compose scale tor-hs=$i
  echo sleep 1h...
- sleep 1h
+ sleep 6h
 done
