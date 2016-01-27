@@ -1,5 +1,5 @@
 #!/bin/bash
-for i in {7..50}; 
+for i in {1..50}; 
 do 
  echo `date`: $i
  docker-compose scale tor-hs=$i
