@@ -1,0 +1,8 @@
+rtorrent:
+ image: diameter/rtorrent-rutorrent:64
+ ports:
+  - "8081:80"
+  - "49160:49160/udp"
+  - "49161:19161"
+ volumes: 
+  - "./volumes/rtorrent/downloads:/downloads"
