@@ -1,4 +1,4 @@
-[Source](http://qira.me/ "Permalink to qira")
+[http://qira.me](http://qira.me/ "Permalink to qira")
 
 # qira
   
@@ -9,11 +9,10 @@
 All state is tracked while a program is running, so you can debug in the past.
 
 ## Install it now.
-
-Linux required, 64-bit Ubuntu recommended.
-
-cd ~/ && wget -qO- qira.me/dl | unxz | tar x && cd qira && ./install.sh
-
+```
+ docker run -ti marcelmaatkamp/qira /bin/ls
+```
+and point a browser to [http://<ip>:3002/](http://<ip>:3002/ "qira")
 ## b *0x8048446
 
     Your breakpoint was hit 5 times, at change 90, 111, 128, 145, and 162.
