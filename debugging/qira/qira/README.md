@@ -1,18 +1,16 @@
-[http://qira.me](http://qira.me/ "Permalink to qira")
-
 # qira
+QIRA is a timeless debugger. All state is tracked while a program is running, so you can debug in the past.
+
+[http://qira.me](http://qira.me/ "Permalink to qira")
   
 ![][1]
 
-## QIRA is a timeless debugger.
-
-All state is tracked while a program is running, so you can debug in the past.
-
+## 
 ## Install it now.
 ```
  docker run -ti marcelmaatkamp/qira /bin/ls
 ```
-and point a browser to [http://<ip>:3002/](http://<ip>:3002/ "qira")
+and point a browser to [http://localhost:3002/](http://localhost:3002/ "qira")
 ## b *0x8048446
 
     Your breakpoint was hit 5 times, at change 90, 111, 128, 145, and 162.
@@ -59,4 +57,3 @@ socat tcp-l:4000,reuseaddr,fork exec:"qira ./a.out"
 [3]: http://qira.me/img/haddrbar.png
 [4]: http://qira.me/img/watch.png
 [5]: http://qira.me/img/ida.png
-  
