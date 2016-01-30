@@ -1,12 +1,11 @@
-# qira
+# QIRA
 QIRA is a timeless debugger. All state is tracked while a program is running, so you can debug in the past.
 
-[http://qira.me](http://qira.me/ "Permalink to qira")
+See [http://qira.me](http://qira.me/ "Permalink to qira")
   
 ![][1]
 
-## 
-## Install it now.
+## Run it in a docker container
 ```
  docker run -ti marcelmaatkamp/qira /bin/ls
 ```
