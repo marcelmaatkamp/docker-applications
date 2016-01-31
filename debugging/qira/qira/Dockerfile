@@ -6,4 +6,5 @@ RUN apt-get update && \
 
 WORKDIR qira
 EXPOSE 3002 
-ENTRYPOINT ./qira
+ENTRYPOINT ["qira"]
+CMD ["/bin/bash"]

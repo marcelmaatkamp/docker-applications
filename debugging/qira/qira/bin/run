@@ -1,2 +1,2 @@
 #!/bin/bash
-docker run -ti marcelmaatkamp/qira /bin/ls
+docker run -ti marcelmaatkamp/qira /bin/bash
