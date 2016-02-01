@@ -6,6 +6,9 @@ This is the revised version from [cmehay/docker-tor-hidden-service](https://gith
 
 ## Wordpress example
 ![wordpress as hidden service](assets/tor-hidden-service-wordpress.gif)
+```
+ $ docker-compose -f docker-compose-wordpress.yml up
+```
 
 ## USAGE
 Link a docker container and create a tor hidden service from it
