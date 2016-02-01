@@ -10,6 +10,12 @@ This is the revised version from [cmehay/docker-tor-hidden-service](https://gith
  $ docker-compose -f docker-compose-wordpress.yml up
 ```
 
+## RabbitMQ example
+![rabbitmq as hidden service](assets/tor-hidden-service-rabbitmq.gif)
+```
+ $ docker-compose -f docker-compose-rabbitmq.yml up
+```
+
 ## USAGE
 Link a docker container and create a tor hidden service from it
 ```
