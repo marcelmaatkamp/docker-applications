@@ -1,5 +1,5 @@
 # ---
-# Install an empty Wordpress
+# Install an empty RabbitMQ instance
 
 rabbitmq:
   image: rabbitmq:management
