@@ -33,7 +33,7 @@ slave:
     - MESOS_LOG_DIR=/var/log/mesos/slave
     - MESOS_WORK_DIR=/var/lib/mesos/slave
     - MESOS_PORT=5051
-    - MESOS_DOCKER_SOCK=/var/run/docker.sock ^
+    - MESOS_DOCKER_SOCK=/var/run/docker.sock
     - MESOS_DOCKER_MESOS_IMAGE=mesosphere/mesos-slave:0.26.0-0.2.145.ubuntu1404
   volumes:
     - /lib/libpthread.so.0:/lib/libpthread.so.0:ro
@@ -42,8 +42,10 @@ slave:
     - /sys:/sys:ro
   # - /proc:/proc ^
   # - mesosslave-stuff:/var/log
-  expose:
+  ports: 
     - "5051:5051"
+  expose:
+    - "5051"
 
 marathon:
   image: mesosphere/marathon
