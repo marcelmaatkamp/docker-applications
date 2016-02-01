@@ -4,6 +4,9 @@ This is the revised version from [cmehay/docker-tor-hidden-service](https://gith
  * survives a docker restart of the service instead of adding the same service over and over in the config file
  * and saves the keys in the directory with the name of the onion
 
+## Wordpress example
+![wordpress as hidden service](assets/tor-hidden-service-wordpress.gif)
+
 ## USAGE
 Link a docker container and create a tor hidden service from it
 ```
