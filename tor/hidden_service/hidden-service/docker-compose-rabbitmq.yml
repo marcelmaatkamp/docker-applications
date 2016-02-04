@@ -1,0 +1,13 @@
+# ---
+# Install an empty RabbitMQ instance
+
+rabbitmq:
+  image: rabbitmq:management
+
+# ---
+# Expose it as an hidden service
+
+rabbitmq-hidden-service:
+ image: marcelmaatkamp/tor-hidden-service
+ links:
+  - rabbitmq
