@@ -1,10 +1,10 @@
 #!/bin/bash
 docker run -d \
-  --name=tor-relay-logging \
+  --name=tor-relay-logging-0.2.7.6 \
   --restart=always \
   -p 9001:9001 \
   -p 9002:9002 \
   -v $PWD/volume/tor/etc:/etc/tor \
   -v $PWD/volume/tor/log:/var/log/tor \
   -v $PWD/volume/tor/root:/root/.tor \
-  marcelmaatkamp/alpine-build-tor-logging tor -f /etc/tor/torrc
+  marcelmaatkamp/alpine-build-tor-logging:0.2.7.6 tor -f /etc/tor/torrc

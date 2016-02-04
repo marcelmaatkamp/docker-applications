@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build -t marcelmaatkamp/alpine-build-tor-logging .
+docker build -t marcelmaatkamp/alpine-build-tor-logging:0.2.7.6 .
