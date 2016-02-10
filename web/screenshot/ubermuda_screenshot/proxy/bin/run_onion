@@ -2,4 +2,4 @@
 docker run -ti \
  -v $PWD/images:/srv \
  --link torsoocks_tor-socks_1:tor \
- marcelmaatkamp/screenshot_proxy http://torlinkbgs6aabns.onion torlinkbgs6aabns.png 1920px
+ marcelmaatkamp/screenshot_proxy http://$1 $1.png 1920px
