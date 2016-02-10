@@ -1,0 +1,6 @@
+screenshot:
+ build: proxy/
+ volumes:
+  - ./images:/srv
+ external_links:
+  - torsoocks_tor-socks_1:tor

@@ -1,0 +1,6 @@
+tor-socks:
+ image: marcelmaatkamp/alpine-tor
+ volumes:
+  - "./volumes/tor/etc:/etc/tor"
+ ports:
+  - "9050:9050"
