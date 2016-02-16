@@ -1,0 +1,20 @@
+rabbitmq:
+ image: rabbitmq:management
+ restart: always
+ ports:
+  - 5672:5672
+  - 15672:15672
+  - 25672:25672
+
+nodejs:
+ build: elvis
+ ports:
+  - 8080:8080
+
+nodered:
+ image: spants/nodered
+ volumes:
+  - "/etc/localtime:/etc/localtime"
+  - "/mnt/user/docker/appdata/nodered:/data"
+ ports:
+  - 1880:1880
