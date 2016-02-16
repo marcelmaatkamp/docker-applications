@@ -1,0 +1,5 @@
+#!/bin/bash
+docker run -ti \
+ -v $PWD/images:/srv \
+ --link torsoocks_tor-socks_1:tor \
+ marcelmaatkamp/screenshot_proxy http://$1 $1.png 1920px

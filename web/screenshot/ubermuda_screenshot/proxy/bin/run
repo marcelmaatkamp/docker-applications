@@ -1,0 +1,2 @@
+#!/bin/bash
+docker run -ti -v $PWD/images:/srv marcelmaatkamp/screenshot_proxy http://www.google.com/ google.com.png 1920px
