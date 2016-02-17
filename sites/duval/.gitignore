@@ -1,0 +1,3 @@
+volumes/nginx/certs
+volumes/nginx/htpasswd
+

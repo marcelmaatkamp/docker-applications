@@ -1,5 +1,8 @@
 rabbitmq:
  image: rabbitmq:management
+# environment:
+#  - VIRTUAL_HOST=duval.servequake.com
+#  - VIRTUAL_PORT=15672
  restart: always
  ports:
   - 5672:5672
@@ -7,12 +10,12 @@ rabbitmq:
   - 25672:25672
 
 nodered:
- # image: spants/nodered
- build: nodered
+ image: marcelmaatkamp/nodered 
  environment:
   - VIRTUAL_HOST=duval.servequake.com
   - VIRTUAL_PORT=1880
  volumes:
+  - /path/to/htpasswd:/etc/nginx/htpasswd
   - "/etc/localtime:/etc/localtime"
   - "/mnt/user/docker/appdata/nodered:/data"
  ports:
@@ -21,10 +24,11 @@ nodered:
 proxy:
  image: jwilder/nginx-proxy
  volumes:
-  - /var/local/nginx/certs:/etc/nginx/certs 
-  - /etc/letsencrypt:/etc/letsencrypt 
   - /var/local/proxy-confs:/etc/nginx/vhost.d:ro 
   - /var/run/docker.sock:/tmp/docker.sock:ro
+  - ./volumes/nginx/certs:/etc/nginx/certs
+  - ./volumes/nginx/htpasswd:/etc/nginx/htpasswd
+  - /etc/letsencrypt:/etc/letsencrypt 
  ports:
   - 80:80
   - 443:443
