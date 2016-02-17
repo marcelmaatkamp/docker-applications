@@ -1,6 +1,13 @@
-squid:
- image: poklet/squid
- restart: always
- ports:
-  - "3128:3128"
+version: '2'
 
+services:
+  squid:
+   image: poklet/squid
+   # restart: always
+   ports:
+    - "3128:3128"
+
+   logging:
+    driver: syslog
+    options:
+      syslog-address: "tcp://localhost:515"

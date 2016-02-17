@@ -6,15 +6,25 @@ rabbitmq:
   - 15672:15672
   - 25672:25672
 
-nodejs:
- build: elvis
- ports:
-  - 8080:8080
-
 nodered:
- image: spants/nodered
+ # image: spants/nodered
+ build: nodered
+ environment:
+  - VIRTUAL_HOST=duval.servequake.com
+  - VIRTUAL_PORT=1880
  volumes:
   - "/etc/localtime:/etc/localtime"
   - "/mnt/user/docker/appdata/nodered:/data"
  ports:
   - 1880:1880
+
+proxy:
+ image: jwilder/nginx-proxy
+ volumes:
+  - /var/local/nginx/certs:/etc/nginx/certs 
+  - /etc/letsencrypt:/etc/letsencrypt 
+  - /var/local/proxy-confs:/etc/nginx/vhost.d:ro 
+  - /var/run/docker.sock:/tmp/docker.sock:ro
+ ports:
+  - 80:80
+  - 443:443

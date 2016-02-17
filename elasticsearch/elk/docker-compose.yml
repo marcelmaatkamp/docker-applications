@@ -22,6 +22,9 @@ logstash:
     - 514:5514/udp
     - 515:5515
     - 515:5515/udp
+  links:
+    - rabbitmq
+    - elasticsearch
 
 kibana:
   build: kibana/
@@ -33,7 +36,8 @@ kibana:
     - elasticsearch
 
 rabbitmq:
- build: rabbitmq
+ # build: rabbitmq
+ image: rabbitmq:management
  ports: 
   - "15672:15672"
 
