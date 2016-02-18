@@ -1,6 +1,6 @@
 elasticsearch:
   image: elasticsearch:latest
-  # build: elasticsearch/
+  restart: always
   command: elasticsearch -Des.network.host=0.0.0.0
   ports:
     - "9200:9200"
@@ -8,26 +8,21 @@ elasticsearch:
 
 logstash:
   image: logstash
-  # privileged: true
-  # command: /opt/logstash/bin/logstash -e 'input { syslog { port => 514 } } output { stdout { } }'
+  restart: always
   command: /opt/logstash/bin/logstash -f /etc/logstash/conf.d/logstash.conf
   volumes:
     - ./volumes/logstash:/etc/logstash/conf.d
-  expose:
-    - 514/udp
-    - 5514/udp
-    - 5515
-    - 5515/udp
   ports:
-    - 514:5514/udp
-    - 515:5515
-    - 515:5515/udp
+    - 514:514/udp
+    - 5515:5515
+    - 5515:5515/udp
   links:
     - rabbitmq
     - elasticsearch
 
 kibana:
-  build: kibana/
+  build: kibana
+  restart: always
   volumes:
     - ./volumes/kibana/:/opt/kibana/config
   ports:
@@ -36,13 +31,14 @@ kibana:
     - elasticsearch
 
 rabbitmq:
- # build: rabbitmq
- image: rabbitmq:management
+ image: rabbitmq
+ restart: alwaysmanagement
  ports: 
   - "15672:15672"
 
 fluentd:
-  build: ./fluentd
+  build: fluentd
+  restart: alwaysd
   privileged: true
   links:
    - "elasticsearch"

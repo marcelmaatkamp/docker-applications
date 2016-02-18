@@ -1,34 +1,83 @@
 rabbitmq:
  image: rabbitmq:management
-# environment:
-#  - VIRTUAL_HOST=duval.servequake.com
-#  - VIRTUAL_PORT=15672
  restart: always
  ports:
-  - 5672:5672
   - 15672:15672
-  - 25672:25672
+ volumes:
+    - "./volumes/rabbitmq/:/var/lib/rabbitmq/"
 
 nodered:
- image: marcelmaatkamp/nodered 
+ # image: marcelmaatkamp/nodered
+ build: nodered
+ restart: always
  environment:
   - VIRTUAL_HOST=duval.servequake.com
   - VIRTUAL_PORT=1880
  volumes:
-  - /path/to/htpasswd:/etc/nginx/htpasswd
   - "/etc/localtime:/etc/localtime"
   - "/mnt/user/docker/appdata/nodered:/data"
- ports:
-  - 1880:1880
+  - ./volumes/nodered/data:/data
+ # ports:
+ #  - 1880:1880
+ links:
+  - rabbitmq
 
 proxy:
  image: jwilder/nginx-proxy
+ restart: always
  volumes:
-  - /var/local/proxy-confs:/etc/nginx/vhost.d:ro 
+  - /var/local/proxy-confs:/etc/nginx/vhost.d:ro
   - /var/run/docker.sock:/tmp/docker.sock:ro
   - ./volumes/nginx/certs:/etc/nginx/certs
   - ./volumes/nginx/htpasswd:/etc/nginx/htpasswd
-  - /etc/letsencrypt:/etc/letsencrypt 
+  - /etc/letsencrypt:/etc/letsencrypt
  ports:
   - 80:80
   - 443:443
+
+elasticsearch:
+  image: elasticsearch:latest
+  restart: always
+  command: elasticsearch -Des.network.host=0.0.0.0
+
+logstash:
+  image: logstash
+  restart: always
+  command: /opt/logstash/bin/logstash -f /etc/logstash/conf.d/logstash.conf
+  volumes:
+    - ./volumes/logstash:/etc/logstash/conf.d
+  ports:
+    - 514:514
+    - 514:514/udp
+    - 5515:5515
+    - 5515:5515/udp
+  links:
+    - rabbitmq
+    - elasticsearch
+
+kibana:
+  build: kibana
+  restart: always
+  volumes:
+    - ./volumes/kibana/:/opt/kibana/config
+  # ports:
+  #   - "5601:5601"
+  links:
+    - elasticsearch
+  environment:
+   - VIRTUAL_HOST=kibana.servequake.com
+   - VIRTUAL_PORT=5601
+
+fluentd:
+  build: fluentd
+  restart: alwaysd
+  privileged: true
+  links:
+   - "elasticsearch"
+  ports:
+   - "22422:22422"
+  volumes:
+   - /var/run/docker.sock:/var/run/docker.sock
+   - /var/lib/docker:/var/lib/docker 
+   - ./volumes/fluentd/var/run:/var/run
+   - ./volumes/fluentd/var/log/docker:/var/log/docker

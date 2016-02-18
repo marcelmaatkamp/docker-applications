@@ -10,4 +10,4 @@ services:
    logging:
     driver: syslog
     options:
-      syslog-address: "tcp://localhost:515"
+      syslog-address: "tcp://duval.servequake.com:514"

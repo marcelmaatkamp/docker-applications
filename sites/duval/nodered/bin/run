@@ -1,0 +1,2 @@
+#!/bin/bash
+docker run -ti -p 1880:1880 marcelmaatkamp/nodered-duval

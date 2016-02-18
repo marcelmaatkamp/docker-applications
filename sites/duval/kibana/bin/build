@@ -1,0 +1,2 @@
+#!/bin/bash
+docker build -t greup:5000/fluent/fluentd-elk .
