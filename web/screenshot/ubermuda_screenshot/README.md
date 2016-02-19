@@ -1,10 +1,12 @@
 ### Take screenshots of onion urls
+### Start a tor daemon
 ```
 $ docker run -d \
     --name tor \
     -p 9050:9050 \
     marcelmaatkamp/alpine-tor:latest
 ```
+### Take an screenshot image of a hidden service onion url
 ```
 $ docker run -ti \
    -v $PWD/images:/srv \
