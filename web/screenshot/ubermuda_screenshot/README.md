@@ -1,4 +1,4 @@
-### Take screenshots of urls
+### Take screenshots of onion urls
 ```
 $ docker run -d \
     --name tor \
