@@ -1,2 +1,5 @@
 volumes/nginx/certs
 volumes/nginx/htpasswd
+volumes/nodered/data/flow_cred.json
+volumes/rabbitmq/
+nodered.log
