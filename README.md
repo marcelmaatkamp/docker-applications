@@ -16,3 +16,9 @@ My active (docker) projects live in this repo mostly to make project inheritance
 
 ## LDAP
 * [LDAP + PHPWEBLDAP] (https://github.com/marcelmaatkamp/docker-applications/tree/master/ldap/osixia)
+
+## Nodered with AMQP
+* [Nodered with AMQP] (https://github.com/marcelmaatkamp/docker-applications/tree/master/nodered)
+
+## Take screenshots of onion urls
+* [Take screenshots of onion urls](https://github.com/marcelmaatkamp/docker-applications/tree/master/web/screenshot/ubermuda_screenshot)

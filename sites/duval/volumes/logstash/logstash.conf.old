@@ -17,6 +17,50 @@ input {
   }
   
 # ------------------
+  pipe { 
+# ------------------
+    command => 'journalctl -D /var/log/journal -f -o json' 
+    codec => json 
+  }
+
+# ------------------
+  gelf {
+# ------------------
+    port => 12201
+    
+    # add_field => ... # hash (optional), default: {}
+    # codec => ... # codec (optional), default: "plain"
+    # host => ... # string (optional), default: "0.0.0.0"
+    # port => ... # number (optional), default: 12201
+    # remap => ... # boolean (optional), default: true
+    # strip_leading_underscore => ... # boolean (optional), default: true
+    # tags => ... # array (optional)
+    # type => ... # string (optional)
+  }
+    
+# ------------------
+# lumberjack {
+# ------------------
+#    port => 5000
+#    ssl_certificate => "/etc/logstash/logstash.crt"
+#    ssl_key => "/etc/logstash/logstash.key"
+#    type => "nginx-accesslog"
+#  } 
+  
+# ------------------
+#  udp {
+# ------------------
+#    type => "syslog"
+#    port => 514
+#  }
+# ------------------
+#  tcp {
+# ------------------
+#    type => "syslog"
+#    port => 514
+#  }
+  
+# ------------------
   udp {
 # ------------------
     type => "syslog"
@@ -42,6 +86,7 @@ input {
     threads => 3
     prefetch_count => 50
     
+    exchange => "logging"
     queue => "logging.kibana"
     key => "logging"
     type => "amqp"
@@ -74,8 +119,8 @@ output {
     user => "guest"
     password => "guest"
     
-    exchange => "logging.kibana.out"
-    exchange_type => "fanout"
+    exchange => "logging.out"
+    exchange_type => "direct"
     codec => "json"
 
   }
