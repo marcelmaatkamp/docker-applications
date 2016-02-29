@@ -1,0 +1,4 @@
+openhab:
+ image: jshridha/openhab:1.7.0-release-20150810
+ ports:
+  - 8093:8080

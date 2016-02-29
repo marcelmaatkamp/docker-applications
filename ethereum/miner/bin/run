@@ -1,0 +1,4 @@
+#!/bin/bash
+docker run -ti \
+  -name ethereum-miner \
+  marcelmaatkamp/ethereum-miner 

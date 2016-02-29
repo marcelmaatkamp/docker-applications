@@ -1,0 +1,7 @@
+domoticz:
+ image: sdesbure/domoticz
+ volumes:
+  - ./volume/config:/config 
+  - /etc/localtime:/etc/localtime:ro
+ ports:
+  - 8091:8080

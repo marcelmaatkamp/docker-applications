@@ -1,0 +1,52 @@
+# You can access openidm locally from the following endpoints:
+# Console (admin/admin): https://localhost:8443/system/console
+# UI (openidm-admin/openidm-admin): https://localhost:8443/openidmui/index.html#login/
+# OpenIDM documentation: http://docs.forgerock.org/en/openidm/3.1.0/install-guide/index.html
+
+# https://github.com/ForgeRock/docker
+
+# http://opendj.forgerock.org/doc/admin-guide/
+opendj:
+ image: forgerock/opendj
+ volumes:
+  - ./volumes/forgerock/opendj:/opt/opendj/instances/instance1
+ expose:
+  - 389 
+  - 636 
+  - 4444
+
+# http://docker:8090/openam
+# https://wikis.forgerock.org/confluence/display/openam/Deploy+OpenAM
+# https://github.com/ForgeRock/docker/blob/master/openam-nightly/Dockerfile
+# dc=openam,dc=forgerock,dc=org
+openam:
+  # image: wstrange/openam-nightly
+  image: forgerock/openam
+  ports:
+    - 8090:8080
+    - 8091:8081
+    - 8092:8082
+  volumes:
+    - ./volumes/forgerock/openam:/root/openam
+  extra_hosts:
+    - "openam.example.com:192.168.56.11"
+    - "openam:192.168.56.11"
+  links:
+    - opendj
+
+# https://github.com/ForgeRock/docker/tree/master/openidm-nightly
+# http://docker:8095/
+openidm:
+  image: wstrange/openidm-nightly
+  ports:
+    - "8095:8080"
+
+rancher-server:
+ image: rancher/server
+ restart: always
+ volumes:
+  - ./volumes/rancher/server/mysql:/var/lib/mysql 
+  - ./volumes/rancher/server/ldap/cert.crt:/ca.crt
+ ports:
+  - 8096:8080
+
