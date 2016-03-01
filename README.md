@@ -16,7 +16,8 @@ My active (docker) projects live in this repo mostly to make project inheritance
 
 ## LDAP
 * [LDAP + PHPWEBLDAP] (https://github.com/marcelmaatkamp/docker-applications/tree/master/ldap/osixia)
-* [ForgeRock openam](tree/master/ldap/openam)
+* [ForgeRock openam](https://github.com/marcelmaatkamp/docker-applications/tree/master/ldap/openam)
+
 ## Nodered with AMQP
 * [Nodered with AMQP] (https://github.com/marcelmaatkamp/docker-applications/tree/master/nodered)
 
