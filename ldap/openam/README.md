@@ -1,5 +1,7 @@
 # OPENAM
 
+Installs openam and opendj with persistent configuration in 'volumes/forgerock/openam' with docker-compose.
+
 ## DOCUMENTATION
 
 * http://openidm.forgerock.org/doc/bootstrap/install-guide/index.html#full-stack-sample
@@ -25,7 +27,7 @@ The settings like Root Suffix "dc=example,dc=com" come from the [Dockerfile](htt
 #### Ports
 | Port | Function  |
 | ---- |-----|
-| 8080  | [openam interface](http://host:8090/openam)  |
+| 8080  | [openam interface](http://host:8080/openam)  |
 
 ### openidm
 
@@ -37,7 +39,7 @@ Start opendj and openam with
 ```
 $ docker-compose up -d
 ```
-and goto the [openam interface](http://host:8090/openam)
+and goto the [openam interface](http://host:8080/openam)
 
 | Screenshots of installation |
 | ---- |
