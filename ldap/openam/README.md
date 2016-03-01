@@ -6,7 +6,7 @@
 * https://wikis.forgerock.org/confluence/display/openam/Deploy+OpenAM
 * https://github.com/ForgeRock/docker
 
-## INSTALLATION
+## CONFIGURATION
 
 ### opendj
 
@@ -25,22 +25,19 @@ The settings like Root Suffix "dc=example,dc=com" come from the [Dockerfile](htt
 #### Ports
 | Port | Function  |
 | ---- |-----|
-| 8080  | ldap  |
-| 8081  | sldap|
-| 8082 | task is scheduled through communication over SSL on the administration port, by default 4444|
+| 8080  | [openam interface](http://host:8090/openam)  |
 
 ### openidm
 
 TBD with postgress see [https://hub.docker.com/r/wstrange/openidm-postgres/](https://hub.docker.com/r/wstrange/openidm-postgres/)
 
-[openam interface](http://host:8090/openam)
-
-
+## INSTALLATION
 
 Start opendj and openam with 
 ```
 $ docker-compose up -d
 ```
+and goto the [openam interface](http://host:8090/openam)
 
 | Screenshots of installation |
 | ---- |
