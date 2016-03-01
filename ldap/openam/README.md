@@ -15,27 +15,27 @@ docker-compose up -d
 | Screenshots of installation |
 | ---- |
 |![1](images/1.png)|
-|Goto [openam interface](http://host:8090/openam) and selct 'Custom Configuration'|
+|Fig 1: Goto [openam interface](http://host:8090/openam) and selct 'Custom Configuration'|
 |![2](images/2.png)| 
-|   |
+|Fig 2: make a new password for user 'amadmin' |
 |![3](images/3.png)|
-|   |
+|Fig 3:  |
 |![4](images/4.png)|
-|   |
+|Fig 4:   |
 |![5](images/5.png)|
-|   |
+|Fig 5:   |
 |![6](images/6.png)|
-|   |
+|Fig 6:   |
 |![7](images/7.png)|
-|   |
+|Fig 7:   |
 |![8](images/8.png)|
-|   |
+|Fig 8:   |
 |![9](images/9.png)|
-|   |
+|Fig 9:   |
 |![10](images/10.png)|
-|   |
+|Fig 10:   |
 |![11](images/11.png)|
-|   | 
+|Fig 11:   | 
 https://github.com/ForgeRock/docker/blob/master/opendj-nightly/Dockerfile
    --baseDN "dc=example,dc=com"
 
