@@ -2,15 +2,45 @@
 
 ## DOCUMENTATION
 
-http://openidm.forgerock.org/doc/bootstrap/install-guide/index.html#full-stack-sample
-https://wikis.forgerock.org/confluence/display/openam/Deploy+OpenAM
-https://github.com/ForgeRock/docker
+* http://openidm.forgerock.org/doc/bootstrap/install-guide/index.html#full-stack-sample
+* https://wikis.forgerock.org/confluence/display/openam/Deploy+OpenAM
+* https://github.com/ForgeRock/docker
 
 ## INSTALLATION
-```
-docker-compose up -d
-```
+
+### opendj
+
+#### Configuration
+The settings like Root Suffix "dc=example,dc=com" come from the [Dockerfile](https://github.com/ForgeRock/docker/blob/master/opendj-nightly/Dockerfile) and can be overridden with a new Dockerfile accordingly. 
+
+#### Ports
+| Port | Function  |
+| ---- |-----|
+| 389  | ldap  |
+| 636  | sldap|
+| 4444 | task is scheduled through communication over SSL on the administration port, by default 4444|
+
+### openam
+
+#### Ports
+| Port | Function  |
+| ---- |-----|
+| 8080  | ldap  |
+| 8081  | sldap|
+| 8082 | task is scheduled through communication over SSL on the administration port, by default 4444|
+
+### openidm
+
+TBD with postgress see [https://hub.docker.com/r/wstrange/openidm-postgres/](https://hub.docker.com/r/wstrange/openidm-postgres/)
+
 [openam interface](http://host:8090/openam)
+
+
+
+Start opendj and openam with 
+```
+$ docker-compose up -d
+```
 
 | Screenshots of installation |
 | ---- |
@@ -36,31 +66,5 @@ docker-compose up -d
 |Fig 10: Login with user 'amadmin' with password from Fig 2|
 |![11](images/11.png)|
 |Fig 11: And openam is successfully installed| 
-
-opendj
-https://github.com/ForgeRock/docker/blob/master/opendj-nightly/Dockerfile
-   --baseDN "dc=example,dc=com"
-
-### opendj
-
-#### Configuration
-The settings like Root Suffix "dc=example,dc=com" come from the [Dockerfile](https://github.com/ForgeRock/docker/blob/master/opendj-nightly/Dockerfile) and can be overridden with a new Dockerfile accordingly. 
-
-#### Ports
-| Port | Function  |
-| ---- |-----|
-| 389  | ldap  |
-| 636  | sldap|
-| 4444 | task is scheduled through communication over SSL on the administration port, by default 4444|
-
-### openam
-
-| Port | Function  |
-| ---- |-----|
-| 8080  | ldap  |
-| 8081  | sldap|
-| 8082 | task is scheduled through communication over SSL on the administration port, by default 4444|
-
-### openidm
 
 ## RUNNING
