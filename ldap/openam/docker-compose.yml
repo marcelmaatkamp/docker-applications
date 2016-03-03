@@ -1,24 +1,3 @@
-# You can access openidm locally from the following endpoints:
-# Console (admin/admin): https://localhost:8443/system/console
-# UI (openidm-admin/openidm-admin): https://localhost:8443/openidmui/index.html#login/
-# OpenIDM documentation: http://docs.forgerock.org/en/openidm/3.1.0/install-guide/index.html
-
-# https://github.com/ForgeRock/docker
-
-# http://opendj.forgerock.org/doc/admin-guide/
-# https://github.com/ForgeRock/docker/tree/master/openidm-nightly
-opendj:
- image: forgerock/opendj
- volumes:
-  - ./volumes/forgerock/opendj:/opt/opendj/instances/instance1
- expose:
-  - 389 
-  - 636 
-  - 4444
- ports:
-  - 389
-  - 636
-
 # https://github.com/ForgeRock/docker/tree/master/openidm-nightly
 # https://hub.docker.com/r/wstrange/openidm-postgres/
 # http://docker:8095/
@@ -46,3 +25,10 @@ openam:
   links:
     - opendj
     - openidm
+
+# https://github.com/ForgeRock/docker/tree/master/openidm-nightly
+# http://docker:8095/
+openidm:
+  image: wstrange/openidm-nightly
+  ports:
+    - "8095:8080"
