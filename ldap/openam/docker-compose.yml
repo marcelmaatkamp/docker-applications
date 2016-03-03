@@ -6,6 +6,7 @@
 # https://github.com/ForgeRock/docker
 
 # http://opendj.forgerock.org/doc/admin-guide/
+# https://github.com/ForgeRock/docker/tree/master/openidm-nightly
 opendj:
  image: forgerock/opendj
  volumes:
@@ -14,6 +15,17 @@ opendj:
   - 389 
   - 636 
   - 4444
+ ports:
+  - 389
+  - 636
+
+# https://github.com/ForgeRock/docker/tree/master/openidm-nightly
+# https://hub.docker.com/r/wstrange/openidm-postgres/
+# http://docker:8095/
+openidm:
+  image: forgerock/openidm
+  ports:
+    - "8095:8080"
 
 # http://docker:8090/openam
 # https://wikis.forgerock.org/confluence/display/openam/Deploy+OpenAM
@@ -33,10 +45,4 @@ openam:
     - "openam:192.168.56.11"
   links:
     - opendj
-
-# https://github.com/ForgeRock/docker/tree/master/openidm-nightly
-# http://docker:8095/
-openidm:
-  image: wstrange/openidm-nightly
-  ports:
-    - "8095:8080"
+    - openidm
