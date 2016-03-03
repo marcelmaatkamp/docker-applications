@@ -26,6 +26,7 @@ openam:
     - 8090:8080
     - 8091:8081
     - 8092:8082
+    - 8093:8083
   volumes:
     - ./volumes/forgerock/openam:/root/openam
   extra_hosts:
