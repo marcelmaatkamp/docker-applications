@@ -10,10 +10,11 @@ RUN apt-get update && apt-get install -y \
 # GNURadio
 
 WORKDIR /projects
-RUN \ 
-  # pip install PyBOMBS &&\
-  pip install git+https://github.com/gnuradio/pybombs.git &&\
-  pybombs recipes add gr-recipes git+https://github.com/gnuradio/gr-recipes.git &&\
-  pybombs recipes add gr-etcetera git+https://github.com/gnuradio/gr-etcetera.git &&\
-  pybombs prefix init gnuradio -a myprefix &&\
-  pybombs install gnuradio gr-osmosdr
+RUN apt-get install git python-pip
+RUN pip install PyBOMBS
+RUN pybombs prefix init /usr/local -a default_prx
+RUN pybombs config default_prefix default_prx
+RUN pybombs recipes add gr-recipes git+https://github.com/gnuradio/gr-recipes.git
+RUN pybombs recipes add gr-etcetera git+https://github.com/gnuradio/gr-etcetera.git
+RUN pybombs install gnuradio
+# RUN pybombs install gr-gsm

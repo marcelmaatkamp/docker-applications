@@ -1,0 +1,2 @@
+#!/bin/bash
+docker run marcelmaatkamp/pybombs-gnuradio bash
