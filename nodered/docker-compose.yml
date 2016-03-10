@@ -1,0 +1,11 @@
+nodered:
+ image: greup:5000/raptor/raptor-node-red
+ restart: always
+ hostname: nodered
+ ports:
+  - 1880:1880
+ volumes:
+  - /etc/localtime:/etc/localtime
+  - ./volumes/nodered/data:/src/.nodered
+ external_links:
+ - rabbitmq
