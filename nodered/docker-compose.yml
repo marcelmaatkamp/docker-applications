@@ -1,5 +1,5 @@
 nodered:
- image: greup:5000/raptor/raptor-node-red
+ image: marcelmaatkamp/nodered
  restart: always
  hostname: nodered
  ports:
