@@ -1,0 +1,2 @@
+#!/bin/bash
+docker rm marcel_ubuntu; docker run -ti --name marcel_ubuntu -v $PWD/projects:/projects -v ~/.ssh:/root/.ssh  marcel/ubuntu
