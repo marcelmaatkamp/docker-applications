@@ -60,7 +60,7 @@ RUN apt-get install -y \
      libxcb-present-dev libxcb-present0 libxcb-randr0 libxcb-randr0-dev \
      libxcb-render0 libxcb-render0-dev libxcb-shape0 libxcb-shape0-dev \
      libxcb-sync-dev libxcb-sync1 libxcb-xfixes0 libxcb-xfixes0-dev libxcb1-dev \
-     libxdamage-dev libxdamage1 libxdmcp-dev libxext-dev libxfixes-dev libxfixes \
+     libxdamage-dev libxdamage1 libxdmcp-dev libxext-dev \
      libxi6 libxrender1 libxshmfence-dev libxshmfence1 libxslt1.1 libxt6 \
      libxxf86vm-dev libxxf86vm1 mesa-common-dev mysql-common qdbus \
      qt4-linguist-tools qt4-qmake qtchooser qtcore4-l10n x11-common \
