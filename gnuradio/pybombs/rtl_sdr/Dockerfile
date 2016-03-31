@@ -1,3 +1,3 @@
 FROM marcelmaatkamp/pybombs-gnuradio
 RUN ldconfig
-RUN pybombs rtl_433
+RUN pybombs install rtl_433

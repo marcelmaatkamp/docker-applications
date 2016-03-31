@@ -1,0 +1,2 @@
+#!/bin/bash
+docker build -t marcelmaatkamp/pybombs-gnuradio-rtl_sdr .
