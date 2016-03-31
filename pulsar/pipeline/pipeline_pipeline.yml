@@ -1,0 +1,54 @@
+version: '2'
+
+services: 
+ jetstream_config:
+  image: jetstream/config
+  external_links:
+   - zkserver
+   - mongoserver
+  ports:
+   - 0.0.0.0:8000:9999
+   - 0.0.0.0:8081:8080
+
+ pulsar_replay:
+  image: pulsar/replay
+  external_links:
+   - mongoserver
+   - kafkaserver
+  ports:
+   - 0.0.0.0:8001:9999
+
+ pulsar_sessionizer:
+  image: pulsar/sessionizer
+  external_links:
+   - mongoserver
+   - kafkaserver
+  ports:
+   - 0.0.0.0:8003:9999
+
+ pulsar_distributor:
+  image: pulsar/distributor 
+  external_links:
+   - mongoserver
+   - kafkaserver
+  ports:
+   - 0.0.0.0:8004:9999
+
+ pulsar_metriccalculator:
+  image: pulsar/metriccalculator
+  external_links:
+   - zkserver
+    - mongoserver
+   - kafkaserver
+  ports:
+   - 0.0.0.0:8005:9999 
+ 
+ pulsar_collector:
+  image: pulsar/collector
+  external_links:
+   - zkserver
+   - mongoserver
+   - kafkaserver
+  ports:
+   - 0.0.0.0:8002:9999 
+   - 0.0.0.0:8080:8080 

@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+
+ zkserver:
+  image: jetstream/zookeeper
+  container_name: zkserver
+
+ mongoserver:
+  image: mongo
+  container_name: mongoserver
+
+ kafkaserver:
+  image: jetstream/kafka
+  container_name: kafkaserver
+
+ cassandraserver:
+  image: poklet/cassandra
+  container_name: cassandraserver
