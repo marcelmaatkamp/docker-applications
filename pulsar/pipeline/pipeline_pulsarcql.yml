@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+
+ pulsarcql:
+  image: poklet/cassandra
+  command: bash -c 'cqlsh cass1 -f /data/pulsar.cql'
+  external_links:
+   - cassandraserver:cass1
+  volumes:
+   - ./volumes/pulsarcql:/data
+
