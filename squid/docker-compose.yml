@@ -1,13 +1,16 @@
 version: '2'
 
 services:
-  squid:
-   image: poklet/squid
-   # restart: always
-   ports:
-    - "3128:3128"
+ squid:
+  image: poklet/squid
+  restart: always
+  ports:
+   - 3128:3128
+  volumes:
+   - ./volumes/squid/etc/squid.conf:/etc/squid/squid.conf
+   - squid:/var/log/squid
+   - squid:/var/spool/squid
 
-   logging:
-    driver: syslog
-    options:
-      syslog-address: "tcp://duval.servequake.com:514"
+volumes:
+ squid:
+  driver: local
