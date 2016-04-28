@@ -3,7 +3,7 @@ FROM ubuntu:14.04
 # python && pip
 
 RUN apt-get update && apt-get install -y \
-  python-pip python-dev build-essential git &&\
+  python-pip python-dev build-essential git telnet amqp-tools wget axel &&\
   pip install --upgrade pip &&\
   pip install --upgrade virtualenv
 
