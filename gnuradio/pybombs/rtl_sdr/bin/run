@@ -1,2 +1,5 @@
 #!/bin/bash
-docker run -ti --privileged -p 1234:1234 marcelmaatkamp/pybombs-gnuradio-rtl_sdr
+docker run -ti --privileged \
+ -p 1234:1234 \
+ -v $PWD/volumes/rtlsdr/data:/data \
+ marcelmaatkamp/pybombs-gnuradio-rtlsdr

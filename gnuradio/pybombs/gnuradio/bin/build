@@ -1,2 +1,3 @@
 #!/bin/bash
+docker pull marcelmaatkamp/pybombs-base
 docker build -t marcelmaatkamp/pybombs-gnuradio .

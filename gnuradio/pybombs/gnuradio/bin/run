@@ -1,2 +1,2 @@
 #!/bin/bash
-docker run marcelmaatkamp/pybombs-gnuradio bash
+docker run -p 1234:1234 --privileged marcelmaatkamp/pybombs-gnuradio bash
