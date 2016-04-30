@@ -108,6 +108,9 @@ RUN apt-get install -y \
      libxml2-dev \
      libxslt1-dev \
      python-lxml \
-     libusb-1.0-0-dev
+     libusb-1.0-0-dev \
+     amqp-tools \
+     wget axel telnet \
+     nodejs npm
      
      
