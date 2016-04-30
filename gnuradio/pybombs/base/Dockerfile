@@ -18,6 +18,8 @@ RUN pybombs recipes add gr-recipes git+https://github.com/gnuradio/gr-recipes.gi
 RUN pybombs recipes add gr-etcetera git+https://github.com/gnuradio/gr-etcetera.git
 
 RUN apt-get install -y \
+     autoconf automake \
+     libfftw3-3 \
      libasound2 libasound2-data \
      libcppunit-dev \
      libgsl0ldbl libgsl0-dev \
