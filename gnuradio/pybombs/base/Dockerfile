@@ -111,6 +111,8 @@ RUN apt-get install -y \
      libusb-1.0-0-dev \
      amqp-tools \
      wget axel telnet \
-     nodejs npm
+     nodejs npm 
+     
+RUN npm install -g amqp-ts
      
      
