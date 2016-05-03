@@ -1,0 +1,7 @@
+rtl_tcp:
+ image: marcelmaatkamp/pybombs-gnuradio-rtlsdr
+ command: rtl_tcp -a 0.0.0.0
+ privilged: true
+ restart: always
+ ports:
+  - 1234:1234
