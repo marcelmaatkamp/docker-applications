@@ -1,0 +1,18 @@
+volumes:
+  image: tianon/true
+  volumes:
+    - ./volumes/rabbitmq/lib:/var/lib/rabbitmq/
+
+rabbit:
+  image: marcelmaatkamp/rabbitmq-mqtt-ldap
+  restart: always
+  environment:
+    RABBITMQ_NODENAME: rabbitmq
+  hostname: rabbitmq
+  volumes_from:
+    - "volumes"
+  ports:
+    - "1884:1884"
+    - "5672:5672"
+    - "15672:15672"
+    - "25672:25672"
