@@ -1,0 +1,5 @@
+psocks:
+ image: clue/psocksd
+ restart: always
+ ports:
+  - 9050:9050

@@ -1,0 +1,23 @@
+version: '2'
+
+services: 
+ docker:
+  image: docker:dind
+  privileged: true
+  # ports:
+  #  - 2375:2375
+
+ jdk_8:
+  build: java/
+  tty: true
+  stdin_open: true
+  links:
+   - docker:docker
+  volumes:
+   - data:/data
+  # - /var/run/docker.sock:/var/run/docker.sock
+   - $PWD/volumes/jdk/default/docker:/etc/default/docker
+
+volumes:
+ data:
+  driver: local

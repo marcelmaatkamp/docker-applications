@@ -8,7 +8,7 @@ services:
    - 3128:3128
   volumes:
    - ./volumes/squid/etc/squid.conf:/etc/squid/squid.conf
-   - squid:/var/log/squid
+   - ./volumes/squid/log:/var/log/squid
    - squid:/var/spool/squid
 
 volumes:
