@@ -2,6 +2,8 @@ FROM marcelmaatkamp/pybombs-gnuradio
 
 MAINTAINER Marcel Maatkamp but inspired by Frederik Granna
 
+RUN pybombs install rtl-sdr && ldconfig
+
 RUN apt-get update && \
     apt-get install -y libfftw3-dev nmap python2.7 vim --no-install-recommends && \
     apt-get clean && \
@@ -33,4 +35,4 @@ WORKDIR /opt/openwebrx
 
 EXPOSE 8073 8888 4951
 
-RUN python2.7 openwebrx.py
+CMD openwebrx.py

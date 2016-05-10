@@ -1,0 +1,9 @@
+version: '2'
+services: 
+ influxdb:
+  image: tutum/influxdb:latest
+  ports:
+   - 8083
+   - 8086
+  volumes:
+   - $PWD/volumes/influxdb:/data
