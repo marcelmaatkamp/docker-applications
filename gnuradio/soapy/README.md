@@ -8,3 +8,5 @@ $ git clone https://github.com/marcelmaatkamp/docker-applications.git &&\
 ```
 
 On the computer with CubicSDR start CubicSDR and it will automatically find the dongle
+
+[!image](Schermafbeelding%202016-05-21%20om%2012.50.19.png)
