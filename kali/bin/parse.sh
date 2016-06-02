@@ -9,8 +9,11 @@ do
  wlan_mgt_ssid=$(echo $line | cut -d, -f3)
  radiotap_dbm_antsignal=$(echo $line | cut -d, -f4)
 
+ date_epoch=$(date +%s)
+
  echo -n "{ "
- echo -n " \"wifi\" : {"
+ echo -n " \"wifi\" : {" 
+ echo -n " \"date_epoch\": $date_epoch," 
  echo -n " \"location\" : {"
  echo -n "   \"name\" : \"$LOCATION_NAME\", "
  echo -n "   \"lon\" : $LOCATION_LAT, "
