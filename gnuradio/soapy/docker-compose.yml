@@ -2,7 +2,8 @@ version: '2'
 
 services:
  soapy:
-  build: docker/
+  # build: docker/
+  image: marcelmaatkamp/soapy-remote
   command: SoapySDRServer --bind="0.0.0.0:55132"
   privileged: true
   network_mode: "host"

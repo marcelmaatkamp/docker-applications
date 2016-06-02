@@ -1,6 +1,7 @@
 rtl_433:
  image: marcelmaatkamp/pybombs-gnuradio-rtlsdr
- command: bash -c "rtl_433 -g 49.6 -p 47 -l 0 -s 2200000 -F json | amqp-publish -u amqp://rabbitmq -e rtl_433 -l"
+ # command: bash -c "rtl_433 -g 49.6 -p 47 -l 0 -s 2200000 -F json | amqp-publish -u amqp://rabbitmq -e rtl_433 -l"
+ command: bash -c "rtl_433 -f 433935000 -g 29.6 -p 55 -l 0 -a"
  privileged: true
  restart: always
  extra_hosts:

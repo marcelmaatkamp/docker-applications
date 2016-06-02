@@ -1,0 +1,9 @@
+version: '2'
+
+services:
+ gr_gsm:
+  image: marcelmaatkamp/pybombs-gnuradio-gr-gsm
+  command: grgsm_livemon
+  privileged: true
+  ports: 
+   - 6000:6000

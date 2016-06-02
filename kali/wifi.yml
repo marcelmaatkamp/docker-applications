@@ -1,0 +1,13 @@
+version: '2'
+
+services:
+ kali:
+  image: marcelmaatkamp/kali
+  command: ./start.sh
+  environment:
+   - LOCATION_NAME="kamer marcel en ab"
+   - LOCATION_LAT=52.05333 
+   - LOCATION_LON=5.28056
+  privileged: true
+  network_mode: "host"
+

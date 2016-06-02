@@ -1,0 +1,7 @@
+version: '2'
+
+services:
+ kali:
+  image: marcelmaatkamp/kali
+  privileged: true
+  net: host
