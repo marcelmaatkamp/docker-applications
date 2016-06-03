@@ -5,3 +5,4 @@ services:
   image: marcelmaatkamp/kali
   privileged: true
   net: host
+  env_file: ./huus.env

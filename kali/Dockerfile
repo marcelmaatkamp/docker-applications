@@ -5,6 +5,8 @@ RUN apt-get update && apt-get dist-upgrade -yf && apt-get install -y \
 
 ADD bin/start.sh wifi/
 ADD bin/collect.sh wifi/
+ADD bin/collect_probes.sh wifi/
+ADD bin/collect_all_packets.sh wifi/
 ADD bin/parse.sh wifi/
 
 WORKDIR wifi 
