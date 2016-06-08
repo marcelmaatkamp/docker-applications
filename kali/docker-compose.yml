@@ -3,6 +3,8 @@ version: '2'
 services:
  kali:
   image: marcelmaatkamp/kali
+  command: ./start.sh
   privileged: true
-  net: host
-  env_file: ./huus.env
+  network_mode: "host"
+  env_file: 
+   - ./huus.env
