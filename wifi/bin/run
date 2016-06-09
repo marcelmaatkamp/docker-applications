@@ -1,0 +1,2 @@
+#!/bin/bash
+docker run -ti --net=host --privileged=true marcelmaatkamp/wifi

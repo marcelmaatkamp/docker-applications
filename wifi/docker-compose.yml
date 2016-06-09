@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+ wifi:
+  image: marcelmaatkamp/wifi
+  command: ./start.sh
+  privileged: true
+  network_mode: "host"
+  env_file: 
+   - ./env.env
+  volumes:
+   - ./volumes/wifi:/wifi/bin
