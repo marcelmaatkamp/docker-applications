@@ -33,4 +33,4 @@ ENV LOCATION_LON 0
 
 VOLUME bin
 
-CMD ./bin/all.js
+CMD [ "./bin/all.js" ]
