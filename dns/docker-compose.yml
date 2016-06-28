@@ -65,7 +65,7 @@ services:
    - VIRTUAL_PORT=15672
  
  mongodb:
-  image:  tutum/mongodb
+  image: mongo
   restart: always
   volumes:
    - "./volumes/mongodb/database:/data/db"
@@ -76,11 +76,11 @@ services:
   build: docker-nodejs-dns
   restart: always
   ports:
-   - "53:53"
+   - 53:53/udp
   links:
    - rabbitmq:rabbitmq
   environment:
-   - AMQP_URL=amqp://guest:guest@rabbitmq
+   - AMQP_URL=amqp://rabbitmq
    - DNS_PORT=53 
 
  fabuleus_dns_mongodb:
@@ -93,7 +93,7 @@ services:
    - mongodb:mongodb
    - fabuleus_dns:fabuleus_dns
   environment:
-   - AMQP_URL=amqp://guest:guest@rabbitmq
+   - AMQP_URL=amqp://rabbitmq
    - MONGODB_URL=mongodb://mongodb:27017/dns 
 
  fabuleus_dns_mongodb_viewer:
