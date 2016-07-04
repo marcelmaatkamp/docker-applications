@@ -3,7 +3,7 @@
 	url = https://github.com/bcicen/docker-port-scan.git
 [submodule "dns/docker-nodejs-dns-mongodb"]
 	path = dns/docker-nodejs-dns-mongodb
-	url = git@github.com:marcelmaatkamp/docker-nodejs-dns-mongodb.git
+	url = https://github.com/marcelmaatkamp/docker-nodejs-dns-mongodb.git
 [submodule "dns/docker-nodejs-dns"]
 	path = dns/docker-nodejs-dns
-	url = git@github.com:marcelmaatkamp/docker-nodejs-dns.git
+	url = https://github.com/marcelmaatkamp/docker-nodejs-dns.git
