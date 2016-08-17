@@ -9,6 +9,7 @@
 #include "Toggler.h"
 //#include "Toucher.h"
 #include "Switch.h"
+#include "Voltage.h"
 
 
 /*******************************************************************************
@@ -23,7 +24,7 @@
 //###########################################################
 //Theos DEFs
 //###########################################################
-#define PROGRAM_NAME_VERSION "LoRa Theo TTN Application 0.92"
+#define PROGRAM_NAME_VERSION "LoRa Theo TTN Application 0.94"
 //###########################################################
 
 #define JOINED_FLAG 0x0001 // bit 0 of statusflags
@@ -35,8 +36,9 @@
 
 #define MICROSWITCH_PIN 20 //Use digital pin 20 for the Microswitch sensor , Touched = LOW
 #define BUTTON_PIN 20 //Use digital pin 20 for the Button sensor , Touched = LOW
-#define LED_PIN2 4     // Use digital pin 21 for the Reveive Led
-#define LED_PIN  21    // Use digital pin 4  for the Send Led
+#define LED_PIN2 4      // Use digital pin 21 for the Reveive Led
+#define LED_PIN  21     // Use digital pin 4  for the Send Led
+#define VOLTAGE_PIN  A4 // Use analog pin A4 for Voltage measurement
 #define DELAY_TIME_1_SEC    1000  // 1 sec delay
 #define DELAY_TIME_200_MSEC 200   // 200 msec delay
 #define TWO_SECONDS 2000
@@ -87,11 +89,12 @@ String readDhtTemperature();
 
 DHT dht(DHTPIN, DHTTYPE);
 
-Switch microSwitch1(MICROSWITCH_PIN);     // Microswitch to detect case open/closed 
+Switch microSwitch1(MICROSWITCH_PIN);          // Microswitch to detect case open/closed 
 Flasher      ledMBili(LED1, 100, TWO_SECONDS); // RED led on MBili board; 100msec on, 2000msec off
 FlasherOnce  sendLed(LED_PIN, 500);            // send led connected to MBili board; 500msec on
 //Toucher      touch1(BUTTON_PIN, 100);          // Touch sensor 
 Toggler      receiveLed(LED_PIN2);             // receive Led 
+Voltage      voltageReader(VOLTAGE_PIN);       // Voltage input pin
 
 /*******************************************************************************
    AliveMessage class - Used to send an Alive message.
@@ -122,23 +125,24 @@ class AliveMessage
   {
     // check to see if it's time to change the state of the LED
     unsigned long currentMillis = millis();
-     
+
     if(currentMillis - previousMillis >= AliveFrequencyMillis)
     {
-		previousMillis = currentMillis;  // Remember the time
+	  previousMillis = currentMillis;  // Remember the time
 		debugSerial.println("Attempt to send alive message");
 
-		char Data_Tx[21] = "416C697665323B2020"; // 18 lang + '\0' maakt 19, dus 19 lang reserveren
-                        // 012345678901234567
-                        // 123456789012345678
-               // wordt:   A l i v e 2 ; x x  // xy = Temperature (2 digits, whole degrees)
+		char Data_Tx[31] = "416C697665323B20203B20202E2020"; // 30 lang + '\0' maakt 31, dus 31 lang reserveren
+             //         012345678901234567890123456789
+             //         123456789012345678901234567890
+             // wordt:  A l i v e 2 ; x y ; a b . c d  // xy    = Temperature (2 digits, whole degrees)
+             //                                        // ab.cd = Voltage  (5 digits)
 		String data = readDhtTemperature();
 		debugSerial.print("Temp reading = ");
 		debugSerial.println(data);
 		if (data.substring(0,3).equals("NAN") ){
-			Data_Tx[14] = '4';  // ER staat voor ERROR
+			Data_Tx[14] = '4';  // "E"
 			Data_Tx[15] = '5';
-			Data_Tx[16] = '5';
+			Data_Tx[16] = '5';  // "R"  "ER" staat vooor ERROR
 			Data_Tx[17] = '2';
 		} else {
 			const char *c1;
@@ -148,11 +152,33 @@ class AliveMessage
 			Data_Tx[16] = '3';  // y
 			Data_Tx[17] = c1[1];
 		}
+        
+    const char *dtostrfbuffer;
+    dtostrfbuffer = voltageReader.Read2();
+
+//    static char dtostrfbuffer[15];
+//    dtostrf(volts,5, 2, dtostrfbuffer); // 5 = wide, 2 = precision
+    debugSerial.print("Volt reading = ");
+    debugSerial.println(dtostrfbuffer);
+  
+//    String voltString = String(volts, 2);
+//    debugSerial.print("Volt reading 2 = ");
+//	  debugSerial.println(voltString);
+
+    Data_Tx[20] = '3';              // a
+    Data_Tx[21] = dtostrfbuffer[0];
+    Data_Tx[22] = '3';              // b
+    Data_Tx[23] = dtostrfbuffer[1];
+    Data_Tx[26] = '3';              // c
+    Data_Tx[27] = dtostrfbuffer[3];
+    Data_Tx[28] = '3';              // d
+    Data_Tx[29] = dtostrfbuffer[4];
+
  
        uint8_t resultCode = 0; // NoError = 0, NoResponse = 1, Timeout = 2, PayloadSizeError = 3, InternalError = 4, Busy = 5, NetworkFatalError = 6, NotConnected = 7, NoAcknowledgment = 8
 //       resultCode = sendMessage2(aliveTxMessage, messageLength); // TX the alive message
 //       resultCode = sendMessage2(c1, 4); // TX the alive message
-       resultCode = sendMessage2(Data_Tx, 18); // TX the alive message
+       resultCode = sendMessage2(Data_Tx, 30); // TX the alive message
 
       //######### RX PART ############################################  
       memset(rx_buffer, 0, sizeof(rx_buffer) / sizeof(rx_buffer[0]));
@@ -315,8 +341,8 @@ uint8_t sendMessage2(const char message[], const int length) {
     uint8_t resultCode = 0xFF; // NoError = 0, NoResponse = 1, Timeout = 2, PayloadSizeError = 3, InternalError = 4, Busy = 5, NetworkFatalError = 6, NotConnected = 7, NoAcknowledgment = 8
     int retryCounter = 1;
     while( (resultCode != NoError) && (retryCounter < 4) ){
-        resultCode = LoRaBee.send(loraSerial, testPayload, length/2);
-        //resultCode = LoRaBee.sendReqAck(loraSerial, testPayload, length/2, 3); // 3 retries
+        //resultCode = LoRaBee.send(loraSerial, testPayload, length/2);
+        resultCode = LoRaBee.sendReqAck(loraSerial, testPayload, length/2, 3); // 3 retries
         //resultCode = LoRaBee.sendReqAck(loraSerial, testPayload, 11, 3);
         // LoRaBee.send definition = uint8_t send(uint8_t port, const uint8_t* payload, uint8_t size);
         debugSerial.print("Attempt = ");
