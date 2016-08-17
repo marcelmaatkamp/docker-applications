@@ -34,3 +34,4 @@ rabbit:
     - "15672"
   links:
     - "proxy" 
+    
