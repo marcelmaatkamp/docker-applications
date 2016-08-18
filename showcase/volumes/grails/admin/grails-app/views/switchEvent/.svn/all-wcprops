@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/uoo/!svn/ver/1953/csa/projects/docker/config/machines/vps/server11/volumes/grails/admin/grails-app/views/switchEvent
+END
+show.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svn/uoo/!svn/ver/1953/csa/projects/docker/config/machines/vps/server11/volumes/grails/admin/grails-app/views/switchEvent/show.gsp
+END
+create.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/uoo/!svn/ver/1953/csa/projects/docker/config/machines/vps/server11/volumes/grails/admin/grails-app/views/switchEvent/create.gsp
+END
+edit.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svn/uoo/!svn/ver/1953/csa/projects/docker/config/machines/vps/server11/volumes/grails/admin/grails-app/views/switchEvent/edit.gsp
+END
+index.gsp
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/uoo/!svn/ver/1953/csa/projects/docker/config/machines/vps/server11/volumes/grails/admin/grails-app/views/switchEvent/index.gsp
+END

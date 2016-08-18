@@ -1,0 +1,6 @@
+docker run -it \
+ --rm \
+ --net host \
+ -v $PWD/volumes/letsencrypt:/etc/letsencrypt \
+ -v $PWD/volumes/letsencrypt:/var/lib/letsencrypt \
+ gzm55/certbot certonly --standalone --text -d server11.us.to "$@"

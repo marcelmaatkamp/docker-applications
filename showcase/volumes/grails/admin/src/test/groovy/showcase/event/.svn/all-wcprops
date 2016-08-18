@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/uoo/!svn/ver/1955/csa/projects/docker/config/machines/vps/server11/volumes/grails/admin/src/test/groovy/showcase/event
+END
+EventControllerSpec.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/uoo/!svn/ver/1955/csa/projects/docker/config/machines/vps/server11/volumes/grails/admin/src/test/groovy/showcase/event/EventControllerSpec.groovy
+END
+EventTypeControllerSpec.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svn/uoo/!svn/ver/1921/csa/projects/docker/config/machines/vps/server11/volumes/grails/admin/src/test/groovy/showcase/event/EventTypeControllerSpec.groovy
+END
+SwitchEventControllerSpec.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/svn/uoo/!svn/ver/1951/csa/projects/docker/config/machines/vps/server11/volumes/grails/admin/src/test/groovy/showcase/event/SwitchEventControllerSpec.groovy
+END
+VoltageEventControllerSpec.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 157
+/svn/uoo/!svn/ver/1955/csa/projects/docker/config/machines/vps/server11/volumes/grails/admin/src/test/groovy/showcase/event/VoltageEventControllerSpec.groovy
+END
+TemperatureEventControllerSpec.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 161
+/svn/uoo/!svn/ver/1951/csa/projects/docker/config/machines/vps/server11/volumes/grails/admin/src/test/groovy/showcase/event/TemperatureEventControllerSpec.groovy
+END

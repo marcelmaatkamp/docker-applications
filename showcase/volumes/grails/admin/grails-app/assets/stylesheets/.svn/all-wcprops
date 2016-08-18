@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/uoo/!svn/ver/1952/csa/projects/docker/config/machines/vps/server11/volumes/grails/admin/grails-app/assets/stylesheets
+END
+mobile.css
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svn/uoo/!svn/ver/1897/csa/projects/docker/config/machines/vps/server11/volumes/grails/admin/grails-app/assets/stylesheets/mobile.css
+END
+errors.css
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svn/uoo/!svn/ver/1897/csa/projects/docker/config/machines/vps/server11/volumes/grails/admin/grails-app/assets/stylesheets/errors.css
+END
+bootstrap.css
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/uoo/!svn/ver/1897/csa/projects/docker/config/machines/vps/server11/volumes/grails/admin/grails-app/assets/stylesheets/bootstrap.css
+END
+grails.css
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svn/uoo/!svn/ver/1952/csa/projects/docker/config/machines/vps/server11/volumes/grails/admin/grails-app/assets/stylesheets/grails.css
+END
+application.css
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/uoo/!svn/ver/1897/csa/projects/docker/config/machines/vps/server11/volumes/grails/admin/grails-app/assets/stylesheets/application.css
+END
+main.css
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/uoo/!svn/ver/1952/csa/projects/docker/config/machines/vps/server11/volumes/grails/admin/grails-app/assets/stylesheets/main.css
+END
