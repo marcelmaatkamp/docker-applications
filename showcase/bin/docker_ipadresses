@@ -1,0 +1,2 @@
+#!/bin/bash
+docker inspect -f '{{.Name}} - {{.NetworkSettings.Networks.server11_default.IPAddress }}' $(docker ps -q) | sed -e 's/\/server11_//g' | sed -e 's/_1//g'

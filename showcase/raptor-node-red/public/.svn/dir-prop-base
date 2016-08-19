@@ -1,0 +1,27 @@
+K 10
+svn:ignore
+V 132
+*.iml
+*.ipr
+*.iws
+build/
+work/
+out/
+.gradle
+.idea
+*.o
+*.lo
+*.la
+*.al
+.libs
+*.so
+*.so.[0-9]*
+*.a
+*.pyc
+*.pyo
+*.rej
+*~
+.swp
+.DS_Store
+
+END

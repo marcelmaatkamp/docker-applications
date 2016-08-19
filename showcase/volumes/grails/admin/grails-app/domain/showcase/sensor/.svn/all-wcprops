@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/uoo/!svn/ver/1951/csa/projects/docker/config/machines/vps/server11/volumes/grails/admin/grails-app/domain/showcase/sensor
+END
+Sensor.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/uoo/!svn/ver/1951/csa/projects/docker/config/machines/vps/server11/volumes/grails/admin/grails-app/domain/showcase/sensor/Sensor.groovy
+END
+SensorType.groovy
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/uoo/!svn/ver/1951/csa/projects/docker/config/machines/vps/server11/volumes/grails/admin/grails-app/domain/showcase/sensor/SensorType.groovy
+END

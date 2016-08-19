@@ -1,0 +1,116 @@
+version: '2'
+
+services:
+
+ docker-ui:
+  image: uifd/ui-for-docker
+  restart: always
+  privileged: true
+#  ports:
+#   - 9000:9000
+  volumes:
+   - /var/run/docker.sock:/var/run/docker.sock
+  networks:
+    mynet:
+      ipv4_address: 172.25.0.2
+
+ rabbitmq:
+  image: marcelmaatkamp/rabbitmq-mqtt-ldap
+  restart: always
+  hostname: rabbitmq
+#  ports:
+#   - 15672:15672
+  environment:
+    RABBITMQ_NODENAME: rabbitmq@rabbitmq
+  volumes:
+   - ./volumes/rabbitmq/mnesia:/var/lib/rabbitmq/mnesia
+  networks:
+    mynet:
+      ipv4_address: 172.25.0.3
+
+ mongodb:
+  image: mongo
+  restart: always
+  volumes:
+   - "./volumes/mongodb/database:/data/db"
+   - "./volumes/mongodb/config:/data/configdb"
+  networks:
+    mynet:
+      ipv4_address: 172.25.0.4
+
+ nodered:
+  build: raptor-node-red
+  restart: always
+  hostname: nodered
+  links:
+   - rabbitmq:rabbitmq
+   - mongodb:mongodb
+   - mysql:mysql
+  ports:
+   - 1880:1880
+  volumes:
+   - ./volumes/nodered:/node-red-data/
+  networks:
+    mynet:
+      ipv4_address: 172.25.0.5
+
+ domoticz:
+  image:  sdesbure/domoticz
+  restart: always
+  links:
+   - rabbitmq:rabbitmq
+   - mongodb:mongodb
+#  ports:
+#   - 443:443
+#   - 8080:8080 
+#   - 6144:6144
+  volumes:
+   - /etc/localtime:/etc/localtime:ro
+   - ./volumes/domoticz:/config
+  networks:
+    mynet:
+      ipv4_address: 172.25.0.6
+
+ mysql:
+  image: mysql/mysql-server:latest
+  hostname: mysql
+  environment:
+   - MYSQL_ROOT_PASSWORD=my-secret-pw
+  volumes:
+   - ./volumes/mysql:/var/lib/mysql
+  networks:
+    mynet:
+      ipv4_address: 172.25.0.8
+
+ phpmyadmin:
+  image: phpmyadmin/phpmyadmin
+  hostname: phpmyadmin
+  links:
+   - mysql:db
+  volumes:
+   - ./volumes/phpmyadmin:/sessions
+  networks:
+    mynet:
+      ipv4_address: 172.25.0.9
+
+ grails:
+  image: marcelmaatkamp/docker-grails 
+  hostname: grails
+  volumes:
+   - ./volumes/grails/admin:/app:rw
+  links:
+   - mysql:mysql
+   - mongodb:mongodb
+   - rabbitmq:rabbitmq
+  environment:
+   - JAVA_OPTS=-Duser.timezone=UTC
+  networks:
+   mynet:
+     ipv4_address: 172.25.0.100
+
+networks:
+  mynet:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 172.25.0.0/24
