@@ -311,7 +311,7 @@
   },
   "node-red-node-email": {
    "name": "node-red-node-email",
-   "version": "0.1.10",
+   "version": "0.1.11",
    "nodes": {
     "email": {
      "name": "email",
@@ -391,7 +391,7 @@
   },
   "node-red-contrib-amqp": {
    "name": "node-red-contrib-amqp",
-   "version": "0.4.3",
+   "version": "0.4.4",
    "nodes": {
     "amqp": {
      "name": "amqp",
@@ -457,7 +457,7 @@
   },
   "node-red-contrib-chatbot": {
    "name": "node-red-contrib-chatbot",
-   "version": "0.4.2",
+   "version": "0.5.0",
    "nodes": {
     "chatbot-message": {
      "name": "chatbot-message",
@@ -645,30 +645,6 @@
      "enabled": true,
      "module": "node-red-contrib-telegrambot",
      "file": "/node-red/node_modules/node-red-contrib-telegrambot/telegrambot/99-telegrambot.js"
-    }
-   }
-  },
-  "node-red-contrib-protocolbuffersnode": {
-   "name": "node-red-contrib-protocolbuffersnode",
-   "version": "0.0.1",
-   "nodes": {
-    "encode-protobuf": {
-     "name": "encode-protobuf",
-     "types": [
-      "encode-protobuf"
-     ],
-     "enabled": true,
-     "module": "node-red-contrib-protocolbuffersnode",
-     "file": "/node-red/node_modules/node-red-contrib-protocolbuffersnode/protobuf/encode-protobuf.js"
-    },
-    "decode-protobuf": {
-     "name": "decode-protobuf",
-     "types": [
-      "decode-protobuf"
-     ],
-     "enabled": true,
-     "module": "node-red-contrib-protocolbuffersnode",
-     "file": "/node-red/node_modules/node-red-contrib-protocolbuffersnode/protobuf/decode-protobuf.js"
     }
    }
   }
