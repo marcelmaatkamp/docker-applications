@@ -1,21 +1,19 @@
 #include "Sodaq_RN2483.h"
 
-#define debugSerial SerialUSB
-#define loraSerial Serial1
-
-// Sodaq One
-const uint8_t devAddr[4] = { 0x7F, 0xEE, 0x6E, 0x5B };
-const uint8_t appSKey[16] = { 0x5D, 0xAD, 0x6E, 0x20, 0xBE, 0x3E, 0x9F, 0xED, 0x94, 0x5F, 0xD0, 0xBC, 0x12, 0x31, 0xF0, 0xD5 };
-const uint8_t nwkSKey[16] = { 0x8A, 0xA7, 0x64, 0xD8, 0xEB, 0x1B, 0xE3, 0x38, 0x55, 0xE0, 0x1C, 0xFF, 0x92, 0xDF, 0x43, 0xFD };
+#define SODAQ_ONE
+//#define SODAQ_MBILI
+#include "Devices.h"
 
 // Some complete random hex
 uint8_t testPayload[] = { 0x53, 0x4F, 0x44, 0x41, 0x51 };
 
 void setup()
 {
-  debugSerial.begin(115200);
-
+#ifdef SODAQ_ONE
+  // enable power, only for the Sodaq One
   digitalWrite(ENABLE_PIN_IO, HIGH);
+#endif  
+  debugSerial.begin(115200);
   delay(3000);
   while ((!debugSerial) && (millis() < 10000)) {
     // Wait 10 seconds for the debugSerial
