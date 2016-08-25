@@ -50,6 +50,10 @@ services:
    - 1880:1880
   volumes:
    - ./volumes/nodered:/node-red-data/
+  environment: 
+   - TELEGRAM_BOT=221611837:AAGCjDOlCF0kGKvh3TdgyimaeZAhbT2EXu8
+   - TELEGRAM_BOT_SPARKY=221611837:AAGCjDOlCF0kGKvh3TdgyimaeZAhbT2EXu8
+   - TELEGRAM_BOT_SPOT=257187787:AAH6ukcTh17o8TfWmLdmAV3MkAcmwHElS90
   networks:
     mynet:
       ipv4_address: 172.25.0.5

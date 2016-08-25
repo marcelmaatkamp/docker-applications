@@ -1,0 +1,5 @@
+version: '2'
+services:
+ nodered:
+  environment:
+   - TELEGRAM_BOT=257187787:AAH6ukcTh17o8TfWmLdmAV3MkAcmwHElS90
