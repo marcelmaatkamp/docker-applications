@@ -2,6 +2,8 @@
  * This include houses the different settings for the used devices / nodes
  */
 
+#include "Sodaq_RN2483.h"
+
 // settings for the Sodaq One
 #ifdef SODAQ_ONE
 #define debugSerial SerialUSB

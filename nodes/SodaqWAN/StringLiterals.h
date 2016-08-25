@@ -41,6 +41,7 @@
 #define STR_DEVICE_TYPE "RN2483"
 
 #define STR_CMD_SET "mac set "
+#define STR_CMD_SAVE "mac save"
 #define STR_RETRIES "retx "
 #define STR_DEV_ADDR "devaddr "
 #define STR_APP_SESSION_KEY "appskey "

@@ -27,6 +27,17 @@
 #include <Stream.h>
 #include "Switchable_Device.h"
 
+#define DEBUG;
+
+#ifdef DEBUG
+#define debugPrintLn(...) { if (this->diagStream) this->diagStream->println(__VA_ARGS__); }
+#define debugPrint(...) { if (this->diagStream) this->diagStream->print(__VA_ARGS__); }
+#warning "Debug mode is ON"
+#else
+#define debugPrintLn(...)
+#define debugPrint(...)
+#endif
+
 /**
 
  Notes:
@@ -45,7 +56,6 @@
  */
 
 //#define USE_DYNAMIC_BUFFER
-#define DEBUG
 
 #define DEFAULT_INPUT_BUFFER_SIZE 64
 #define DEFAULT_RECEIVED_PAYLOAD_BUFFER_SIZE 32
@@ -94,6 +104,11 @@ public:
     // Sends the given payload without acknowledgement.
     // Returns 0 (NoError) when transmission is successful or one of the MacTransmitErrorCodes otherwise.
     uint8_t send(uint8_t port, const uint8_t* payload, uint8_t size);
+
+    // TODO: Dit schrijft de settings in de EEPROM van de RN2483, werkt nog niet goed
+    // Sends a save command to the device and waits for the response (or timeout).
+    // Returns true on success.
+    bool save();
 
     // Sends the given payload with acknowledgement.
     // Returns 0 (NoError) when transmission is successful or one of the MacTransmitErrorCodes otherwise.
