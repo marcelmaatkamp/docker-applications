@@ -1,11 +1,15 @@
 /*
  * This include houses the different settings for the used devices / nodes
  */
+#define SODAQ_ONE
+//#define SODAQ_MBILI
 
-#include "Sodaq_RN2483.h"
-
-// settings for the Sodaq One
+/*
+ * settings for the Sodaq One
+ */
 #ifdef SODAQ_ONE
+#define NODE_DEFINED
+#include "Sodaq_RN2483.h"
 #define debugSerial SerialUSB
 #define loraSerial Serial1
 
@@ -21,8 +25,12 @@ const uint8_t nwkSKey[16] = { 0xB7, 0x71, 0xB2, 0xB5, 0x84, 0xA6, 0x07, 0x9F, 0x
 
 #endif
 
-// settings for the Sodaq Mbili
+/* 
+ * settings for the Sodaq Mbili 
+ */
 #ifdef SODAQ_MBILI
+#define NODE_DEFINED
+#include "Sodaq_RN2483.h"
 #define debugSerial Serial
 #define loraSerial Serial1
 
@@ -37,3 +45,8 @@ const uint8_t nwkSKey[16] = { 0x77, 0xF3, 0xA4, 0x48, 0x4F, 0xC5, 0x22, 0x8B, 0x
 //const uint8_t nwkSKey[16] = { 0x0E, 0x7A, 0x96, 0x5B, 0xCA, 0x3E, 0xB1, 0x8A, 0x45, 0x6A, 0x59, 0xD7, 0xA4, 0xD9, 0x41, 0xBD };
 
 #endif
+
+#ifndef NODE_DEFINED
+#error "No Node device specified"
+#endif
+

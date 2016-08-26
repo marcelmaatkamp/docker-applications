@@ -10,7 +10,6 @@
 #define debugPrint(...)
 #endif
 
-#include "Sodaq_RN2483.h"
 #include "Utils.h"
 
 class Hal

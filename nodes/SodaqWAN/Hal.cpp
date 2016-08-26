@@ -1,9 +1,6 @@
 
 #define DEBUG
 
-#define SODAQ_ONE
-//#define SODAQ_MBILI
-
 #include "Devices.h"
 #include "Hal.h"
 
