@@ -2,9 +2,6 @@
 
 #include "Devices.h"
 
-// Some complete random hex
-uint8_t testPayload[] = { 0x53, 0x4F, 0x44, 0x41, 0x51 };
-
 void setup()
 {
   debugSerial.begin(115200);
@@ -21,7 +18,9 @@ void setup()
 
 void loop()
 {
-  HalImpl.sendMessage(testPayload, sizeof(testPayload));
-  delay(10000);
+  HalImpl.Update();
+  HalImpl.CheckAndAct();
+  
+  delay(ALIVE_INTERVAL);
 }
 

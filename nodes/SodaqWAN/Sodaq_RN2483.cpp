@@ -224,10 +224,19 @@ bool Sodaq_RN2483::save()
     this->loraStream->print(STR_CMD_SAVE);
     this->loraStream->print(CRLF);
 
-//    return expectString(STR_RESULT_OK);
+    return expectOK();
 return true;
 }
 
+bool Sodaq_RN2483::resetUplinkCntr()
+{
+  debugPrintLn("[reset uplink counter]");
+  
+  setMacParam(STR_FUP_CNT, "0");
+  save();
+  
+  return true;
+}
 // Sends a join network command to the device and waits for the response (or timeout).
 // Returns true on success.
 bool Sodaq_RN2483::joinNetwork(const char* type)

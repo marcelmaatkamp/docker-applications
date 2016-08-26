@@ -49,6 +49,7 @@
 #define STR_DEV_EUI "deveui "
 #define STR_APP_EUI "appeui "
 #define STR_APP_KEY "appkey "
+#define STR_FUP_CNT "upctr "
 #define STR_ADR "adr "
 
 #define STR_CMD_JOIN "mac join "

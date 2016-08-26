@@ -3,24 +3,73 @@
 
 #include "Devices.h"
 #include "Hal.h"
+#include "Switch.h"
 
 Hal HalImpl;
+Switch microSwitch(-1);
 
 Hal::Hal()
 {
-//  debugPrintLn("Nu in Hal::Hal()");
 }
 
+// Initialize the Hal and all the stuff in it
 void Hal::init()
 {
-#ifdef SODAQ_ONE
-  // enable power, only for the Sodaq One
-  digitalWrite(ENABLE_PIN_IO, HIGH);
-#endif  
 }
 
 bool Hal::initHal()
 {
+  // initialize all the hardware
+  initLora();
+  initSwitch();
+}
+
+// Give the Hal time to do his work and check all the stuff
+bool Hal::Update()
+{
+  microSwitch.Update();
+//  debugPrint("Read state ");
+//  debugPrintLn(microSwitch.ReadState());
+}
+
+bool Hal::CheckAndAct()
+{
+  //Read the state of the microSwitch
+  switchState = microSwitch.ReadState();
+  if (switchState != switchOldState) {
+    switchOldState = switchState;
+    debugPrint("Switch state: ");
+    debugPrintLn(switchState);
+    
+    // Some complete random hex
+//    uint8_t testPayload[] = { 0x53, 0x4F, 0x44, 0x41, 0x51 };
+//    uint8_t testPayload[] = { 'E', 0x4F, 0x44, 0x41, 0x51 };
+//{ "dev_id": "9AA74038", "counter": 0, "datatxt": "Sensor1;1;\u0001�", "datahex": "53656e736f72313b313b01dc" }
+    uint8_t testPayload[] = { "Sensor3;x" };
+    if (switchState == 1) {
+      testPayload[8] = '0';
+    }
+    else
+    {
+      testPayload[8] = '1';
+    }
+
+    HalImpl.sendMessage(testPayload, sizeof(testPayload)-1);
+  }
+}
+
+// initialize the Lora stack
+bool Hal::initLora()
+{
+#ifdef SODAQ_ONE
+  // enable power, only for the Sodaq One
+  pinMode(ENABLE_PIN_IO, OUTPUT);
+  digitalWrite(ENABLE_PIN_IO, HIGH);
+  // enable power to the grove shield
+  pinMode(11, OUTPUT);
+  digitalWrite(11, HIGH);
+#endif  
+
   loraSerial.begin(LoRaBee.getDefaultBaudRate());
 
   LoRaBee.setDiag(debugSerial); // optional
@@ -28,11 +77,19 @@ bool Hal::initHal()
   {
     debugPrintLn("Connection to the network was successful.");
     isHalInitialized = true;
+//    LoRaBee.resetUplinkCntr();
   }
   else
   {
     debugPrintLn("Connection to the network failed!");
   }
+}
+
+// initialize the Switch
+bool Hal::initSwitch()
+{
+  microSwitch.setDiag(debugSerial);
+  microSwitch.setPin(MICROSWITCH_PIN);          // Microswitch to detect case open/closed 
 }
 
 bool Hal::sendMessage(const uint8_t* payload, uint8_t size)

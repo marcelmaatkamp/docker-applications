@@ -110,6 +110,8 @@ public:
     // Returns true on success.
     bool save();
 
+    bool resetUplinkCntr();
+
     // Sends the given payload with acknowledgement.
     // Returns 0 (NoError) when transmission is successful or one of the MacTransmitErrorCodes otherwise.
     uint8_t sendReqAck(uint8_t port, const uint8_t* payload, uint8_t size, uint8_t maxRetries);

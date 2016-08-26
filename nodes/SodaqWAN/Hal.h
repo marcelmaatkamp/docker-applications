@@ -18,8 +18,13 @@ public:
   // Creates a new Sodaq_RN2483 instance.
   Hal();
 
-  // Initialize the Hal
+  // Initialize the Hal and all the stuff in it
   bool initHal();
+
+  // Give the Hal time to do his work and check all the stuff
+  bool Update();
+
+  bool CheckAndAct();
 
   bool sendMessage(const uint8_t* payload, uint8_t size);
 
@@ -33,6 +38,11 @@ public:
   
 private:
   void init();
+  
+  // initialize the Lora stack
+  bool initLora();
+  // initialize the Switch stack
+  bool initSwitch();
 
   // The (optional) stream to show debug information.
   Stream* diagStream;
@@ -40,6 +50,8 @@ private:
   bool isHalInitialized=false;
   // Send message with Acknowledgement
   bool isAckActive=false;
+  int switchState = 0;
+  int switchOldState = 0;
 };
 
 extern Hal HalImpl;
