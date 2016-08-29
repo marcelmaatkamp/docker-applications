@@ -3,10 +3,16 @@
 
 #include "Devices.h"
 #include "Hal.h"
+#include "Alive.h"
 #include "Switch.h"
+#include "Voltage.h"
+#include "Temperature.h"
 
 Hal HalImpl;
 Switch microSwitch(-1);
+Temperature tempSensor(DHTPIN);
+Voltage voltage(VOLT_PIN);
+Alive alive(ALIVE_INTERVAL*1000);
 
 Hal::Hal()
 {
@@ -22,14 +28,16 @@ bool Hal::initHal()
   // initialize all the hardware
   initLora();
   initSwitch();
+  initTemperature();
 }
 
 // Give the Hal time to do his work and check all the stuff
 bool Hal::Update()
 {
   microSwitch.Update();
-//  debugPrint("Read state ");
-//  debugPrintLn(microSwitch.ReadState());
+  tempSensor.Update();
+  voltage.Update();
+  alive.Update();
 }
 
 bool Hal::CheckAndAct()
@@ -42,9 +50,6 @@ bool Hal::CheckAndAct()
     debugPrintLn(switchState);
     
     // Some complete random hex
-//    uint8_t testPayload[] = { 0x53, 0x4F, 0x44, 0x41, 0x51 };
-//    uint8_t testPayload[] = { 'E', 0x4F, 0x44, 0x41, 0x51 };
-//{ "dev_id": "9AA74038", "counter": 0, "datatxt": "Sensor1;1;\u0001�", "datahex": "53656e736f72313b313b01dc" }
     uint8_t testPayload[] = { "Sensor3;x" };
     if (switchState == 1) {
       testPayload[8] = '0';
@@ -55,6 +60,34 @@ bool Hal::CheckAndAct()
     }
 
     HalImpl.sendMessage(testPayload, sizeof(testPayload)-1);
+  }
+
+  if (alive.isTimePassed())
+  {
+    // Read the value from the temp sensor, that is temp and humidity
+    String data = tempSensor.getData();
+    // Read the value from the voltage sensor
+    String volt = voltage.getData();
+    // print the values for debug
+    debugPrintLn(data+";"+volt);
+    // reset the Time Passed flag
+    alive.resetTimePassed();
+
+    // make the message
+    uint8_t alivePayload[] = { "Alive3;00.00;00.00;00.00" }; // temp;hum;voltage
+    char charArr[12];
+    data.toCharArray(charArr, 12);
+    for (int i=0; i < 12;i++)
+    {
+      alivePayload[i+7] = (uint8_t)charArr[i];
+    }
+    alivePayload[18] = ';';
+    volt.toCharArray(charArr, 5);
+    for (int i=0; i < 4;i++)
+    {
+      alivePayload[i+20] = (uint8_t)charArr[i];
+    }
+    HalImpl.sendMessage(alivePayload, sizeof(alivePayload)-1);
   }
 }
 
@@ -90,6 +123,11 @@ bool Hal::initSwitch()
 {
   microSwitch.setDiag(debugSerial);
   microSwitch.setPin(MICROSWITCH_PIN);          // Microswitch to detect case open/closed 
+}
+
+// initialize the Lora stack
+bool Hal::initTemperature()
+{
 }
 
 bool Hal::sendMessage(const uint8_t* payload, uint8_t size)

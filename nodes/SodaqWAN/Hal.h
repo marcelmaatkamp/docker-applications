@@ -43,6 +43,8 @@ private:
   bool initLora();
   // initialize the Switch stack
   bool initSwitch();
+  // initialize the Temperature stack
+  bool initTemperature();
 
   // The (optional) stream to show debug information.
   Stream* diagStream;

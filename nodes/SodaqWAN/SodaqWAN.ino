@@ -21,6 +21,6 @@ void loop()
   HalImpl.Update();
   HalImpl.CheckAndAct();
   
-  delay(ALIVE_INTERVAL);
+  delay(10);
 }
 
