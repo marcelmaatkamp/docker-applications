@@ -12,20 +12,49 @@
         </div>
     </div>
 
-    <div id="content" role="main">
+
+
+<div class="well">
+<p>Maak een keuze</p>
+</div>
+
+
+
+
+
+
         <section class="row colset-2-its">
-            <div id="controllers" role="navigation">
-                <h2>Kies een item om te bewerken:</h2>
-                <ul>
-                    <li class="controller"> <g:link controller="persoon">persoon</g:link> </li>
-                    <li class="controller"> <g:link controller="sensor">device</g:link> </li>
-		<hr />
-                    <li class="controller"> <g:link controller="temperatureEvent">heartbeat events</g:link> </li>
-                    <li class="controller"> <g:link controller="switchEvent">alarm events</g:link> </li>
-                </ul>
-            </div>
+
+<g:link controller="persoon" action="index">
+    <button type="button" class="btn btn-lg btn-primary">Persoon</button>
+</g:link>
+
+<g:link controller="sensor" action="index">
+    <button type="button" class="btn btn-lg btn-primary">Sensor</button>
+</g:link>
+
+<g:link controller="sensorType" action="index">
+    <button type="button" class="btn btn-lg btn-primary">Sensor Type</button>
+</g:link>
+
+
+<g:link controller="switchEvent" action="index">
+    <button type="button" class="btn btn-lg btn-primary">Alarm Event</button>
+</g:link>
+
+<g:link controller="temperatureEvent" action="index">
+    <button type="button" class="btn btn-lg btn-primary">Heartbeat Event</button>
+</g:link>
+
+
+
         </section>
-    </div>
+
+
+<br>
+<br>
+<br>
+<br>
 
 </body>
 </html>
