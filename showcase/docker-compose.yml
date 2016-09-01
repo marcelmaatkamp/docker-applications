@@ -77,6 +77,7 @@ services:
 
  mysql:
   image: mysql/mysql-server:latest
+  restart: always
   hostname: mysql
   environment:
    - MYSQL_ROOT_PASSWORD=my-secret-pw
@@ -88,6 +89,7 @@ services:
 
  phpmyadmin:
   image: phpmyadmin/phpmyadmin
+  restart: always
   hostname: phpmyadmin
   links:
    - mysql:db
@@ -99,6 +101,7 @@ services:
 
  grails:
   image: marcelmaatkamp/docker-grails 
+  restart: always
   hostname: grails
   volumes:
    - ./volumes/grails/admin:/app:rw
