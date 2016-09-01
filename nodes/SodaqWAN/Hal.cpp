@@ -73,20 +73,26 @@ bool Hal::CheckAndAct()
     // reset the Time Passed flag
     alive.resetTimePassed();
 
-    // make the message
+    // make the message, fill the default
     uint8_t alivePayload[] = { "Alive3;00.00;00.00;00.00" }; // temp;hum;voltage
     char charArr[12];
-    data.toCharArray(charArr, 12);
-    for (int i=0; i < 12;i++)
+    // process the temperature and humidity
+    if (data.substring(0,3) != "NAN" )
     {
-      alivePayload[i+7] = (uint8_t)charArr[i];
+      data.toCharArray(charArr, 12);
+      for (int i=0; i < 12;i++)
+      {
+        alivePayload[i+7] = (uint8_t)charArr[i];
+      }
+      alivePayload[18] = ';';
     }
-    alivePayload[18] = ';';
+    // process the voltage
     volt.toCharArray(charArr, 5);
     for (int i=0; i < 4;i++)
     {
       alivePayload[i+20] = (uint8_t)charArr[i];
     }
+    // send the message
     HalImpl.sendMessage(alivePayload, sizeof(alivePayload)-1);
   }
 }
