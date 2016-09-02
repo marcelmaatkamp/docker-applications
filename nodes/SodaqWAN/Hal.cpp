@@ -23,6 +23,26 @@ void Hal::init()
 {
 }
 
+#ifdef SODAQ_ONE
+void RED() {
+  digitalWrite(LED_RED, LOW);
+  digitalWrite(LED_GREEN, HIGH);
+  digitalWrite(LED_BLUE, HIGH);
+}
+
+void GREEN() {
+  digitalWrite(LED_RED, HIGH);
+  digitalWrite(LED_GREEN, LOW);
+  digitalWrite(LED_BLUE, HIGH);
+}
+
+void BLUE() {
+  digitalWrite(LED_RED, HIGH);
+  digitalWrite(LED_GREEN, HIGH);
+  digitalWrite(LED_BLUE, LOW);
+}
+#endif
+
 bool Hal::initHal()
 {
   // initialize all the hardware
@@ -62,6 +82,7 @@ bool Hal::CheckAndAct()
     HalImpl.sendMessage(testPayload, sizeof(testPayload)-1);
   }
 
+  // check alive timer
   if (alive.isTimePassed())
   {
     // Read the value from the temp sensor, that is temp and humidity
@@ -102,11 +123,16 @@ bool Hal::initLora()
 {
 #ifdef SODAQ_ONE
   // enable power, only for the Sodaq One
-  pinMode(ENABLE_PIN_IO, OUTPUT);
-  digitalWrite(ENABLE_PIN_IO, HIGH);
+//  pinMode(ENABLE_PIN_IO, OUTPUT);
+//  digitalWrite(ENABLE_PIN_IO, HIGH);
   // enable power to the grove shield
   pinMode(11, OUTPUT);
   digitalWrite(11, HIGH);
+
+  pinMode(LED_RED, OUTPUT);
+  pinMode(LED_GREEN, OUTPUT);
+  pinMode(LED_BLUE, OUTPUT);
+  GREEN();
 #endif  
 
   loraSerial.begin(LoRaBee.getDefaultBaudRate());
@@ -198,4 +224,5 @@ bool Hal::sendMessage(const uint8_t* payload, uint8_t size)
   }
   return retVal;
 }
+
 
