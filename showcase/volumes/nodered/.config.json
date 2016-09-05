@@ -457,7 +457,7 @@
   },
   "node-red-contrib-chatbot": {
    "name": "node-red-contrib-chatbot",
-   "version": "0.5.0",
+   "version": "0.5.5",
    "nodes": {
     "chatbot-message": {
      "name": "chatbot-message",
@@ -626,6 +626,33 @@
      "enabled": true,
      "module": "node-red-contrib-chatbot",
      "file": "/node-red/node_modules/node-red-contrib-chatbot/chatbot-facebook-receive.js"
+    },
+    "chatbot-qrcode": {
+     "name": "chatbot-qrcode",
+     "types": [
+      "chatbot-qrcode"
+     ],
+     "enabled": true,
+     "module": "node-red-contrib-chatbot",
+     "file": "/node-red/node_modules/node-red-contrib-chatbot/chatbot-qr-code.js"
+    },
+    "chatbot-debug": {
+     "name": "chatbot-debug",
+     "types": [
+      "chatbot-debug"
+     ],
+     "enabled": true,
+     "module": "node-red-contrib-chatbot",
+     "file": "/node-red/node_modules/node-red-contrib-chatbot/chatbot-debug.js"
+    },
+    "chatbot-rivescript": {
+     "name": "chatbot-rivescript",
+     "types": [
+      "chatbot-rivescript"
+     ],
+     "enabled": true,
+     "module": "node-red-contrib-chatbot",
+     "file": "/node-red/node_modules/node-red-contrib-chatbot/chatbot-rivescript.js"
     }
    }
   },

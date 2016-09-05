@@ -17,7 +17,7 @@ class Event {
   }
 
   static mapping = {
-    sort dateCreated: "desc"
+    sort dateCreated: "asc"
   }
 
  String toString() {

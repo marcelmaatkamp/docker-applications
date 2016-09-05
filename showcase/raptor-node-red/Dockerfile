@@ -47,6 +47,9 @@ RUN npm install
 RUN npm install node-red-contrib-slack
 RUN npm install node-red-contrib-chatbot node-red-contrib-telegrambot
 
+RUN apt-get update && apt-get install -y libprotobuf-dev pkg-config
+RUN npm install node-protobuf
+
 # expose port
 EXPOSE 1880
 # Set the default command to execute

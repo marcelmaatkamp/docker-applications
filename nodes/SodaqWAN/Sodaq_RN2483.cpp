@@ -22,15 +22,6 @@
 #include "StringLiterals.h"
 #include "Utils.h"
 
-#ifdef DEBUG
-#define debugPrintLn(...) { if (this->diagStream) this->diagStream->println(__VA_ARGS__); }
-#define debugPrint(...) { if (this->diagStream) this->diagStream->print(__VA_ARGS__); }
-#warning "Debug mode is ON"
-#else
-#define debugPrintLn(...)
-#define debugPrint(...)
-#endif
-
 // Structure for mapping error response strings and error codes.
 typedef struct StringEnumPair
 {
@@ -223,6 +214,29 @@ bool Sodaq_RN2483::resetDevice()
     return expectString(STR_DEVICE_TYPE);
 }
 
+// TODO: Dit schrijft de settings in de EEPROM van de RN2483, werkt nog niet goed
+// Sends a save command to the device and waits for the response (or timeout).
+// Returns true on success.
+bool Sodaq_RN2483::save()
+{
+    debugPrintLn("[saveDevice settings]");
+
+    this->loraStream->print(STR_CMD_SAVE);
+    this->loraStream->print(CRLF);
+
+    return expectOK();
+return true;
+}
+
+bool Sodaq_RN2483::resetUplinkCntr()
+{
+  debugPrintLn("[reset uplink counter]");
+  
+  setMacParam(STR_FUP_CNT, "0");
+  save();
+  
+  return true;
+}
 // Sends a join network command to the device and waits for the response (or timeout).
 // Returns true on success.
 bool Sodaq_RN2483::joinNetwork(const char* type)

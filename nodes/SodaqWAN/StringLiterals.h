@@ -41,6 +41,7 @@
 #define STR_DEVICE_TYPE "RN2483"
 
 #define STR_CMD_SET "mac set "
+#define STR_CMD_SAVE "mac save"
 #define STR_RETRIES "retx "
 #define STR_DEV_ADDR "devaddr "
 #define STR_APP_SESSION_KEY "appskey "
@@ -48,6 +49,7 @@
 #define STR_DEV_EUI "deveui "
 #define STR_APP_EUI "appeui "
 #define STR_APP_KEY "appkey "
+#define STR_FUP_CNT "upctr "
 #define STR_ADR "adr "
 
 #define STR_CMD_JOIN "mac join "

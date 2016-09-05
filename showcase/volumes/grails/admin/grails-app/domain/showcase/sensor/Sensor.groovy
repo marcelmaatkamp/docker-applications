@@ -12,6 +12,13 @@ class Sensor {
  String omschrijving
  String slackchannel
  String telegramchannel
+ String mintemp
+ String maxtemp
+ String minvolt
+ String maxvolt
+ String maxhumidity
+ String minhumidity
+ String keepalivetimeout
 
  static hasMany = [events: Event, alert: Persoon]
 
@@ -21,8 +28,15 @@ class Sensor {
     omschrijving()
     slackchannel()
     telegramchannel()
-    events()
- }
+    mintemp()
+    maxtemp()
+    minvolt()
+    maxvolt()
+    minhumidity()
+    maxhumidity()
+    keepalivetimeout()
+    events() 
+}
 
  static mapping = {
    events sort:'dateCreated' // order:'desc'
