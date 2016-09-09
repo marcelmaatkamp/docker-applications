@@ -16,7 +16,11 @@ var settings = {
     httpAdminRoot:"/",
     httpNodeRoot: "/",
     userDir:"/node-red-data/",
-    functionGlobalContext: { },    // enables global context
+    functionGlobalContext: {
+      safeEval: require("safe-eval"),
+      protoBuf: require("protocol-buffers"),
+      fs: require("fs")
+     },    // enables global context
     // enable verbose output (command line -v option)
     verbose: true,
     // Configure the logging output
