@@ -21,6 +21,9 @@ class Temperature {
 	  ~Temperature();
 	  void Update();
     String readTemp();
+    int getTemp();
+    int getHumidity();
+    inline bool isValid() { return validData; };
     String getData();
     void setPin(int pin);
     // Sets the optional "Diagnostics and Debug" stream.
@@ -34,6 +37,7 @@ class Temperature {
     float hum;
     String tempValue;
     String data;
+    bool validData=true;
 
     // The (optional) stream to show debug information.
     Stream* diagStream;

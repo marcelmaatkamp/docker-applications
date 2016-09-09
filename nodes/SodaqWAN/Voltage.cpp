@@ -26,9 +26,13 @@ String Voltage::getData()
   return voltage;
 }
 
+int Voltage::getValue()
+{
+  return (int)(value*100);
+}
+
 void Voltage::Update()
 {
-  float value;
   long   sensorValue=analogRead(inputPin);
   long   sum=0;
   for(int i=0;i<10;i++)  // Read 10 times, and take average

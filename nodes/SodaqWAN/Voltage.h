@@ -23,7 +23,9 @@ class Voltage {
     Voltage(int pin);
     ~Voltage();
     void Update();
+    int getValue();
     String getData();
+    inline bool isValid() { return validData; };
     void setPin(int pin);
     // Sets the optional "Diagnostics and Debug" stream.
     void setDiag(Stream& stream) { diagStream = &stream; };
@@ -33,7 +35,8 @@ class Voltage {
     // These are initialized at startup
     int inputPin = -1;    // the number of the pin the Temp sensor is connected to
     String voltage;
-//    long value;
+    float value;
+    bool validData=true;
 
     // The (optional) stream to show debug information.
     Stream* diagStream;

@@ -27,6 +27,16 @@ String Temperature::readTemp()
 	return tempValue;
 }
 
+int Temperature::getTemp()
+{
+  return (int)(temp*10);
+}
+
+int Temperature::getHumidity()
+{
+  return (int)(hum);
+}
+
 String Temperature::getData()
 {
   return data;
@@ -41,9 +51,11 @@ void Temperature::Update()
   if (isnan(temp) || isnan(hum)) {
     tempValue = "NAN";
     data = "NAN";
+    validData = false;
   } else {
     tempValue = String(temp);
     data = String(temp) + ";" + String(hum);
+    validData = true;
   } 
 }
 
