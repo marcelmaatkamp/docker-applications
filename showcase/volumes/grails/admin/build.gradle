@@ -29,7 +29,11 @@ ext {
 }
 
 repositories {
-    mavenLocal()
+    // mavenLocal()
+    maven {
+        url "http://nexus3:8081/repository/maven-public/"
+        url "http://nexus3:8081/repository/maven-central/"
+    }
     maven { url "https://repo.grails.org/grails/core" }
 }
 

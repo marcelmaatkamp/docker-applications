@@ -99,6 +99,16 @@ services:
     mynet:
       ipv4_address: 172.25.0.9
 
+ nexus3:
+  image: sonatype/nexus3
+  volumes:
+   - ./volumes/nexus3:/nexus-data
+# ports: 
+#  - 8081:8081
+  networks:
+   mynet:
+    ipv4_address: 172.25.0.10
+
  grails:
   image: marcelmaatkamp/docker-grails 
   restart: always
@@ -109,6 +119,7 @@ services:
    - mysql:mysql
    - mongodb:mongodb
    - rabbitmq:rabbitmq
+   - nexus3:nexus3
   environment:
    - JAVA_OPTS=-Duser.timezone=UTC
   networks:
