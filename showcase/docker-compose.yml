@@ -42,6 +42,10 @@ services:
   build: raptor-node-red
   restart: always
   hostname: nodered
+  depends_on:
+   - rabbitmq
+   - mongodb
+   - mysql
   links:
    - rabbitmq:rabbitmq
    - mongodb:mongodb
@@ -61,6 +65,9 @@ services:
  domoticz:
   image:  sdesbure/domoticz
   restart: always
+  depends_on:
+   - rabbitmq
+   - mongodb
   links:
    - rabbitmq:rabbitmq
    - mongodb:mongodb
@@ -91,6 +98,8 @@ services:
   image: phpmyadmin/phpmyadmin
   restart: always
   hostname: phpmyadmin
+  depends_on:
+   - mysql
   links:
    - mysql:db
   volumes:
@@ -102,7 +111,7 @@ services:
  nexus3:
   image: sonatype/nexus3
   volumes:
-   - ./volumes/nexus3:/nexus-data
+   - nexus3:/nexus-data
 # ports: 
 #  - 8081:8081
   networks:
@@ -113,6 +122,9 @@ services:
   image: marcelmaatkamp/docker-grails 
   restart: always
   hostname: grails
+  depends_on:
+   - rabbitmq
+   - mysql
   volumes:
    - ./volumes/grails/admin:/app:rw
   links:
@@ -126,9 +138,25 @@ services:
    mynet:
      ipv4_address: 172.25.0.100
 
+ phreeze:
+  image: php:7.0-apache
+  command: php index.php
+  working_dir: /showcase
+  volumes:
+   - ./volumes/phreeze/showcase:/showcase
+#  ports:
+#   - 80:80
+  networks:
+   mynet:
+     ipv4_address: 172.25.0.101
+
 networks:
   mynet:
     driver: bridge
     ipam:
       config:
       - subnet: 172.25.0.0/24
+
+volumes:
+ nexus3:
+
