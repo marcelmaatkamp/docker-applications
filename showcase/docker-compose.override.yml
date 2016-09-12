@@ -1,0 +1,20 @@
+version: '2'
+
+services:
+ rabbitmq:
+  ports:
+   - 15673:15672
+ mysql:
+  volumes:
+   - showcase_mysql:/var/lib/mysql
+ phpmyadmin:
+  environment:
+   - MYSQL_ROOT_PASSWORD:my-secret-pw
+  ports:
+   - 81:80
+ grails:
+  ports:
+   - 8080:8080
+
+volumes:
+ showcase_mysql:
