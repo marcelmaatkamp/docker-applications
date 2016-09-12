@@ -140,10 +140,8 @@ services:
 
  phreeze:
   image: php:7.0-apache
-  command: php index.php
-  working_dir: /showcase
   volumes:
-   - ./volumes/phreeze/showcase:/showcase
+   - ./volumes/phreeze/showcase:/var/www/html/showcase
 #  ports:
 #   - 80:80
   networks:
