@@ -52,7 +52,7 @@ class NodeController extends AppBaseController
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');
 			if ($filter) $criteria->AddFilter(
-				new CriteriaFilter('DevEui,Version,Omschrijving'
+				new CriteriaFilter('DevEui,Omschrijving'
 				, '%'.$filter.'%')
 			);
 
@@ -151,7 +151,6 @@ class NodeController extends AppBaseController
 			// TODO: any fields that should not be inserted by the user should be commented out
 
 			$node->DevEui = $this->SafeGetVal($json, 'devEui');
-			$node->Version = $this->SafeGetVal($json, 'version');
 			$node->Omschrijving = $this->SafeGetVal($json, 'omschrijving');
 
 			$node->Validate();
@@ -198,7 +197,6 @@ class NodeController extends AppBaseController
 			// this is a primary key.  uncomment if updating is allowed
 			// $node->DevEui = $this->SafeGetVal($json, 'devEui', $node->DevEui);
 
-			$node->Version = $this->SafeGetVal($json, 'version', $node->Version);
 			$node->Omschrijving = $this->SafeGetVal($json, 'omschrijving', $node->Omschrijving);
 
 			$node->Validate();

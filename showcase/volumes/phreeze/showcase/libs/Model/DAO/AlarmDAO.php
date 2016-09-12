@@ -25,29 +25,26 @@ class AlarmDAO extends Phreezable
 	public $Id;
 
 	/** @var int */
-	public $Version;
+	public $AlarmRegel;
 
 	/** @var int */
-	public $NodeThresholdId;
-
-	/** @var int */
-	public $ObservationId;
+	public $Observatie;
 
 
 	/**
-	 * Returns the foreign object based on the value of ObservationId
-	 * @return Observation
+	 * Returns the foreign object based on the value of Observatie
+	 * @return Observatie
 	 */
-	public function GetObservation()
+	public function GetObservatie()
 	{
 		return $this->_phreezer->GetManyToOne($this, "FK_27v5pji13cutepjuv9ox0glwp");
 	}
 
 	/**
-	 * Returns the foreign object based on the value of NodeThresholdId
-	 * @return NodeThreshold
+	 * Returns the foreign object based on the value of AlarmRegel
+	 * @return AlarmRegel
 	 */
-	public function GetNodeThreshold()
+	public function GetAlarmRegel()
 	{
 		return $this->_phreezer->GetManyToOne($this, "FK_qqgttvcq7u148nkqjhx2hsbdi");
 	}

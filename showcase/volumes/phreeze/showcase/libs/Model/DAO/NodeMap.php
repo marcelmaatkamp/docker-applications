@@ -52,7 +52,6 @@ class NodeMap implements IDaoMap, IDaoMap2
 		{
 			self::$FM = Array();
 			self::$FM["DevEui"] = new FieldMap("DevEui","node","dev_eui",true,FM_TYPE_VARCHAR,255,null,false);
-			self::$FM["Version"] = new FieldMap("Version","node","version",false,FM_TYPE_BIGINT,20,null,false);
 			self::$FM["Omschrijving"] = new FieldMap("Omschrijving","node","omschrijving",false,FM_TYPE_VARCHAR,255,null,false);
 		}
 		return self::$FM;
@@ -66,8 +65,8 @@ class NodeMap implements IDaoMap, IDaoMap2
 		if (self::$KM == null)
 		{
 			self::$KM = Array();
-			self::$KM["FK_4stgr2ch3nidujfk8pial5sdv"] = new KeyMap("FK_4stgr2ch3nidujfk8pial5sdv", "DevEui", "NodeThreshold", "NodeId", KM_TYPE_ONETOMANY, KM_LOAD_LAZY);  // use KM_LOAD_EAGER with caution here (one-to-one relationships only)
-			self::$KM["FK_smi270lm0koqq55tj5bfisawt"] = new KeyMap("FK_smi270lm0koqq55tj5bfisawt", "DevEui", "Observation", "NodeId", KM_TYPE_ONETOMANY, KM_LOAD_LAZY);  // use KM_LOAD_EAGER with caution here (one-to-one relationships only)
+			self::$KM["FK_4stgr2ch3nidujfk8pial5sdv"] = new KeyMap("FK_4stgr2ch3nidujfk8pial5sdv", "DevEui", "AlarmRegel", "Node", KM_TYPE_ONETOMANY, KM_LOAD_LAZY);  // use KM_LOAD_EAGER with caution here (one-to-one relationships only)
+			self::$KM["FK_smi270lm0koqq55tj5bfisawt"] = new KeyMap("FK_smi270lm0koqq55tj5bfisawt", "DevEui", "Observatie", "Node", KM_TYPE_ONETOMANY, KM_LOAD_LAZY);  // use KM_LOAD_EAGER with caution here (one-to-one relationships only)
 		}
 		return self::$KM;
 	}

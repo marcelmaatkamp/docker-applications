@@ -24,29 +24,26 @@ class NodeDAO extends Phreezable
 	/** @var string */
 	public $DevEui;
 
-	/** @var int */
-	public $Version;
-
 	/** @var string */
 	public $Omschrijving;
 
 
 	/**
-	 * Returns a dataset of NodeThreshold objects with matching NodeId
+	 * Returns a dataset of AlarmRegel objects with matching Node
 	 * @param Criteria
 	 * @return DataSet
 	 */
-	public function GetNodeThresholds($criteria = null)
+	public function GetAlarmRegels($criteria = null)
 	{
 		return $this->_phreezer->GetOneToMany($this, "FK_4stgr2ch3nidujfk8pial5sdv", $criteria);
 	}
 
 	/**
-	 * Returns a dataset of Observation objects with matching NodeId
+	 * Returns a dataset of Observatie objects with matching Node
 	 * @param Criteria
 	 * @return DataSet
 	 */
-	public function GetObservations($criteria = null)
+	public function GetObservaties($criteria = null)
 	{
 		return $this->_phreezer->GetOneToMany($this, "FK_smi270lm0koqq55tj5bfisawt", $criteria);
 	}

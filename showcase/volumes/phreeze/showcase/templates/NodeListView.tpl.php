@@ -35,7 +35,6 @@
 		<thead>
 			<tr>
 				<th id="header_DevEui">Dev Eui<% if (page.orderBy == 'DevEui') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_Version">Version<% if (page.orderBy == 'Version') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_Omschrijving">Omschrijving<% if (page.orderBy == 'Omschrijving') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 			</tr>
 		</thead>
@@ -43,7 +42,6 @@
 		<% items.each(function(item) { %>
 			<tr id="<%= _.escape(item.get('devEui')) %>">
 				<td><%= _.escape(item.get('devEui') || '') %></td>
-				<td><%= _.escape(item.get('version') || '') %></td>
 				<td><%= _.escape(item.get('omschrijving') || '') %></td>
 			</tr>
 		<% }); %>
@@ -61,13 +59,6 @@
 					<label class="control-label" for="devEui">Dev Eui</label>
 					<div class="controls inline-inputs">
 						<input type="text" class="input-xlarge" id="devEui" placeholder="Dev Eui" value="<%= _.escape(item.get('devEui') || '') %>">
-						<span class="help-inline"></span>
-					</div>
-				</div>
-				<div id="versionInputContainer" class="control-group">
-					<label class="control-label" for="version">Version</label>
-					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="version" placeholder="Version" value="<%= _.escape(item.get('version') || '') %>">
 						<span class="help-inline"></span>
 					</div>
 				</div>

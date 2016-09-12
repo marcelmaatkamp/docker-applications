@@ -23,9 +23,8 @@ class AlarmReporter extends Reporter
 	public $CustomFieldExample;
 
 	public $Id;
-	public $Version;
-	public $NodeThresholdId;
-	public $ObservationId;
+	public $AlarmRegel;
+	public $Observatie;
 
 	/*
 	* GetCustomQuery returns a fully formed SQL statement.  The result columns
@@ -40,9 +39,8 @@ class AlarmReporter extends Reporter
 		$sql = "select
 			'custom value here...' as CustomFieldExample
 			,`alarm`.`id` as Id
-			,`alarm`.`version` as Version
-			,`alarm`.`node_threshold_id` as NodeThresholdId
-			,`alarm`.`observation_id` as ObservationId
+			,`alarm`.`alarm_regel` as AlarmRegel
+			,`alarm`.`observatie` as Observatie
 		from `alarm`";
 
 		// the criteria can be used or you can write your own custom logic.

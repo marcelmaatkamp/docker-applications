@@ -52,7 +52,7 @@ class AlarmController extends AppBaseController
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');
 			if ($filter) $criteria->AddFilter(
-				new CriteriaFilter('Id,Version,NodeThresholdId,ObservationId'
+				new CriteriaFilter('Id,AlarmRegel,Observatie'
 				, '%'.$filter.'%')
 			);
 
@@ -87,18 +87,18 @@ class AlarmController extends AppBaseController
 				// if page is specified, use this instead (at the expense of one extra count query)
 				$pagesize = $this->GetDefaultPageSize();
 
-				$alarms = $this->Phreezer->Query('Alarm',$criteria)->GetDataPage($page, $pagesize);
-				$output->rows = $alarms->ToObjectArray(true,$this->SimpleObjectParams());
-				$output->totalResults = $alarms->TotalResults;
-				$output->totalPages = $alarms->TotalPages;
-				$output->pageSize = $alarms->PageSize;
-				$output->currentPage = $alarms->CurrentPage;
+				$alarmen = $this->Phreezer->Query('Alarm',$criteria)->GetDataPage($page, $pagesize);
+				$output->rows = $alarmen->ToObjectArray(true,$this->SimpleObjectParams());
+				$output->totalResults = $alarmen->TotalResults;
+				$output->totalPages = $alarmen->TotalPages;
+				$output->pageSize = $alarmen->PageSize;
+				$output->currentPage = $alarmen->CurrentPage;
 			}
 			else
 			{
 				// return all results
-				$alarms = $this->Phreezer->Query('Alarm',$criteria);
-				$output->rows = $alarms->ToObjectArray(true, $this->SimpleObjectParams());
+				$alarmen = $this->Phreezer->Query('Alarm',$criteria);
+				$output->rows = $alarmen->ToObjectArray(true, $this->SimpleObjectParams());
 				$output->totalResults = count($output->rows);
 				$output->totalPages = 1;
 				$output->pageSize = $output->totalResults;
@@ -153,9 +153,8 @@ class AlarmController extends AppBaseController
 			// this is an auto-increment.  uncomment if updating is allowed
 			// $alarm->Id = $this->SafeGetVal($json, 'id');
 
-			$alarm->Version = $this->SafeGetVal($json, 'version');
-			$alarm->NodeThresholdId = $this->SafeGetVal($json, 'nodeThresholdId');
-			$alarm->ObservationId = $this->SafeGetVal($json, 'observationId');
+			$alarm->AlarmRegel = $this->SafeGetVal($json, 'alarmRegel');
+			$alarm->Observatie = $this->SafeGetVal($json, 'observatie');
 
 			$alarm->Validate();
 			$errors = $alarm->GetValidationErrors();
@@ -200,9 +199,8 @@ class AlarmController extends AppBaseController
 			// this is a primary key.  uncomment if updating is allowed
 			// $alarm->Id = $this->SafeGetVal($json, 'id', $alarm->Id);
 
-			$alarm->Version = $this->SafeGetVal($json, 'version', $alarm->Version);
-			$alarm->NodeThresholdId = $this->SafeGetVal($json, 'nodeThresholdId', $alarm->NodeThresholdId);
-			$alarm->ObservationId = $this->SafeGetVal($json, 'observationId', $alarm->ObservationId);
+			$alarm->AlarmRegel = $this->SafeGetVal($json, 'alarmRegel', $alarm->AlarmRegel);
+			$alarm->Observatie = $this->SafeGetVal($json, 'observatie', $alarm->Observatie);
 
 			$alarm->Validate();
 			$errors = $alarm->GetValidationErrors();
