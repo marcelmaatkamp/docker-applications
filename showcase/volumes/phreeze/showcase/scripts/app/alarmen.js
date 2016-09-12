@@ -233,7 +233,7 @@ var page = {
 				c.forEach(function(item,index) {
 					dd.append(app.getOptionHtml(
 						item.get('id'),
-						item.get('omschrijving'), // TODO: change fieldname if the dropdown doesn't show the desired column
+						item.get('id'), // TODO: change fieldname if the dropdown doesn't show the desired column
 						page.alarm.get('alarmRegel') == item.get('id')
 					));
 				});
@@ -259,7 +259,7 @@ var page = {
 				c.forEach(function(item,index) {
 					dd.append(app.getOptionHtml(
 						item.get('id'),
-						item.get('omschrijving'), // TODO: change fieldname if the dropdown doesn't show the desired column
+						item.get('id'), // TODO: change fieldname if the dropdown doesn't show the desired column
 						page.alarm.get('observatie') == item.get('id')
 					));
 				});
