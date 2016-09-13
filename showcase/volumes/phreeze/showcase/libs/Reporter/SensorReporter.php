@@ -23,7 +23,6 @@ class SensorReporter extends Reporter
 	public $CustomFieldExample;
 
 	public $SensorId;
-	public $Version;
 	public $Omschrijving;
 
 	/*
@@ -39,7 +38,6 @@ class SensorReporter extends Reporter
 		$sql = "select
 			'custom value here...' as CustomFieldExample
 			,`sensor`.`sensor_id` as SensorId
-			,`sensor`.`version` as Version
 			,`sensor`.`omschrijving` as Omschrijving
 		from `sensor`";
 

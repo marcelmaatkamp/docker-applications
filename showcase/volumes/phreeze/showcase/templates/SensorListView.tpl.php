@@ -1,12 +1,12 @@
 <?php
-	$this->assign('title','SHOWCASE | Sensors');
-	$this->assign('nav','sensors');
+	$this->assign('title','SHOWCASE | Sensoren');
+	$this->assign('nav','sensoren');
 
 	$this->display('_Header.tpl.php');
 ?>
 
 <script type="text/javascript">
-	$LAB.script("scripts/app/sensors.js").wait(function(){
+	$LAB.script("scripts/app/sensoren.js").wait(function(){
 		$(document).ready(function(){
 			page.init();
 		});
@@ -21,7 +21,7 @@
 <div class="container">
 
 <h1>
-	<i class="icon-th-list"></i> Sensors
+	<i class="icon-th-list"></i> Sensoren
 	<span id=loader class="loader progress progress-striped active"><span class="bar"></span></span>
 	<span class='input-append pull-right searchContainer'>
 		<input id='filter' type="text" placeholder="Search..." />
@@ -35,7 +35,6 @@
 		<thead>
 			<tr>
 				<th id="header_SensorId">Sensor Id<% if (page.orderBy == 'SensorId') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_Version">Version<% if (page.orderBy == 'Version') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_Omschrijving">Omschrijving<% if (page.orderBy == 'Omschrijving') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 			</tr>
 		</thead>
@@ -43,7 +42,6 @@
 		<% items.each(function(item) { %>
 			<tr id="<%= _.escape(item.get('sensorId')) %>">
 				<td><%= _.escape(item.get('sensorId') || '') %></td>
-				<td><%= _.escape(item.get('version') || '') %></td>
 				<td><%= _.escape(item.get('omschrijving') || '') %></td>
 			</tr>
 		<% }); %>
@@ -61,13 +59,6 @@
 					<label class="control-label" for="sensorId">Sensor Id</label>
 					<div class="controls inline-inputs">
 						<input type="text" class="input-xlarge" id="sensorId" placeholder="Sensor Id" value="<%= _.escape(item.get('sensorId') || '') %>">
-						<span class="help-inline"></span>
-					</div>
-				</div>
-				<div id="versionInputContainer" class="control-group">
-					<label class="control-label" for="version">Version</label>
-					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="version" placeholder="Version" value="<%= _.escape(item.get('version') || '') %>">
 						<span class="help-inline"></span>
 					</div>
 				</div>

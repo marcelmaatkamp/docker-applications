@@ -264,7 +264,6 @@ var page = {
 
 		page.node.save({
 			'devEui': $('input#devEui').val(),
-			'version': $('input#version').val(),
 			'omschrijving': $('input#omschrijving').val()
 		}, {
 			wait: true,

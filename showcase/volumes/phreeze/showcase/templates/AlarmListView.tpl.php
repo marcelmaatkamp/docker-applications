@@ -1,12 +1,12 @@
 <?php
-	$this->assign('title','SHOWCASE | Alarms');
-	$this->assign('nav','alarms');
+	$this->assign('title','SHOWCASE | Alarmen');
+	$this->assign('nav','alarmen');
 
 	$this->display('_Header.tpl.php');
 ?>
 
 <script type="text/javascript">
-	$LAB.script("scripts/app/alarms.js").wait(function(){
+	$LAB.script("scripts/app/alarmen.js").wait(function(){
 		$(document).ready(function(){
 			page.init();
 		});
@@ -21,7 +21,7 @@
 <div class="container">
 
 <h1>
-	<i class="icon-th-list"></i> Alarms
+	<i class="icon-th-list"></i> Alarmen
 	<span id=loader class="loader progress progress-striped active"><span class="bar"></span></span>
 	<span class='input-append pull-right searchContainer'>
 		<input id='filter' type="text" placeholder="Search..." />
@@ -35,18 +35,16 @@
 		<thead>
 			<tr>
 				<th id="header_Id">Id<% if (page.orderBy == 'Id') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_Version">Version<% if (page.orderBy == 'Version') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_NodeThresholdId">Node Threshold Id<% if (page.orderBy == 'NodeThresholdId') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_ObservationId">Observation Id<% if (page.orderBy == 'ObservationId') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_AlarmRegel">Alarm Regel<% if (page.orderBy == 'AlarmRegel') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_Observatie">Observatie<% if (page.orderBy == 'Observatie') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 			</tr>
 		</thead>
 		<tbody>
 		<% items.each(function(item) { %>
 			<tr id="<%= _.escape(item.get('id')) %>">
 				<td><%= _.escape(item.get('id') || '') %></td>
-				<td><%= _.escape(item.get('version') || '') %></td>
-				<td><%= _.escape(item.get('nodeThresholdId') || '') %></td>
-				<td><%= _.escape(item.get('observationId') || '') %></td>
+				<td><%= _.escape(item.get('alarmRegel') || '') %></td>
+				<td><%= _.escape(item.get('observatie') || '') %></td>
 			</tr>
 		<% }); %>
 		</tbody>
@@ -66,24 +64,17 @@
 						<span class="help-inline"></span>
 					</div>
 				</div>
-				<div id="versionInputContainer" class="control-group">
-					<label class="control-label" for="version">Version</label>
+				<div id="alarmRegelInputContainer" class="control-group">
+					<label class="control-label" for="alarmRegel">Alarm Regel</label>
 					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="version" placeholder="Version" value="<%= _.escape(item.get('version') || '') %>">
+						<select id="alarmRegel" name="alarmRegel"></select>
 						<span class="help-inline"></span>
 					</div>
 				</div>
-				<div id="nodeThresholdIdInputContainer" class="control-group">
-					<label class="control-label" for="nodeThresholdId">Node Threshold Id</label>
+				<div id="observatieInputContainer" class="control-group">
+					<label class="control-label" for="observatie">Observatie</label>
 					<div class="controls inline-inputs">
-						<select id="nodeThresholdId" name="nodeThresholdId"></select>
-						<span class="help-inline"></span>
-					</div>
-				</div>
-				<div id="observationIdInputContainer" class="control-group">
-					<label class="control-label" for="observationId">Observation Id</label>
-					<div class="controls inline-inputs">
-						<select id="observationId" name="observationId"></select>
+						<select id="observatie" name="observatie"></select>
 						<span class="help-inline"></span>
 					</div>
 				</div>

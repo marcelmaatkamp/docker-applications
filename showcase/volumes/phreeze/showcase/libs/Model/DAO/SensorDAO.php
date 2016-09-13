@@ -24,29 +24,26 @@ class SensorDAO extends Phreezable
 	/** @var string */
 	public $SensorId;
 
-	/** @var int */
-	public $Version;
-
 	/** @var string */
 	public $Omschrijving;
 
 
 	/**
-	 * Returns a dataset of NodeThreshold objects with matching SensorId
+	 * Returns a dataset of AlarmRegel objects with matching Sensor
 	 * @param Criteria
 	 * @return DataSet
 	 */
-	public function GetNodeThresholds($criteria = null)
+	public function GetAlarmRegels($criteria = null)
 	{
 		return $this->_phreezer->GetOneToMany($this, "FK_afhhe5d4s0if67l0h6fxmdj08", $criteria);
 	}
 
 	/**
-	 * Returns a dataset of Observation objects with matching SensorId
+	 * Returns a dataset of Observatie objects with matching Sensor
 	 * @param Criteria
 	 * @return DataSet
 	 */
-	public function GetObservations($criteria = null)
+	public function GetObservaties($criteria = null)
 	{
 		return $this->_phreezer->GetOneToMany($this, "FK_3vtmlnui6re2o9jq4vqpa2t06", $criteria);
 	}

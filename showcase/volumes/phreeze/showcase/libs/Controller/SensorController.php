@@ -52,7 +52,7 @@ class SensorController extends AppBaseController
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');
 			if ($filter) $criteria->AddFilter(
-				new CriteriaFilter('SensorId,Version,Omschrijving'
+				new CriteriaFilter('SensorId,Omschrijving'
 				, '%'.$filter.'%')
 			);
 
@@ -87,18 +87,18 @@ class SensorController extends AppBaseController
 				// if page is specified, use this instead (at the expense of one extra count query)
 				$pagesize = $this->GetDefaultPageSize();
 
-				$sensors = $this->Phreezer->Query('Sensor',$criteria)->GetDataPage($page, $pagesize);
-				$output->rows = $sensors->ToObjectArray(true,$this->SimpleObjectParams());
-				$output->totalResults = $sensors->TotalResults;
-				$output->totalPages = $sensors->TotalPages;
-				$output->pageSize = $sensors->PageSize;
-				$output->currentPage = $sensors->CurrentPage;
+				$sensoren = $this->Phreezer->Query('Sensor',$criteria)->GetDataPage($page, $pagesize);
+				$output->rows = $sensoren->ToObjectArray(true,$this->SimpleObjectParams());
+				$output->totalResults = $sensoren->TotalResults;
+				$output->totalPages = $sensoren->TotalPages;
+				$output->pageSize = $sensoren->PageSize;
+				$output->currentPage = $sensoren->CurrentPage;
 			}
 			else
 			{
 				// return all results
-				$sensors = $this->Phreezer->Query('Sensor',$criteria);
-				$output->rows = $sensors->ToObjectArray(true, $this->SimpleObjectParams());
+				$sensoren = $this->Phreezer->Query('Sensor',$criteria);
+				$output->rows = $sensoren->ToObjectArray(true, $this->SimpleObjectParams());
 				$output->totalResults = count($output->rows);
 				$output->totalPages = 1;
 				$output->pageSize = $output->totalResults;
@@ -151,7 +151,6 @@ class SensorController extends AppBaseController
 			// TODO: any fields that should not be inserted by the user should be commented out
 
 			$sensor->SensorId = $this->SafeGetVal($json, 'sensorId');
-			$sensor->Version = $this->SafeGetVal($json, 'version');
 			$sensor->Omschrijving = $this->SafeGetVal($json, 'omschrijving');
 
 			$sensor->Validate();
@@ -198,7 +197,6 @@ class SensorController extends AppBaseController
 			// this is a primary key.  uncomment if updating is allowed
 			// $sensor->SensorId = $this->SafeGetVal($json, 'sensorId', $sensor->SensorId);
 
-			$sensor->Version = $this->SafeGetVal($json, 'version', $sensor->Version);
 			$sensor->Omschrijving = $this->SafeGetVal($json, 'omschrijving', $sensor->Omschrijving);
 
 			$sensor->Validate();

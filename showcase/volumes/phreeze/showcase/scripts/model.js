@@ -14,7 +14,7 @@ var model = {};
  * long polling duration in miliseconds.  (5000 = recommended, 0 = disabled)
  * warning: setting this to a low number will increase server load
  */
-model.longPollDuration = 0;
+model.longPollDuration = 5000;
 
 /**
  * whether to refresh the collection immediately after a model is updated
@@ -139,14 +139,12 @@ model.AlarmModel = Backbone.Model.extend({
 	urlRoot: 'api/alarm',
 	idAttribute: 'id',
 	id: '',
-	version: '',
-	nodeThresholdId: '',
-	observationId: '',
+	alarmRegel: '',
+	observatie: '',
 	defaults: {
 		'id': null,
-		'version': '',
-		'nodeThresholdId': '',
-		'observationId': ''
+		'alarmRegel': '',
+		'observatie': ''
 	}
 });
 
@@ -154,8 +152,68 @@ model.AlarmModel = Backbone.Model.extend({
  * Alarm Backbone Collection
  */
 model.AlarmCollection = model.AbstractCollection.extend({
-	url: 'api/alarms',
+	url: 'api/alarmen',
 	model: model.AlarmModel
+});
+
+/**
+ * AlarmNotificatie Backbone Model
+ */
+model.AlarmNotificatieModel = Backbone.Model.extend({
+	urlRoot: 'api/alarmnotificatie',
+	idAttribute: 'id',
+	id: '',
+	alarmRegel: '',
+	kanaal: '',
+	p1: '',
+	p2: '',
+	p3: '',
+	p4: '',
+	meldingtekst: '',
+	defaults: {
+		'id': null,
+		'alarmRegel': '',
+		'kanaal': '',
+		'p1': '',
+		'p2': '',
+		'p3': '',
+		'p4': '',
+		'meldingtekst': ''
+	}
+});
+
+/**
+ * AlarmNotificatie Backbone Collection
+ */
+model.AlarmNotificatieCollection = model.AbstractCollection.extend({
+	url: 'api/alarmnotificaties',
+	model: model.AlarmNotificatieModel
+});
+
+/**
+ * AlarmRegel Backbone Model
+ */
+model.AlarmRegelModel = Backbone.Model.extend({
+	urlRoot: 'api/alarmregel',
+	idAttribute: 'id',
+	id: '',
+	node: '',
+	sensor: '',
+	alarmTrigger: '',
+	defaults: {
+		'id': null,
+		'node': '',
+		'sensor': '',
+		'alarmTrigger': ''
+	}
+});
+
+/**
+ * AlarmRegel Backbone Collection
+ */
+model.AlarmRegelCollection = model.AbstractCollection.extend({
+	url: 'api/alarmregels',
+	model: model.AlarmRegelModel
 });
 
 /**
@@ -165,11 +223,9 @@ model.NodeModel = Backbone.Model.extend({
 	urlRoot: 'api/node',
 	idAttribute: 'devEui',
 	devEui: '',
-	version: '',
 	omschrijving: '',
 	defaults: {
 		'devEui': null,
-		'version': '',
 		'omschrijving': ''
 	}
 });
@@ -183,65 +239,31 @@ model.NodeCollection = model.AbstractCollection.extend({
 });
 
 /**
- * NodeThreshold Backbone Model
+ * Observatie Backbone Model
  */
-model.NodeThresholdModel = Backbone.Model.extend({
-	urlRoot: 'api/nodethreshold',
+model.ObservatieModel = Backbone.Model.extend({
+	urlRoot: 'api/observatie',
 	idAttribute: 'id',
 	id: '',
-	version: '',
-	keepaliveTimeout: '',
-	nodeId: '',
-	rmqChannel: '',
-	sensorId: '',
-	state: '',
+	node: '',
+	sensor: '',
+	datumTijdAangemaakt: '',
+	waarde: '',
 	defaults: {
 		'id': null,
-		'version': '',
-		'keepaliveTimeout': '',
-		'nodeId': '',
-		'rmqChannel': '',
-		'sensorId': '',
-		'state': ''
+		'node': '',
+		'sensor': '',
+		'datumTijdAangemaakt': new Date(),
+		'waarde': ''
 	}
 });
 
 /**
- * NodeThreshold Backbone Collection
+ * Observatie Backbone Collection
  */
-model.NodeThresholdCollection = model.AbstractCollection.extend({
-	url: 'api/nodethresholds',
-	model: model.NodeThresholdModel
-});
-
-/**
- * Observation Backbone Model
- */
-model.ObservationModel = Backbone.Model.extend({
-	urlRoot: 'api/observation',
-	idAttribute: 'id',
-	id: '',
-	version: '',
-	dateCreated: '',
-	nodeId: '',
-	sensorId: '',
-	value: '',
-	defaults: {
-		'id': null,
-		'version': '',
-		'dateCreated': new Date(),
-		'nodeId': '',
-		'sensorId': '',
-		'value': ''
-	}
-});
-
-/**
- * Observation Backbone Collection
- */
-model.ObservationCollection = model.AbstractCollection.extend({
-	url: 'api/observations',
-	model: model.ObservationModel
+model.ObservatieCollection = model.AbstractCollection.extend({
+	url: 'api/observaties',
+	model: model.ObservatieModel
 });
 
 /**
@@ -251,11 +273,9 @@ model.SensorModel = Backbone.Model.extend({
 	urlRoot: 'api/sensor',
 	idAttribute: 'sensorId',
 	sensorId: '',
-	version: '',
 	omschrijving: '',
 	defaults: {
 		'sensorId': null,
-		'version': '',
 		'omschrijving': ''
 	}
 });
@@ -264,7 +284,7 @@ model.SensorModel = Backbone.Model.extend({
  * Sensor Backbone Collection
  */
 model.SensorCollection = model.AbstractCollection.extend({
-	url: 'api/sensors',
+	url: 'api/sensoren',
 	model: model.SensorModel
 });
 

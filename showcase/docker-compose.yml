@@ -140,6 +140,10 @@ services:
 
  phreeze:
   image: marcelmaatkamp/phreeze
+  links:
+   - mysql:mysql
+  depends_on:
+   - mysql
   volumes:
    - ./volumes/phreeze/showcase:/var/www/html/showcase
 #  ports:

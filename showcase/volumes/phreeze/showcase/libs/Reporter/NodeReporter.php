@@ -23,7 +23,6 @@ class NodeReporter extends Reporter
 	public $CustomFieldExample;
 
 	public $DevEui;
-	public $Version;
 	public $Omschrijving;
 
 	/*
@@ -39,7 +38,6 @@ class NodeReporter extends Reporter
 		$sql = "select
 			'custom value here...' as CustomFieldExample
 			,`node`.`dev_eui` as DevEui
-			,`node`.`version` as Version
 			,`node`.`omschrijving` as Omschrijving
 		from `node`";
 

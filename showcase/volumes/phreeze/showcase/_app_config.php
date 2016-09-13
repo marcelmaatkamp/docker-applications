@@ -33,6 +33,7 @@ if (ini_get('asp_tags'))
  */
 set_include_path(
 		GlobalConfig::$APP_ROOT . '/libs/' . PATH_SEPARATOR .
+		'phar://' . GlobalConfig::$APP_ROOT . '/libs/phreeze-3.3.8.phar' . PATH_SEPARATOR .
 		GlobalConfig::$APP_ROOT . '/../phreeze/libs' . PATH_SEPARATOR .
 		GlobalConfig::$APP_ROOT . '/vendor/phreeze/phreeze/libs/' . PATH_SEPARATOR .
 		get_include_path()
@@ -81,13 +82,31 @@ GlobalConfig::$ROUTE_MAP = array(
 	'GET:logout' => array('route' => 'SecureExample.Logout'),
 		
 	// Alarm
-	'GET:alarms' => array('route' => 'Alarm.ListView'),
+	'GET:alarmen' => array('route' => 'Alarm.ListView'),
 	'GET:alarm/(:num)' => array('route' => 'Alarm.SingleView', 'params' => array('id' => 1)),
-	'GET:api/alarms' => array('route' => 'Alarm.Query'),
+	'GET:api/alarmen' => array('route' => 'Alarm.Query'),
 	'POST:api/alarm' => array('route' => 'Alarm.Create'),
 	'GET:api/alarm/(:num)' => array('route' => 'Alarm.Read', 'params' => array('id' => 2)),
 	'PUT:api/alarm/(:num)' => array('route' => 'Alarm.Update', 'params' => array('id' => 2)),
 	'DELETE:api/alarm/(:num)' => array('route' => 'Alarm.Delete', 'params' => array('id' => 2)),
+		
+	// AlarmNotificatie
+	'GET:alarmnotificaties' => array('route' => 'AlarmNotificatie.ListView'),
+	'GET:alarmnotificatie/(:num)' => array('route' => 'AlarmNotificatie.SingleView', 'params' => array('id' => 1)),
+	'GET:api/alarmnotificaties' => array('route' => 'AlarmNotificatie.Query'),
+	'POST:api/alarmnotificatie' => array('route' => 'AlarmNotificatie.Create'),
+	'GET:api/alarmnotificatie/(:num)' => array('route' => 'AlarmNotificatie.Read', 'params' => array('id' => 2)),
+	'PUT:api/alarmnotificatie/(:num)' => array('route' => 'AlarmNotificatie.Update', 'params' => array('id' => 2)),
+	'DELETE:api/alarmnotificatie/(:num)' => array('route' => 'AlarmNotificatie.Delete', 'params' => array('id' => 2)),
+		
+	// AlarmRegel
+	'GET:alarmregels' => array('route' => 'AlarmRegel.ListView'),
+	'GET:alarmregel/(:num)' => array('route' => 'AlarmRegel.SingleView', 'params' => array('id' => 1)),
+	'GET:api/alarmregels' => array('route' => 'AlarmRegel.Query'),
+	'POST:api/alarmregel' => array('route' => 'AlarmRegel.Create'),
+	'GET:api/alarmregel/(:num)' => array('route' => 'AlarmRegel.Read', 'params' => array('id' => 2)),
+	'PUT:api/alarmregel/(:num)' => array('route' => 'AlarmRegel.Update', 'params' => array('id' => 2)),
+	'DELETE:api/alarmregel/(:num)' => array('route' => 'AlarmRegel.Delete', 'params' => array('id' => 2)),
 		
 	// Node
 	'GET:nodes' => array('route' => 'Node.ListView'),
@@ -98,28 +117,19 @@ GlobalConfig::$ROUTE_MAP = array(
 	'PUT:api/node/(:any)' => array('route' => 'Node.Update', 'params' => array('devEui' => 2)),
 	'DELETE:api/node/(:any)' => array('route' => 'Node.Delete', 'params' => array('devEui' => 2)),
 		
-	// NodeThreshold
-	'GET:nodethresholds' => array('route' => 'NodeThreshold.ListView'),
-	'GET:nodethreshold/(:num)' => array('route' => 'NodeThreshold.SingleView', 'params' => array('id' => 1)),
-	'GET:api/nodethresholds' => array('route' => 'NodeThreshold.Query'),
-	'POST:api/nodethreshold' => array('route' => 'NodeThreshold.Create'),
-	'GET:api/nodethreshold/(:num)' => array('route' => 'NodeThreshold.Read', 'params' => array('id' => 2)),
-	'PUT:api/nodethreshold/(:num)' => array('route' => 'NodeThreshold.Update', 'params' => array('id' => 2)),
-	'DELETE:api/nodethreshold/(:num)' => array('route' => 'NodeThreshold.Delete', 'params' => array('id' => 2)),
-		
-	// Observation
-	'GET:observations' => array('route' => 'Observation.ListView'),
-	'GET:observation/(:num)' => array('route' => 'Observation.SingleView', 'params' => array('id' => 1)),
-	'GET:api/observations' => array('route' => 'Observation.Query'),
-	'POST:api/observation' => array('route' => 'Observation.Create'),
-	'GET:api/observation/(:num)' => array('route' => 'Observation.Read', 'params' => array('id' => 2)),
-	'PUT:api/observation/(:num)' => array('route' => 'Observation.Update', 'params' => array('id' => 2)),
-	'DELETE:api/observation/(:num)' => array('route' => 'Observation.Delete', 'params' => array('id' => 2)),
+	// Observatie
+	'GET:observaties' => array('route' => 'Observatie.ListView'),
+	'GET:observatie/(:num)' => array('route' => 'Observatie.SingleView', 'params' => array('id' => 1)),
+	'GET:api/observaties' => array('route' => 'Observatie.Query'),
+	'POST:api/observatie' => array('route' => 'Observatie.Create'),
+	'GET:api/observatie/(:num)' => array('route' => 'Observatie.Read', 'params' => array('id' => 2)),
+	'PUT:api/observatie/(:num)' => array('route' => 'Observatie.Update', 'params' => array('id' => 2)),
+	'DELETE:api/observatie/(:num)' => array('route' => 'Observatie.Delete', 'params' => array('id' => 2)),
 		
 	// Sensor
-	'GET:sensors' => array('route' => 'Sensor.ListView'),
+	'GET:sensoren' => array('route' => 'Sensor.ListView'),
 	'GET:sensor/(:any)' => array('route' => 'Sensor.SingleView', 'params' => array('sensorId' => 1)),
-	'GET:api/sensors' => array('route' => 'Sensor.Query'),
+	'GET:api/sensoren' => array('route' => 'Sensor.Query'),
 	'POST:api/sensor' => array('route' => 'Sensor.Create'),
 	'GET:api/sensor/(:any)' => array('route' => 'Sensor.Read', 'params' => array('sensorId' => 2)),
 	'PUT:api/sensor/(:any)' => array('route' => 'Sensor.Update', 'params' => array('sensorId' => 2)),
@@ -140,8 +150,9 @@ GlobalConfig::$ROUTE_MAP = array(
  */
 // $GlobalConfig->GetInstance()->GetPhreezer()->SetLoadType("Alarm","FK_27v5pji13cutepjuv9ox0glwp",KM_LOAD_EAGER); // KM_LOAD_INNER | KM_LOAD_EAGER | KM_LOAD_LAZY
 // $GlobalConfig->GetInstance()->GetPhreezer()->SetLoadType("Alarm","FK_qqgttvcq7u148nkqjhx2hsbdi",KM_LOAD_EAGER); // KM_LOAD_INNER | KM_LOAD_EAGER | KM_LOAD_LAZY
-// $GlobalConfig->GetInstance()->GetPhreezer()->SetLoadType("NodeThreshold","FK_4stgr2ch3nidujfk8pial5sdv",KM_LOAD_EAGER); // KM_LOAD_INNER | KM_LOAD_EAGER | KM_LOAD_LAZY
-// $GlobalConfig->GetInstance()->GetPhreezer()->SetLoadType("NodeThreshold","FK_afhhe5d4s0if67l0h6fxmdj08",KM_LOAD_EAGER); // KM_LOAD_INNER | KM_LOAD_EAGER | KM_LOAD_LAZY
-// $GlobalConfig->GetInstance()->GetPhreezer()->SetLoadType("Observation","FK_3vtmlnui6re2o9jq4vqpa2t06",KM_LOAD_EAGER); // KM_LOAD_INNER | KM_LOAD_EAGER | KM_LOAD_LAZY
-// $GlobalConfig->GetInstance()->GetPhreezer()->SetLoadType("Observation","FK_smi270lm0koqq55tj5bfisawt",KM_LOAD_EAGER); // KM_LOAD_INNER | KM_LOAD_EAGER | KM_LOAD_LAZY
+// $GlobalConfig->GetInstance()->GetPhreezer()->SetLoadType("AlarmNotificatie","fk_alarm_notificatie_alarm_regel",KM_LOAD_EAGER); // KM_LOAD_INNER | KM_LOAD_EAGER | KM_LOAD_LAZY
+// $GlobalConfig->GetInstance()->GetPhreezer()->SetLoadType("AlarmRegel","FK_4stgr2ch3nidujfk8pial5sdv",KM_LOAD_EAGER); // KM_LOAD_INNER | KM_LOAD_EAGER | KM_LOAD_LAZY
+// $GlobalConfig->GetInstance()->GetPhreezer()->SetLoadType("AlarmRegel","FK_afhhe5d4s0if67l0h6fxmdj08",KM_LOAD_EAGER); // KM_LOAD_INNER | KM_LOAD_EAGER | KM_LOAD_LAZY
+// $GlobalConfig->GetInstance()->GetPhreezer()->SetLoadType("Observatie","FK_3vtmlnui6re2o9jq4vqpa2t06",KM_LOAD_EAGER); // KM_LOAD_INNER | KM_LOAD_EAGER | KM_LOAD_LAZY
+// $GlobalConfig->GetInstance()->GetPhreezer()->SetLoadType("Observatie","FK_smi270lm0koqq55tj5bfisawt",KM_LOAD_EAGER); // KM_LOAD_INNER | KM_LOAD_EAGER | KM_LOAD_LAZY
 ?>

@@ -52,9 +52,8 @@ class AlarmMap implements IDaoMap, IDaoMap2
 		{
 			self::$FM = Array();
 			self::$FM["Id"] = new FieldMap("Id","alarm","id",true,FM_TYPE_BIGINT,20,null,true);
-			self::$FM["Version"] = new FieldMap("Version","alarm","version",false,FM_TYPE_BIGINT,20,null,false);
-			self::$FM["NodeThresholdId"] = new FieldMap("NodeThresholdId","alarm","node_threshold_id",false,FM_TYPE_BIGINT,20,null,false);
-			self::$FM["ObservationId"] = new FieldMap("ObservationId","alarm","observation_id",false,FM_TYPE_BIGINT,20,null,false);
+			self::$FM["AlarmRegel"] = new FieldMap("AlarmRegel","alarm","alarm_regel",false,FM_TYPE_BIGINT,20,null,false);
+			self::$FM["Observatie"] = new FieldMap("Observatie","alarm","observatie",false,FM_TYPE_BIGINT,20,null,false);
 		}
 		return self::$FM;
 	}
@@ -67,8 +66,8 @@ class AlarmMap implements IDaoMap, IDaoMap2
 		if (self::$KM == null)
 		{
 			self::$KM = Array();
-			self::$KM["FK_27v5pji13cutepjuv9ox0glwp"] = new KeyMap("FK_27v5pji13cutepjuv9ox0glwp", "ObservationId", "Observation", "Id", KM_TYPE_MANYTOONE, KM_LOAD_LAZY); // you change to KM_LOAD_EAGER here or (preferrably) make the change in _config.php
-			self::$KM["FK_qqgttvcq7u148nkqjhx2hsbdi"] = new KeyMap("FK_qqgttvcq7u148nkqjhx2hsbdi", "NodeThresholdId", "NodeThreshold", "Id", KM_TYPE_MANYTOONE, KM_LOAD_LAZY); // you change to KM_LOAD_EAGER here or (preferrably) make the change in _config.php
+			self::$KM["FK_27v5pji13cutepjuv9ox0glwp"] = new KeyMap("FK_27v5pji13cutepjuv9ox0glwp", "Observatie", "Observatie", "Id", KM_TYPE_MANYTOONE, KM_LOAD_LAZY); // you change to KM_LOAD_EAGER here or (preferrably) make the change in _config.php
+			self::$KM["FK_qqgttvcq7u148nkqjhx2hsbdi"] = new KeyMap("FK_qqgttvcq7u148nkqjhx2hsbdi", "AlarmRegel", "AlarmRegel", "Id", KM_TYPE_MANYTOONE, KM_LOAD_LAZY); // you change to KM_LOAD_EAGER here or (preferrably) make the change in _config.php
 		}
 		return self::$KM;
 	}
