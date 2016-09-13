@@ -12,9 +12,6 @@ services:
    - MYSQL_ROOT_PASSWORD:my-secret-pw
   ports:
    - 81:80
- domoticz:
-  ports:
-   - 8080:8080
 
 volumes:
  showcase_mysql:
