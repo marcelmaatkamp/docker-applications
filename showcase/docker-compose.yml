@@ -139,7 +139,7 @@ services:
      ipv4_address: 172.25.0.100
 
  phreeze:
-  image: php:7.0-apache
+  image: marcelmaatkamp/phreeze
   volumes:
    - ./volumes/phreeze/showcase:/var/www/html/showcase
 #  ports:
