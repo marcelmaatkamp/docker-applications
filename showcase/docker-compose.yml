@@ -139,7 +139,13 @@ services:
      ipv4_address: 172.25.0.100
 
  phreeze:
-  image: php:7.0-apache
+  # image: php:7.0-apache
+  build: phreeze/
+  links:
+   - mysql:mysql
+  depends_on:
+   - rabbitmq
+   - mysql
   volumes:
    - ./volumes/phreeze/showcase:/var/www/html/showcase
 #  ports:
