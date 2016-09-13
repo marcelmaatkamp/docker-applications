@@ -12,7 +12,7 @@ services:
    - MYSQL_ROOT_PASSWORD:my-secret-pw
   ports:
    - 81:80
- grails:
+ domoticz:
   ports:
    - 8080:8080
 
