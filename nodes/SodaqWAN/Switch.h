@@ -14,24 +14,29 @@
 #endif
 
 class Switch {
-	public:
+  public:
     Switch(int pin);
-	  ~Switch();
-	  int  ReadState();
-	  void Update();
+    ~Switch();
+    int  ReadState();
+    void Update();
+    bool isChanged();
     void setPin(int pin);
     // Sets the optional "Diagnostics and Debug" stream.
-    void setDiag(Stream& stream) { diagStream = &stream; };
-  
-  private:
-	  // Class Member Variables
-	  // These are initialized at startup
-	  int counter = 0;       // how many times we have seen new value
-	  int reading;           // the current value read from the input pin
-	  int current_state = LOW;    // the debounced input value
-	  int inputPin = -1;    // the number of the pin the Switch is connected to
+    void setDiag(Stream& stream) {
+      diagStream = &stream;
+    };
 
-	  int debounce_count = 3; // number of millis/samples to consider before declaring a debounced input
+  private:
+    // Class Member Variables
+    // These are initialized at startup
+    int counter = 0;       // how many times we have seen new value
+    int reading;           // the current value read from the input pin
+    int current_state = LOW;    // the debounced input value
+    int inputPin = -1;    // the number of the pin the Switch is connected to
+    int switchState = 0;
+    int switchOldState = 0;
+
+    int debounce_count = 3; // number of millis/samples to consider before declaring a debounced input
     // The (optional) stream to show debug information.
     Stream* diagStream;
 };

@@ -11,6 +11,9 @@
 #endif
 
 #include "Utils.h"
+#include "pb_encode.h"
+#include "pb_decode.h"
+#include "sensor.pb.h"
 
 class Hal
 {
@@ -52,9 +55,8 @@ private:
   bool isHalInitialized=false;
   // Send message with Acknowledgement
   bool isAckActive=false;
-  int switchState = 0;
-  int switchOldState = 0;
 };
 
 extern Hal HalImpl;
 #endif _Hal_h
+
