@@ -67,6 +67,8 @@ services:
   image: phpmyadmin/phpmyadmin
   restart: always
   hostname: phpmyadmin
+# ports:
+#  - 8080:80
   depends_on:
    - mysql
   links:
@@ -76,16 +78,6 @@ services:
   networks:
     mynet:
       ipv4_address: 172.25.0.6
-
- nexus3:
-  image: sonatype/nexus3
-  volumes:
-   - nexus3:/nexus-data
-# ports: 
-#  - 8081:8081
-  networks:
-   mynet:
-    ipv4_address: 172.25.0.7
 
  phreeze:
   image: marcelmaatkamp/phreeze
@@ -99,7 +91,7 @@ services:
 #   - 80:80
   networks:
    mynet:
-     ipv4_address: 172.25.0.8
+     ipv4_address: 172.25.0.7
 
 networks:
   mynet:
