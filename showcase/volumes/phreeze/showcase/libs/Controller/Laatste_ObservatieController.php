@@ -3,10 +3,10 @@
 
 /** import supporting libraries */
 require_once("AppBaseController.php");
-require_once("Model/Alarm.php");
+require_once("Model/Laatste_Observatie.php");
 
 /**
- * AlarmController is the controller class for the Alarm object.  The
+ * Laatste_ObservatieController is the controller class for the Laatste_Observatie object.  The
  * controller is responsible for processing input from the user, reading/updating
  * the model as necessary and displaying the appropriate view.
  *
@@ -14,7 +14,7 @@ require_once("Model/Alarm.php");
  * @author ClassBuilder
  * @version 1.0
  */
-class AlarmController extends AppBaseController
+class Laatste_ObservatieController extends AppBaseController
 {
 
 	/**
@@ -33,7 +33,7 @@ class AlarmController extends AppBaseController
 	}
 
 	/**
-	 * Displays a list view of Alarm objects
+	 * Displays a list view of Laatste_Observatie objects
 	 */
 	public function ListView()
 	{
@@ -41,19 +41,19 @@ class AlarmController extends AppBaseController
 	}
 
 	/**
-	 * API Method queries for Alarm records and render as JSON
+	 * API Method queries for Laatste_Observatie records and render as JSON
 	 */
 	public function Query()
 	{
 		try
 		{
-			$criteria = new AlarmCriteria();
-			$criteria->SetOrder('Id',true);
+			$criteria = new Laatste_ObservatieCriteria();
+			$criteria->SetOrder('Node',true);
 			
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');
 			if ($filter) $criteria->AddFilter(
-				new CriteriaFilter('Id,Node,Sensor,Alarmtrigger,Observatiewaarde,Observatietijdstip'
+				new CriteriaFilter('Observatieid,Node,Sensor,Observatiewaarde,Observatiedatum'
 				, '%'.$filter.'%')
 			);
 
@@ -88,18 +88,18 @@ class AlarmController extends AppBaseController
 				// if page is specified, use this instead (at the expense of one extra count query)
 				$pagesize = $this->GetDefaultPageSize();
 
-				$alarmen = $this->Phreezer->Query('Alarm',$criteria)->GetDataPage($page, $pagesize);
-				$output->rows = $alarmen->ToObjectArray(true,$this->SimpleObjectParams());
-				$output->totalResults = $alarmen->TotalResults;
-				$output->totalPages = $alarmen->TotalPages;
-				$output->pageSize = $alarmen->PageSize;
-				$output->currentPage = $alarmen->CurrentPage;
+				$laatste_observaties = $this->Phreezer->Query('Laatste_Observatie',$criteria)->GetDataPage($page, $pagesize);
+				$output->rows = $laatste_observaties->ToObjectArray(true,$this->SimpleObjectParams());
+				$output->totalResults = $laatste_observaties->TotalResults;
+				$output->totalPages = $laatste_observaties->TotalPages;
+				$output->pageSize = $laatste_observaties->PageSize;
+				$output->currentPage = $laatste_observaties->CurrentPage;
 			}
 			else
 			{
 				// return all results
-				$alarmen = $this->Phreezer->Query('Alarm',$criteria);
-				$output->rows = $alarmen->ToObjectArray(true, $this->SimpleObjectParams());
+				$laatste_observaties = $this->Phreezer->Query('Laatste_Observatie',$criteria);
+				$output->rows = $laatste_observaties->ToObjectArray(true, $this->SimpleObjectParams());
 				$output->totalResults = count($output->rows);
 				$output->totalPages = 1;
 				$output->pageSize = $output->totalResults;
@@ -116,15 +116,15 @@ class AlarmController extends AppBaseController
 	}
 
 	/**
-	 * API Method retrieves a single Alarm record and render as JSON
+	 * API Method retrieves a single Laatste_Observatie record and render as JSON
 	 */
 	public function Read()
 	{
 		try
 		{
-			$pk = $this->GetRouter()->GetUrlParam('id');
-			$alarm = $this->Phreezer->Get('Alarm',$pk);
-			$this->RenderJSON($alarm, $this->JSONPCallback(), true, $this->SimpleObjectParams());
+			$pk = $this->GetRouter()->GetUrlParam('observatieid');
+			$laatste_observatie = $this->Phreezer->Get('Laatste_Observatie',$pk);
+			$this->RenderJSON($laatste_observatie, $this->JSONPCallback(), true, $this->SimpleObjectParams());
 		}
 		catch (Exception $ex)
 		{
@@ -133,7 +133,7 @@ class AlarmController extends AppBaseController
 	}
 
 	/**
-	 * API Method inserts a new Alarm record and render response as JSON
+	 * API Method inserts a new Laatste_Observatie record and render response as JSON
 	 */
 	public function Create()
 	{
@@ -149,19 +149,18 @@ class AlarmController extends AppBaseController
 				throw new Exception('The request body does not contain valid JSON');
 			}
 
-			$alarm = new Alarm($this->Phreezer);
+			$laatste_observatie = new Laatste_Observatie($this->Phreezer);
 
 			// TODO: any fields that should not be inserted by the user should be commented out
 
-			$alarm->Id = $this->SafeGetVal($json, 'id');
-			$alarm->Node = $this->SafeGetVal($json, 'node');
-			$alarm->Sensor = $this->SafeGetVal($json, 'sensor');
-			$alarm->Alarmtrigger = $this->SafeGetVal($json, 'alarmtrigger');
-			$alarm->Observatiewaarde = $this->SafeGetVal($json, 'observatiewaarde');
-			$alarm->Observatietijdstip = date('Y-m-d H:i:s',strtotime($this->SafeGetVal($json, 'observatietijdstip')));
+			$laatste_observatie->Observatieid = $this->SafeGetVal($json, 'observatieid');
+			$laatste_observatie->Node = $this->SafeGetVal($json, 'node');
+			$laatste_observatie->Sensor = $this->SafeGetVal($json, 'sensor');
+			$laatste_observatie->Observatiewaarde = $this->SafeGetVal($json, 'observatiewaarde');
+			$laatste_observatie->Observatiedatum = date('Y-m-d H:i:s',strtotime($this->SafeGetVal($json, 'observatiedatum')));
 
-			$alarm->Validate();
-			$errors = $alarm->GetValidationErrors();
+			$laatste_observatie->Validate();
+			$errors = $laatste_observatie->GetValidationErrors();
 
 			if (count($errors) > 0)
 			{
@@ -170,8 +169,8 @@ class AlarmController extends AppBaseController
 			else
 			{
 				// since the primary key is not auto-increment we must force the insert here
-				$alarm->Save(true);
-				$this->RenderJSON($alarm, $this->JSONPCallback(), true, $this->SimpleObjectParams());
+				$laatste_observatie->Save(true);
+				$this->RenderJSON($laatste_observatie, $this->JSONPCallback(), true, $this->SimpleObjectParams());
 			}
 
 		}
@@ -182,7 +181,7 @@ class AlarmController extends AppBaseController
 	}
 
 	/**
-	 * API Method updates an existing Alarm record and render response as JSON
+	 * API Method updates an existing Laatste_Observatie record and render response as JSON
 	 */
 	public function Update()
 	{
@@ -198,22 +197,21 @@ class AlarmController extends AppBaseController
 				throw new Exception('The request body does not contain valid JSON');
 			}
 
-			$pk = $this->GetRouter()->GetUrlParam('id');
-			$alarm = $this->Phreezer->Get('Alarm',$pk);
+			$pk = $this->GetRouter()->GetUrlParam('observatieid');
+			$laatste_observatie = $this->Phreezer->Get('Laatste_Observatie',$pk);
 
 			// TODO: any fields that should not be updated by the user should be commented out
 
 			// this is a primary key.  uncomment if updating is allowed
-			// $alarm->Id = $this->SafeGetVal($json, 'id', $alarm->Id);
+			// $laatste_observatie->Observatieid = $this->SafeGetVal($json, 'observatieid', $laatste_observatie->Observatieid);
 
-			$alarm->Node = $this->SafeGetVal($json, 'node', $alarm->Node);
-			$alarm->Sensor = $this->SafeGetVal($json, 'sensor', $alarm->Sensor);
-			$alarm->Alarmtrigger = $this->SafeGetVal($json, 'alarmtrigger', $alarm->Alarmtrigger);
-			$alarm->Observatiewaarde = $this->SafeGetVal($json, 'observatiewaarde', $alarm->Observatiewaarde);
-			$alarm->Observatietijdstip = date('Y-m-d H:i:s',strtotime($this->SafeGetVal($json, 'observatietijdstip', $alarm->Observatietijdstip)));
+			$laatste_observatie->Node = $this->SafeGetVal($json, 'node', $laatste_observatie->Node);
+			$laatste_observatie->Sensor = $this->SafeGetVal($json, 'sensor', $laatste_observatie->Sensor);
+			$laatste_observatie->Observatiewaarde = $this->SafeGetVal($json, 'observatiewaarde', $laatste_observatie->Observatiewaarde);
+			$laatste_observatie->Observatiedatum = date('Y-m-d H:i:s',strtotime($this->SafeGetVal($json, 'observatiedatum', $laatste_observatie->Observatiedatum)));
 
-			$alarm->Validate();
-			$errors = $alarm->GetValidationErrors();
+			$laatste_observatie->Validate();
+			$errors = $laatste_observatie->GetValidationErrors();
 
 			if (count($errors) > 0)
 			{
@@ -221,8 +219,8 @@ class AlarmController extends AppBaseController
 			}
 			else
 			{
-				$alarm->Save();
-				$this->RenderJSON($alarm, $this->JSONPCallback(), true, $this->SimpleObjectParams());
+				$laatste_observatie->Save();
+				$this->RenderJSON($laatste_observatie, $this->JSONPCallback(), true, $this->SimpleObjectParams());
 			}
 
 
@@ -243,7 +241,7 @@ class AlarmController extends AppBaseController
 	}
 
 	/**
-	 * API Method deletes an existing Alarm record and render response as JSON
+	 * API Method deletes an existing Laatste_Observatie record and render response as JSON
 	 */
 	public function Delete()
 	{
@@ -254,10 +252,10 @@ class AlarmController extends AppBaseController
 						
 			// TODO: if a soft delete is prefered, change this to update the deleted flag instead of hard-deleting
 
-			$pk = $this->GetRouter()->GetUrlParam('id');
-			$alarm = $this->Phreezer->Get('Alarm',$pk);
+			$pk = $this->GetRouter()->GetUrlParam('observatieid');
+			$laatste_observatie = $this->Phreezer->Get('Laatste_Observatie',$pk);
 
-			$alarm->Delete();
+			$laatste_observatie->Delete();
 
 			$output = new stdClass();
 

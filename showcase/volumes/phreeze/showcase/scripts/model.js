@@ -152,15 +152,15 @@ model.AlarmModel = Backbone.Model.extend({
  * Alarm Backbone Collection
  */
 model.AlarmCollection = model.AbstractCollection.extend({
-	url: 'api/alarmen',
+	url: 'api/alarms',
 	model: model.AlarmModel
 });
 
 /**
- * AlarmNotificatie Backbone Model
+ * Alarm_Notificatie Backbone Model
  */
-model.AlarmNotificatieModel = Backbone.Model.extend({
-	urlRoot: 'api/alarmnotificatie',
+model.Alarm_NotificatieModel = Backbone.Model.extend({
+	urlRoot: 'api/alarm_notificatie',
 	idAttribute: 'id',
 	id: '',
 	alarmRegel: '',
@@ -183,18 +183,18 @@ model.AlarmNotificatieModel = Backbone.Model.extend({
 });
 
 /**
- * AlarmNotificatie Backbone Collection
+ * Alarm_Notificatie Backbone Collection
  */
-model.AlarmNotificatieCollection = model.AbstractCollection.extend({
-	url: 'api/alarmnotificaties',
-	model: model.AlarmNotificatieModel
+model.Alarm_NotificatieCollection = model.AbstractCollection.extend({
+	url: 'api/alarm_notificaties',
+	model: model.Alarm_NotificatieModel
 });
 
 /**
- * AlarmRegel Backbone Model
+ * Alarm_Regel Backbone Model
  */
-model.AlarmRegelModel = Backbone.Model.extend({
-	urlRoot: 'api/alarmregel',
+model.Alarm_RegelModel = Backbone.Model.extend({
+	urlRoot: 'api/alarm_regel',
 	idAttribute: 'id',
 	id: '',
 	node: '',
@@ -209,11 +209,69 @@ model.AlarmRegelModel = Backbone.Model.extend({
 });
 
 /**
- * AlarmRegel Backbone Collection
+ * Alarm_Regel Backbone Collection
  */
-model.AlarmRegelCollection = model.AbstractCollection.extend({
-	url: 'api/alarmregels',
-	model: model.AlarmRegelModel
+model.Alarm_RegelCollection = model.AbstractCollection.extend({
+	url: 'api/alarm_regels',
+	model: model.Alarm_RegelModel
+});
+
+/**
+ * Alarm Backbone Model
+ */
+model.AlarmModel = Backbone.Model.extend({
+	urlRoot: 'api/alarm',
+	idAttribute: 'id',
+	id: '',
+	node: '',
+	sensor: '',
+	alarmtrigger: '',
+	observatiewaarde: '',
+	observatietijdstip: '',
+	defaults: {
+		'id': null,
+		'node': '',
+		'sensor': '',
+		'alarmtrigger': '',
+		'observatiewaarde': '',
+		'observatietijdstip': new Date()
+	}
+});
+
+/**
+ * Alarm Backbone Collection
+ */
+model.AlarmCollection = model.AbstractCollection.extend({
+	url: 'api/alarmen',
+	model: model.AlarmModel
+});
+
+/**
+ * Laatste_Observatie Backbone Model
+ */
+model.Laatste_ObservatieModel = Backbone.Model.extend({
+	urlRoot: 'api/laatste_observatie',
+	idAttribute: 'observatieid',
+	observatieid: '',
+	node: '',
+	sensor: '',
+	observatiewaarde: '',
+	observatiedatum: '',
+	defaults: {
+		'observatieid': null,
+		'node': '',
+		'sensor': '',
+		'observatiewaarde': '',
+		'observatiedatum': new Date()
+	}
+});
+
+/**
+ * Laatste_Observatie Backbone Collection
+ */
+model.Laatste_ObservatieCollection = model.AbstractCollection.extend({
+	url: 'api/laatste_observaties',
+	model: model.Laatste_ObservatieModel
 });
 
 /**
@@ -286,5 +344,33 @@ model.SensorModel = Backbone.Model.extend({
 model.SensorCollection = model.AbstractCollection.extend({
 	url: 'api/sensoren',
 	model: model.SensorModel
+});
+
+/**
+ * SensorNodeObservation Backbone Model
+ */
+model.SensorNodeObservationModel = Backbone.Model.extend({
+	urlRoot: 'api/sensornodeobservation',
+	idAttribute: 'node',
+	node: '',
+	sensor: '',
+	observatieid: '',
+	observatiewaarde: '',
+	observatiedatum: '',
+	defaults: {
+		'node': null,
+		'sensor': '',
+		'observatieid': '',
+		'observatiewaarde': '',
+		'observatiedatum': new Date()
+	}
+});
+
+/**
+ * SensorNodeObservation Backbone Collection
+ */
+model.SensorNodeObservationCollection = model.AbstractCollection.extend({
+	url: 'api/sensornodeobservations',
+	model: model.SensorNodeObservationModel
 });
 

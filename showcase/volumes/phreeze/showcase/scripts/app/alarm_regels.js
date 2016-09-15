@@ -1,15 +1,15 @@
 /**
- * View logic for Observaties
+ * View logic for Alarm_Regels
  */
 
 /**
- * application logic specific to the Observatie listing page
+ * application logic specific to the Alarm_Regel listing page
  */
 var page = {
 
-	observaties: new model.ObservatieCollection(),
+	alarm_Regels: new model.Alarm_RegelCollection(),
 	collectionView: null,
-	observatie: null,
+	alarm_Regel: null,
 	modelView: null,
 	isInitialized: false,
 	isInitializing: false,
@@ -29,40 +29,40 @@ var page = {
 		if (!$.isReady && console) console.warn('page was initialized before dom is ready.  views may not render properly.');
 
 		// make the new button clickable
-		$("#newObservatieButton").click(function(e) {
+		$("#newAlarm_RegelButton").click(function(e) {
 			e.preventDefault();
 			page.showDetailDialog();
 		});
 
 		// let the page know when the dialog is open
-		$('#observatieDetailDialog').on('show',function() {
+		$('#alarm_RegelDetailDialog').on('show',function() {
 			page.dialogIsOpen = true;
 		});
 
 		// when the model dialog is closed, let page know and reset the model view
-		$('#observatieDetailDialog').on('hidden',function() {
+		$('#alarm_RegelDetailDialog').on('hidden',function() {
 			$('#modelAlert').html('');
 			page.dialogIsOpen = false;
 		});
 
 		// save the model when the save button is clicked
-		$("#saveObservatieButton").click(function(e) {
+		$("#saveAlarm_RegelButton").click(function(e) {
 			e.preventDefault();
 			page.updateModel();
 		});
 
 		// initialize the collection view
 		this.collectionView = new view.CollectionView({
-			el: $("#observatieCollectionContainer"),
-			templateEl: $("#observatieCollectionTemplate"),
-			collection: page.observaties
+			el: $("#alarm_RegelCollectionContainer"),
+			templateEl: $("#alarm_RegelCollectionTemplate"),
+			collection: page.alarm_Regels
 		});
 
 		// initialize the search filter
 		$('#filter').change(function(obj) {
 			page.fetchParams.filter = $('#filter').val();
 			page.fetchParams.page = 1;
-			page.fetchObservaties(page.fetchParams);
+			page.fetchAlarm_Regels(page.fetchParams);
 		});
 		
 		// make the rows clickable ('rendered' is a custom event, not a standard backbone event)
@@ -71,7 +71,7 @@ var page = {
 			// attach click handler to the table rows for editing
 			$('table.collection tbody tr').click(function(e) {
 				e.preventDefault();
-				var m = page.observaties.get(this.id);
+				var m = page.alarm_Regels.get(this.id);
 				page.showDetailDialog(m);
 			});
 
@@ -84,14 +84,14 @@ var page = {
 				page.fetchParams.orderDesc = (prop == page.fetchParams.orderBy && !page.fetchParams.orderDesc) ? '1' : '';
 				page.fetchParams.orderBy = prop;
 				page.fetchParams.page = 1;
- 				page.fetchObservaties(page.fetchParams);
+ 				page.fetchAlarm_Regels(page.fetchParams);
  			});
 
 			// attach click handlers to the pagination controls
 			$('.pageButton').click(function(e) {
 				e.preventDefault();
 				page.fetchParams.page = this.id.substr(5);
-				page.fetchObservaties(page.fetchParams);
+				page.fetchAlarm_Regels(page.fetchParams);
 			});
 			
 			page.isInitialized = true;
@@ -99,21 +99,21 @@ var page = {
 		});
 
 		// backbone docs recommend bootstrapping data on initial page load, but we live by our own rules!
-		this.fetchObservaties({ page: 1 });
+		this.fetchAlarm_Regels({ page: 1 });
 
 		// initialize the model view
 		this.modelView = new view.ModelView({
-			el: $("#observatieModelContainer")
+			el: $("#alarm_RegelModelContainer")
 		});
 
 		// tell the model view where it's template is located
-		this.modelView.templateEl = $("#observatieModelTemplate");
+		this.modelView.templateEl = $("#alarm_RegelModelTemplate");
 
 		if (model.longPollDuration > 0)	{
 			setInterval(function () {
 
 				if (!page.dialogIsOpen)	{
-					page.fetchObservaties(page.fetchParams,true);
+					page.fetchAlarm_Regels(page.fetchParams,true);
 				}
 
 			}, model.longPollDuration);
@@ -125,7 +125,7 @@ var page = {
 	 * @param object params passed through to collection.fetch
 	 * @param bool true to hide the loading animation
 	 */
-	fetchObservaties: function(params, hideLoader) {
+	fetchAlarm_Regels: function(params, hideLoader) {
 		// persist the params so that paging/sorting/filtering will play together nicely
 		page.fetchParams = params;
 
@@ -137,13 +137,13 @@ var page = {
 
 		if (!hideLoader) app.showProgress('loader');
 
-		page.observaties.fetch({
+		page.alarm_Regels.fetch({
 
 			data: params,
 
 			success: function() {
 
-				if (page.observaties.collectionHasChanged) {
+				if (page.alarm_Regels.collectionHasChanged) {
 					// TODO: add any logic necessary if the collection has changed
 					// the sync event will trigger the view to re-render
 				}
@@ -168,22 +168,22 @@ var page = {
 	showDetailDialog: function(m) {
 
 		// show the modal dialog
-		$('#observatieDetailDialog').modal({ show: true });
+		$('#alarm_RegelDetailDialog').modal({ show: true });
 
 		// if a model was specified then that means a user is editing an existing record
 		// if not, then the user is creating a new record
-		page.observatie = m ? m : new model.ObservatieModel();
+		page.alarm_Regel = m ? m : new model.Alarm_RegelModel();
 
-		page.modelView.model = page.observatie;
+		page.modelView.model = page.alarm_Regel;
 
-		if (page.observatie.id == null || page.observatie.id == '') {
+		if (page.alarm_Regel.id == null || page.alarm_Regel.id == '') {
 			// this is a new record, there is no need to contact the server
 			page.renderModelView(false);
 		} else {
 			app.showProgress('modelLoader');
 
 			// fetch the model from the server so we are not updating stale data
-			page.observatie.fetch({
+			page.alarm_Regel.fetch({
 
 				success: function() {
 					// data returned from the server.  render the model view
@@ -233,8 +233,8 @@ var page = {
 				c.forEach(function(item,index) {
 					dd.append(app.getOptionHtml(
 						item.get('devEui'),
-						item.get('devEui'), // TODO: change fieldname if the dropdown doesn't show the desired column
-						page.observatie.get('node') == item.get('devEui')
+						(item.get('devEui'))  + " - " + (item.get('omschrijving')),
+						page.alarm_Regel.get('node') == item.get('devEui')
 					));
 				});
 				
@@ -259,8 +259,8 @@ var page = {
 				c.forEach(function(item,index) {
 					dd.append(app.getOptionHtml(
 						item.get('sensorId'),
-						item.get('sensorId'), // TODO: change fieldname if the dropdown doesn't show the desired column
-						page.observatie.get('sensor') == item.get('sensorId')
+						item.get('sensorId')+ " - " + (item.get('omschrijving')),
+						page.alarm_Regel.get('sensor') == item.get('sensorId')
 					));
 				});
 				
@@ -279,24 +279,24 @@ var page = {
 		if (showDeleteButton) {
 			// attach click handlers to the delete buttons
 
-			$('#deleteObservatieButton').click(function(e) {
+			$('#deleteAlarm_RegelButton').click(function(e) {
 				e.preventDefault();
-				$('#confirmDeleteObservatieContainer').show('fast');
+				$('#confirmDeleteAlarm_RegelContainer').show('fast');
 			});
 
-			$('#cancelDeleteObservatieButton').click(function(e) {
+			$('#cancelDeleteAlarm_RegelButton').click(function(e) {
 				e.preventDefault();
-				$('#confirmDeleteObservatieContainer').hide('fast');
+				$('#confirmDeleteAlarm_RegelContainer').hide('fast');
 			});
 
-			$('#confirmDeleteObservatieButton').click(function(e) {
+			$('#confirmDeleteAlarm_RegelButton').click(function(e) {
 				e.preventDefault();
 				page.deleteModel();
 			});
 
 		} else {
 			// no point in initializing the click handlers if we don't show the button
-			$('#deleteObservatieButtonContainer').hide();
+			$('#deleteAlarm_RegelButtonContainer').hide();
 		}
 	},
 
@@ -310,29 +310,28 @@ var page = {
 		$('.help-inline').html('');
 
 		// if this is new then on success we need to add it to the collection
-		var isNew = page.observatie.isNew();
+		var isNew = page.alarm_Regel.isNew();
 
 		app.showProgress('modelLoader');
 
-		page.observatie.save({
+		page.alarm_Regel.save({
 
 			'node': $('select#node').val(),
 			'sensor': $('select#sensor').val(),
-			'datumTijdAangemaakt': $('input#datumTijdAangemaakt').val()+' '+$('input#datumTijdAangemaakt-time').val(),
-			'waarde': $('input#waarde').val()
+			'alarmTrigger': $('input#alarmTrigger').val()
 		}, {
 			wait: true,
 			success: function(){
-				$('#observatieDetailDialog').modal('hide');
-				setTimeout("app.appendAlert('Observatie was sucessfully " + (isNew ? "inserted" : "updated") + "','alert-success',3000,'collectionAlert')",500);
+				$('#alarm_RegelDetailDialog').modal('hide');
+				setTimeout("app.appendAlert('Alarm_Regel was sucessfully " + (isNew ? "inserted" : "updated") + "','alert-success',3000,'collectionAlert')",500);
 				app.hideProgress('modelLoader');
 
 				// if the collection was initally new then we need to add it to the collection now
-				if (isNew) { page.observaties.add(page.observatie) }
+				if (isNew) { page.alarm_Regels.add(page.alarm_Regel) }
 
 				if (model.reloadCollectionOnModelUpdate) {
 					// re-fetch and render the collection after the model has been updated
-					page.fetchObservaties(page.fetchParams,true);
+					page.fetchAlarm_Regels(page.fetchParams,true);
 				}
 		},
 			error: function(model,response,scope){
@@ -367,16 +366,16 @@ var page = {
 
 		app.showProgress('modelLoader');
 
-		page.observatie.destroy({
+		page.alarm_Regel.destroy({
 			wait: true,
 			success: function(){
-				$('#observatieDetailDialog').modal('hide');
-				setTimeout("app.appendAlert('The Observatie record was deleted','alert-success',3000,'collectionAlert')",500);
+				$('#alarm_RegelDetailDialog').modal('hide');
+				setTimeout("app.appendAlert('The Alarm_Regel record was deleted','alert-success',3000,'collectionAlert')",500);
 				app.hideProgress('modelLoader');
 
 				if (model.reloadCollectionOnModelUpdate) {
 					// re-fetch and render the collection after the model has been updated
-					page.fetchObservaties(page.fetchParams,true);
+					page.fetchAlarm_Regels(page.fetchParams,true);
 				}
 			},
 			error: function(model,response,scope) {

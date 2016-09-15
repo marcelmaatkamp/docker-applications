@@ -5,7 +5,7 @@
 require_once("verysimple/Phreeze/Reporter.php");
 
 /**
- * This is an example Reporter based on the Alarm object.  The reporter object
+ * This is an example Reporter based on the Alarm_Regel object.  The reporter object
  * allows you to run arbitrary queries that return data which may or may not fith within
  * the data access API.  This can include aggregate data or subsets of data.
  *
@@ -15,19 +15,17 @@ require_once("verysimple/Phreeze/Reporter.php");
  * @author ClassBuilder
  * @version 1.0
  */
-class AlarmReporter extends Reporter
+class Alarm_RegelReporter extends Reporter
 {
 
 	// the properties in this class must match the columns returned by GetCustomQuery().
-	// 'CustomFieldExample' is an example that is not part of the `alarm_report` table
+	// 'CustomFieldExample' is an example that is not part of the `alarm_regel` table
 	public $CustomFieldExample;
 
 	public $Id;
 	public $Node;
 	public $Sensor;
-	public $Alarmtrigger;
-	public $Observatiewaarde;
-	public $Observatietijdstip;
+	public $AlarmTrigger;
 
 	/*
 	* GetCustomQuery returns a fully formed SQL statement.  The result columns
@@ -41,13 +39,11 @@ class AlarmReporter extends Reporter
 	{
 		$sql = "select
 			'custom value here...' as CustomFieldExample
-			,`alarm_report`.`Id` as Id
-			,`alarm_report`.`Node` as Node
-			,`alarm_report`.`Sensor` as Sensor
-			,`alarm_report`.`AlarmTrigger` as Alarmtrigger
-			,`alarm_report`.`ObservatieWaarde` as Observatiewaarde
-			,`alarm_report`.`ObservatieTijdstip` as Observatietijdstip
-		from `alarm_report`";
+			,`alarm_regel`.`id` as Id
+			,`alarm_regel`.`node` as Node
+			,`alarm_regel`.`sensor` as Sensor
+			,`alarm_regel`.`alarm_trigger` as AlarmTrigger
+		from `alarm_regel`";
 
 		// the criteria can be used or you can write your own custom logic.
 		// be sure to escape any user input with $criteria->Escape()
@@ -68,7 +64,7 @@ class AlarmReporter extends Reporter
 	*/
 	static function GetCustomCountQuery($criteria)
 	{
-		$sql = "select count(1) as counter from `alarm_report`";
+		$sql = "select count(1) as counter from `alarm_regel`";
 
 		// the criteria can be used or you can write your own custom logic.
 		// be sure to escape any user input with $criteria->Escape()

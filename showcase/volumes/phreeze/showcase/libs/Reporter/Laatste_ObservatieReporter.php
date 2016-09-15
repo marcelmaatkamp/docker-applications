@@ -5,7 +5,7 @@
 require_once("verysimple/Phreeze/Reporter.php");
 
 /**
- * This is an example Reporter based on the Alarm object.  The reporter object
+ * This is an example Reporter based on the Laatste_Observatie object.  The reporter object
  * allows you to run arbitrary queries that return data which may or may not fith within
  * the data access API.  This can include aggregate data or subsets of data.
  *
@@ -15,19 +15,18 @@ require_once("verysimple/Phreeze/Reporter.php");
  * @author ClassBuilder
  * @version 1.0
  */
-class AlarmReporter extends Reporter
+class Laatste_ObservatieReporter extends Reporter
 {
 
 	// the properties in this class must match the columns returned by GetCustomQuery().
-	// 'CustomFieldExample' is an example that is not part of the `alarm_report` table
+	// 'CustomFieldExample' is an example that is not part of the `laatste_observatie_per_node_sensor` table
 	public $CustomFieldExample;
 
-	public $Id;
+	public $Observatieid;
 	public $Node;
 	public $Sensor;
-	public $Alarmtrigger;
 	public $Observatiewaarde;
-	public $Observatietijdstip;
+	public $Observatiedatum;
 
 	/*
 	* GetCustomQuery returns a fully formed SQL statement.  The result columns
@@ -41,13 +40,12 @@ class AlarmReporter extends Reporter
 	{
 		$sql = "select
 			'custom value here...' as CustomFieldExample
-			,`alarm_report`.`Id` as Id
-			,`alarm_report`.`Node` as Node
-			,`alarm_report`.`Sensor` as Sensor
-			,`alarm_report`.`AlarmTrigger` as Alarmtrigger
-			,`alarm_report`.`ObservatieWaarde` as Observatiewaarde
-			,`alarm_report`.`ObservatieTijdstip` as Observatietijdstip
-		from `alarm_report`";
+			,`laatste_observatie_per_node_sensor`.`ObservatieId` as Observatieid
+			,`laatste_observatie_per_node_sensor`.`Node` as Node
+			,`laatste_observatie_per_node_sensor`.`Sensor` as Sensor
+			,`laatste_observatie_per_node_sensor`.`ObservatieWaarde` as Observatiewaarde
+			,`laatste_observatie_per_node_sensor`.`ObservatieDatum` as Observatiedatum
+		from `laatste_observatie_per_node_sensor`";
 
 		// the criteria can be used or you can write your own custom logic.
 		// be sure to escape any user input with $criteria->Escape()
@@ -68,7 +66,7 @@ class AlarmReporter extends Reporter
 	*/
 	static function GetCustomCountQuery($criteria)
 	{
-		$sql = "select count(1) as counter from `alarm_report`";
+		$sql = "select count(1) as counter from `laatste_observatie_per_node_sensor`";
 
 		// the criteria can be used or you can write your own custom logic.
 		// be sure to escape any user input with $criteria->Escape()
