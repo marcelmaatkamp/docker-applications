@@ -5,7 +5,7 @@
 require_once("verysimple/Phreeze/Criteria.php");
 
 /**
- * AlarmCriteria allows custom querying for the Alarm object.
+ * Laatste_ObservatieCriteria allows custom querying for the Laatste_Observatie object.
  *
  * WARNING: THIS IS AN AUTO-GENERATED FILE
  *
@@ -18,24 +18,24 @@ require_once("verysimple/Phreeze/Criteria.php");
  * @author ClassBuilder
  * @version 1.0
  */
-class AlarmCriteriaDAO extends Criteria
+class Laatste_ObservatieCriteriaDAO extends Criteria
 {
 
-	public $Id_Equals;
-	public $Id_NotEquals;
-	public $Id_IsLike;
-	public $Id_IsNotLike;
-	public $Id_BeginsWith;
-	public $Id_EndsWith;
-	public $Id_GreaterThan;
-	public $Id_GreaterThanOrEqual;
-	public $Id_LessThan;
-	public $Id_LessThanOrEqual;
-	public $Id_In;
-	public $Id_IsNotEmpty;
-	public $Id_IsEmpty;
-	public $Id_BitwiseOr;
-	public $Id_BitwiseAnd;
+	public $Observatieid_Equals;
+	public $Observatieid_NotEquals;
+	public $Observatieid_IsLike;
+	public $Observatieid_IsNotLike;
+	public $Observatieid_BeginsWith;
+	public $Observatieid_EndsWith;
+	public $Observatieid_GreaterThan;
+	public $Observatieid_GreaterThanOrEqual;
+	public $Observatieid_LessThan;
+	public $Observatieid_LessThanOrEqual;
+	public $Observatieid_In;
+	public $Observatieid_IsNotEmpty;
+	public $Observatieid_IsEmpty;
+	public $Observatieid_BitwiseOr;
+	public $Observatieid_BitwiseAnd;
 	public $Node_Equals;
 	public $Node_NotEquals;
 	public $Node_IsLike;
@@ -66,21 +66,6 @@ class AlarmCriteriaDAO extends Criteria
 	public $Sensor_IsEmpty;
 	public $Sensor_BitwiseOr;
 	public $Sensor_BitwiseAnd;
-	public $Alarmtrigger_Equals;
-	public $Alarmtrigger_NotEquals;
-	public $Alarmtrigger_IsLike;
-	public $Alarmtrigger_IsNotLike;
-	public $Alarmtrigger_BeginsWith;
-	public $Alarmtrigger_EndsWith;
-	public $Alarmtrigger_GreaterThan;
-	public $Alarmtrigger_GreaterThanOrEqual;
-	public $Alarmtrigger_LessThan;
-	public $Alarmtrigger_LessThanOrEqual;
-	public $Alarmtrigger_In;
-	public $Alarmtrigger_IsNotEmpty;
-	public $Alarmtrigger_IsEmpty;
-	public $Alarmtrigger_BitwiseOr;
-	public $Alarmtrigger_BitwiseAnd;
 	public $Observatiewaarde_Equals;
 	public $Observatiewaarde_NotEquals;
 	public $Observatiewaarde_IsLike;
@@ -96,21 +81,21 @@ class AlarmCriteriaDAO extends Criteria
 	public $Observatiewaarde_IsEmpty;
 	public $Observatiewaarde_BitwiseOr;
 	public $Observatiewaarde_BitwiseAnd;
-	public $Observatietijdstip_Equals;
-	public $Observatietijdstip_NotEquals;
-	public $Observatietijdstip_IsLike;
-	public $Observatietijdstip_IsNotLike;
-	public $Observatietijdstip_BeginsWith;
-	public $Observatietijdstip_EndsWith;
-	public $Observatietijdstip_GreaterThan;
-	public $Observatietijdstip_GreaterThanOrEqual;
-	public $Observatietijdstip_LessThan;
-	public $Observatietijdstip_LessThanOrEqual;
-	public $Observatietijdstip_In;
-	public $Observatietijdstip_IsNotEmpty;
-	public $Observatietijdstip_IsEmpty;
-	public $Observatietijdstip_BitwiseOr;
-	public $Observatietijdstip_BitwiseAnd;
+	public $Observatiedatum_Equals;
+	public $Observatiedatum_NotEquals;
+	public $Observatiedatum_IsLike;
+	public $Observatiedatum_IsNotLike;
+	public $Observatiedatum_BeginsWith;
+	public $Observatiedatum_EndsWith;
+	public $Observatiedatum_GreaterThan;
+	public $Observatiedatum_GreaterThanOrEqual;
+	public $Observatiedatum_LessThan;
+	public $Observatiedatum_LessThanOrEqual;
+	public $Observatiedatum_In;
+	public $Observatiedatum_IsNotEmpty;
+	public $Observatiedatum_IsEmpty;
+	public $Observatiedatum_BitwiseOr;
+	public $Observatiedatum_BitwiseAnd;
 
 }
 

@@ -3,10 +3,10 @@
 
 /** import supporting libraries */
 require_once("AppBaseController.php");
-require_once("Model/Alarm.php");
+require_once("Model/Alarm_Notificatie.php");
 
 /**
- * AlarmController is the controller class for the Alarm object.  The
+ * Alarm_NotificatieController is the controller class for the Alarm_Notificatie object.  The
  * controller is responsible for processing input from the user, reading/updating
  * the model as necessary and displaying the appropriate view.
  *
@@ -14,7 +14,7 @@ require_once("Model/Alarm.php");
  * @author ClassBuilder
  * @version 1.0
  */
-class AlarmController extends AppBaseController
+class Alarm_NotificatieController extends AppBaseController
 {
 
 	/**
@@ -33,7 +33,7 @@ class AlarmController extends AppBaseController
 	}
 
 	/**
-	 * Displays a list view of Alarm objects
+	 * Displays a list view of Alarm_Notificatie objects
 	 */
 	public function ListView()
 	{
@@ -41,19 +41,18 @@ class AlarmController extends AppBaseController
 	}
 
 	/**
-	 * API Method queries for Alarm records and render as JSON
+	 * API Method queries for Alarm_Notificatie records and render as JSON
 	 */
 	public function Query()
 	{
 		try
 		{
-			$criteria = new AlarmCriteria();
-			$criteria->SetOrder('Id',true);
+			$criteria = new Alarm_NotificatieCriteria();
 			
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');
 			if ($filter) $criteria->AddFilter(
-				new CriteriaFilter('Id,Node,Sensor,Alarmtrigger,Observatiewaarde,Observatietijdstip'
+				new CriteriaFilter('Id,AlarmRegel,Kanaal,P1,P2,P3,P4,Meldingtekst'
 				, '%'.$filter.'%')
 			);
 
@@ -88,18 +87,18 @@ class AlarmController extends AppBaseController
 				// if page is specified, use this instead (at the expense of one extra count query)
 				$pagesize = $this->GetDefaultPageSize();
 
-				$alarmen = $this->Phreezer->Query('Alarm',$criteria)->GetDataPage($page, $pagesize);
-				$output->rows = $alarmen->ToObjectArray(true,$this->SimpleObjectParams());
-				$output->totalResults = $alarmen->TotalResults;
-				$output->totalPages = $alarmen->TotalPages;
-				$output->pageSize = $alarmen->PageSize;
-				$output->currentPage = $alarmen->CurrentPage;
+				$alarm_notificaties = $this->Phreezer->Query('Alarm_Notificatie',$criteria)->GetDataPage($page, $pagesize);
+				$output->rows = $alarm_notificaties->ToObjectArray(true,$this->SimpleObjectParams());
+				$output->totalResults = $alarm_notificaties->TotalResults;
+				$output->totalPages = $alarm_notificaties->TotalPages;
+				$output->pageSize = $alarm_notificaties->PageSize;
+				$output->currentPage = $alarm_notificaties->CurrentPage;
 			}
 			else
 			{
 				// return all results
-				$alarmen = $this->Phreezer->Query('Alarm',$criteria);
-				$output->rows = $alarmen->ToObjectArray(true, $this->SimpleObjectParams());
+				$alarm_notificaties = $this->Phreezer->Query('Alarm_Notificatie',$criteria);
+				$output->rows = $alarm_notificaties->ToObjectArray(true, $this->SimpleObjectParams());
 				$output->totalResults = count($output->rows);
 				$output->totalPages = 1;
 				$output->pageSize = $output->totalResults;
@@ -116,15 +115,15 @@ class AlarmController extends AppBaseController
 	}
 
 	/**
-	 * API Method retrieves a single Alarm record and render as JSON
+	 * API Method retrieves a single Alarm_Notificatie record and render as JSON
 	 */
 	public function Read()
 	{
 		try
 		{
 			$pk = $this->GetRouter()->GetUrlParam('id');
-			$alarm = $this->Phreezer->Get('Alarm',$pk);
-			$this->RenderJSON($alarm, $this->JSONPCallback(), true, $this->SimpleObjectParams());
+			$alarm_notificatie = $this->Phreezer->Get('Alarm_Notificatie',$pk);
+			$this->RenderJSON($alarm_notificatie, $this->JSONPCallback(), true, $this->SimpleObjectParams());
 		}
 		catch (Exception $ex)
 		{
@@ -133,14 +132,12 @@ class AlarmController extends AppBaseController
 	}
 
 	/**
-	 * API Method inserts a new Alarm record and render response as JSON
+	 * API Method inserts a new Alarm_Notificatie record and render response as JSON
 	 */
 	public function Create()
 	{
 		try
 		{
-			// TODO: views are read-only by default.  uncomment at your own discretion
-			throw new Exception('Database views are read-only and cannot be updated');
 						
 			$json = json_decode(RequestUtil::GetBody());
 
@@ -149,19 +146,23 @@ class AlarmController extends AppBaseController
 				throw new Exception('The request body does not contain valid JSON');
 			}
 
-			$alarm = new Alarm($this->Phreezer);
+			$alarm_notificatie = new Alarm_Notificatie($this->Phreezer);
 
 			// TODO: any fields that should not be inserted by the user should be commented out
 
-			$alarm->Id = $this->SafeGetVal($json, 'id');
-			$alarm->Node = $this->SafeGetVal($json, 'node');
-			$alarm->Sensor = $this->SafeGetVal($json, 'sensor');
-			$alarm->Alarmtrigger = $this->SafeGetVal($json, 'alarmtrigger');
-			$alarm->Observatiewaarde = $this->SafeGetVal($json, 'observatiewaarde');
-			$alarm->Observatietijdstip = date('Y-m-d H:i:s',strtotime($this->SafeGetVal($json, 'observatietijdstip')));
+			// this is an auto-increment.  uncomment if updating is allowed
+			// $alarm_notificatie->Id = $this->SafeGetVal($json, 'id');
 
-			$alarm->Validate();
-			$errors = $alarm->GetValidationErrors();
+			$alarm_notificatie->AlarmRegel = $this->SafeGetVal($json, 'alarmRegel');
+			$alarm_notificatie->Kanaal = $this->SafeGetVal($json, 'kanaal');
+			$alarm_notificatie->P1 = $this->SafeGetVal($json, 'p1');
+			$alarm_notificatie->P2 = $this->SafeGetVal($json, 'p2');
+			$alarm_notificatie->P3 = $this->SafeGetVal($json, 'p3');
+			$alarm_notificatie->P4 = $this->SafeGetVal($json, 'p4');
+			$alarm_notificatie->Meldingtekst = $this->SafeGetVal($json, 'meldingtekst');
+
+			$alarm_notificatie->Validate();
+			$errors = $alarm_notificatie->GetValidationErrors();
 
 			if (count($errors) > 0)
 			{
@@ -169,9 +170,8 @@ class AlarmController extends AppBaseController
 			}
 			else
 			{
-				// since the primary key is not auto-increment we must force the insert here
-				$alarm->Save(true);
-				$this->RenderJSON($alarm, $this->JSONPCallback(), true, $this->SimpleObjectParams());
+				$alarm_notificatie->Save();
+				$this->RenderJSON($alarm_notificatie, $this->JSONPCallback(), true, $this->SimpleObjectParams());
 			}
 
 		}
@@ -182,14 +182,12 @@ class AlarmController extends AppBaseController
 	}
 
 	/**
-	 * API Method updates an existing Alarm record and render response as JSON
+	 * API Method updates an existing Alarm_Notificatie record and render response as JSON
 	 */
 	public function Update()
 	{
 		try
 		{
-			// TODO: views are read-only by default.  uncomment at your own discretion
-			throw new Exception('Database views are read-only and cannot be updated');
 						
 			$json = json_decode(RequestUtil::GetBody());
 
@@ -199,21 +197,23 @@ class AlarmController extends AppBaseController
 			}
 
 			$pk = $this->GetRouter()->GetUrlParam('id');
-			$alarm = $this->Phreezer->Get('Alarm',$pk);
+			$alarm_notificatie = $this->Phreezer->Get('Alarm_Notificatie',$pk);
 
 			// TODO: any fields that should not be updated by the user should be commented out
 
 			// this is a primary key.  uncomment if updating is allowed
-			// $alarm->Id = $this->SafeGetVal($json, 'id', $alarm->Id);
+			// $alarm_notificatie->Id = $this->SafeGetVal($json, 'id', $alarm_notificatie->Id);
 
-			$alarm->Node = $this->SafeGetVal($json, 'node', $alarm->Node);
-			$alarm->Sensor = $this->SafeGetVal($json, 'sensor', $alarm->Sensor);
-			$alarm->Alarmtrigger = $this->SafeGetVal($json, 'alarmtrigger', $alarm->Alarmtrigger);
-			$alarm->Observatiewaarde = $this->SafeGetVal($json, 'observatiewaarde', $alarm->Observatiewaarde);
-			$alarm->Observatietijdstip = date('Y-m-d H:i:s',strtotime($this->SafeGetVal($json, 'observatietijdstip', $alarm->Observatietijdstip)));
+			$alarm_notificatie->AlarmRegel = $this->SafeGetVal($json, 'alarmRegel', $alarm_notificatie->AlarmRegel);
+			$alarm_notificatie->Kanaal = $this->SafeGetVal($json, 'kanaal', $alarm_notificatie->Kanaal);
+			$alarm_notificatie->P1 = $this->SafeGetVal($json, 'p1', $alarm_notificatie->P1);
+			$alarm_notificatie->P2 = $this->SafeGetVal($json, 'p2', $alarm_notificatie->P2);
+			$alarm_notificatie->P3 = $this->SafeGetVal($json, 'p3', $alarm_notificatie->P3);
+			$alarm_notificatie->P4 = $this->SafeGetVal($json, 'p4', $alarm_notificatie->P4);
+			$alarm_notificatie->Meldingtekst = $this->SafeGetVal($json, 'meldingtekst', $alarm_notificatie->Meldingtekst);
 
-			$alarm->Validate();
-			$errors = $alarm->GetValidationErrors();
+			$alarm_notificatie->Validate();
+			$errors = $alarm_notificatie->GetValidationErrors();
 
 			if (count($errors) > 0)
 			{
@@ -221,8 +221,8 @@ class AlarmController extends AppBaseController
 			}
 			else
 			{
-				$alarm->Save();
-				$this->RenderJSON($alarm, $this->JSONPCallback(), true, $this->SimpleObjectParams());
+				$alarm_notificatie->Save();
+				$this->RenderJSON($alarm_notificatie, $this->JSONPCallback(), true, $this->SimpleObjectParams());
 			}
 
 
@@ -230,34 +230,25 @@ class AlarmController extends AppBaseController
 		catch (Exception $ex)
 		{
 
-			// this table does not have an auto-increment primary key, so it is semantically correct to
-			// issue a REST PUT request, however we have no way to know whether to insert or update.
-			// if the record is not found, this exception will indicate that this is an insert request
-			if (is_a($ex,'NotFoundException'))
-			{
-				return $this->Create();
-			}
 
 			$this->RenderExceptionJSON($ex);
 		}
 	}
 
 	/**
-	 * API Method deletes an existing Alarm record and render response as JSON
+	 * API Method deletes an existing Alarm_Notificatie record and render response as JSON
 	 */
 	public function Delete()
 	{
 		try
 		{
-			// TODO: views are read-only by default.  uncomment at your own discretion
-			throw new Exception('Database views are read-only and cannot be updated');
 						
 			// TODO: if a soft delete is prefered, change this to update the deleted flag instead of hard-deleting
 
 			$pk = $this->GetRouter()->GetUrlParam('id');
-			$alarm = $this->Phreezer->Get('Alarm',$pk);
+			$alarm_notificatie = $this->Phreezer->Get('Alarm_Notificatie',$pk);
 
-			$alarm->Delete();
+			$alarm_notificatie->Delete();
 
 			$output = new stdClass();
 

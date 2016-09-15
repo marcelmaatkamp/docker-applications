@@ -6,8 +6,8 @@ require_once("verysimple/Phreeze/IDaoMap.php");
 require_once("verysimple/Phreeze/IDaoMap2.php");
 
 /**
- * AlarmMap is a static class with functions used to get FieldMap and KeyMap information that
- * is used by Phreeze to map the AlarmDAO to the alarm_report datastore.
+ * Laatste_ObservatieMap is a static class with functions used to get FieldMap and KeyMap information that
+ * is used by Phreeze to map the Laatste_ObservatieDAO to the laatste_observatie_per_node_sensor datastore.
  *
  * WARNING: THIS IS AN AUTO-GENERATED FILE
  *
@@ -19,7 +19,7 @@ require_once("verysimple/Phreeze/IDaoMap2.php");
  * @author ClassBuilder
  * @version 1.0
  */
-class AlarmMap implements IDaoMap, IDaoMap2
+class Laatste_ObservatieMap implements IDaoMap, IDaoMap2
 {
 
 	private static $KM;
@@ -51,12 +51,11 @@ class AlarmMap implements IDaoMap, IDaoMap2
 		if (self::$FM == null)
 		{
 			self::$FM = Array();
-			self::$FM["Id"] = new FieldMap("Id","alarm_report","Id",true,FM_TYPE_BIGINT,20,null,false);
-			self::$FM["Node"] = new FieldMap("Node","alarm_report","Node",false,FM_TYPE_VARCHAR,255,null,false);
-			self::$FM["Sensor"] = new FieldMap("Sensor","alarm_report","Sensor",false,FM_TYPE_VARCHAR,255,null,false);
-			self::$FM["Alarmtrigger"] = new FieldMap("Alarmtrigger","alarm_report","AlarmTrigger",false,FM_TYPE_VARCHAR,255,null,false);
-			self::$FM["Observatiewaarde"] = new FieldMap("Observatiewaarde","alarm_report","ObservatieWaarde",false,FM_TYPE_VARCHAR,255,null,false);
-			self::$FM["Observatietijdstip"] = new FieldMap("Observatietijdstip","alarm_report","ObservatieTijdstip",false,FM_TYPE_DATETIME,null,null,false);
+			self::$FM["Observatieid"] = new FieldMap("Observatieid","laatste_observatie_per_node_sensor","ObservatieId",true,FM_TYPE_BIGINT,20,null,false);
+			self::$FM["Node"] = new FieldMap("Node","laatste_observatie_per_node_sensor","Node",false,FM_TYPE_VARCHAR,255,null,false);
+			self::$FM["Sensor"] = new FieldMap("Sensor","laatste_observatie_per_node_sensor","Sensor",false,FM_TYPE_VARCHAR,255,null,false);
+			self::$FM["Observatiewaarde"] = new FieldMap("Observatiewaarde","laatste_observatie_per_node_sensor","ObservatieWaarde",false,FM_TYPE_VARCHAR,255,null,false);
+			self::$FM["Observatiedatum"] = new FieldMap("Observatiedatum","laatste_observatie_per_node_sensor","ObservatieDatum",false,FM_TYPE_DATETIME,null,null,false);
 		}
 		return self::$FM;
 	}
