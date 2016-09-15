@@ -16,11 +16,11 @@ require_once("verysimple/HTTP/RequestUtil.php");
 
 /** database connection settings */
 GlobalConfig::$CONNECTION_SETTING = new ConnectionSetting();
-GlobalConfig::$CONNECTION_SETTING->ConnectionString = "localhost:3307";
+GlobalConfig::$CONNECTION_SETTING->ConnectionString = "mysql:3306";
 GlobalConfig::$CONNECTION_SETTING->DBName = "showcase";
 GlobalConfig::$CONNECTION_SETTING->Username = "root";
 GlobalConfig::$CONNECTION_SETTING->Password = "my-secret-pw";
-GlobalConfig::$CONNECTION_SETTING->Type = "MySQLi";
+GlobalConfig::$CONNECTION_SETTING->Type = "MySQL";
 GlobalConfig::$CONNECTION_SETTING->Charset = "utf8";
 GlobalConfig::$CONNECTION_SETTING->Multibyte = true;
 // GlobalConfig::$CONNECTION_SETTING->BootstrapSQL = "SET SQL_BIG_SELECTS=1";

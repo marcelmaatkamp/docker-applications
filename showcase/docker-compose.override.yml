@@ -12,9 +12,15 @@ services:
    - MYSQL_ROOT_PASSWORD:my-secret-pw
   ports:
    - 81:80
- grails:
+<<<<<<< HEAD
+ domoticz:
   ports:
    - 8080:8080
+ phreeze:
+  ports:
+   - 82:80
+=======
+>>>>>>> 3e4aa9246a167b2c55ec67073f696ee04257a892
 
 volumes:
  showcase_mysql:
