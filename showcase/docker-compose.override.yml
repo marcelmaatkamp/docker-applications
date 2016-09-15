@@ -15,6 +15,9 @@ services:
  domoticz:
   ports:
    - 8080:8080
+ phreeze:
+  ports:
+   - 82:80
 
 volumes:
  showcase_mysql:
