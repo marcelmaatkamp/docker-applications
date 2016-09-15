@@ -82,31 +82,49 @@ GlobalConfig::$ROUTE_MAP = array(
 	'GET:logout' => array('route' => 'SecureExample.Logout'),
 		
 	// Alarm
-	'GET:alarmen' => array('route' => 'Alarm.ListView'),
+	'GET:alarms' => array('route' => 'Alarm.ListView'),
 	'GET:alarm/(:num)' => array('route' => 'Alarm.SingleView', 'params' => array('id' => 1)),
-	'GET:api/alarmen' => array('route' => 'Alarm.Query'),
+	'GET:api/alarms' => array('route' => 'Alarm.Query'),
 	'POST:api/alarm' => array('route' => 'Alarm.Create'),
 	'GET:api/alarm/(:num)' => array('route' => 'Alarm.Read', 'params' => array('id' => 2)),
 	'PUT:api/alarm/(:num)' => array('route' => 'Alarm.Update', 'params' => array('id' => 2)),
 	'DELETE:api/alarm/(:num)' => array('route' => 'Alarm.Delete', 'params' => array('id' => 2)),
 		
-	// AlarmNotificatie
-	'GET:alarmnotificaties' => array('route' => 'AlarmNotificatie.ListView'),
-	'GET:alarmnotificatie/(:num)' => array('route' => 'AlarmNotificatie.SingleView', 'params' => array('id' => 1)),
-	'GET:api/alarmnotificaties' => array('route' => 'AlarmNotificatie.Query'),
-	'POST:api/alarmnotificatie' => array('route' => 'AlarmNotificatie.Create'),
-	'GET:api/alarmnotificatie/(:num)' => array('route' => 'AlarmNotificatie.Read', 'params' => array('id' => 2)),
-	'PUT:api/alarmnotificatie/(:num)' => array('route' => 'AlarmNotificatie.Update', 'params' => array('id' => 2)),
-	'DELETE:api/alarmnotificatie/(:num)' => array('route' => 'AlarmNotificatie.Delete', 'params' => array('id' => 2)),
+	// Alarm_Notificatie
+	'GET:alarm_notificaties' => array('route' => 'Alarm_Notificatie.ListView'),
+	'GET:alarm_notificatie/(:num)' => array('route' => 'Alarm_Notificatie.SingleView', 'params' => array('id' => 1)),
+	'GET:api/alarm_notificaties' => array('route' => 'Alarm_Notificatie.Query'),
+	'POST:api/alarm_notificatie' => array('route' => 'Alarm_Notificatie.Create'),
+	'GET:api/alarm_notificatie/(:num)' => array('route' => 'Alarm_Notificatie.Read', 'params' => array('id' => 2)),
+	'PUT:api/alarm_notificatie/(:num)' => array('route' => 'Alarm_Notificatie.Update', 'params' => array('id' => 2)),
+	'DELETE:api/alarm_notificatie/(:num)' => array('route' => 'Alarm_Notificatie.Delete', 'params' => array('id' => 2)),
 		
-	// AlarmRegel
-	'GET:alarmregels' => array('route' => 'AlarmRegel.ListView'),
-	'GET:alarmregel/(:num)' => array('route' => 'AlarmRegel.SingleView', 'params' => array('id' => 1)),
-	'GET:api/alarmregels' => array('route' => 'AlarmRegel.Query'),
-	'POST:api/alarmregel' => array('route' => 'AlarmRegel.Create'),
-	'GET:api/alarmregel/(:num)' => array('route' => 'AlarmRegel.Read', 'params' => array('id' => 2)),
-	'PUT:api/alarmregel/(:num)' => array('route' => 'AlarmRegel.Update', 'params' => array('id' => 2)),
-	'DELETE:api/alarmregel/(:num)' => array('route' => 'AlarmRegel.Delete', 'params' => array('id' => 2)),
+	// Alarm_Regel
+	'GET:alarm_regels' => array('route' => 'Alarm_Regel.ListView'),
+	'GET:alarm_regel/(:num)' => array('route' => 'Alarm_Regel.SingleView', 'params' => array('id' => 1)),
+	'GET:api/alarm_regels' => array('route' => 'Alarm_Regel.Query'),
+	'POST:api/alarm_regel' => array('route' => 'Alarm_Regel.Create'),
+	'GET:api/alarm_regel/(:num)' => array('route' => 'Alarm_Regel.Read', 'params' => array('id' => 2)),
+	'PUT:api/alarm_regel/(:num)' => array('route' => 'Alarm_Regel.Update', 'params' => array('id' => 2)),
+	'DELETE:api/alarm_regel/(:num)' => array('route' => 'Alarm_Regel.Delete', 'params' => array('id' => 2)),
+		
+	// Alarm
+	'GET:alarmen' => array('route' => 'Alarm.ListView'),
+	'GET:alarm/(:any)' => array('route' => 'Alarm.SingleView', 'params' => array('id' => 1)),
+	'GET:api/alarmen' => array('route' => 'Alarm.Query'),
+	'POST:api/alarm' => array('route' => 'Alarm.Create'),
+	'GET:api/alarm/(:any)' => array('route' => 'Alarm.Read', 'params' => array('id' => 2)),
+	'PUT:api/alarm/(:any)' => array('route' => 'Alarm.Update', 'params' => array('id' => 2)),
+	'DELETE:api/alarm/(:any)' => array('route' => 'Alarm.Delete', 'params' => array('id' => 2)),
+		
+	// Laatste_Observatie
+	'GET:laatste_observaties' => array('route' => 'Laatste_Observatie.ListView'),
+	'GET:laatste_observatie/(:any)' => array('route' => 'Laatste_Observatie.SingleView', 'params' => array('observatieid' => 1)),
+	'GET:api/laatste_observaties' => array('route' => 'Laatste_Observatie.Query'),
+	'POST:api/laatste_observatie' => array('route' => 'Laatste_Observatie.Create'),
+	'GET:api/laatste_observatie/(:any)' => array('route' => 'Laatste_Observatie.Read', 'params' => array('observatieid' => 2)),
+	'PUT:api/laatste_observatie/(:any)' => array('route' => 'Laatste_Observatie.Update', 'params' => array('observatieid' => 2)),
+	'DELETE:api/laatste_observatie/(:any)' => array('route' => 'Laatste_Observatie.Delete', 'params' => array('observatieid' => 2)),
 		
 	// Node
 	'GET:nodes' => array('route' => 'Node.ListView'),
@@ -134,6 +152,15 @@ GlobalConfig::$ROUTE_MAP = array(
 	'GET:api/sensor/(:any)' => array('route' => 'Sensor.Read', 'params' => array('sensorId' => 2)),
 	'PUT:api/sensor/(:any)' => array('route' => 'Sensor.Update', 'params' => array('sensorId' => 2)),
 	'DELETE:api/sensor/(:any)' => array('route' => 'Sensor.Delete', 'params' => array('sensorId' => 2)),
+		
+	// SensorNodeObservation
+	'GET:sensornodeobservations' => array('route' => 'SensorNodeObservation.ListView'),
+	'GET:sensornodeobservation/(:any)' => array('route' => 'SensorNodeObservation.SingleView', 'params' => array('node' => 1)),
+	'GET:api/sensornodeobservations' => array('route' => 'SensorNodeObservation.Query'),
+	'POST:api/sensornodeobservation' => array('route' => 'SensorNodeObservation.Create'),
+	'GET:api/sensornodeobservation/(:any)' => array('route' => 'SensorNodeObservation.Read', 'params' => array('node' => 2)),
+	'PUT:api/sensornodeobservation/(:any)' => array('route' => 'SensorNodeObservation.Update', 'params' => array('node' => 2)),
+	'DELETE:api/sensornodeobservation/(:any)' => array('route' => 'SensorNodeObservation.Delete', 'params' => array('node' => 2)),
 
 	// catch any broken API urls
 	'GET:api/(:any)' => array('route' => 'Default.ErrorApi404'),

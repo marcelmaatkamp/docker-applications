@@ -48,11 +48,12 @@ class AlarmController extends AppBaseController
 		try
 		{
 			$criteria = new AlarmCriteria();
+			$criteria->SetOrder('Id',true);
 			
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');
 			if ($filter) $criteria->AddFilter(
-				new CriteriaFilter('Id,AlarmRegel,Observatie'
+				new CriteriaFilter('Id,Node,Sensor,Alarmtrigger,Observatiewaarde,Observatietijdstip'
 				, '%'.$filter.'%')
 			);
 
@@ -138,6 +139,8 @@ class AlarmController extends AppBaseController
 	{
 		try
 		{
+			// TODO: views are read-only by default.  uncomment at your own discretion
+			throw new Exception('Database views are read-only and cannot be updated');
 						
 			$json = json_decode(RequestUtil::GetBody());
 
@@ -150,11 +153,12 @@ class AlarmController extends AppBaseController
 
 			// TODO: any fields that should not be inserted by the user should be commented out
 
-			// this is an auto-increment.  uncomment if updating is allowed
-			// $alarm->Id = $this->SafeGetVal($json, 'id');
-
-			$alarm->AlarmRegel = $this->SafeGetVal($json, 'alarmRegel');
-			$alarm->Observatie = $this->SafeGetVal($json, 'observatie');
+			$alarm->Id = $this->SafeGetVal($json, 'id');
+			$alarm->Node = $this->SafeGetVal($json, 'node');
+			$alarm->Sensor = $this->SafeGetVal($json, 'sensor');
+			$alarm->Alarmtrigger = $this->SafeGetVal($json, 'alarmtrigger');
+			$alarm->Observatiewaarde = $this->SafeGetVal($json, 'observatiewaarde');
+			$alarm->Observatietijdstip = date('Y-m-d H:i:s',strtotime($this->SafeGetVal($json, 'observatietijdstip')));
 
 			$alarm->Validate();
 			$errors = $alarm->GetValidationErrors();
@@ -165,7 +169,8 @@ class AlarmController extends AppBaseController
 			}
 			else
 			{
-				$alarm->Save();
+				// since the primary key is not auto-increment we must force the insert here
+				$alarm->Save(true);
 				$this->RenderJSON($alarm, $this->JSONPCallback(), true, $this->SimpleObjectParams());
 			}
 
@@ -183,6 +188,8 @@ class AlarmController extends AppBaseController
 	{
 		try
 		{
+			// TODO: views are read-only by default.  uncomment at your own discretion
+			throw new Exception('Database views are read-only and cannot be updated');
 						
 			$json = json_decode(RequestUtil::GetBody());
 
@@ -199,8 +206,11 @@ class AlarmController extends AppBaseController
 			// this is a primary key.  uncomment if updating is allowed
 			// $alarm->Id = $this->SafeGetVal($json, 'id', $alarm->Id);
 
-			$alarm->AlarmRegel = $this->SafeGetVal($json, 'alarmRegel', $alarm->AlarmRegel);
-			$alarm->Observatie = $this->SafeGetVal($json, 'observatie', $alarm->Observatie);
+			$alarm->Node = $this->SafeGetVal($json, 'node', $alarm->Node);
+			$alarm->Sensor = $this->SafeGetVal($json, 'sensor', $alarm->Sensor);
+			$alarm->Alarmtrigger = $this->SafeGetVal($json, 'alarmtrigger', $alarm->Alarmtrigger);
+			$alarm->Observatiewaarde = $this->SafeGetVal($json, 'observatiewaarde', $alarm->Observatiewaarde);
+			$alarm->Observatietijdstip = date('Y-m-d H:i:s',strtotime($this->SafeGetVal($json, 'observatietijdstip', $alarm->Observatietijdstip)));
 
 			$alarm->Validate();
 			$errors = $alarm->GetValidationErrors();
@@ -220,6 +230,13 @@ class AlarmController extends AppBaseController
 		catch (Exception $ex)
 		{
 
+			// this table does not have an auto-increment primary key, so it is semantically correct to
+			// issue a REST PUT request, however we have no way to know whether to insert or update.
+			// if the record is not found, this exception will indicate that this is an insert request
+			if (is_a($ex,'NotFoundException'))
+			{
+				return $this->Create();
+			}
 
 			$this->RenderExceptionJSON($ex);
 		}
@@ -232,6 +249,8 @@ class AlarmController extends AppBaseController
 	{
 		try
 		{
+			// TODO: views are read-only by default.  uncomment at your own discretion
+			throw new Exception('Database views are read-only and cannot be updated');
 						
 			// TODO: if a soft delete is prefered, change this to update the deleted flag instead of hard-deleting
 

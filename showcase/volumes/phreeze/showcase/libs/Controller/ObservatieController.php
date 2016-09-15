@@ -48,6 +48,7 @@ class ObservatieController extends AppBaseController
 		try
 		{
 			$criteria = new ObservatieCriteria();
+			$criteria->SetOrder('iD',true);
 			
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');

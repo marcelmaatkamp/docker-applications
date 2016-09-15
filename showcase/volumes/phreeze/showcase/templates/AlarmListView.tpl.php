@@ -35,16 +35,26 @@
 		<thead>
 			<tr>
 				<th id="header_Id">Id<% if (page.orderBy == 'Id') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_AlarmRegel">Alarm Regel<% if (page.orderBy == 'AlarmRegel') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_Observatie">Observatie<% if (page.orderBy == 'Observatie') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_Node">Node<% if (page.orderBy == 'Node') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_Sensor">Sensor<% if (page.orderBy == 'Sensor') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_Alarmtrigger">Alarmtrigger<% if (page.orderBy == 'Alarmtrigger') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_Observatiewaarde">Observatiewaarde<% if (page.orderBy == 'Observatiewaarde') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+
+				<th id="header_Observatietijdstip">Observatietijdstip<% if (page.orderBy == 'Observatietijdstip') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+
 			</tr>
 		</thead>
 		<tbody>
 		<% items.each(function(item) { %>
 			<tr id="<%= _.escape(item.get('id')) %>">
 				<td><%= _.escape(item.get('id') || '') %></td>
-				<td><%= _.escape(item.get('alarmRegel') || '') %></td>
-				<td><%= _.escape(item.get('observatie') || '') %></td>
+				<td><%= _.escape(item.get('node') || '') %></td>
+				<td><%= _.escape(item.get('sensor') || '') %></td>
+				<td><%= _.escape(item.get('alarmtrigger') || '') %></td>
+				<td><%= _.escape(item.get('observatiewaarde') || '') %></td>
+
+				<td><%if (item.get('observatietijdstip')) { %><%= _date(app.parseDate(item.get('observatietijdstip'))).format('MMM D, YYYY h:mm A') %><% } else { %>NULL<% } %></td>
+
 			</tr>
 		<% }); %>
 		</tbody>
@@ -60,21 +70,49 @@
 				<div id="idInputContainer" class="control-group">
 					<label class="control-label" for="id">Id</label>
 					<div class="controls inline-inputs">
-						<span class="input-xlarge uneditable-input" id="id"><%= _.escape(item.get('id') || '') %></span>
+						<input type="text" class="input-xlarge" id="id" placeholder="Id" value="<%= _.escape(item.get('id') || '') %>">
 						<span class="help-inline"></span>
 					</div>
 				</div>
-				<div id="alarmRegelInputContainer" class="control-group">
-					<label class="control-label" for="alarmRegel">Alarm Regel</label>
+				<div id="nodeInputContainer" class="control-group">
+					<label class="control-label" for="node">Node</label>
 					<div class="controls inline-inputs">
-						<select id="alarmRegel" name="alarmRegel"></select>
+						<input type="text" class="input-xlarge" id="node" placeholder="Node" value="<%= _.escape(item.get('node') || '') %>">
 						<span class="help-inline"></span>
 					</div>
 				</div>
-				<div id="observatieInputContainer" class="control-group">
-					<label class="control-label" for="observatie">Observatie</label>
+				<div id="sensorInputContainer" class="control-group">
+					<label class="control-label" for="sensor">Sensor</label>
 					<div class="controls inline-inputs">
-						<select id="observatie" name="observatie"></select>
+						<input type="text" class="input-xlarge" id="sensor" placeholder="Sensor" value="<%= _.escape(item.get('sensor') || '') %>">
+						<span class="help-inline"></span>
+					</div>
+				</div>
+				<div id="alarmtriggerInputContainer" class="control-group">
+					<label class="control-label" for="alarmtrigger">Alarmtrigger</label>
+					<div class="controls inline-inputs">
+						<input type="text" class="input-xlarge" id="alarmtrigger" placeholder="Alarmtrigger" value="<%= _.escape(item.get('alarmtrigger') || '') %>">
+						<span class="help-inline"></span>
+					</div>
+				</div>
+				<div id="observatiewaardeInputContainer" class="control-group">
+					<label class="control-label" for="observatiewaarde">Observatiewaarde</label>
+					<div class="controls inline-inputs">
+						<input type="text" class="input-xlarge" id="observatiewaarde" placeholder="Observatiewaarde" value="<%= _.escape(item.get('observatiewaarde') || '') %>">
+						<span class="help-inline"></span>
+					</div>
+				</div>
+				<div id="observatietijdstipInputContainer" class="control-group">
+					<label class="control-label" for="observatietijdstip">Observatietijdstip</label>
+					<div class="controls inline-inputs">
+						<div class="input-append date date-picker" data-date-format="yyyy-mm-dd">
+							<input id="observatietijdstip" type="text" value="<%= _date(app.parseDate(item.get('observatietijdstip'))).format('YYYY-MM-DD') %>" />
+							<span class="add-on"><i class="icon-calendar"></i></span>
+						</div>
+						<div class="input-append bootstrap-timepicker-component">
+							<input id="observatietijdstip-time" type="text" class="timepicker-default input-small" value="<%= _date(app.parseDate(item.get('observatietijdstip'))).format('h:mm A') %>" />
+							<span class="add-on"><i class="icon-time"></i></span>
+						</div>
 						<span class="help-inline"></span>
 					</div>
 				</div>

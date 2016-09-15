@@ -62,23 +62,24 @@
 						<a class="brand" href="./">SHOWCASE</a>
 						<div class="nav-collapse collapse">
 							<ul class="nav">
+								
 								<li <?php if ($this->nav=='nodes') { echo 'class="active"'; } ?>><a href="./nodes">Nodes</a></li>
 								<li <?php if ($this->nav=='sensoren') { echo 'class="active"'; } ?>><a href="./sensoren">Sensoren</a></li>
-								<li <?php if ($this->nav=='observaties') { echo 'class="active"'; } ?>><a href="./observaties">Observaties</a></li>
+								<li <?php if ($this->nav=='alarm_regels') { echo 'class="active"'; } ?>><a href="./alarm_regels">Alarm_Regels</a></li>
+								<li <?php if ($this->nav=='alarm_notificaties') { echo 'class="active"'; } ?>><a href="./alarm_notificaties">Alarm_Notificaties</a></li>
 								<li>&nbsp;  &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; </li>
+								<li <?php if ($this->nav=='laatste_observaties') { echo 'class="active"'; } ?>><a href="./laatste_observaties">Laatste_Observaties</a></li>		
 								<li <?php if ($this->nav=='alarmen') { echo 'class="active"'; } ?>><a href="./alarmen">Alarmen</a></li>
-								<li <?php if ($this->nav=='alarmregels') { echo 'class="active"'; } ?>><a href="./alarmregels">AlarmRegels</a></li>
-								<li <?php if ($this->nav=='alarmnotificaties') { echo 'class="active"'; } ?>><a href="./alarmnotificaties">AlarmNotificaties</a></li>
 								<li>&nbsp;  &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; </li>
-										
 								
 							</ul>
 							<ul class="nav">
 								<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>
 								<ul class="dropdown-menu">
+								
 								<li <?php if ($this->nav=='observaties') { echo 'class="active"'; } ?>><a href="./observaties">Observaties</a></li>
-								<li <?php if ($this->nav=='sensoren') { echo 'class="active"'; } ?>><a href="./sensoren">Sensoren</a></li>
+								
 								</ul>
 								</li>
 							</ul>
