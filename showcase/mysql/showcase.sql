@@ -6,6 +6,8 @@
 -- Generation Time: Sep 13, 2016 at 06:03 AM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.24
+create database showcase;
+use showcase;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";

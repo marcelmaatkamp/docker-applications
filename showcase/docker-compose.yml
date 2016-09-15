@@ -35,8 +35,8 @@ services:
   environment:
    - MYSQL_ROOT_PASSWORD=my-secret-pw
   volumes:
-   - ./volumes/mysql:/var/lib/mysql
-   - ./mysql:/docker-entrypoint-initdb.d
+   - ./volumes/mysql:/var/lib/mysql/
+   - ./mysql:/docker-entrypoint-initdb.d/
   networks:
     mynet:
       ipv4_address: 172.25.0.4
