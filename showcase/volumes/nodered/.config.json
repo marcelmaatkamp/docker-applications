@@ -457,7 +457,7 @@
   },
   "node-red-contrib-chatbot": {
    "name": "node-red-contrib-chatbot",
-   "version": "0.5.11",
+   "version": "0.5.10",
    "nodes": {
     "chatbot-message": {
      "name": "chatbot-message",
