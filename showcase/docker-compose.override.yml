@@ -3,7 +3,7 @@ version: '2'
 services:
  rabbitmq:
   ports:
-   - 15673:15672
+   - 15672:15672
  mysql:
   volumes:
    - showcase_mysql:/var/lib/mysql
