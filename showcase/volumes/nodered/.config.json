@@ -457,7 +457,7 @@
   },
   "node-red-contrib-chatbot": {
    "name": "node-red-contrib-chatbot",
-   "version": "0.5.10",
+   "version": "0.5.13",
    "nodes": {
     "chatbot-message": {
      "name": "chatbot-message",
@@ -653,6 +653,15 @@
      "enabled": true,
      "module": "node-red-contrib-chatbot",
      "file": "/node-red/node_modules/node-red-contrib-chatbot/chatbot-rivescript.js"
+    },
+    "chatbot-language": {
+     "name": "chatbot-language",
+     "types": [
+      "chatbot-language"
+     ],
+     "enabled": true,
+     "module": "node-red-contrib-chatbot",
+     "file": "/node-red/node_modules/node-red-contrib-chatbot/chatbot-language.js"
     }
    }
   },

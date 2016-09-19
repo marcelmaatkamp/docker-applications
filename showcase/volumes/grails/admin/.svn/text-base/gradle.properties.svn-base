@@ -1,6 +1,0 @@
-grailsVersion=3.1.9
-gradleWrapperVersion=2.13
-org.gradle.daemon=true
-org.gradle.parallel=true
-org.gradle.jvmargs="-Xmx8096m"
-org.gradle.configureondemand=true

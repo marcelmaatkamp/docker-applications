@@ -28,12 +28,15 @@ services:
     mynet:
       ipv4_address: 172.25.0.3
 
- mongodb:
-  image: mongo
+ mysql:
+  image: mysql
   restart: always
-  volumes:
-   - "./volumes/mongodb/database:/data/db"
-   - "./volumes/mongodb/config:/data/configdb"
+  hostname: mysql
+  environment:
+   - MYSQL_ROOT_PASSWORD=my-secret-pw
+  # volumes:
+  #  - ./volumes/mysql:/var/lib/mysql/
+  #  - ./mysql:/docker-entrypoint-initdb.d/
   networks:
     mynet:
       ipv4_address: 172.25.0.4
@@ -42,89 +45,53 @@ services:
   build: raptor-node-red
   restart: always
   hostname: nodered
+  depends_on:
+   - rabbitmq
+   - mysql
   links:
    - rabbitmq:rabbitmq
-   - mongodb:mongodb
    - mysql:mysql
   ports:
    - 1880:1880
   volumes:
    - ./volumes/nodered:/node-red-data/
-  environment: 
-   - TELEGRAM_BOT=221611837:AAGCjDOlCF0kGKvh3TdgyimaeZAhbT2EXu8
-   - TELEGRAM_BOT_SPARKY=221611837:AAGCjDOlCF0kGKvh3TdgyimaeZAhbT2EXu8
-   - TELEGRAM_BOT_SPOT=257187787:AAH6ukcTh17o8TfWmLdmAV3MkAcmwHElS90
+  # environment:
+  #  - SHOWCASE_MQTT_USER=70B3D57ED0000B7E
+  #  - SHOWCASE_MQTT_PASSWORD=tsCycz92q6xhIeHCRjWhD38XjHBOz5uZUJ7y9hSmfRA=
+  #  - SHOWCASE_TELEGRAM_TOKEN=221611837:AAGCjDOlCF0kGKvh3TdgyimaeZAhbT2EXu8
   networks:
     mynet:
       ipv4_address: 172.25.0.5
-
- domoticz:
-  image:  sdesbure/domoticz
-  restart: always
-  links:
-   - rabbitmq:rabbitmq
-   - mongodb:mongodb
-#  ports:
-#   - 443:443
-#   - 8080:8080 
-#   - 6144:6144
-  volumes:
-   - /etc/localtime:/etc/localtime:ro
-   - ./volumes/domoticz:/config
-  networks:
-    mynet:
-      ipv4_address: 172.25.0.6
-
- mysql:
-  image: mysql/mysql-server:latest
-  restart: always
-  hostname: mysql
-  environment:
-   - MYSQL_ROOT_PASSWORD=my-secret-pw
-  volumes:
-   - ./volumes/mysql:/var/lib/mysql
-  networks:
-    mynet:
-      ipv4_address: 172.25.0.8
 
  phpmyadmin:
   image: phpmyadmin/phpmyadmin
   restart: always
   hostname: phpmyadmin
+# ports:
+#  - 8080:80
+  depends_on:
+   - mysql
   links:
    - mysql:db
   volumes:
    - ./volumes/phpmyadmin:/sessions
   networks:
     mynet:
-      ipv4_address: 172.25.0.9
+      ipv4_address: 172.25.0.6
 
- nexus3:
-  image: sonatype/nexus3
-  volumes:
-   - ./volumes/nexus3:/nexus-data
-# ports: 
-#  - 8081:8081
-  networks:
-   mynet:
-    ipv4_address: 172.25.0.10
-
- grails:
-  image: marcelmaatkamp/docker-grails 
-  restart: always
-  hostname: grails
-  volumes:
-   - ./volumes/grails/admin:/app:rw
+ phreeze:
+  image: marcelmaatkamp/phreeze
   links:
    - mysql:mysql
-   - mongodb:mongodb
-   - rabbitmq:rabbitmq
-   - nexus3:nexus3
-  environment:
-   - JAVA_OPTS=-Duser.timezone=UTC
+  depends_on:
+   - mysql
+  volumes:
+   - ./volumes/phreeze/showcase:/var/www/html/showcase
+#  ports:
+#   - 80:80
   networks:
    mynet:
-     ipv4_address: 172.25.0.100
+     ipv4_address: 172.25.0.7
 
 networks:
   mynet:
@@ -132,3 +99,6 @@ networks:
     ipam:
       config:
       - subnet: 172.25.0.0/24
+
+volumes:
+ nexus3:
