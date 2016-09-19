@@ -48,6 +48,8 @@ private:
   bool initSwitch();
   // initialize the Temperature stack
   bool initTemperature();
+  // initialize the LTC stack
+  bool initLTC();
 
   // The (optional) stream to show debug information.
   Stream* diagStream;
