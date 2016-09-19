@@ -6,12 +6,14 @@
 #include "Switch.h"
 #include "Voltage.h"
 #include "Temperature.h"
+#include "LTC2943.h"
 
 Hal HalImpl;
 Switch microSwitch(MICROSWITCH_PIN);
 Temperature tempSensor(DHTPIN);
 Voltage voltage(VOLT_PIN);
 Alive alive(ALIVE_INTERVAL * 1000);
+LTC ltc(1);
 
 Hal::Hal()
 {
@@ -48,6 +50,7 @@ bool Hal::initHal()
   initLora();
   initSwitch();
   initTemperature();
+  initLTC();
 }
 
 // Give the Hal time to do his work and check all the stuff
@@ -57,12 +60,11 @@ bool Hal::Update()
   tempSensor.Update();
   voltage.Update();
   alive.Update();
+  ltc.Update();
 }
 
 bool switchsensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg)
 {
-//  debugPrintLn("In Switch callback");
-
   SensorReading sensormsg = SensorReading_init_zero;
 
   /* Fill in the lucky number */
@@ -85,25 +87,20 @@ bool switchsensor_callback(pb_ostream_t *stream, const pb_field_t *field, void *
 
 bool tempsensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg)
 {
-//  debugPrintLn("In Temp callback");
-
   SensorReading sensormsg = SensorReading_init_zero;
 
   /* Fill in the lucky number */
   sensormsg.id = 2;
   sensormsg.has_id = true;
-  if (tempSensor.isValid())
+  if (ltc.isValid())
   {
-    sensormsg.value1 = tempSensor.getTemp();
+    sensormsg.value1 = (int32_t)(ltc.getTemp()*10);
     sensormsg.has_value1 = true;
-//    debugPrint("The temperature is:");
-//    debugPrintLn(tempSensor.getTemp());
   }
   else
   {
     sensormsg.error = 1;
     sensormsg.has_error = true;
-//    debugPrintLn("Temp gifs NAN");
   }
 
   /* This encodes the header for the field, based on the constant info
@@ -120,8 +117,6 @@ bool tempsensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * c
 
 bool humsensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg)
 {
-//  debugPrintLn("In Humidity callback");
-
   SensorReading sensormsg = SensorReading_init_zero;
 
   /* Fill in the lucky number */
@@ -131,14 +126,11 @@ bool humsensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * co
   {
     sensormsg.value1 = tempSensor.getHumidity();
     sensormsg.has_value1 = true;
-//    debugPrint("The humidity is:");
-//    debugPrintLn(tempSensor.getHumidity());
   }
   else
   {
     sensormsg.error = 1;
     sensormsg.has_error = true;
-//    debugPrintLn("Humidity gifs NAN");
   }
 
   /* This encodes the header for the field, based on the constant info
@@ -155,25 +147,80 @@ bool humsensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * co
 
 bool voltsensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg)
 {
-//  debugPrintLn("In Voltage callback");
-
   SensorReading sensormsg = SensorReading_init_zero;
 
   /* Fill in the lucky number */
   sensormsg.id = 4;
   sensormsg.has_id = true;
-  if (voltage.isValid())
+  if (ltc.isValid())
   {
-    sensormsg.value1 = voltage.getValue();
+    sensormsg.value1 = (int32_t)(ltc.getVoltage()*1000);
     sensormsg.has_value1 = true;
-//    debugPrint("The voltage is:");
-//    debugPrintLn(voltage.getValue());
   }
   else
   {
     sensormsg.error = 1;
     sensormsg.has_error = true;
-//    debugPrintLn("The voltage gifs an Error");
+  }
+
+  /* This encodes the header for the field, based on the constant info
+     from pb_field_t. */
+  if (!pb_encode_tag_for_field(stream, field))
+    return false;
+
+  /* This encodes the data for the field, based on our FileInfo structure. */
+  if (!pb_encode_submessage(stream, SensorReading_fields, &sensormsg))
+    return false;
+
+  return true;
+}
+
+bool currentsensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg)
+{
+  SensorReading sensormsg = SensorReading_init_zero;
+
+  /* Fill in the lucky number */
+  sensormsg.id = 5;
+  sensormsg.has_id = true;
+  if (ltc.isValid())
+  {
+    sensormsg.value1 = (int32_t)(ltc.getCurrent()*1000);
+    sensormsg.has_value1 = true;
+  }
+  else
+  {
+    sensormsg.error = 1;
+    sensormsg.has_error = true;
+  }
+
+  /* This encodes the header for the field, based on the constant info
+     from pb_field_t. */
+  if (!pb_encode_tag_for_field(stream, field))
+    return false;
+
+  /* This encodes the data for the field, based on our FileInfo structure. */
+  if (!pb_encode_submessage(stream, SensorReading_fields, &sensormsg))
+    return false;
+
+  return true;
+}
+
+bool chargesensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg)
+{
+  SensorReading sensormsg = SensorReading_init_zero;
+
+  /* Fill in the lucky number */
+  sensormsg.id = 6;
+  sensormsg.has_id = true;
+  if (ltc.isValid())
+  {
+    sensormsg.value1 = (int32_t)(ltc.getCharge()*1000);
+    sensormsg.has_value1 = true;
+  }
+  else
+  {
+    sensormsg.error = 1;
+    sensormsg.has_error = true;
   }
 
   /* This encodes the header for the field, based on the constant info
@@ -227,6 +274,9 @@ bool Hal::CheckAndAct()
       debugPrintLn(">");
     }
     HalImpl.sendMessage(buf, message_length);
+
+    // reset the Time Passed flag
+    alive.setCurrentTime();
   }
 
   // check alive timer
@@ -235,35 +285,19 @@ bool Hal::CheckAndAct()
     // reset the Time Passed flag
     alive.resetTimePassed();
 
-    //    // Read the value from the temp sensor, that is temp and humidity
-    //    String data = tempSensor.getData();
-    //    // Read the value from the voltage sensor
-    //    String volt = voltage.getData();
-    //    // print the values for debug
-    //    debugPrintLn(data + ";" + volt);
-    //
-    //    // make the message, fill the default
-    //    uint8_t alivePayload[] = { "Alive3;00.00;00.00;00.00" }; // temp;hum;voltage
-    //    char charArr[12];
-    //    // process the temperature and humidity
-    //    if (data.substring(0, 3) != "NAN" )
-    //    {
-    //      data.toCharArray(charArr, 12);
-    //      for (int i = 0; i < 12; i++)
-    //      {
-    //        alivePayload[i + 7] = (uint8_t)charArr[i];
-    //      }
-    //      alivePayload[18] = ';';
-    //    }
-    //    // process the voltage
-    //    volt.toCharArray(charArr, 5);
-    //    for (int i = 0; i < 4; i++)
-    //    {
-    //      alivePayload[i + 20] = (uint8_t)charArr[i];
-    //    }
-    //    // send the message
-    //    HalImpl.sendMessage(alivePayload, sizeof(alivePayload) - 1);
-
+  debugPrint("mAh: ");
+  debugPrint(ltc.getCharge(), 4);
+  debugPrint(F(" mAh\t"));
+  debugPrint(F("Current "));
+  debugPrint(ltc.getCurrent(), 4);
+  debugPrint(F(" A\t"));
+  debugPrint(F("Voltage "));
+  debugPrint(ltc.getVoltage(), 4);
+  debugPrint(F(" V\t"));
+  debugPrint(F("Temperature "));
+  debugPrint(ltc.getTemp(), 4);
+  debugPrint(F(" C\n"));
+  
     uint8_t buf2[128];
     size_t message_length;
 
@@ -347,6 +381,56 @@ bool Hal::CheckAndAct()
       debugPrintLn(">");
     }
 
+    // add the voltage data to the output buffer 
+    nodemsg2.reading.funcs.encode = &currentsensor_callback;
+
+    /* Now we are ready to encode the message! */
+    /* Then just check for any errors.. */
+    if (!pb_encode(&stream2, NodeMessage_fields, &nodemsg2))
+    {
+      debugPrint("Encoding failed: ");
+      debugPrintLn(PB_GET_ERROR(&stream2));
+    }
+    else
+    {
+      message_length = stream2.bytes_written;
+      debugPrint("message_length:");
+      debugPrintLn(message_length);
+      debugPrint("message:<");
+      for (uint8_t i = 0; i < message_length; i++)
+      {
+        debugPrint(buf2[i], HEX);
+        if (i < message_length - 1)
+          debugPrint(" ");
+      }
+      debugPrintLn(">");
+    }
+
+    // add the voltage data to the output buffer 
+    nodemsg2.reading.funcs.encode = &chargesensor_callback;
+
+    /* Now we are ready to encode the message! */
+    /* Then just check for any errors.. */
+    if (!pb_encode(&stream2, NodeMessage_fields, &nodemsg2))
+    {
+      debugPrint("Encoding failed: ");
+      debugPrintLn(PB_GET_ERROR(&stream2));
+    }
+    else
+    {
+      message_length = stream2.bytes_written;
+      debugPrint("message_length:");
+      debugPrintLn(message_length);
+      debugPrint("message:<");
+      for (uint8_t i = 0; i < message_length; i++)
+      {
+        debugPrint(buf2[i], HEX);
+        if (i < message_length - 1)
+          debugPrint(" ");
+      }
+      debugPrintLn(">");
+    }
+
     HalImpl.sendMessage(buf2, message_length);
   }
 }
@@ -393,6 +477,13 @@ bool Hal::initSwitch()
 // initialize the Lora stack
 bool Hal::initTemperature()
 {
+}
+
+// initialize the LTC stack
+bool Hal::initLTC()
+{
+  ltc.setDiag(debugSerial);
+  Wire.begin();
 }
 
 bool Hal::sendMessage(const uint8_t* payload, uint8_t size)

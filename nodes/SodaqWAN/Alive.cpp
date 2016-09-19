@@ -16,7 +16,7 @@
 Alive::Alive(long AliveFrequencyMillisValue)
 {
   AliveFrequencyMillis = AliveFrequencyMillisValue;
-  previousMillis = millis();
+  setCurrentTime();
   timePassed = false;
 }
  
@@ -30,9 +30,13 @@ void Alive::Update()
 
   if(currentMillis - previousMillis >= AliveFrequencyMillis)
   {
-    previousMillis = currentMillis;  // Remember the time
+    setCurrentTime();
     timePassed = true;
   }
 }
 
+void Alive::setCurrentTime()
+{
+  previousMillis = millis();
+}
 

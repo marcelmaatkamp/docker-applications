@@ -1,6 +1,51 @@
 var http = require('http');
 var express = require("express");
 var RED = require("node-red");
+var fs = require("fs");
+
+// read nodered flows
+var flows = JSON.parse(fs.readFileSync("/node-red-data/flows_nodered.json", "utf8"));
+var cred = JSON.parse(fs.readFileSync("/node-red-data/flows_nodered_cred.json", "utf8"));
+var credChanged  = false;
+
+function getFlowId(typeName) {
+    for (var i = 0, len = flows.length; i < len; i++) {
+        if (flows[i].type === typeName) {
+            return flows[i].id;
+        }
+    }
+    return null;
+}
+
+// change mqtt credentials
+var mqttUser = process.env.SHOWCASE_MQTT_USER;
+var mqttPassword = process.env.SHOWCASE_MQTT_PASSWORD;
+if (mqttUser !== undefined && mqttPassword !== undefined) {
+    // console.log ("Using MQTT user: " + mqttUser + " and password: " + mqttPassword);
+    var mqttCred = cred[getFlowId("mqtt-broker")];
+    if (mqttCred) {
+        mqttCred.user = mqttUser;
+        mqttCred.password = mqttPassword;
+        credChanged = true;
+    }
+}
+
+// change telegram credentials
+var telegramToken = process.env.SHOWCASE_TELEGRAM_TOKEN;
+if (telegramToken !== undefined) {
+    // console.log("Using Telegram token " + telegramToken);
+    var telegramCred = cred[getFlowId("telegram bot")];
+    if (telegramCred) {
+        telegramCred.token = telegramToken;
+        credChanged = true;
+    }
+}
+
+// save updated credentials
+if (credChanged) {
+    // console.log("Writing credentials: " + JSON.stringify(cred));
+    fs.writeFileSync("/node-red-data/flows_nodered_cred.json", JSON.stringify(cred),"utf8");
+}
 
 // Create an Express app
 var app = express();
@@ -13,9 +58,9 @@ var server = http.createServer(app);
 
 // Create the settings object - see default settings.js file for other options
 var settings = {
-    httpAdminRoot:"/",
+    httpAdminRoot: "/",
     httpNodeRoot: "/",
-    userDir:"/node-red-data/",
+    userDir: "/node-red-data/",
     functionGlobalContext: {
       safeEval: require("safe-eval"),
       protoBuf: require("protocol-buffers"),

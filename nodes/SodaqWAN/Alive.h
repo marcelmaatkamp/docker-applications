@@ -18,6 +18,7 @@ class Alive {
     Alive(long AliveFrequencyMillisValue);
     ~Alive();
     void Update();
+    void setCurrentTime();
     // Sets the optional "Diagnostics and Debug" stream.
     inline void setDiag(Stream& stream) {diagStream = &stream;};
     inline bool isTimePassed() {return timePassed;};
