@@ -76,7 +76,6 @@ CREATE TABLE IF NOT EXISTS `alarm_regel` (
   CONSTRAINT `FK_alarm_regel_node` FOREIGN KEY (`node`) REFERENCES `node` (`dev_eui`),
   CONSTRAINT `FK_alarm_regel_sensor` FOREIGN KEY (`sensor`) REFERENCES `sensor` (`sensor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `alarm_regel`
