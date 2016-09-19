@@ -1,23 +1,6 @@
-<<<<<<< HEAD
 drop database if exists showcase;
 create database showcase;
 use showcase;
-=======
--- phpMyAdmin SQL Dump
--- version 4.6.4
--- https://www.phpmyadmin.net/
---
--- Host: db
--- Generation Time: Sep 13, 2016 at 06:03 AM
--- Server version: 5.7.14
--- PHP Version: 5.6.24
-create database showcase;
-use showcase;
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
->>>>>>> 70b3fa065a72d1077bc8255e5d6edb516a8ba132
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
