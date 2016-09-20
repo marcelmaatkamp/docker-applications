@@ -1,9 +1,5 @@
 version: '2'
 services:
- mysql:
-  volumes:
-   - ./volumes/mysql:/var/lib/mysql/
-   - ./mysql:/docker-entrypoint-initdb.d/
  nodered:
   environment:
    - SHOWCASE_MQTT_USER=70B3D57ED0000107
