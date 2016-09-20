@@ -1,6 +1,5 @@
 version: '2'
 services:
- mysql:
  nodered:
   environment:
    - SHOWCASE_MQTT_USER=70B3D57ED0000105
