@@ -27,6 +27,13 @@ public:
   // Give the Hal time to do his work and check all the stuff
   bool Update();
 
+  // LSM303 code
+  int ax_o, ay_o, az_o;
+  int d_x, d_y, d_z;
+  bool hasMoved;
+  bool isMoved() {return hasMoved;};
+  int8_t LSM303_Update();
+
   bool CheckAndAct();
 
   bool sendMessage(const uint8_t* payload, uint8_t size);

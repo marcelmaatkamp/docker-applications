@@ -7,6 +7,8 @@
 #include "Voltage.h"
 #include "Temperature.h"
 #include "LTC2943.h"
+#include "LSM303.h"
+#include "HTU21DF.h"
 
 Hal HalImpl;
 Switch microSwitch(MICROSWITCH_PIN);
@@ -14,6 +16,8 @@ Temperature tempSensor(DHTPIN);
 Voltage voltage(VOLT_PIN);
 Alive alive(ALIVE_INTERVAL * 1000);
 LTC ltc(1);
+LSM303 compass;
+HTU21DF htu;
 
 Hal::Hal()
 {
@@ -51,6 +55,9 @@ bool Hal::initHal()
   initSwitch();
   initTemperature();
   initLTC();
+  compass.init();
+  compass.enableDefault();
+  htu.begin();
 }
 
 // Give the Hal time to do his work and check all the stuff
@@ -61,6 +68,26 @@ bool Hal::Update()
   voltage.Update();
   alive.Update();
   ltc.Update();
+  LSM303_Update();
+  htu.Update();
+}
+
+int8_t Hal::LSM303_Update()
+{
+  int offset = 700;
+  compass.read();
+
+  d_x = abs(compass.m.x - ax_o);
+  d_y = abs(compass.m.y - ay_o);
+  d_z = abs(compass.m.z - az_o);
+
+  if ( d_x > offset || d_y > offset || d_z > offset) 
+  {
+    hasMoved = true;
+  }
+  ax_o = compass.m.x;
+  ay_o = compass.m.y;
+  az_o = compass.m.z;
 }
 
 bool switchsensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg)
@@ -71,6 +98,28 @@ bool switchsensor_callback(pb_ostream_t *stream, const pb_field_t *field, void *
   sensormsg.id = 1;
   sensormsg.has_id = true;
   sensormsg.value1 = microSwitch.ReadState();
+  sensormsg.has_value1 = true;
+
+  /* This encodes the header for the field, based on the constant info
+     from pb_field_t. */
+  if (!pb_encode_tag_for_field(stream, field))
+    return false;
+
+  /* This encodes the data for the field, based on our FileInfo structure. */
+  if (!pb_encode_submessage(stream, SensorReading_fields, &sensormsg))
+    return false;
+
+  return true;
+}
+
+bool movesensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg)
+{
+  SensorReading sensormsg = SensorReading_init_zero;
+
+  /* Fill in the lucky number */
+  sensormsg.id = 7;
+  sensormsg.has_id = true;
+  sensormsg.value1 = 1;
   sensormsg.has_value1 = true;
 
   /* This encodes the header for the field, based on the constant info
@@ -122,9 +171,9 @@ bool humsensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * co
   /* Fill in the lucky number */
   sensormsg.id = 3;
   sensormsg.has_id = true;
-  if (tempSensor.isValid())
+  if (htu.isValid())
   {
-    sensormsg.value1 = tempSensor.getHumidity();
+    sensormsg.value1 = htu.getHum();
     sensormsg.has_value1 = true;
   }
   else
@@ -275,6 +324,47 @@ bool Hal::CheckAndAct()
     }
     HalImpl.sendMessage(buf, message_length);
 
+    // reset the Time Passed flag
+    alive.setCurrentTime();
+  }
+
+  //Read the state of the microSwitch
+  if (isMoved()) {
+    debugPrintLn("Box moved: ");
+    uint8_t buf[128];
+    size_t message_length;
+
+    NodeMessage nodemsg = NodeMessage_init_zero;
+
+    /* Create a stream that will write to our buffer. */
+    pb_ostream_t stream = pb_ostream_from_buffer(buf, sizeof(buf));
+
+    nodemsg.reading.funcs.encode = &movesensor_callback;
+
+    /* Now we are ready to encode the message! */
+    /* Then just check for any errors.. */
+    if (!pb_encode(&stream, NodeMessage_fields, &nodemsg))
+    {
+      debugPrint("Encoding failed: ");
+      debugPrintLn(PB_GET_ERROR(&stream));
+    }
+    else
+    {
+      message_length = stream.bytes_written;
+      debugPrint("message_length:");
+      debugPrintLn(message_length);
+      debugPrint("message:<");
+      for (uint8_t i = 0; i < message_length; i++)
+      {
+        debugPrint(buf[i], HEX);
+        if (i < message_length - 1)
+          debugPrint(" ");
+      }
+      debugPrintLn(">");
+    }
+    HalImpl.sendMessage(buf, message_length);
+
+    hasMoved = false;
     // reset the Time Passed flag
     alive.setCurrentTime();
   }
