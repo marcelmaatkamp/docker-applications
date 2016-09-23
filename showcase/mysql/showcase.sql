@@ -141,7 +141,7 @@ CREATE TABLE IF NOT EXISTS `sensor` (
 -- Dumping data for table `sensor`
 --
 
-INSERT INTO `sensor` (`sensor_id`, `omschrijving`) VALUES ('0','Keepalive'),('1','Schakelaar'),('2','Temperatuur'),('3','Luchtvochtigheid'),('4','Spanning (mVolt)'),('5','Stroomverbruik (Ah)');
+INSERT INTO `sensor` (`sensor_id`, `omschrijving`) VALUES ('0','Keepalive'),('1','Schakelaar'),('2','Temperatuur'),('3','Luchtvochtigheid'),('4','Spanning (mVolt)'),('5','Stroom (mA)'),('6','Verbruik (mAh)'),('7','Beweging');
             
 drop view if exists sensor_node_observation;
 
