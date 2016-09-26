@@ -43,18 +43,11 @@ RUN npm install oracledb
 # install node-red and extra's
 RUN npm install
 
-# Install other software
-RUN npm install node-red-contrib-slack
-RUN npm install node-red-contrib-chatbot node-red-contrib-telegrambot
-
-RUN apt-get update && apt-get install -y libprotobuf-dev pkg-config
-RUN npm install node-protobuf
-
 # expose port
 EXPOSE 1880
+
+VOLUME ["/node-red/node_modules","/node-red","/node-red-data"]
+
 # Set the default command to execute
 # when creating a new container
-
-VOLUME /node-red-data
-
 CMD ["node", "server"]
