@@ -10,6 +10,9 @@ services:
 #   - 9000:9000
   volumes:
    - /var/run/docker.sock:/var/run/docker.sock
+  networks:
+   mynet:
+    ipv4_address: 172.25.0.2
 
  rabbitmq:
   image: marcelmaatkamp/rabbitmq-mqtt-ldap
@@ -21,6 +24,9 @@ services:
     RABBITMQ_NODENAME: rabbitmq@rabbitmq
   volumes:
    - ./volumes/rabbitmq/mnesia:/var/lib/rabbitmq/mnesia
+  networks:
+   mynet:
+    ipv4_address: 172.25.0.3
 
  mysql:
   image: mysql
@@ -31,6 +37,9 @@ services:
   volumes:
    - ./volumes/mysql:/var/lib/mysql/
    - ./mysql:/docker-entrypoint-initdb.d/
+  networks:
+   mynet:
+    ipv4_address: 172.25.0.4
 
  nodered:
   build: raptor-node-red
@@ -46,10 +55,9 @@ services:
    - 1880:1880
   volumes:
    - ./volumes/nodered:/node-red-data/
-  # environment:
-  #  - SHOWCASE_MQTT_USER=70B3D57ED0000B7E
-  #  - SHOWCASE_MQTT_PASSWORD=tsCycz92q6xhIeHCRjWhD38XjHBOz5uZUJ7y9hSmfRA=
-  #  - SHOWCASE_TELEGRAM_TOKEN=221611837:AAGCjDOlCF0kGKvh3TdgyimaeZAhbT2EXu8
+  networks:
+   mynet:
+    ipv4_address: 172.25.0.5
 
  phpmyadmin:
   image: phpmyadmin/phpmyadmin
@@ -63,6 +71,9 @@ services:
    - mysql:db
   volumes:
    - ./volumes/phpmyadmin:/sessions
+  networks:
+   mynet:
+    ipv4_address: 172.25.0.6
 
  phreeze:
   image: marcelmaatkamp/phreeze
@@ -74,6 +85,16 @@ services:
    - ./volumes/phreeze/showcase:/var/www/html/showcase
 #  ports:
 #   - 80:80
+  networks:
+   mynet:
+    ipv4_address: 172.25.0.7
+
+networks:
+ mynet:
+  driver: bridge
+  ipam:
+   config:
+    - subnet: 172.25.0.0/24
 
 volumes:
  nexus3:
