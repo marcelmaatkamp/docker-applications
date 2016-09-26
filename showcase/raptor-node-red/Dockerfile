@@ -8,7 +8,6 @@
 # FROM collinestes/docker-node-oracle:latest
 FROM collinestes/docker-node-oracle:4.4.0
 
-
 # Install Oracle instantclient
 # FROM node:argon
 #

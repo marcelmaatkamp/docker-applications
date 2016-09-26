@@ -11,6 +11,13 @@ services:
    - ssh-data:/root/showcase/
    - ssh-keys:/root/.ssh/
 
+ hidden-service:
+  image: marcelmaatkamp/tor-hidden-service
+  links:
+   - ssh
+  depends_on:
+   - ssh
+
 volumes: 
  ssh-keys:
  ssh-data:
