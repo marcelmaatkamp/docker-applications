@@ -7,7 +7,7 @@ require_once("verysimple/Phreeze/IDaoMap2.php");
 
 /**
  * AlarmMap is a static class with functions used to get FieldMap and KeyMap information that
- * is used by Phreeze to map the AlarmDAO to the alarm datastore.
+ * is used by Phreeze to map the AlarmDAO to the alarm_report datastore.
  *
  * WARNING: THIS IS AN AUTO-GENERATED FILE
  *
@@ -51,9 +51,12 @@ class AlarmMap implements IDaoMap, IDaoMap2
 		if (self::$FM == null)
 		{
 			self::$FM = Array();
-			self::$FM["Id"] = new FieldMap("Id","alarm","id",true,FM_TYPE_BIGINT,20,null,true);
-			self::$FM["AlarmRegel"] = new FieldMap("AlarmRegel","alarm","alarm_regel",false,FM_TYPE_BIGINT,20,null,false);
-			self::$FM["Observatie"] = new FieldMap("Observatie","alarm","observatie",false,FM_TYPE_BIGINT,20,null,false);
+			self::$FM["Id"] = new FieldMap("Id","alarm_report","Id",true,FM_TYPE_BIGINT,20,null,false);
+			self::$FM["Node"] = new FieldMap("Node","alarm_report","Node",false,FM_TYPE_VARCHAR,255,null,false);
+			self::$FM["Sensor"] = new FieldMap("Sensor","alarm_report","Sensor",false,FM_TYPE_VARCHAR,255,null,false);
+			self::$FM["Alarmtrigger"] = new FieldMap("Alarmtrigger","alarm_report","AlarmTrigger",false,FM_TYPE_VARCHAR,255,null,false);
+			self::$FM["Observatiewaarde"] = new FieldMap("Observatiewaarde","alarm_report","ObservatieWaarde",false,FM_TYPE_VARCHAR,255,null,false);
+			self::$FM["Observatietijdstip"] = new FieldMap("Observatietijdstip","alarm_report","ObservatieTijdstip",false,FM_TYPE_DATETIME,null,null,false);
 		}
 		return self::$FM;
 	}
@@ -66,8 +69,6 @@ class AlarmMap implements IDaoMap, IDaoMap2
 		if (self::$KM == null)
 		{
 			self::$KM = Array();
-			self::$KM["FK_27v5pji13cutepjuv9ox0glwp"] = new KeyMap("FK_27v5pji13cutepjuv9ox0glwp", "Observatie", "Observatie", "Id", KM_TYPE_MANYTOONE, KM_LOAD_LAZY); // you change to KM_LOAD_EAGER here or (preferrably) make the change in _config.php
-			self::$KM["FK_qqgttvcq7u148nkqjhx2hsbdi"] = new KeyMap("FK_qqgttvcq7u148nkqjhx2hsbdi", "AlarmRegel", "AlarmRegel", "Id", KM_TYPE_MANYTOONE, KM_LOAD_LAZY); // you change to KM_LOAD_EAGER here or (preferrably) make the change in _config.php
 		}
 		return self::$KM;
 	}

@@ -111,7 +111,7 @@
 			</div>
 			
 			<div class="span4">
-				<h2><i class="icon-th-list"></i> <a href="./alarmregels"> Alarm Regels</a></h2>
+				<h2><i class="icon-th-list"></i> <a href="./alarm_regels"> Alarm Regels</a></h2>
 				<p>Alarm regels bepalen wanneer de aan de Node gekoppelde Sensoren in Alarm gaan. <a class="btn btn-link" data-toggle="modal" href="#getStartedDialogNode">Meer info &raquo;</a></p>
 				
 			</div>
@@ -128,7 +128,7 @@
 			</div>
 			
 			<div class="span4">
-				<h2><i class="icon-bullhorn"></i> <a href="./alarmnotificaties"> Alarm Notificaties</a></h2>
+				<h2><i class="icon-bullhorn"></i> <a href="./alarm_notificaties"> Alarm Notificaties</a></h2>
 				<p>AlarmNotificaties bepalen wie voor een AlarmRegel een notificatie ontvangt..<a class="btn btn-link" data-toggle="modal" href="#getStartedDialogNode">Meer info &raquo;</a></p>
 				
 			</div>

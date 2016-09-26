@@ -223,58 +223,6 @@ var page = {
 		
 		$('.timepicker-default').timepicker({ defaultTime: 'value' });
 
-		// populate the dropdown options for alarmRegel
-		// TODO: load only the selected value, then fetch all options when the drop-down is clicked
-		var alarmRegelValues = new model.AlarmRegelCollection();
-		alarmRegelValues.fetch({
-			success: function(c){
-				var dd = $('#alarmRegel');
-				dd.append('<option value=""></option>');
-				c.forEach(function(item,index) {
-					dd.append(app.getOptionHtml(
-						item.get('id'),
-						item.get('id'), // TODO: change fieldname if the dropdown doesn't show the desired column
-						page.alarm.get('alarmRegel') == item.get('id')
-					));
-				});
-				
-				if (!app.browserSucks()) {
-					dd.combobox();
-					$('div.combobox-container + span.help-inline').hide(); // TODO: hack because combobox is making the inline help div have a height
-				}
-
-			},
-			error: function(collection,response,scope) {
-				app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
-			}
-		});
-
-		// populate the dropdown options for observatie
-		// TODO: load only the selected value, then fetch all options when the drop-down is clicked
-		var observatieValues = new model.ObservatieCollection();
-		observatieValues.fetch({
-			success: function(c){
-				var dd = $('#observatie');
-				dd.append('<option value=""></option>');
-				c.forEach(function(item,index) {
-					dd.append(app.getOptionHtml(
-						item.get('id'),
-						item.get('id'), // TODO: change fieldname if the dropdown doesn't show the desired column
-						page.alarm.get('observatie') == item.get('id')
-					));
-				});
-				
-				if (!app.browserSucks()) {
-					dd.combobox();
-					$('div.combobox-container + span.help-inline').hide(); // TODO: hack because combobox is making the inline help div have a height
-				}
-
-			},
-			error: function(collection,response,scope) {
-				app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
-			}
-		});
-
 
 		if (showDeleteButton) {
 			// attach click handlers to the delete buttons
@@ -315,9 +263,12 @@ var page = {
 		app.showProgress('modelLoader');
 
 		page.alarm.save({
-
-			'alarmRegel': $('select#alarmRegel').val(),
-			'observatie': $('select#observatie').val()
+			'id': $('input#id').val(),
+			'node': $('input#node').val(),
+			'sensor': $('input#sensor').val(),
+			'alarmtrigger': $('input#alarmtrigger').val(),
+			'observatiewaarde': $('input#observatiewaarde').val(),
+			'observatietijdstip': $('input#observatietijdstip').val()+' '+$('input#observatietijdstip-time').val()
 		}, {
 			wait: true,
 			success: function(){
