@@ -79,7 +79,7 @@ var settings = {
             // info - record information about the general running of the application + warn + error + fatal errors
             // debug - record information which is more verbose than info + info + warn + error + fatal errors
             // trace - record very detailed logging + debug + info + warn + error + fatal errors
-            level: "info",
+            level: "none",
 
             // Whether or not to include metric events in the log output
             metrics: false,
@@ -90,13 +90,13 @@ var settings = {
 };
 
 // Initialise the runtime with a server and settings
-RED.init(server,settings);
+RED.init(server, settings);
 
 // Serve the editor UI from /red
-app.use(settings.httpAdminRoot,RED.httpAdmin);
+app.use(settings.httpAdminRoot, RED.httpAdmin);
 
 // Serve the http nodes UI from /api
-app.use(settings.httpNodeRoot,RED.httpNode);
+app.use(settings.httpNodeRoot, RED.httpNode);
 
 server.listen(1880);
 
