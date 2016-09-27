@@ -5,7 +5,7 @@ var fs = require("fs");
 
 // read nodered flows
 var flows = JSON.parse(fs.readFileSync("/node-red-data/flows_nodered.json", "utf8"));
-var cred = JSON.parse(fs.readFileSync("/node-red-data/flows_nodered_cred.json", "utf8"));
+var cred = JSON.parse(fs.readFileSync("/node-red-data/flows_nodered_cred_template.json", "utf8"));
 var credChanged  = false;
 
 function getFlowId(typeName) {
@@ -42,10 +42,10 @@ if (telegramToken !== undefined) {
 }
 
 // save updated credentials
-if (credChanged) {
+// if (credChanged) {
     // console.log("Writing credentials: " + JSON.stringify(cred));
     fs.writeFileSync("/node-red-data/flows_nodered_cred.json", JSON.stringify(cred),"utf8");
-}
+// }
 
 // Create an Express app
 var app = express();

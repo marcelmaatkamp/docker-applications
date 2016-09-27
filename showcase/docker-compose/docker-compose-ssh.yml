@@ -1,22 +1,28 @@
 version: '2'
 
 services:
+
  ssh:
   image: danielguerra/docker-dind-sshd
-  hostname: docker-sshd
+  hostname: ssh
   privileged: true
-  ports: 
-   - '4848:22'
+# ports: 
+#  - "4848:22"
   volumes:
    - ssh-data:/root/showcase/
    - ssh-keys:/root/.ssh/
 
- hidden-service:
+ tor:
+  #image: goldy/tor-hidden-service
   image: marcelmaatkamp/tor-hidden-service
   links:
    - ssh
   depends_on:
    - ssh
+  environment:
+   - SSH_PORTS=4848:22
+  volumes:
+   - ./volumes/tor:/var/lib/tor/hidden_service
 
 volumes: 
  ssh-keys:
