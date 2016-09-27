@@ -50,6 +50,7 @@ void BLUE() {
 
 bool Hal::initHal()
 {
+  debugPrintLn("Start init");
   // initialize all the hardware
   initLora();
   initSwitch();
@@ -58,6 +59,7 @@ bool Hal::initHal()
   compass.init();
   compass.enableDefault();
   htu.begin();
+  debugPrintLn("Einde init");
 }
 
 // Give the Hal time to do his work and check all the stuff

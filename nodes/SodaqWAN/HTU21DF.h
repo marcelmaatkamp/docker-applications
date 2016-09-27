@@ -53,7 +53,7 @@ private:
   float humidity, temp;
   Stream* diagStream;
   bool valid=false;
-  float readTemperature(void);
-  float readHumidity(void);
+  void readTemperature(void);
+  void readHumidity(void);
 };
 
