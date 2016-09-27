@@ -1,0 +1,9 @@
+version: '2'
+services:
+ nodered:
+  extends:
+   file: docker-compose/docker-compose-ttn-test.yml
+   service: nodered
+  environment:
+ nodered:
+   - SHOWCASE_TELEGRAM_TOKEN=${SHOWCASE_TELEGRAM_BOT_ERIC}

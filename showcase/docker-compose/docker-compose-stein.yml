@@ -1,0 +1,8 @@
+version: '2'
+services:
+ nodered:
+  extends:
+   file: docker-compose/docker-compose-ttn-acc.yml
+   service: nodered
+  environment:
+   - SHOWCASE_TELEGRAM_TOKEN=${SHOWCASE_TELEGRAM_BOT_ACC}
