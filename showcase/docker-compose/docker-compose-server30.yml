@@ -1,0 +1,37 @@
+version: '2'
+services:
+ nodered:
+  hostname: nodered
+
+ hello:
+  image: tutum/hello-world
+
+ https:
+  image: steveltn/https-portal
+  links:
+   - nodered
+   - hello
+  depends_on:
+   - nodered
+  ports:
+    - "80:80"
+    - "443:443"
+  restart: always
+  volumes:
+   - data-https_portal:/var/lib/https-portal/
+  environment:
+   - STAGE=local
+   #- STAGE=production
+   - WEBSOCKET=true
+   - DOMAINS=nodered.${SHOWCASE_IP_ADDRESS}.dns.uk.ms -> http://nodered:1880
+  networks:
+   mynet:
+    ipv4_address: 172.25.0.8
+
+ dns:
+  build: dns
+  ports:
+   - 53:53/udp
+
+volumes:
+ data-https_portal:

@@ -1,0 +1,2 @@
+#!/bin/bash
+docker-compose -f docker-compose.yml -f docker-compose/docker-compose-server30-kpn.yml build kpn_lora && docker-compose -f docker-compose.yml -f docker-compose/docker-compose-server30-kpn.yml up dns https kpn_lora
