@@ -1,4 +1,5 @@
 var dns = require('native-dns');
+var cst = require('console-stamp')(console, 'HH:MM:ss.l');
 
 server = dns.createServer()
 server.on('request', function (request, response) {
