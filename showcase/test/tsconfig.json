@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "module": "commonjs",
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "outDir": "./transpiled",
+    "declaration": true,
+    "rootDir": "./src",
+    "sourceMap": true
+  }
+}
