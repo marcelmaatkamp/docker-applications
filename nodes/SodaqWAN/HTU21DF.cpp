@@ -59,7 +59,10 @@ void HTU21DF::Update()
   return;
 }
 
-float HTU21DF::readTemperature(void) {
+void HTU21DF::readTemperature(void) {
+  temp=-1;
+  uint8_t crc;
+  uint16_t t;
   
   // OK lets ready!
   Wire.beginTransmission(HTU21DF_I2CADDR);
@@ -69,24 +72,26 @@ float HTU21DF::readTemperature(void) {
   delay(50); // add delay between request and actual read!
   
   Wire.requestFrom(HTU21DF_I2CADDR, 3);
-  while (!Wire.available()) {}
-
-  uint16_t t = Wire.read();
-  t <<= 8;
-  t |= Wire.read();
-
-  uint8_t crc = Wire.read();
-
-  float temp = t;
-  temp *= 175.72;
-  temp /= 65536;
-  temp -= 46.85;
-
-  return temp;
+  if (Wire.available()) {
+    t = Wire.read();
+    t <<= 8;
+    t |= Wire.read();
+  
+    crc = Wire.read();
+  
+    temp = t;
+    temp *= 175.72;
+    temp /= 65536;
+    temp -= 46.85;
+  }
 }
   
-
-float HTU21DF::readHumidity(void) {
+void HTU21DF::readHumidity(void) 
+{
+  uint16_t h;
+  uint8_t crc;
+  humidity=-1;
+  
   // OK lets ready!
   Wire.beginTransmission(HTU21DF_I2CADDR);
   Wire.write(HTU21DF_READHUM);
@@ -95,20 +100,19 @@ float HTU21DF::readHumidity(void) {
   delay(50); // add delay between request and actual read!
   
   Wire.requestFrom(HTU21DF_I2CADDR, 3);
-  while (!Wire.available()) {}
-
-  uint16_t h = Wire.read();
-  h <<= 8;
-  h |= Wire.read();
-
-  uint8_t crc = Wire.read();
-
-  float hum = h;
-  hum *= 125;
-  hum /= 65536;
-  hum -= 6;
-
-  return hum;
+  if (Wire.available())
+  {
+    h = Wire.read();
+    h <<= 8;
+    h |= Wire.read();
+  
+    crc = Wire.read();
+  
+    humidity = h;
+    humidity *= 125;
+    humidity /= 65536;
+    humidity -= 6;
+  }
 }
 
 
