@@ -4,16 +4,12 @@
 #include "Hal.h"
 #include "Alive.h"
 #include "Switch.h"
-#include "Voltage.h"
-#include "Temperature.h"
 #include "LTC2943.h"
 #include "LSM303.h"
 #include "HTU21DF.h"
 
 Hal HalImpl;
 Switch microSwitch(MICROSWITCH_PIN);
-Temperature tempSensor(DHTPIN);
-Voltage voltage(VOLT_PIN);
 Alive alive(ALIVE_INTERVAL * 1000);
 LTC ltc(1);
 LSM303 compass;
@@ -54,7 +50,6 @@ bool Hal::initHal()
   // initialize all the hardware
   initLora();
   initSwitch();
-  initTemperature();
   initLTC();
   compass.init();
   compass.enableDefault();
@@ -66,8 +61,6 @@ bool Hal::initHal()
 bool Hal::Update()
 {
   microSwitch.Update();
-  tempSensor.Update();
-  voltage.Update();
   alive.Update();
   ltc.Update();
   LSM303_Update();
@@ -143,9 +136,9 @@ bool tempsensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * c
   /* Fill in the lucky number */
   sensormsg.id = 2;
   sensormsg.has_id = true;
-  if (ltc.isValid())
+  if (htu.isValid())
   {
-    sensormsg.value1 = (int32_t)(ltc.getTemp()*10);
+    sensormsg.value1 = (int32_t)(htu.getTemp()*10);
     sensormsg.has_value1 = true;
   }
   else
@@ -377,19 +370,27 @@ bool Hal::CheckAndAct()
     // reset the Time Passed flag
     alive.resetTimePassed();
 
-  debugPrint("mAh: ");
-  debugPrint(ltc.getCharge(), 4);
-  debugPrint(F(" mAh\t"));
-  debugPrint(F("Current "));
-  debugPrint(ltc.getCurrent(), 4);
-  debugPrint(F(" A\t"));
-  debugPrint(F("Voltage "));
-  debugPrint(ltc.getVoltage(), 4);
-  debugPrint(F(" V\t"));
-  debugPrint(F("Temperature "));
-  debugPrint(ltc.getTemp(), 4);
-  debugPrint(F(" C\n"));
-  
+    debugPrint("LTC values: mAh ");
+    debugPrint(ltc.getCharge(), 4);
+    debugPrint(F(" mAh\t"));
+    debugPrint(F("Current "));
+    debugPrint(ltc.getCurrent(), 4);
+    debugPrint(F(" A\t"));
+    debugPrint(F("Voltage "));
+    debugPrint(ltc.getVoltage(), 4);
+    debugPrint(F(" V\t"));
+    debugPrint(F("Temperature "));
+    debugPrint(ltc.getTemp(), 4);
+    debugPrint(F(" C\n"));
+    
+    debugPrint("HTU values: ");
+    debugPrint(F("Temperature "));
+    debugPrint(htu.getTemp(), 4);
+    debugPrint(F(" C"));
+    debugPrint(F("Humidity "));
+    debugPrint(htu.getHum(), 4);
+    debugPrint(F(" %\n"));
+
     uint8_t buf2[128];
     size_t message_length;
 
@@ -532,8 +533,8 @@ bool Hal::initLora()
 {
 #ifdef SODAQ_ONE
   // enable power, only for the Sodaq One
-  //  pinMode(ENABLE_PIN_IO, OUTPUT);
-  //  digitalWrite(ENABLE_PIN_IO, HIGH);
+  pinMode(ENABLE_PIN_IO, OUTPUT);
+  digitalWrite(ENABLE_PIN_IO, HIGH);
   // enable power to the grove shield
   pinMode(11, OUTPUT);
   digitalWrite(11, HIGH);
