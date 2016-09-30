@@ -1,4 +1,4 @@
 // Place your settings in this file to overwrite default and user settings.
 {
-    "tslint.configFile": "tools/tslint/tslint-node.json"
+    "tslint.configFile": "${workspaceRoot}/tools/tslint/tslint-node.json"
 }

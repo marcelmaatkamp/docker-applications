@@ -22,38 +22,38 @@ const testTimeout = 1000; // timeout per test in ms
 // 1. lees json bestand met input en verwachte output
 // json bestandsformaat:
 
-interface expectedMessage {
-  result: string | Buffer;
+interface ExpectedMessage {
+  result: string;
   received?: boolean;
 }
 
-interface exchangeResults {
+interface ExchangeResults {
   exchange: string;
-  expectedMessages: expectedMessage[];
+  expectedMessages: ExpectedMessage[];
 }
 
-interface test {
+interface Test {
   description: string;
-  sendMessage: string | Buffer;
+  sendMessage: string;
   sendExchange: string;
-  expectedResults: exchangeResults[];
+  expectedResults: ExchangeResults[];
   testTimeout?: number;
 }
 
-var testSet:test[] = [];
+var testSet: Test[] = [];
 
 class ShowcaseTest {
   private connection: amqp.Connection;
   private exchanges: {[key: string]: amqp.Exchange};
-  private test: test;
+  private test: Test;
   private missedResults: {[key: string]: boolean};
 
-  constructor(test: test, connection?: amqp.Connection) {
+  constructor(test: Test, connection?: amqp.Connection) {
     this.test = test;
     this.connection = connection || new amqp.Connection("amqp://rabbitmq");
   }
 
-  private checkMessage(msg: amqp.Message, exchangeResults: exchangeResults) {
+  private checkMessage(msg: amqp.Message, exchangeResults: ExchangeResults) {
     var found = false;
 
     var expectedMessages = exchangeResults.expectedMessages;
@@ -80,10 +80,10 @@ class ShowcaseTest {
 
     var results = this.test.expectedResults;
     var exchange: amqp.Exchange;
-    for(let i=0, len=results.length; i < len; i++) {
-      if (!exchanges[results[i].exchange]) {
+    for (let i = 0, len = results.length; i < len; i++) {
+      if (!this.exchanges[results[i].exchange]) {
         exchange = this.connection.declareExchange(results[i].exchange);
-        exchanges[results[i].exchange] = exchange;
+        this.exchanges[results[i].exchange] = exchange;
       }
 
       exchange.activateConsumer((msg) => {
@@ -107,8 +107,7 @@ class ShowcaseTest {
 }
 
 // initialize tests
-var connection = ;
-var exchanges:
+// TODO
 
 
 

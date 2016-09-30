@@ -3,17 +3,17 @@
 # TODO: gecopieerde code aanpassen voor dit onderdeel
 #
 # execute the following commands to build this docker image:
-#  $ docker build -t amqp-ts .
+#  $ docker build -t test .
 #
 # to start the development process with docker
 #  $ docker run -d --hostname rabbitmq --name rabbitmq rabbitmq:3
 #  $
-#  $ docker run --name dev-amqp-ts -d -v <absolute_local_amqp-ts_path>:/src --link rabbitmq amqp-ts
+#  $ docker run --name test -d -v <absolute_local_showcase_test_path>:/src --link rabbitmq amqp-ts
 # or to start development with docker-compose (does the hard work for you)
 #  $ docker-compose up -d
 #
 # to build execute the following command:
-#  $ docker exec dev-amqp-ts gulp
+#  $ docker exec test gulp
 #
 # to automatically build from within Visual Studio Code with CTRL-SHIFT-B
 # create a tasks.json file in the .vscode folder with the following content:
@@ -27,11 +27,10 @@
 #     "showOutput": "always"
 # }
 #
-# to debug (in this case the mocha tests) execute the following line and run the 'Attach' Visual Studio Code Debugger:
-#  $ docker exec dev-amqp-ts node --debug-brk --nolazy /src/node_modules/mocha/bin/_mocha transpiled/amqp-ts.spec.js
+# to debug execute the following line and run the 'Attach' Visual Studio Code Debugger:
+#  $ docker exec test node --debug-brk --nolazy /src/showcase_tests.js
 # todo: create better integration
 FROM node:latest
-
 
 WORKDIR /src
 

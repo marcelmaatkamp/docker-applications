@@ -6,7 +6,7 @@
     "isShellCommand": true,
     "args": [
         "exec",
-        "dev-amqp-ts"
+        "showcase_test_1"
     ],
     "showOutput": "always",
     "tasks": [
@@ -28,8 +28,7 @@
                 "node",
                 "--debug-brk",
                 "--nolazy",
-                "/src/node_modules/mocha/bin/_mocha",
-                "transpiled/showcase_tests.js"
+                "code/showcase_tests.js"
             ]
         }
     ]
