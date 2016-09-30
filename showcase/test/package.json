@@ -7,9 +7,9 @@
     "url": "git+https://git@git.pirod.nl:projects/iot/showcase/test"
   },
   "author": "Ab Reitsma",
-  "main": "lib/showcase_tests.js",
+  "main": "showcase_tests.js",
   "scripts": {
-    "docker-develop": "npm install && node tools/alive",
+    "docker-develop": "node tools/alive",
     "test": "gulp test",
     "test-integration": "gulp test:integration"
   },
