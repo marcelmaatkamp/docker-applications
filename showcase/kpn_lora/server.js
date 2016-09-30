@@ -1,6 +1,15 @@
 "use strict";
 
 const express = require("express");
+const cst = require('console-stamp')(console, '[HH:MM:ss.l]');
+
+// express.logger.format('mydate', function() {
+//    var df = require('console-stamp/node_modules/dateformat');
+//    return df(new Date(), 'HH:MM:ss.l');
+//});
+//app.use(express.logger('[:mydate] :method :url :status :res[content-length] - :remote-addr - :response-time ms'));
+//
+
 const PORT = 8080;
 
 var amqp = require("amqp-ts");

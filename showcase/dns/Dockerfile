@@ -1,7 +1,7 @@
 FROM node:4
 MAINTAINER m.maatkamp@gmail.com version: 0.1
 
-RUN npm install native-dns amqp-ts
+RUN npm install native-dns amqp-ts console-stamp
 
 EXPOSE 53/udp
 
