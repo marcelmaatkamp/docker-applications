@@ -4,16 +4,12 @@
 #include "Hal.h"
 #include "Alive.h"
 #include "Switch.h"
-#include "Voltage.h"
-#include "Temperature.h"
 #include "LTC2943.h"
 #include "LSM303.h"
 #include "HTU21DF.h"
 
 Hal HalImpl;
 Switch microSwitch(MICROSWITCH_PIN);
-Temperature tempSensor(DHTPIN);
-Voltage voltage(VOLT_PIN);
 Alive alive(ALIVE_INTERVAL * 1000);
 LTC ltc(1);
 LSM303 compass;
@@ -54,7 +50,6 @@ bool Hal::initHal()
   // initialize all the hardware
   initLora();
   initSwitch();
-  initTemperature();
   initLTC();
   compass.init();
   compass.enableDefault();
@@ -66,8 +61,6 @@ bool Hal::initHal()
 bool Hal::Update()
 {
   microSwitch.Update();
-  tempSensor.Update();
-  voltage.Update();
   alive.Update();
   ltc.Update();
   LSM303_Update();

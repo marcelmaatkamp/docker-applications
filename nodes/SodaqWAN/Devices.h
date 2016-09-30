@@ -21,9 +21,6 @@
 #define debugSerial SerialUSB
 #define loraSerial Serial1
 #define MICROSWITCH_PIN 2
-#define DHTPIN 7 // pin  DHT22 is connected to
-#define DHTTYPE DHT22
-#define VOLT_PIN 0
 
 // TTN network setting for the One in EvDo application
 const uint8_t devAddr[4] =  { 0x51, 0x8C, 0x9E, 0xB3 };
@@ -69,9 +66,6 @@ const uint8_t appSKey[16] = { 0xF0, 0xD7, 0xD9, 0xD2, 0x9B, 0xED, 0x28, 0x00, 0x
 #define debugSerial Serial
 #define loraSerial Serial1
 #define MICROSWITCH_PIN 20 // Use digital pin 20 for the Microswitch sensor , Touched = LOW
-#define DHTPIN 5 // pin  DHT22 is connected to
-#define DHTTYPE DHT22
-#define VOLT_PIN 4
 
 // TTN network setting for the MBili in EvDo application
 //const uint8_t devAddr[4] = { 0x2D, 0xAB, 0xCB, 0xC8 };
