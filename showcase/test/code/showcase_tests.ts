@@ -7,20 +7,11 @@
  * overeenkomt met de verwachte uitvoer
  *
  */
-
 import * as Promise from "bluebird";
 import * as fs from "fs";
-
 import * as amqp from "./amqp-ts.d.ts";
 
-const testTimeout = 1000; // timeout per test in ms
-
-// TODO: test framework ontwerpen en bouwen
-
-// ontwerp
-// volgorde:
-// 1. lees json bestand met input en verwachte output
-// json bestandsformaat:
+const testTimeout = process.env.TEST_TIMEOUT || 1000; // timeout per test in ms
 
 interface ExpectedMessage {
   result: string;
@@ -46,7 +37,7 @@ class ShowcaseTest {
   private connection: amqp.Connection;
   private exchanges: {[key: string]: amqp.Exchange};
   private test: Test;
-  private missedResults: {[key: string]: boolean};
+  private success = true;
 
   constructor(test: Test, connection?: amqp.Connection) {
     this.test = test;
@@ -66,10 +57,11 @@ class ShowcaseTest {
         }
       }
     }
+    this.success = false;
     if (found) {
-      // message received too many times
+      // todo: log message received too many times
     } else {
-      // unexpected message received
+      // todo: log unexpected message received
     }
   }
 
@@ -99,23 +91,60 @@ class ShowcaseTest {
     this.exchanges[this.test.sendExchange].send(message);
   }
 
-  private finishTest() {
-    // wait until timeout has exceeded, then check if all messages have been received
-    // notify missing messages
-    // return promise containing test results that resolves when tests are completed
+  private checkResults() {
+    // check if all expected messages have been received
+    var results = this.test.expectedResults;
+    for (let i = 0, len = results.length; i < len; i++) {
+      let messages = results[i].expectedMessages;
+      for (let j = 0, len = messages.length; j < len; j++) {
+        if (!messages[j].received) {
+          this.success = false;
+          // todo: log expected result not received
+        }
+      }
+    }
+  }
+
+  private finishTest(): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      setTimeout(() => {
+        this.checkResults();
+        resolve(this.success);
+      }, this.test.testTimeout || testTimeout);
+    });
+  }
+
+  public runTest(): Promise<boolean> {
+    return this.prepareTest()
+    .then(this.startTest)
+    .then(this.finishTest);
   }
 }
 
-// initialize tests
-// TODO
 
 
+var testsBuffer = fs.readFileSync("../data/tests.json").toString();
+var tests = JSON.parse(testsBuffer);
+var errorCount = 0;
 
+var i = 0;
 
-// execute test
+function executeTest() {
+  "use strict";
 
-// cleanup test
-
-// log test
-
-
+  var currentTest = <Test>tests[i];
+  var test = new ShowcaseTest(currentTest);
+  test.runTest()
+  .then((errorsOccurred) => {
+    if (errorsOccurred) {
+      errorCount += 1;
+    }
+    i += 1;
+    if (i < tests.length) {
+      executeTest();
+    } else {
+      // todo: display summary
+    }
+  });
+}
+executeTest();

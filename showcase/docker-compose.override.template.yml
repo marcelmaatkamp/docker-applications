@@ -23,6 +23,7 @@ services:
   ports:
    - 82:80
 
+# Definieer test image om integration tests via RabbitMQ uit te kunnen voeren
  test:
   build: test
   hostname: test
