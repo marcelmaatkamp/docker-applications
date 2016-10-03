@@ -27,16 +27,20 @@ connection.completeConfiguration().then(() => {
   app.use(bodyParser.urlencoded({ extended: true })); 
 
   app.get("/", function (req, res) {
-    res.send("KPN Receiver, post to /lora\n");
+    res.send("KPN Receiver\n");
   });
 
   app.post("/lora", function (req, res) {
-    var message = JSON.stringify(req.body)
-    console.log("lora: " + message + "\n");
+    // var message = JSON.stringify({"params": req.params, "query": req.query, "body": req.body });
+
+    var body = JSON.parse(JSON.stringify(req.body));
+    body.query=req.query;
+
+    console.log("msg: " + JSON.stringify(body));
     res.end("thanks!");
-    exchange.send(new amqp.Message(message));
+    exchange.send(new amqp.Message(body));
   });
 
   app.listen(PORT);
-  console.log("Running on http://localhost:" + PORT);
+  console.log("Server running on port " + PORT);
 });
