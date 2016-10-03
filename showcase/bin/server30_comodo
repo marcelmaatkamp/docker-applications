@@ -1,2 +1,4 @@
 #!/bin/bash
-docker-compose -f docker-compose.yml -f docker-compose/docker-compose-server30-comodo.yml up dns https
+shopt -s expand_aliases
+alias dc="docker-compose -f docker-compose.yml -f docker-compose/docker-compose-server30-comodo.yml"
+dc up dns https

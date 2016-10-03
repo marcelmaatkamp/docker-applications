@@ -1,10 +1,5 @@
 version: '2'
 services:
- nodered:
-  hostname: nodered
-
- hello:
-  image: tutum/hello-world
 
  https:
   image: steveltn/https-portal
