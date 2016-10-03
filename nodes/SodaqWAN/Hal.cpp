@@ -54,6 +54,7 @@ bool Hal::initHal()
   compass.init();
   compass.enableDefault();
   htu.begin();
+//  setAckOn();
   debugPrintLn("Einde init");
 }
 
@@ -93,28 +94,6 @@ bool switchsensor_callback(pb_ostream_t *stream, const pb_field_t *field, void *
   sensormsg.id = 1;
   sensormsg.has_id = true;
   sensormsg.value1 = microSwitch.ReadState();
-  sensormsg.has_value1 = true;
-
-  /* This encodes the header for the field, based on the constant info
-     from pb_field_t. */
-  if (!pb_encode_tag_for_field(stream, field))
-    return false;
-
-  /* This encodes the data for the field, based on our FileInfo structure. */
-  if (!pb_encode_submessage(stream, SensorReading_fields, &sensormsg))
-    return false;
-
-  return true;
-}
-
-bool movesensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg)
-{
-  SensorReading sensormsg = SensorReading_init_zero;
-
-  /* Fill in the lucky number */
-  sensormsg.id = 7;
-  sensormsg.has_id = true;
-  sensormsg.value1 = 1;
   sensormsg.has_value1 = true;
 
   /* This encodes the header for the field, based on the constant info
@@ -279,8 +258,53 @@ bool chargesensor_callback(pb_ostream_t *stream, const pb_field_t *field, void *
   return true;
 }
 
+bool movesensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg)
+{
+  SensorReading sensormsg = SensorReading_init_zero;
+
+  /* Fill in the lucky number */
+  sensormsg.id = 7;
+  sensormsg.has_id = true;
+  sensormsg.value1 = 1;
+  sensormsg.has_value1 = true;
+
+  /* This encodes the header for the field, based on the constant info
+     from pb_field_t. */
+  if (!pb_encode_tag_for_field(stream, field))
+    return false;
+
+  /* This encodes the data for the field, based on our FileInfo structure. */
+  if (!pb_encode_submessage(stream, SensorReading_fields, &sensormsg))
+    return false;
+
+  return true;
+}
+
+bool retriessensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg)
+{
+  SensorReading sensormsg = SensorReading_init_zero;
+
+  /* Fill in the lucky number */
+  sensormsg.id = 8;
+  sensormsg.has_id = true;
+  sensormsg.value1 = (int32_t)HalImpl.getNumTxRetries();
+  sensormsg.has_value1 = true;
+
+  /* This encodes the header for the field, based on the constant info
+     from pb_field_t. */
+  if (!pb_encode_tag_for_field(stream, field))
+    return false;
+
+  /* This encodes the data for the field, based on our FileInfo structure. */
+  if (!pb_encode_submessage(stream, SensorReading_fields, &sensormsg))
+    return false;
+
+  return true;
+}
+
 bool Hal::CheckAndAct()
 {
+  bool sendResult;
   //Read the state of the microSwitch
   if (microSwitch.isChanged()) {
     debugPrint("Switch state: ");
@@ -317,7 +341,7 @@ bool Hal::CheckAndAct()
       }
       debugPrintLn(">");
     }
-    HalImpl.sendMessage(buf, message_length);
+    sendResult = HalImpl.sendMessage(buf, message_length);
 
     // reset the Time Passed flag
     alive.setCurrentTime();
@@ -357,7 +381,7 @@ bool Hal::CheckAndAct()
       }
       debugPrintLn(">");
     }
-    HalImpl.sendMessage(buf, message_length);
+    sendResult = HalImpl.sendMessage(buf, message_length);
 
     hasMoved = false;
     // reset the Time Passed flag
@@ -474,7 +498,7 @@ bool Hal::CheckAndAct()
       debugPrintLn(">");
     }
 
-    // add the voltage data to the output buffer 
+    // add the current data to the output buffer 
     nodemsg2.reading.funcs.encode = &currentsensor_callback;
 
     /* Now we are ready to encode the message! */
@@ -499,7 +523,7 @@ bool Hal::CheckAndAct()
       debugPrintLn(">");
     }
 
-    // add the voltage data to the output buffer 
+    // add the charge data to the output buffer 
     nodemsg2.reading.funcs.encode = &chargesensor_callback;
 
     /* Now we are ready to encode the message! */
@@ -524,7 +548,43 @@ bool Hal::CheckAndAct()
       debugPrintLn(">");
     }
 
-    HalImpl.sendMessage(buf2, message_length);
+    // only send the number of retries if it is > 0
+    if (getNumTxRetries() > 0)
+    {
+      // add the retry counter data to the output buffer 
+      nodemsg2.reading.funcs.encode = &retriessensor_callback;
+  
+      /* Now we are ready to encode the message! */
+      /* Then just check for any errors.. */
+      if (!pb_encode(&stream2, NodeMessage_fields, &nodemsg2))
+      {
+        debugPrint("Encoding failed: ");
+        debugPrintLn(PB_GET_ERROR(&stream2));
+      }
+      else
+      {
+        message_length = stream2.bytes_written;
+        debugPrint("message_length:");
+        debugPrintLn(message_length);
+        debugPrint("message:<");
+        for (uint8_t i = 0; i < message_length; i++)
+        {
+          debugPrint(buf2[i], HEX);
+          if (i < message_length - 1)
+            debugPrint(" ");
+        }
+        debugPrintLn(">");
+      }
+    }
+
+    // send the alive message
+    sendResult = HalImpl.sendMessage(buf2, message_length);
+    
+    // if the send was succesfull then the retry counter can be reset
+    if (sendResult)
+    {
+      setNumTxRetries(0);
+    }
   }
 }
 
@@ -583,12 +643,14 @@ bool Hal::sendMessage(const uint8_t* payload, uint8_t size)
 {
   bool retVal = true;
   uint8_t sendReturn;
+  bool retry = true;
+  int retCount = 0;
 
-  if (isInitialized())
+  while (isInitialized() && retry)
   {
     if (getAcknowledge())
     {
-      sendReturn = LoRaBee.sendReqAck(1, payload, size, 3);
+      sendReturn = LoRaBee.sendReqAck(1, payload, size, 1);
     }
     else
     {
@@ -598,6 +660,7 @@ bool Hal::sendMessage(const uint8_t* payload, uint8_t size)
     {
       case NoError:
         debugPrintLn("Successful transmission.");
+        retry = false;
         break;
       case NoResponse:
         debugPrintLn("There was no response from the device.");
@@ -616,7 +679,7 @@ bool Hal::sendMessage(const uint8_t* payload, uint8_t size)
         break;
       case Busy:
         debugPrintLn("The device is busy. Sleeping for 10 extra seconds.");
-        delay(10000);
+        delay(2000);
         break;
       case NetworkFatalError:
         debugPrintLn("There is a non-recoverable error with the network connection. You should re-connect.\r\nThe program will now halt.");
@@ -634,10 +697,21 @@ bool Hal::sendMessage(const uint8_t* payload, uint8_t size)
       default:
         break;
     }
+    if (sendReturn != NoError) 
+    {
+        retCount++;
+        debugPrint("Retry number: ");
+        debugPrintLn(retCount);
+        if (retCount > NUM_TX_RETRIES)
+        {
+          retry = false;
+          retVal = false;
+        }
+    }
   }
-  else
+  if (retCount > 0)
   {
-    retVal = false;
+    setNumTxRetries(retCount);
   }
   return retVal;
 }
