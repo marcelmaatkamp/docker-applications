@@ -7,19 +7,24 @@
  * overeenkomt met de verwachte uitvoer
  *
  */
-import * as Promise from "bluebird";
+
 import * as fs from "fs";
-import * as amqp from "./amqp-ts.d.ts";
+import * as path from "path";
+import * as amqp from "amqp-ts";
+
+import * as BluebirdPromise from "bluebird";
+import * as deepEqual from "deep-equal";
 
 const testTimeout = process.env.TEST_TIMEOUT || 1000; // timeout per test in ms
 
 interface ExpectedMessage {
-  result: string;
+  result: Object | string;
   received?: boolean;
 }
 
 interface ExchangeResults {
   exchange: string;
+  exchangeType: string;
   expectedMessages: ExpectedMessage[];
 }
 
@@ -27,6 +32,7 @@ interface Test {
   description: string;
   sendMessage: string;
   sendExchange: string;
+  sendExchangeType: string;
   expectedResults: ExchangeResults[];
   testTimeout?: number;
 }
@@ -35,7 +41,7 @@ var testSet: Test[] = [];
 
 class ShowcaseTest {
   private connection: amqp.Connection;
-  private exchanges: {[key: string]: amqp.Exchange};
+  private exchanges: {[key: string]: amqp.Exchange} = {};
   private test: Test;
   private success = true;
 
@@ -49,7 +55,7 @@ class ShowcaseTest {
 
     var expectedMessages = exchangeResults.expectedMessages;
     for (let i = 0, len = expectedMessages.length; i < len; i++) {
-      if (msg.getContent() === expectedMessages[i].result) {
+      if (deepEqual(expectedMessages[i].result, msg.getContent())) {
         found = true;
         if (!expectedMessages[i].received) {
           expectedMessages[i].received = true;
@@ -68,13 +74,14 @@ class ShowcaseTest {
   // prepare test
   private prepareTest() {
     // create/connect to all exchanges
-    this.exchanges[this.test.sendExchange] = this.connection.declareExchange(this.test.sendExchange);
+
+    this.exchanges[this.test.sendExchange] = this.connection.declareExchange(this.test.sendExchange, this.test.sendExchangeType);
 
     var results = this.test.expectedResults;
     var exchange: amqp.Exchange;
     for (let i = 0, len = results.length; i < len; i++) {
       if (!this.exchanges[results[i].exchange]) {
-        exchange = this.connection.declareExchange(results[i].exchange);
+        exchange = this.connection.declareExchange(results[i].exchange, results[i].exchangeType);
         this.exchanges[results[i].exchange] = exchange;
       }
 
@@ -105,8 +112,8 @@ class ShowcaseTest {
     }
   }
 
-  private finishTest(): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
+  private finishTest(): BluebirdPromise<boolean> {
+    return new BluebirdPromise<boolean>((resolve, reject) => {
       setTimeout(() => {
         this.checkResults();
         resolve(this.success);
@@ -114,16 +121,19 @@ class ShowcaseTest {
     });
   }
 
-  public runTest(): Promise<boolean> {
-    return this.prepareTest()
-    .then(this.startTest)
-    .then(this.finishTest);
+  public runTest(): BluebirdPromise<boolean> {
+    this.prepareTest()
+    .then(() => {
+      this.startTest();
+    });
+    return this.finishTest();
   }
 }
 
 
-
-var testsBuffer = fs.readFileSync("../data/tests.json").toString();
+var testfileLocation = path.join(__dirname, "..", "data", "tests.json");
+var amqpConnection = new amqp.Connection("amqp://rabbitmq");
+var testsBuffer = fs.readFileSync(testfileLocation).toString();
 var tests = JSON.parse(testsBuffer);
 var errorCount = 0;
 
@@ -133,7 +143,8 @@ function executeTest() {
   "use strict";
 
   var currentTest = <Test>tests[i];
-  var test = new ShowcaseTest(currentTest);
+
+  var test = new ShowcaseTest(currentTest, amqpConnection);
   test.runTest()
   .then((errorsOccurred) => {
     if (errorsOccurred) {
@@ -144,6 +155,12 @@ function executeTest() {
       executeTest();
     } else {
       // todo: display summary
+      if (errorCount > 0) {
+        console.log(errorCount + " of " + i + " tests generated errors.");
+      } else {
+        console.log(i +" tests completed without errors");
+      }
+      amqpConnection.close();
     }
   });
 }
