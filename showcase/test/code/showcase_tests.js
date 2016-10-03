@@ -1,4 +1,3 @@
-"use strict";
 /*
  * SHOWCASE-TESTS
  *
@@ -8,13 +7,17 @@
  * overeenkomt met de verwachte uitvoer
  *
  */
-var Promise = require("bluebird");
+"use strict";
 var fs = require("fs");
-var amqp = require("./amqp-ts.d.ts");
+var path = require("path");
+var amqp = require("amqp-ts");
+var BluebirdPromise = require("bluebird");
+var deepEqual = require("deep-equal");
 var testTimeout = process.env.TEST_TIMEOUT || 1000; // timeout per test in ms
 var testSet = [];
 var ShowcaseTest = (function () {
     function ShowcaseTest(test, connection) {
+        this.exchanges = {};
         this.success = true;
         this.test = test;
         this.connection = connection || new amqp.Connection("amqp://rabbitmq");
@@ -23,7 +26,7 @@ var ShowcaseTest = (function () {
         var found = false;
         var expectedMessages = exchangeResults.expectedMessages;
         for (var i_1 = 0, len = expectedMessages.length; i_1 < len; i_1++) {
-            if (msg.getContent() === expectedMessages[i_1].result) {
+            if (deepEqual(expectedMessages[i_1].result, msg.getContent())) {
                 found = true;
                 if (!expectedMessages[i_1].received) {
                     expectedMessages[i_1].received = true;
@@ -39,14 +42,14 @@ var ShowcaseTest = (function () {
     };
     // prepare test
     ShowcaseTest.prototype.prepareTest = function () {
-        var _this = this;
         // create/connect to all exchanges
-        this.exchanges[this.test.sendExchange] = this.connection.declareExchange(this.test.sendExchange);
+        var _this = this;
+        this.exchanges[this.test.sendExchange] = this.connection.declareExchange(this.test.sendExchange, this.test.sendExchangeType);
         var results = this.test.expectedResults;
         var exchange;
         var _loop_1 = function(i_2, len) {
             if (!this_1.exchanges[results[i_2].exchange]) {
-                exchange = this_1.connection.declareExchange(results[i_2].exchange);
+                exchange = this_1.connection.declareExchange(results[i_2].exchange, results[i_2].exchangeType);
                 this_1.exchanges[results[i_2].exchange] = exchange;
             }
             exchange.activateConsumer(function (msg) {
@@ -77,7 +80,7 @@ var ShowcaseTest = (function () {
     };
     ShowcaseTest.prototype.finishTest = function () {
         var _this = this;
-        return new Promise(function (resolve, reject) {
+        return new BluebirdPromise(function (resolve, reject) {
             setTimeout(function () {
                 _this.checkResults();
                 resolve(_this.success);
@@ -85,20 +88,25 @@ var ShowcaseTest = (function () {
         });
     };
     ShowcaseTest.prototype.runTest = function () {
-        return this.prepareTest()
-            .then(this.startTest)
-            .then(this.finishTest);
+        var _this = this;
+        this.prepareTest()
+            .then(function () {
+            _this.startTest();
+        });
+        return this.finishTest();
     };
     return ShowcaseTest;
 }());
-var testsBuffer = fs.readFileSync("../data/tests.json").toString();
+var testfileLocation = path.join(__dirname, "..", "data", "tests.json");
+var amqpConnection = new amqp.Connection("amqp://rabbitmq");
+var testsBuffer = fs.readFileSync(testfileLocation).toString();
 var tests = JSON.parse(testsBuffer);
 var errorCount = 0;
 var i = 0;
 function executeTest() {
     "use strict";
     var currentTest = tests[i];
-    var test = new ShowcaseTest(currentTest);
+    var test = new ShowcaseTest(currentTest, amqpConnection);
     test.runTest()
         .then(function (errorsOccurred) {
         if (errorsOccurred) {
@@ -109,6 +117,14 @@ function executeTest() {
             executeTest();
         }
         else {
+            // todo: display summary
+            if (errorCount > 0) {
+                console.log(errorCount + " of " + i + " tests generated errors.");
+            }
+            else {
+                console.log(i + " tests completed without errors");
+            }
+            amqpConnection.close();
         }
     });
 }

@@ -8,5 +8,8 @@
   },
   "devDependencies": {
     "chai": "registry:npm/chai#3.5.0+20160415060238"
+  },
+  "globalDependencies": {
+    "deep-equal": "registry:dt/deep-equal#0.0.0+20160316155526"
   }
 }

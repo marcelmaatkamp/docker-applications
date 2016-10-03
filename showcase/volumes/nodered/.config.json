@@ -374,7 +374,7 @@
   },
   "node-red-node-twitter": {
    "name": "node-red-node-twitter",
-   "version": "0.1.6",
+   "version": "0.1.7",
    "nodes": {
     "twitter": {
      "name": "twitter",
@@ -457,7 +457,7 @@
   },
   "node-red-contrib-chatbot": {
    "name": "node-red-contrib-chatbot",
-   "version": "0.5.13",
+   "version": "0.5.14",
    "nodes": {
     "chatbot-message": {
      "name": "chatbot-message",

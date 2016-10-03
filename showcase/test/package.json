@@ -15,8 +15,9 @@
     "test-integration": "gulp test:integration"
   },
   "dependencies": {
-    "amqp-ts": "1.1.1",
-    "chai": "^3.5.0",
+    "amqp-ts": "^1.1.1",
+    "bluebird": "^3.4.6",
+    "deep-equal": "^1.0.1",
     "del": "^2.2.0",
     "gulp": "^3.9.1",
     "gulp-sourcemaps": "^1.6.0",
