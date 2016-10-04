@@ -13,7 +13,8 @@ import * as path from "path";
 import * as amqp from "amqp-ts";
 
 import * as Promise from "bluebird";
-import * as deepEqual from "deep-equal";
+//import * as deepEqual from "deep-equal";
+import match from "./match";
 
 const testTimeout = process.env.TEST_TIMEOUT || 1000; // timeout per test in ms
 
@@ -78,10 +79,10 @@ class ShowcaseTest {
   private checkMessage(msg, exchangeResults: ExchangeResults) {
     if (this.completed) { return; } // ignore messages sent after test finish
     var found = false;
-
     var expectedMessages = exchangeResults.expectedMessages;
     for (let i = 0, len = expectedMessages.length; i < len; i++) {
-      if (deepEqual(expectedMessages[i].result, msg)) {
+      //if (deepEqual(expectedMessages[i].result, msg)) {
+      if (match(expectedMessages[i].result, msg)) {
         found = true;
         if (!expectedMessages[i].received) {
           expectedMessages[i].received = true;
@@ -92,10 +93,10 @@ class ShowcaseTest {
     this.success = false;
     if (found) {
       // todo: log message received too many times
-      console.log("Message received too many times: " + JSON.stringify(msg.getContent()));
+      console.log("Message received too many times: " + JSON.stringify(msg));
     } else {
       // todo: log unexpected message received
-      console.log("Unexpected message received: " + JSON.stringify(msg.getContent()));
+      console.log("Unexpected message received: " + JSON.stringify(msg));
     }
   }
 
