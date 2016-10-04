@@ -1,8 +1,17 @@
 version: '2'
 services:
+
  nodered:
   extends:
-   file: docker-compose/docker-compose-users.yml
+   file: docker-compose/docker-compose-ttn-test.yml
    service: nodered
   environment:
-   - SHOWCASE_TELEGRAM_TOKEN=${SHOWCASE_TELEGRAM_BOT_THEO}
+   - SHOWCASE_TELEGRAM_TOKEN=${SHOWCASE_TELEGRAM_BOT_ERIC}
+ 
+ phreeze:
+  ports:
+   - "82:80"
+   
+ phpmyadmin:
+  ports:
+   - "81:80"

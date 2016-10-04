@@ -45,6 +45,8 @@ public:
   inline void setAckOff() { isAckActive=false; };
   inline bool getAcknowledge() { return isAckActive; };
   inline bool isInitialized() { return isHalInitialized; };
+  inline void setNumTxRetries(int num) { numTxRetries=num; };
+  inline int getNumTxRetries() { return numTxRetries; };
   
 private:
   void init();
@@ -64,6 +66,7 @@ private:
   bool isHalInitialized=false;
   // Send message with Acknowledgement
   bool isAckActive=false;
+  int numTxRetries=0;
 };
 
 extern Hal HalImpl;
