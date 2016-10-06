@@ -12,7 +12,8 @@ var fs = require("fs");
 var path = require("path");
 var amqp = require("amqp-ts");
 var Promise = require("bluebird");
-var deepEqual = require("deep-equal");
+//import * as deepEqual from "deep-equal";
+var match_1 = require("./match");
 var testTimeout = process.env.TEST_TIMEOUT || 1000; // timeout per test in ms
 var testSet = [];
 var ShowcaseTest = (function () {
@@ -56,7 +57,8 @@ var ShowcaseTest = (function () {
         var found = false;
         var expectedMessages = exchangeResults.expectedMessages;
         for (var i_2 = 0, len = expectedMessages.length; i_2 < len; i_2++) {
-            if (deepEqual(expectedMessages[i_2].result, msg)) {
+            //if (deepEqual(expectedMessages[i].result, msg)) {
+            if (match_1.default(msg, expectedMessages[i_2].result)) {
                 found = true;
                 if (!expectedMessages[i_2].received) {
                     expectedMessages[i_2].received = true;
@@ -67,11 +69,11 @@ var ShowcaseTest = (function () {
         this.success = false;
         if (found) {
             // todo: log message received too many times
-            console.log("Message received too many times: " + JSON.stringify(msg.getContent()));
+            console.log("Message received too many times: " + JSON.stringify(msg));
         }
         else {
             // todo: log unexpected message received
-            console.log("Unexpected message received: " + JSON.stringify(msg.getContent()));
+            console.log("Unexpected message received: " + JSON.stringify(msg));
         }
     };
     // prepare test
