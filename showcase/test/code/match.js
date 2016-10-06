@@ -11,7 +11,7 @@
 var safeEval = require("safe-eval");
 function match(actual, expected, opts) {
     "use strict";
-    if (opts === void 0) { opts = {}; }
+    if (opts === void 0) { opts = { strict: true, wildcard: true }; }
     // All identical values are equivalent, as determined by ===.
     if (actual === expected) {
         return true;
@@ -30,7 +30,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = match;
 function objMatch(a, b, opts) {
     "use strict";
-    if (opts === void 0) { opts = {}; }
+    if (opts === void 0) { opts = { strict: true, wildcard: true }; }
     // check strict identity
     if (a === b) {
         return true;
@@ -64,15 +64,15 @@ function objMatch(a, b, opts) {
         return true;
     }
     // check wildcards
-    if (opts.wildcard && b.slice(0, 2) === "**") {
+    if (opts.wildcard && b.constructor === String && b.slice(0, 2) === "**") {
         if (b === "**any**") {
             return true;
         }
         if (b.slice(0, 9) === "**typeof " && b.slice(-2) === "**") {
-            return typeof a === b.slice(9, b.length - 11);
+            return typeof a === b.slice(9, b.length - 2);
         }
         if (b.slice(0, 8) === "**eval (" && b.slice(-3) === ")**") {
-            return safeEval(b.slice(8, b.length - 11), { x: a });
+            return safeEval(b.slice(8, b.length - 3), { x: a });
         }
     }
     // no strict match

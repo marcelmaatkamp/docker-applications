@@ -58,7 +58,7 @@ var ShowcaseTest = (function () {
         var expectedMessages = exchangeResults.expectedMessages;
         for (var i_2 = 0, len = expectedMessages.length; i_2 < len; i_2++) {
             //if (deepEqual(expectedMessages[i].result, msg)) {
-            if (match_1.default(expectedMessages[i_2].result, msg)) {
+            if (match_1.default(msg, expectedMessages[i_2].result)) {
                 found = true;
                 if (!expectedMessages[i_2].received) {
                     expectedMessages[i_2].received = true;

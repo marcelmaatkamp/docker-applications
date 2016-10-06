@@ -49,11 +49,11 @@
             "sensorError": 0,
             "sensorValue": "23"
         },
-        "sendExchange": "showcase.observation",
+        "sendExchange": "showcase.ttn_message",
         "sendExchangeType": "fanout",
         "expectedResults": [
             {
-                "exchange": "showcase.logged_observation",
+                "exchange": "showcase.observation",
                 "exchangeType": "fanout",
                 "expectedMessages": [
                     {
@@ -63,12 +63,12 @@
                             "sensorId": 2,
                             "sensorError": 0,
                             "sensorValue": "23",
-                            "id": "**typeof number**"
+                            "id": 5556
                         }
                     }
                 ]
             }
         ],
-        "testTimeout": 400
+        "testTimeout": 200
     }
 ]

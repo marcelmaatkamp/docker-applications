@@ -17,7 +17,6 @@
   "dependencies": {
     "amqp-ts": "^1.1.1",
     "bluebird": "^3.4.6",
-    "deep-equal": "^1.0.1",
     "safe-eval": "^0.3.0",
     "del": "^2.2.0",
     "gulp": "^3.9.1",

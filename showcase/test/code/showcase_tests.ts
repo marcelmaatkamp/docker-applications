@@ -82,7 +82,7 @@ class ShowcaseTest {
     var expectedMessages = exchangeResults.expectedMessages;
     for (let i = 0, len = expectedMessages.length; i < len; i++) {
       //if (deepEqual(expectedMessages[i].result, msg)) {
-      if (match(expectedMessages[i].result, msg)) {
+      if (match(msg, expectedMessages[i].result)) {
         found = true;
         if (!expectedMessages[i].received) {
           expectedMessages[i].received = true;
