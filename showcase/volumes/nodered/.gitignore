@@ -2,3 +2,5 @@
 .flows_nodered_cred.json.backup
 .config.json
 flows_nodered_cred.json
+kpnlora.log
+map/loramap/*
