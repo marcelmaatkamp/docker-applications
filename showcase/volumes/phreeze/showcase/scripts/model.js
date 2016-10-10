@@ -14,7 +14,7 @@ var model = {};
  * long polling duration in miliseconds.  (5000 = recommended, 0 = disabled)
  * warning: setting this to a low number will increase server load
  */
-model.longPollDuration = 5000;
+model.longPollDuration = 0;
 
 /**
  * whether to refresh the collection immediately after a model is updated
@@ -152,7 +152,7 @@ model.AlarmModel = Backbone.Model.extend({
  * Alarm Backbone Collection
  */
 model.AlarmCollection = model.AbstractCollection.extend({
-	url: 'api/alarms',
+	url: 'api/alarmen',
 	model: model.AlarmModel
 });
 
@@ -325,6 +325,36 @@ model.ObservatieCollection = model.AbstractCollection.extend({
 });
 
 /**
+ * Role Backbone Model
+ */
+model.RoleModel = Backbone.Model.extend({
+	urlRoot: 'api/role',
+	idAttribute: 'id',
+	id: '',
+	name: '',
+	canAdmin: '',
+	canEdit: '',
+	canWrite: '',
+	canRead: '',
+	defaults: {
+		'id': null,
+		'name': '',
+		'canAdmin': '',
+		'canEdit': '',
+		'canWrite': '',
+		'canRead': ''
+	}
+});
+
+/**
+ * Role Backbone Collection
+ */
+model.RoleCollection = model.AbstractCollection.extend({
+	url: 'api/roles',
+	model: model.RoleModel
+});
+
+/**
  * Sensor Backbone Model
  */
 model.SensorModel = Backbone.Model.extend({
@@ -332,9 +362,15 @@ model.SensorModel = Backbone.Model.extend({
 	idAttribute: 'sensorId',
 	sensorId: '',
 	omschrijving: '',
+	eenheid: '',
+	omrekenfactor: '',
+	presentatie: '',
 	defaults: {
 		'sensorId': null,
-		'omschrijving': ''
+		'omschrijving': '',
+		'eenheid': '',
+		'omrekenfactor': '',
+		'presentatie': ''
 	}
 });
 
@@ -353,16 +389,20 @@ model.SensorNodeObservationModel = Backbone.Model.extend({
 	urlRoot: 'api/sensornodeobservation',
 	idAttribute: 'node',
 	node: '',
+	deveui: '',
 	sensor: '',
-	observatieid: '',
+	sensorid: '',
 	observatiewaarde: '',
 	observatiedatum: '',
+	observatieid: '',
 	defaults: {
 		'node': null,
+		'deveui': '',
 		'sensor': '',
-		'observatieid': '',
+		'sensorid': '',
 		'observatiewaarde': '',
-		'observatiedatum': new Date()
+		'observatiedatum': new Date(),
+		'observatieid': ''
 	}
 });
 
@@ -370,7 +410,37 @@ model.SensorNodeObservationModel = Backbone.Model.extend({
  * SensorNodeObservation Backbone Collection
  */
 model.SensorNodeObservationCollection = model.AbstractCollection.extend({
-	url: 'api/sensornodeobservations',
+	url: 'api/s',
 	model: model.SensorNodeObservationModel
+});
+
+/**
+ * User Backbone Model
+ */
+model.UserModel = Backbone.Model.extend({
+	urlRoot: 'api/user',
+	idAttribute: 'id',
+	id: '',
+	roleId: '',
+	username: '',
+	password: '',
+	firstName: '',
+	lastName: '',
+	defaults: {
+		'id': null,
+		'roleId': '',
+		'username': '',
+		'password': '',
+		'firstName': '',
+		'lastName': ''
+	}
+});
+
+/**
+ * User Backbone Collection
+ */
+model.UserCollection = model.AbstractCollection.extend({
+	url: 'api/users',
+	model: model.UserModel
 });
 

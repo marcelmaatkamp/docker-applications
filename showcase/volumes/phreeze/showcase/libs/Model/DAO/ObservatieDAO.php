@@ -44,16 +44,7 @@ class ObservatieDAO extends Phreezable
 	 */
 	public function GetAlarms($criteria = null)
 	{
-		return $this->_phreezer->GetOneToMany($this, "FK_27v5pji13cutepjuv9ox0glwp", $criteria);
-	}
-
-	/**
-	 * Returns the foreign object based on the value of Sensor
-	 * @return Sensor
-	 */
-	public function GetSensor()
-	{
-		return $this->_phreezer->GetManyToOne($this, "FK_3vtmlnui6re2o9jq4vqpa2t06");
+		return $this->_phreezer->GetOneToMany($this, "FK_alarm_observatie", $criteria);
 	}
 
 	/**
@@ -62,7 +53,16 @@ class ObservatieDAO extends Phreezable
 	 */
 	public function GetNode()
 	{
-		return $this->_phreezer->GetManyToOne($this, "FK_smi270lm0koqq55tj5bfisawt");
+		return $this->_phreezer->GetManyToOne($this, "FK_observatie_node");
+	}
+
+	/**
+	 * Returns the foreign object based on the value of Sensor
+	 * @return Sensor
+	 */
+	public function GetSensor()
+	{
+		return $this->_phreezer->GetManyToOne($this, "FK_observatie_sensor");
 	}
 
 

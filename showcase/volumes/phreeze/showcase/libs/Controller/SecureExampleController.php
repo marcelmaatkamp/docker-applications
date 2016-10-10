@@ -3,7 +3,7 @@
 
 /** import supporting libraries */
 require_once("AppBaseController.php");
-require_once("App/ExampleUser.php");
+require_once("Model/User.php");
 
 /**
  * SecureExampleController is a sample controller to demonstrate
@@ -31,7 +31,7 @@ class SecureExampleController extends AppBaseController
 	 */
 	public function UserPage()
 	{
-		$this->RequirePermission(ExampleUser::$PERMISSION_USER, 
+		$this->RequirePermission(User::$PERMISSION_READ, 
 				'SecureExample.LoginForm', 
 				'Login is required to access the secure user page',
 				'You do not have permission to access the secure user page');
@@ -47,7 +47,7 @@ class SecureExampleController extends AppBaseController
 	 */
 	public function AdminPage()
 	{
-		$this->RequirePermission(ExampleUser::$PERMISSION_ADMIN, 
+		$this->RequirePermission(User::$PERMISSION_ADMIN, 
 				'SecureExample.LoginForm', 
 				'Login is required to access the admin page',
 				'Admin permission is required to access the admin page');
@@ -75,7 +75,7 @@ class SecureExampleController extends AppBaseController
 	 */
 	public function Login()
 	{
-		$user = new ExampleUser();
+		$user = new User($this->Phreezer);
 		
 		if ($user->Login(RequestUtil::Get('username'), RequestUtil::Get('password')))
 		{

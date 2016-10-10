@@ -65,6 +65,20 @@ var page = {
 			page.fetchLaatste_Observaties(page.fetchParams);
 		});
 		
+			this.collectionView = new view.CollectionView({
+			el: $("#laatste_ObservatieCollectionContainer"),
+			templateEl: $("#laatste_ObservatieCollectionTemplate"),
+			collection: page.laatste_Observaties
+		});
+		
+			// initialize the dropdown filter
+		$('#drowpdownfilter').change(function(obj) {
+			page.fetchParams.filter = $('#drowpdownfilter').val();
+			page.fetchParams.page = 1;
+			page.fetchLaatste_Observaties(page.fetchParams);
+		});
+		
+		
 		// make the rows clickable ('rendered' is a custom event, not a standard backbone event)
 		this.collectionView.on('rendered',function(){
 

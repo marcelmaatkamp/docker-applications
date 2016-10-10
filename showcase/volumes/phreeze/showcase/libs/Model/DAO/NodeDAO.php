@@ -35,7 +35,7 @@ class NodeDAO extends Phreezable
 	 */
 	public function GetAlarmRegels($criteria = null)
 	{
-		return $this->_phreezer->GetOneToMany($this, "FK_4stgr2ch3nidujfk8pial5sdv", $criteria);
+		return $this->_phreezer->GetOneToMany($this, "FK_alarm_regel_node", $criteria);
 	}
 
 	/**
@@ -45,7 +45,7 @@ class NodeDAO extends Phreezable
 	 */
 	public function GetObservaties($criteria = null)
 	{
-		return $this->_phreezer->GetOneToMany($this, "FK_smi270lm0koqq55tj5bfisawt", $criteria);
+		return $this->_phreezer->GetOneToMany($this, "FK_observatie_node", $criteria);
 	}
 
 

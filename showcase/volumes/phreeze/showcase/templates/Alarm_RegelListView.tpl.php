@@ -54,6 +54,9 @@
 
 		<%=  view.getPaginationHtml(page) %>
 	</script>
+	
+	
+
 
 	<!-- underscore template for the model -->
 	<script type="text/template" id="alarm_RegelModelTemplate">

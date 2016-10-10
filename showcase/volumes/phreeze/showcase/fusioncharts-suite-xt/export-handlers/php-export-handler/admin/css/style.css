@@ -1,0 +1,20 @@
+@charset "utf-8";
+/* CSS Document */
+
+.table-holder {
+	border: 1px solid #EFEFEF;
+	padding: 10px;
+	-moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    border-radius: 5px;
+	margin: 10px 0;
+}
+
+.table-holder .table {
+	margin-bottom: 0;
+}
+
+.table-holder .table  h4{
+	line-height: 100%;
+}

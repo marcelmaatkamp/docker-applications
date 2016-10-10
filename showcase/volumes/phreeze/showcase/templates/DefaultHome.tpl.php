@@ -70,15 +70,13 @@
 			 <br>
 			 
 			
-			<p>Welkom bij de Showcase backend.</p>
+			<p>Via de Showcase webapp krijg je toegang tot Observaties en Alarmen. Tevens beheer je, afhankelijk van je rechten, Nodes, Sensoren, AlarmRegels en AlarmNotificaties.</p>
 			
-			<p>Via deze webapp beheer je Nodes, Sensoren, AlarmRegels en AlarmNotificaties. Tevens krijg je toegang tot Observaties en Alarmen.</p>
-			
-			<p>Maak in het bovenstaande menu of via de buttons beneden je keuze.</p>
+			<p>Onderstaande items geven meer informatie over de rol van elke entiteit.</p>
 			</div>
 			
 			<div style="width: 30%; float:right">
-			 <img src="images\Pelicase-1400.jpg" class="img-circle" alt="Cinque Terre">
+			 <img src="images\Pelicase-1400.jpg" class="img-circle" alt="Case">
 			 </div>
 
 			<br style="clear:both;"/>
@@ -98,7 +96,7 @@
 			<div class="span4">
 				<h2><i class="icon-screenshot"></i> <a href="./nodes"> Nodes</a></h2>
 				<p>Een node is de fysieke printplaat waarop de diverse sensoren zijn aangesloten. Node is verantwoordelijk voor de communicatie van sensor
-				observaties naar de Showcase Backend. <a class="btn btn-link" data-toggle="modal" href="#getStartedDialogNode">Meer info &raquo;</a></p>
+				observaties naar de Showcase Backend. <a class="btn btn-link" data-toggle="modal" href="#getStartedDialogNode">Meer help &raquo;</a></p>
 				
 			</div>
 			
@@ -106,13 +104,13 @@
 			
 			<div class="span4">
 				<h2><i class="icon-camera"></i> <a href="./sensoren"> Sensoren</a></h2>
-				<p>Een sensor is op node aangesloten stuk elektronisch zintuig. Denk aan temperatuur, luchtvochtigheid, microswitch, PIR sensor enz.<a class="btn btn-link" data-toggle="modal" href="#getStartedDialogNode">Meer info &raquo;</a></p>
+				<p>Een sensor is op node aangesloten stuk elektronisch zintuig. Denk aan temperatuur, luchtvochtigheid, microswitch, PIR sensor enz.<a class="btn btn-link" data-toggle="modal" href="#getStartedDialogNode">Meer help &raquo;</a></p>
 				
 			</div>
 			
 			<div class="span4">
-				<h2><i class="icon-th-list"></i> <a href="./alarm_regels"> Alarm Regels</a></h2>
-				<p>Alarm regels bepalen wanneer de aan de Node gekoppelde Sensoren in Alarm gaan. <a class="btn btn-link" data-toggle="modal" href="#getStartedDialogNode">Meer info &raquo;</a></p>
+				<h2><i class="icon-th-list"></i> <a href="./alarm_regels"> AlarmRegels</a></h2>
+				<p>Alarm regels bepalen wanneer de aan de Node gekoppelde Sensoren in Alarm gaan. <a class="btn btn-link" data-toggle="modal" href="#getStartedDialogNode">Meer help &raquo;</a></p>
 				
 			</div>
 		
@@ -123,19 +121,19 @@
 		<div class="row">	
 			<div class="span4">
 				<h2><i class="icon-fire"></i> <a href="./alarmen"> Alarmen</a></h2>
-				<p>Lijst van alle alarmeringen. Alarmering is een observatie welke een alarm regel overtreed.<a class="btn btn-link" data-toggle="modal" href="#getStartedDialogNode">Meer info &raquo;</a></p>
+				<p>Lijst van alle alarmeringen. Alarmering is een observatie welke een alarm regel overtreed.<a class="btn btn-link" data-toggle="modal" href="#getStartedDialogNode">Meer help &raquo;</a></p>
 				
 			</div>
 			
 			<div class="span4">
-				<h2><i class="icon-bullhorn"></i> <a href="./alarm_notificaties"> Alarm Notificaties</a></h2>
-				<p>AlarmNotificaties bepalen wie voor een AlarmRegel een notificatie ontvangt..<a class="btn btn-link" data-toggle="modal" href="#getStartedDialogNode">Meer info &raquo;</a></p>
+				<h2><i class="icon-bullhorn"></i> <a href="./alarm_notificaties"> AlarmNotificaties</a></h2>
+				<p>AlarmNotificaties bepalen wie voor een AlarmRegel een notificatie ontvangt..<a class="btn btn-link" data-toggle="modal" href="#getStartedDialogNode">Meer help &raquo;</a></p>
 				
 			</div>
 			
 			<div class="span4">
 				<h2><i class="icon-eye-open"></i> <a href="./observaties"> Observaties</a></h2>
-				<p>Lijst van alle observaties. Observatie is waarneming door een Sensor <a class="btn btn-link" data-toggle="modal" href="#getStartedDialogNode">Meer info &raquo;</a></p>
+				<p>Lijst van alle observaties. Observatie is waarneming door een Sensor <a class="btn btn-link" data-toggle="modal" href="#getStartedDialogNode">Meer help &raquo;</a></p>
 				
 			</div>
 			
