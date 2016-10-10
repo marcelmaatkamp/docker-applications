@@ -16,7 +16,7 @@ require_once("verysimple/HTTP/RequestUtil.php");
 
 /** database connection settings */
 GlobalConfig::$CONNECTION_SETTING = new ConnectionSetting();
-GlobalConfig::$CONNECTION_SETTING->ConnectionString = "localhost:3307";
+GlobalConfig::$CONNECTION_SETTING->ConnectionString = "mysql:3306";
 GlobalConfig::$CONNECTION_SETTING->DBName = "showcase";
 GlobalConfig::$CONNECTION_SETTING->Username = "root";
 GlobalConfig::$CONNECTION_SETTING->Password = "my-secret-pw";
@@ -29,7 +29,7 @@ GlobalConfig::$CONNECTION_SETTING->Multibyte = true;
 GlobalConfig::$ROOT_URL = RequestUtil::GetServerRootUrl() . 'showcase/';
 
 /** timezone */
-// date_default_timezone_set("UTC");
+date_default_timezone_set("UTC");
 
 /** functions for php 5.2 compatibility */
 if (!function_exists('lcfirst')) {
