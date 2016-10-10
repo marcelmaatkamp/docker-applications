@@ -29,6 +29,10 @@
 	</span>
 </h1>
 
+
+
+
+
 	<!-- underscore template for the collection -->
 	<script type="text/template" id="nodeCollectionTemplate">
 		<table class="collection table table-bordered table-hover">

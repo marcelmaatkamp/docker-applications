@@ -68,9 +68,9 @@ class ObservatieMap implements IDaoMap, IDaoMap2
 		if (self::$KM == null)
 		{
 			self::$KM = Array();
-			self::$KM["FK_27v5pji13cutepjuv9ox0glwp"] = new KeyMap("FK_27v5pji13cutepjuv9ox0glwp", "Id", "Alarm", "Observatie", KM_TYPE_ONETOMANY, KM_LOAD_LAZY);  // use KM_LOAD_EAGER with caution here (one-to-one relationships only)
-			self::$KM["FK_3vtmlnui6re2o9jq4vqpa2t06"] = new KeyMap("FK_3vtmlnui6re2o9jq4vqpa2t06", "Sensor", "Sensor", "SensorId", KM_TYPE_MANYTOONE, KM_LOAD_LAZY); // you change to KM_LOAD_EAGER here or (preferrably) make the change in _config.php
-			self::$KM["FK_smi270lm0koqq55tj5bfisawt"] = new KeyMap("FK_smi270lm0koqq55tj5bfisawt", "Node", "Node", "DevEui", KM_TYPE_MANYTOONE, KM_LOAD_LAZY); // you change to KM_LOAD_EAGER here or (preferrably) make the change in _config.php
+			self::$KM["FK_alarm_observatie"] = new KeyMap("FK_alarm_observatie", "Id", "Alarm", "Observatie", KM_TYPE_ONETOMANY, KM_LOAD_LAZY);  // use KM_LOAD_EAGER with caution here (one-to-one relationships only)
+			self::$KM["FK_observatie_node"] = new KeyMap("FK_observatie_node", "Node", "Node", "DevEui", KM_TYPE_MANYTOONE, KM_LOAD_LAZY); // you change to KM_LOAD_EAGER here or (preferrably) make the change in _config.php
+			self::$KM["FK_observatie_sensor"] = new KeyMap("FK_observatie_sensor", "Sensor", "Sensor", "SensorId", KM_TYPE_MANYTOONE, KM_LOAD_LAZY); // you change to KM_LOAD_EAGER here or (preferrably) make the change in _config.php
 		}
 		return self::$KM;
 	}

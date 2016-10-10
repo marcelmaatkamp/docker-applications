@@ -53,6 +53,9 @@ class SensorMap implements IDaoMap, IDaoMap2
 			self::$FM = Array();
 			self::$FM["SensorId"] = new FieldMap("SensorId","sensor","sensor_id",true,FM_TYPE_VARCHAR,255,null,false);
 			self::$FM["Omschrijving"] = new FieldMap("Omschrijving","sensor","omschrijving",false,FM_TYPE_VARCHAR,255,null,false);
+			self::$FM["Eenheid"] = new FieldMap("Eenheid","sensor","eenheid",false,FM_TYPE_VARCHAR,255,null,false);
+			self::$FM["Omrekenfactor"] = new FieldMap("Omrekenfactor","sensor","omrekenfactor",false,FM_TYPE_VARCHAR,255,null,false);
+			self::$FM["Presentatie"] = new FieldMap("Presentatie","sensor","presentatie",false,FM_TYPE_VARCHAR,255,null,false);
 		}
 		return self::$FM;
 	}
@@ -65,8 +68,8 @@ class SensorMap implements IDaoMap, IDaoMap2
 		if (self::$KM == null)
 		{
 			self::$KM = Array();
-			self::$KM["FK_afhhe5d4s0if67l0h6fxmdj08"] = new KeyMap("FK_afhhe5d4s0if67l0h6fxmdj08", "SensorId", "AlarmRegel", "Sensor", KM_TYPE_ONETOMANY, KM_LOAD_LAZY);  // use KM_LOAD_EAGER with caution here (one-to-one relationships only)
-			self::$KM["FK_3vtmlnui6re2o9jq4vqpa2t06"] = new KeyMap("FK_3vtmlnui6re2o9jq4vqpa2t06", "SensorId", "Observatie", "Sensor", KM_TYPE_ONETOMANY, KM_LOAD_LAZY);  // use KM_LOAD_EAGER with caution here (one-to-one relationships only)
+			self::$KM["FK_alarm_regel_sensor"] = new KeyMap("FK_alarm_regel_sensor", "SensorId", "AlarmRegel", "Sensor", KM_TYPE_ONETOMANY, KM_LOAD_LAZY);  // use KM_LOAD_EAGER with caution here (one-to-one relationships only)
+			self::$KM["FK_observatie_sensor"] = new KeyMap("FK_observatie_sensor", "SensorId", "Observatie", "Sensor", KM_TYPE_ONETOMANY, KM_LOAD_LAZY);  // use KM_LOAD_EAGER with caution here (one-to-one relationships only)
 		}
 		return self::$KM;
 	}

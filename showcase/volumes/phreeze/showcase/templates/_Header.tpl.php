@@ -46,55 +46,172 @@
 				.script("scripts/model.js").wait()
 				.script("scripts/view.js").wait()
 		</script>
+		
+		<!-- Fusion Charts Scripts-->
+		<script type="text/javascript" src="fusioncharts-suite-xt/js/fusioncharts.js"></script>
+		<script type="text/javascript" src="fusioncharts-suite-xt/js/themes/fusioncharts.theme.ocean.js"></script>
 
 	</head>
 
 	<body>
 
 			<div class="navbar navbar-inverse navbar-fixed-top">
-				<div class="navbar-inner">
+			
+			<?php if (isset($this->currentUser)) { ?>
+								
+				
+				
+				
+				
+			
+						<div class="navbar-inner">
 					<div class="container">
+					
 						<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</a>
-						<a class="brand" href="./">SHOWCASE</a>
+						<a class="brand" href="">SHOWCASE HELP</a>
 						<div class="nav-collapse collapse">
 							<ul class="nav">
 								
+								
+								<li <?php $this->eprint($this->title); ?></title></li>
+								
+								
+								<?php if ($this->currentUser->RoleId >= 3) { ?>	
+								
 								<li <?php if ($this->nav=='nodes') { echo 'class="active"'; } ?>><a href="./nodes">Nodes</a></li>
 								<li <?php if ($this->nav=='sensoren') { echo 'class="active"'; } ?>><a href="./sensoren">Sensoren</a></li>
-								<li <?php if ($this->nav=='alarm_regels') { echo 'class="active"'; } ?>><a href="./alarm_regels">Alarm_Regels</a></li>
-								<li <?php if ($this->nav=='alarm_notificaties') { echo 'class="active"'; } ?>><a href="./alarm_notificaties">Alarm_Notificaties</a></li>
-								<li>&nbsp;  &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; </li>
-								<li <?php if ($this->nav=='laatste_observaties') { echo 'class="active"'; } ?>><a href="./laatste_observaties">Laatste_Observaties</a></li>		
-								<li <?php if ($this->nav=='alarmen') { echo 'class="active"'; } ?>><a href="./alarmen">Alarmen</a></li>
-								<li>&nbsp;  &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; </li>
 								
-							</ul>
+								<?php } ?>	
+								
+								
+								
+								<?php if ($this->currentUser->RoleId >= 1) { ?>	
+								
+									<ul class="nav">
+										<li class="dropdown">
+											<a href="#" class="dropdown-toggle" data-toggle="dropdown">Alarmen <b class="caret"></b></a>
+											<ul class="dropdown-menu">
+									
+												<li <?php if ($this->nav=='alarmen') { echo 'class="active"'; } ?>><a href="./alarmen">Alarm Rapport <b class="icon-eye-open"></b></a></li>
+												<li <?php if ($this->nav=='alarm_regels') { echo 'class="active"'; } ?>><a href="./alarm_regels">Alarm Regels</a></li>
+												<li <?php if ($this->nav=='alarm_notificaties') { echo 'class="active"'; } ?>><a href="./alarm_notificaties">Alarm Notificaties</a></li>
+											</ul>
+										</li>
+									</ul>	
+								
+								<?php } ?>	
+									
+								<?php if ($this->currentUser->RoleId >= 1) { ?>
+								
+									<ul class="nav">
+										<li class="dropdown">
+											<a href="#" class="dropdown-toggle" data-toggle="dropdown">Observaties<b class="caret"></b></a>
+											<ul class="dropdown-menu">
+									
+											<li <?php if ($this->nav=='observaties') { echo 'class="active"'; } ?>><a href="./observaties">Observaties</a></li>
+											<li <?php if ($this->nav=='laatste_observaties') { echo 'class="active"'; } ?>><a href="./laatste_observaties">Observatie Rapport <b class="icon-eye-open"></b></a></li>	
+											
+											</ul>
+										</li>
+									</ul>	
+								
+								<?php } ?>	
+								
+								<?php if ($this->currentUser->RoleId == 4) { ?>
+								
+									<ul class="nav">
+										<li class="dropdown">
+											<a href="#" class="dropdown-toggle" data-toggle="dropdown">Gebruikersbeheer<b class="caret"></b></a>
+											<ul class="dropdown-menu">
+									
+												<li <?php if ($this->nav=='roles') { echo 'class="active"'; } ?>><a href="./roles">Rollen</a></li>
+												<li <?php if ($this->nav=='users') { echo 'class="active"'; } ?>><a href="./users">Gebruikers</a></li>
+											</ul>
+										</li>
+									</ul>	
+								
+							
+								<?php } ?>	
+							
+							
+							
 							<ul class="nav">
-								<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>
-								<ul class="dropdown-menu">
+								<li>
 								
-								<li <?php if ($this->nav=='observaties') { echo 'class="active"'; } ?>><a href="./observaties">Observaties</a></li>
 								
-								</ul>
-								</li>
+								
+								<a href="./logout"><i class="icon-lock"></i> Logout
+								
+								
+								
+								
+								 <i class="caret"></i></a>
+								
+								
+								
+								<!--<li><a href="./loginform">Login/Logout <?php $this->eprint($this->currentUser->Username); ?> </a></li>-->
+								
 							</ul>
+							
+							
+							
 							<ul class="nav pull-right">
-								<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-lock"></i> Login <i class="caret"></i></a>
-								<ul class="dropdown-menu">
-									<li><a href="./loginform">Login</a></li>
-									<li class="divider"></li>
-									<li><a href="./secureuser">Example User Page <i class="icon-lock"></i></a></li>
-									<li><a href="./secureadmin">Example Admin Page <i class="icon-lock"></i></a></li>
-								</ul>
-								</li>
+								<li>
+								
+								
+								
+								<p class="navbar-text"><code>
+								<?php $this->eprint($this->currentUser->Username);?>
+								<?php if ($this->currentUser->RoleId == 4) { ?>(Admin)<?php } ?>
+								<?php if ($this->currentUser->RoleId == 3) { ?>(Editor)<?php } ?>
+								<?php if ($this->currentUser->RoleId == 1) { ?>(ReadOnly)<?php } ?>
+								
+								</code></p>
+								
+								
+					
+								
+								
+								
+								<!--<li><a href="./loginform">Login/Logout <?php $this->eprint($this->currentUser->Username); ?> </a></li>-->
+								
 							</ul>
+							
+							
 						</div><!--/.nav-collapse -->
 					</div>
 				</div>
 			</div>
+				
+						
+				
+			
+
+
+
+
+
+
+
+
+
+
+			
+			
+			<?php } ?>
+					
+					
+			
+				
+				
+			
+			
+			
+		
+			
+			
+			

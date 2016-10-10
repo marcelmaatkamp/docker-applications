@@ -1,4 +1,3 @@
-        <?php date_default_timezone_set('Europe/Amsterdam'); ?>
 	<!-- footer -->
 	<div class="container">
 		<hr>

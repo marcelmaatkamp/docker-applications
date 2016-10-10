@@ -28,8 +28,11 @@ class AlarmController extends AppBaseController
 
 		// TODO: add controller-wide bootstrap code
 		
-		// TODO: if authentiation is required for this entire controller, for example:
-		// $this->RequirePermission(ExampleUser::$PERMISSION_USER,'SecureExample.LoginForm');
+		// DO SOME CUSTOM AUTHENTICATION FOR THIS PAGE
+		$this->RequirePermission(User::$PERMISSION_READ,
+				'SecureExample.LoginForm',
+				'Please login to access this page',
+				'');
 	}
 
 	/**

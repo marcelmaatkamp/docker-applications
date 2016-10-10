@@ -36,6 +36,9 @@
 			<tr>
 				<th id="header_SensorId">Sensor Id<% if (page.orderBy == 'SensorId') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_Omschrijving">Omschrijving<% if (page.orderBy == 'Omschrijving') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_Omschrijving">Eenheid<% if (page.orderBy == 'Eenheid') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_Omschrijving">Omrekenfactor<% if (page.orderBy == 'Omrekenfactor') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_Omschrijving">Presentatie<% if (page.orderBy == 'Presentatie') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -43,6 +46,9 @@
 			<tr id="<%= _.escape(item.get('sensorId')) %>">
 				<td><%= _.escape(item.get('sensorId') || '') %></td>
 				<td><%= _.escape(item.get('omschrijving') || '') %></td>
+				<td><%= _.escape(item.get('eenheid') || '') %></td>
+				<td><%= _.escape(item.get('omrekenfactor') || '') %></td>
+				<td><%= _.escape(item.get('presentatie') || '') %></td>
 			</tr>
 		<% }); %>
 		</tbody>
@@ -69,6 +75,33 @@
 						<span class="help-inline"></span>
 					</div>
 				</div>
+				
+					<div id="eenheidInputContainer" class="control-group">
+					<label class="control-label" for="eenheid">Eenheid</label>
+					<div class="controls inline-inputs">
+						<input type="text" class="input-xlarge" id="eenheid" placeholder="Eenheid" value="<%= _.escape(item.get('eenheid') || '') %>">
+						<span class="help-inline"></span>
+					</div>
+				</div>
+				
+				<div id="omrekenfactorInputContainer" class="control-group">
+					<label class="control-label" for="omrekenfactor">Omrekenfactor</label>
+					<div class="controls inline-inputs">
+						<input type="text" class="input-xlarge" id="omrekenfactor" placeholder="Omrekenfactor" value="<%= _.escape(item.get('omrekenfactor') || '') %>">
+						<span class="help-inline"></span>
+					</div>
+				</div>
+				
+			
+				
+				<div id="presentatieInputContainer" class="control-group">
+					<label class="control-label" for="presentatie">Presentatie</label>
+					<div class="controls inline-inputs">
+						<input type="text" class="input-xlarge" id="presentatie" placeholder="Presentatie" value="<%= _.escape(item.get('presentatie') || '') %>">
+						<span class="help-inline"></span>
+					</div>
+				</div>
+				
 			</fieldset>
 		</form>
 

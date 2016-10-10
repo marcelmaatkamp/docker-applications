@@ -3,6 +3,7 @@
 
 /** import supporting libraries */
 require_once("AppBaseController.php");
+require_once("Model/User.php");
 
 /**
  * DefaultController is the entry point to the application
@@ -21,10 +22,13 @@ class DefaultController extends AppBaseController
 	{
 		parent::Init();
 
-		// TODO: add controller-wide bootstrap code
-		
-		// TODO: if authentiation is required for this entire controller, for example:
-		// $this->RequirePermission(ExampleUser::$PERMISSION_USER,'SecureExample.LoginForm');
+			$this->RequirePermission(User::$PERMISSION_READ,
+				'SecureExample.LoginForm',
+				'Please login to access this page',
+				'Admin permission is required to configure roles');
+				
+				
+			
 	}
 
 	/**

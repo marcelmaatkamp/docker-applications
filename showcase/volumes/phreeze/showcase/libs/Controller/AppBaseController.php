@@ -3,6 +3,9 @@
 
 /** import supporting libraries */
 require_once("verysimple/Phreeze/Controller.php");
+require_once("Model/Role.php");
+require_once("Model/User.php");
+
 
 /**
  * AppBaseController is a base class Controller class from which
@@ -37,6 +40,25 @@ class AppBaseController extends Controller
 			$this->RequirePermission(ExampleUser::$PERMISSION_ADMIN,'SecureExample.LoginForm');
 		}
 		//*/
+		
+		
+			$this->Assign('currentUser',$this->GetCurrentUser());
+			//$this->Assign('currentRole',$this->GetRole());
+	
+			//$this->Assign('currentUserAuth',$this->IsAuthorized());
+			
+			
+			//$this->Assign('currentRole',$this->IsAuthorized(User::$PERMISSION_ADMIN));
+			
+			
+			
+			
+		//	$role=>Assign('currentRole',$this->GetRole());
+			
+			
+			
+			
+			
 	}
 
 	/**

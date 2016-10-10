@@ -4,6 +4,7 @@
 /** import supporting libraries */
 require_once("AppBaseController.php");
 require_once("Model/Node.php");
+require_once("Model/User.php");
 
 /**
  * NodeController is the controller class for the Node object.  The
@@ -28,9 +29,19 @@ class NodeController extends AppBaseController
 
 		// TODO: add controller-wide bootstrap code
 		
-		// TODO: if authentiation is required for this entire controller, for example:
-		// $this->RequirePermission(ExampleUser::$PERMISSION_USER,'SecureExample.LoginForm');
+		// DO SOME CUSTOM AUTHENTICATION FOR THIS PAGE
+		$this->RequirePermission(User::$PERMISSION_EDIT,
+				'SecureExample.LoginForm',
+				'Please login to access this page',
+				'');
+				
+				
+				
+				
 	}
+	
+	
+	
 
 	/**
 	 * Displays a list view of Node objects
@@ -179,6 +190,12 @@ class NodeController extends AppBaseController
 	 */
 	public function Update()
 	{
+		
+		$this->RequirePermission(User::$PERMISSION_ADMIN,
+				'SecureExample.LoginForm',
+				'Please login to access this page',
+				'Admin permission is required to EDIT NODES');
+		
 		try
 		{
 						

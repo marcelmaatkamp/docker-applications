@@ -52,6 +52,7 @@ set_include_path(
  * and will be pre-loaded on every page
  */
 require_once "App/ExampleUser.php";
+require_once("Model/User.php");
 
 /**
  * RENDER ENGINE
@@ -162,6 +163,24 @@ GlobalConfig::$ROUTE_MAP = array(
 	'PUT:api/sensornodeobservation/(:any)' => array('route' => 'SensorNodeObservation.Update', 'params' => array('node' => 2)),
 	'DELETE:api/sensornodeobservation/(:any)' => array('route' => 'SensorNodeObservation.Delete', 'params' => array('node' => 2)),
 
+	// Role
+	'GET:roles' => array('route' => 'Role.ListView'),
+	'GET:role/(:num)' => array('route' => 'Role.SingleView', 'params' => array('id' => 1)),
+	'GET:api/roles' => array('route' => 'Role.Query'),
+	'POST:api/role' => array('route' => 'Role.Create'),
+	'GET:api/role/(:num)' => array('route' => 'Role.Read', 'params' => array('id' => 2)),
+	'PUT:api/role/(:num)' => array('route' => 'Role.Update', 'params' => array('id' => 2)),
+	'DELETE:api/role/(:num)' => array('route' => 'Role.Delete', 'params' => array('id' => 2)),
+		
+	// User
+	'GET:users' => array('route' => 'User.ListView'),
+	'GET:user/(:num)' => array('route' => 'User.SingleView', 'params' => array('id' => 1)),
+	'GET:api/users' => array('route' => 'User.Query'),
+	'POST:api/user' => array('route' => 'User.Create'),
+	'GET:api/user/(:num)' => array('route' => 'User.Read', 'params' => array('id' => 2)),
+	'PUT:api/user/(:num)' => array('route' => 'User.Update', 'params' => array('id' => 2)),
+	'DELETE:api/user/(:num)' => array('route' => 'User.Delete', 'params' => array('id' => 2)),
+	
 	// catch any broken API urls
 	'GET:api/(:any)' => array('route' => 'Default.ErrorApi404'),
 	'PUT:api/(:any)' => array('route' => 'Default.ErrorApi404'),

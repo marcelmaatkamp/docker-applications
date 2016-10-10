@@ -27,6 +27,15 @@ class SensorDAO extends Phreezable
 	/** @var string */
 	public $Omschrijving;
 
+	/** @var string */
+	public $Eenheid;
+
+	/** @var string */
+	public $Omrekenfactor;
+
+	/** @var string */
+	public $Presentatie;
+
 
 	/**
 	 * Returns a dataset of AlarmRegel objects with matching Sensor
@@ -35,7 +44,7 @@ class SensorDAO extends Phreezable
 	 */
 	public function GetAlarmRegels($criteria = null)
 	{
-		return $this->_phreezer->GetOneToMany($this, "FK_afhhe5d4s0if67l0h6fxmdj08", $criteria);
+		return $this->_phreezer->GetOneToMany($this, "FK_alarm_regel_sensor", $criteria);
 	}
 
 	/**
@@ -45,7 +54,7 @@ class SensorDAO extends Phreezable
 	 */
 	public function GetObservaties($criteria = null)
 	{
-		return $this->_phreezer->GetOneToMany($this, "FK_3vtmlnui6re2o9jq4vqpa2t06", $criteria);
+		return $this->_phreezer->GetOneToMany($this, "FK_observatie_sensor", $criteria);
 	}
 
 
