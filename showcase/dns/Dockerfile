@@ -5,5 +5,7 @@ RUN npm install native-dns amqp-ts console-stamp
 
 EXPOSE 53/udp
 
-ADD js/server.js .
+WORKDIR /app
+ADD js/server.js /app
+
 CMD ["node", "server.js"]
