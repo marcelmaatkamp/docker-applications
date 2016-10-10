@@ -5,7 +5,6 @@ services:
   image: steveltn/https-portal
   links:
    - nodered
-   - hello
   depends_on:
    - nodered
   ports:

@@ -38,6 +38,37 @@
                 ]
             }
         ],
-        "testTimeout": 100
+        "testTimeout": 200
+    },
+    {
+        "description": "Log observation",
+        "sendMessage": {
+            "timestamp": "2016-08-02T09:26:56.369421Z",
+            "nodeId": "00000000D1EC2A39",
+            "sensorId": 2,
+            "sensorError": 0,
+            "sensorValue": "23"
+        },
+        "sendExchange": "showcase.observation",
+        "sendExchangeType": "fanout",
+        "expectedResults": [
+            {
+                "exchange": "showcase.logged_observation",
+                "exchangeType": "fanout",
+                "expectedMessages": [
+                    {
+                        "result": {
+                            "timestamp": "2016-08-02T09:26:56.369421Z",
+                            "nodeId": "00000000D1EC2A39",
+                            "sensorId": 2,
+                            "sensorError": 0,
+                            "sensorValue": "23",
+                            "id": "**typeof number**"
+                        }
+                    }
+                ]
+            }
+        ],
+        "testTimeout": 400
     }
 ]
