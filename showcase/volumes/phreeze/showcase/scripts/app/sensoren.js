@@ -264,7 +264,10 @@ var page = {
 
 		page.sensor.save({
 			'sensorId': $('input#sensorId').val(),
-			'omschrijving': $('input#omschrijving').val()
+			'omschrijving': $('input#omschrijving').val(),
+			'omrekenfactor': $('input#omrekenfactor').val(),
+			'eenheid': $('input#eenheid').val(),
+			'presentatie': $('input#presentatie').val()
 		}, {
 			wait: true,
 			success: function(){

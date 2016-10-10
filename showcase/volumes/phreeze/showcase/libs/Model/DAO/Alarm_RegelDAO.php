@@ -41,7 +41,7 @@ class Alarm_RegelDAO extends Phreezable
 	 */
 	public function GetAlarms($criteria = null)
 	{
-		return $this->_phreezer->GetOneToMany($this, "FK_qqgttvcq7u148nkqjhx2hsbdi", $criteria);
+		return $this->_phreezer->GetOneToMany($this, "FK_alarm_alarm_regel", $criteria);
 	}
 
 	/**
@@ -60,7 +60,7 @@ class Alarm_RegelDAO extends Phreezable
 	 */
 	public function GetNode()
 	{
-		return $this->_phreezer->GetManyToOne($this, "FK_4stgr2ch3nidujfk8pial5sdv");
+		return $this->_phreezer->GetManyToOne($this, "FK_alarm_regel_node");
 	}
 
 	/**
@@ -69,9 +69,8 @@ class Alarm_RegelDAO extends Phreezable
 	 */
 	public function GetSensor()
 	{
-		return $this->_phreezer->GetManyToOne($this, "FK_afhhe5d4s0if67l0h6fxmdj08");
+		return $this->_phreezer->GetManyToOne($this, "FK_alarm_regel_sensor");
 	}
-
 
 }
 ?>

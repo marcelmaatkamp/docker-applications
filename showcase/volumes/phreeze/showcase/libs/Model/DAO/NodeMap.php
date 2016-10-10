@@ -65,8 +65,8 @@ class NodeMap implements IDaoMap, IDaoMap2
 		if (self::$KM == null)
 		{
 			self::$KM = Array();
-			self::$KM["FK_4stgr2ch3nidujfk8pial5sdv"] = new KeyMap("FK_4stgr2ch3nidujfk8pial5sdv", "DevEui", "AlarmRegel", "Node", KM_TYPE_ONETOMANY, KM_LOAD_LAZY);  // use KM_LOAD_EAGER with caution here (one-to-one relationships only)
-			self::$KM["FK_smi270lm0koqq55tj5bfisawt"] = new KeyMap("FK_smi270lm0koqq55tj5bfisawt", "DevEui", "Observatie", "Node", KM_TYPE_ONETOMANY, KM_LOAD_LAZY);  // use KM_LOAD_EAGER with caution here (one-to-one relationships only)
+			self::$KM["FK_alarm_regel_node"] = new KeyMap("FK_alarm_regel_node", "DevEui", "AlarmRegel", "Node", KM_TYPE_ONETOMANY, KM_LOAD_LAZY);  // use KM_LOAD_EAGER with caution here (one-to-one relationships only)
+			self::$KM["FK_observatie_node"] = new KeyMap("FK_observatie_node", "DevEui", "Observatie", "Node", KM_TYPE_ONETOMANY, KM_LOAD_LAZY);  // use KM_LOAD_EAGER with caution here (one-to-one relationships only)
 		}
 		return self::$KM;
 	}

@@ -20,7 +20,7 @@ GlobalConfig::$CONNECTION_SETTING->ConnectionString = "mysql:3306";
 GlobalConfig::$CONNECTION_SETTING->DBName = "showcase";
 GlobalConfig::$CONNECTION_SETTING->Username = "root";
 GlobalConfig::$CONNECTION_SETTING->Password = "my-secret-pw";
-GlobalConfig::$CONNECTION_SETTING->Type = "MySQL";
+GlobalConfig::$CONNECTION_SETTING->Type = "MySQLi";
 GlobalConfig::$CONNECTION_SETTING->Charset = "utf8";
 GlobalConfig::$CONNECTION_SETTING->Multibyte = true;
 // GlobalConfig::$CONNECTION_SETTING->BootstrapSQL = "SET SQL_BIG_SELECTS=1";
@@ -29,7 +29,7 @@ GlobalConfig::$CONNECTION_SETTING->Multibyte = true;
 GlobalConfig::$ROOT_URL = RequestUtil::GetServerRootUrl() . 'showcase/';
 
 /** timezone */
-// date_default_timezone_set("UTC");
+date_default_timezone_set("UTC");
 
 /** functions for php 5.2 compatibility */
 if (!function_exists('lcfirst')) {

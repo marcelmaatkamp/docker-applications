@@ -28,8 +28,11 @@ class Laatste_ObservatieController extends AppBaseController
 
 		// TODO: add controller-wide bootstrap code
 		
-		// TODO: if authentiation is required for this entire controller, for example:
-		// $this->RequirePermission(ExampleUser::$PERMISSION_USER,'SecureExample.LoginForm');
+		// DO SOME CUSTOM AUTHENTICATION FOR THIS PAGE
+		$this->RequirePermission(User::$PERMISSION_READ,
+				'SecureExample.LoginForm',
+				'Please login to access this page',
+				'');
 	}
 
 	/**
@@ -49,6 +52,10 @@ class Laatste_ObservatieController extends AppBaseController
 		{
 			$criteria = new Laatste_ObservatieCriteria();
 			$criteria->SetOrder('Node',true);
+			
+			//observer not working
+			//$observer = new ObserveToBrowser();
+			//$this->Phreezer->DataAdapter->AttachObserver($observer);
 			
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');

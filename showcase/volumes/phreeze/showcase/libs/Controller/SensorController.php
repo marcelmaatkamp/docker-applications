@@ -28,8 +28,11 @@ class SensorController extends AppBaseController
 
 		// TODO: add controller-wide bootstrap code
 		
-		// TODO: if authentiation is required for this entire controller, for example:
-		// $this->RequirePermission(ExampleUser::$PERMISSION_USER,'SecureExample.LoginForm');
+		// DO SOME CUSTOM AUTHENTICATION FOR THIS PAGE
+		$this->RequirePermission(User::$PERMISSION_EDIT,
+				'SecureExample.LoginForm',
+				'Please login to access this page',
+				'Admin permission is required to configure roles');
 	}
 
 	/**
@@ -52,8 +55,7 @@ class SensorController extends AppBaseController
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');
 			if ($filter) $criteria->AddFilter(
-				new CriteriaFilter('SensorId,Omschrijving'
-				, '%'.$filter.'%')
+				new CriteriaFilter('SensorId,Omschrijving,Eenheid,Omrekenfactor,Presentatie','%'.$filter.'%')
 			);
 
 			// TODO: this is generic query filtering based only on criteria properties
@@ -152,6 +154,9 @@ class SensorController extends AppBaseController
 
 			$sensor->SensorId = $this->SafeGetVal($json, 'sensorId');
 			$sensor->Omschrijving = $this->SafeGetVal($json, 'omschrijving');
+			$sensor->Omrekenfactor = $this->SafeGetVal($json, 'omrekenfactor');
+			$sensor->Eenheid = $this->SafeGetVal($json, 'eenheid');
+			$sensor->Presentatie = $this->SafeGetVal($json, 'presentatie');
 
 			$sensor->Validate();
 			$errors = $sensor->GetValidationErrors();
@@ -198,6 +203,9 @@ class SensorController extends AppBaseController
 			// $sensor->SensorId = $this->SafeGetVal($json, 'sensorId', $sensor->SensorId);
 
 			$sensor->Omschrijving = $this->SafeGetVal($json, 'omschrijving', $sensor->Omschrijving);
+			$sensor->Omrekenfactor = $this->SafeGetVal($json, 'omrekenfactor', $sensor->Omrekenfactor);
+			$sensor->Eenheid = $this->SafeGetVal($json, 'eenheid', $sensor->Eenheid);
+			$sensor->Presentatie = $this->SafeGetVal($json, 'presentatie', $sensor->Presentatie);
 
 			$sensor->Validate();
 			$errors = $sensor->GetValidationErrors();

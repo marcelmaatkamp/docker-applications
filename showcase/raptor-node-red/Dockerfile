@@ -8,7 +8,6 @@
 # FROM collinestes/docker-node-oracle:latest
 FROM collinestes/docker-node-oracle:4.4.0
 
-
 # Install Oracle instantclient
 # FROM node:argon
 #
@@ -36,10 +35,12 @@ FROM collinestes/docker-node-oracle:4.4.0
 
 # install node-red
 COPY Dockerfile package.json server.js /node-red/
+
 WORKDIR /node-red
 
 # first install oracledb latest version (should not be neccessary, but oracledb does not install correctly without this line)
 RUN npm install oracledb
+
 # install node-red and extra's
 RUN npm install
 

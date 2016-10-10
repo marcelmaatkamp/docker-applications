@@ -29,6 +29,10 @@
 	</span>
 </h1>
 
+	
+	
+	
+
 	<!-- underscore template for the collection -->
 	<script type="text/template" id="laatste_ObservatieCollectionTemplate">
 		<table class="collection table table-bordered table-hover">
@@ -57,6 +61,9 @@
 		<%=  view.getPaginationHtml(page) %>
 	</script>
 
+	
+	
+	
 	<!-- underscore template for the model -->
 	<script type="text/template" id="laatste_ObservatieModelTemplate">
 		<form class="form-horizontal" onsubmit="return false;">
@@ -106,6 +113,9 @@
 			</fieldset>
 		</form>
 
+	
+	
+		
 		<!-- delete button is is a separate form to prevent enter key from triggering a delete -->
 		<form id="deleteLaatste_ObservatieButtonContainer" class="form-horizontal" onsubmit="return false;">
 			<fieldset>
