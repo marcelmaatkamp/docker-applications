@@ -59,8 +59,8 @@ include("php-wrapper/fusioncharts.php");
 
 /* The following 4 code lines contain the database connection information. Alternatively, you can move these code lines to a separate file and include the file here. You can also modify this code based on your database connection. */
 
- $hostdb = "localhost";  // MySQl host
- $hostport = "3307";  // MySQl port
+ $hostdb = "mysql";  // MySQl host
+ $hostport = "3306";  // MySQl port
  $userdb = "root";  // MySQL username
  $passdb = "my-secret-pw";  // MySQL password
  $namedb = "showcase";  // MySQL database name
