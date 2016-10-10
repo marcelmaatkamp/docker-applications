@@ -56,6 +56,8 @@ struct ConfigParams
     char _appSKeyOrEUI[32 + 1];
     char _nwSKeyOrAppKey[32 + 1];
 
+    uint32_t _chargeOffset;
+
     uint8_t _coordinateUploadCount;
     uint8_t _repeatCount;
 
@@ -85,6 +87,8 @@ public:
     const char* getAppSKeyOrEUI() const { return _appSKeyOrEUI; }
     const char* getNwSKeyOrAppKey() const { return _nwSKeyOrAppKey; }
 
+    uint32_t getChargeOffset() const { return _chargeOffset; }
+    
     uint8_t getCoordinateUploadCount() const { return _coordinateUploadCount; }
     uint8_t getRepeatCount() const { return _repeatCount; }
 
