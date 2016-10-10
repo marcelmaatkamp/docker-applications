@@ -18,6 +18,9 @@
     "node-red-node-mysql": "^0.0.8",
     "node-red-contrib-slack": "^0.1.1",
     "node-red-contrib-chatbot": "^0.5.13",
-    "node-red-contrib-telegrambot": "^1.10.0"
+    "node-red-contrib-telegrambot": "^1.10.0",
+    "node-red-contrib-twilio": "^0.0.5",
+    "node-red-node-twilio": "^0.0.8",
+    "twilio": "^2.11.0"
   }
 }

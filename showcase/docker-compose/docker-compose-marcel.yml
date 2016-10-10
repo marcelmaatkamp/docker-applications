@@ -6,6 +6,9 @@ services:
    service: nodered
   environment:
    - SHOWCASE_TELEGRAM_TOKEN=${SHOWCASE_TELEGRAM_BOT_MARCEL}
+  networks:
+   mynet:
+    ipv4_address: 172.25.0.8
 
  zeppelin:
   image: dylanmei/zeppelin
