@@ -1,0 +1,74 @@
+[
+    {
+        "description": "Convert raw TTN protobuf alive message to observations",
+        "sendMessage": "{\"payload\":\"CgQIARgC\",\"port\":1,\"counter\":8,\"dev_eui\":\"000000007FEE6E5B\",\"metadata\":[{\"frequency\":868.5,\"datarate\":\"SF7BW125\",\"codingrate\":\"4/5\",\"gateway_timestamp\":2913536323,\"channel\":2,\"server_time\":\"2016-09-09T09:14:32.141349077Z\",\"rssi\":-34,\"lsnr\":6.2,\"rfchain\":1,\"crc\":1,\"modulation\":\"LORA\",\"gateway_eui\":\"0000024B0805026F\",\"altitude\":-1,\"longitude\":5.26561,\"latitude\":52.05755}]}",
+        "sendExchange": "showcase.ttn_message",
+        "sendExchangeType": "fanout",
+        "expectedResults": [
+            {
+                "exchange": "showcase.observation",
+                "exchangeType": "fanout",
+                "expectedMessages": [
+                    {
+                        "result": {
+                            "nodeId": "000000007FEE6E5B",
+                            "sensorId": 1,
+                            "sensorValue": 1,
+                            "sensorError": 0,
+                            "timestamp": "2016-09-09T09:14:32.141349077Z"
+                        }
+                    },
+                    {
+                        "result": {
+                            "nodeId": "000000007FEE6E5B",
+                            "sensorId": -1,
+                            "sensorValue": -1,
+                            "sensorError": 0,
+                            "timestamp": "2016-09-09T09:14:32.141349077Z"
+                        }
+                    },
+                    {
+                        "result": {
+                            "nodeId": "000000007FEE6E5B",
+                            "sensorId": 0,
+                            "sensorValue": 1,
+                            "timestamp": "2016-09-09T09:14:32.141349077Z"
+                        }
+                    }
+                ]
+            }
+        ],
+        "testTimeout": 200
+    },
+    {
+        "description": "Log observation",
+        "sendMessage": {
+            "timestamp": "2016-08-02T09:26:56.369421Z",
+            "nodeId": "00000000D1EC2A39",
+            "sensorId": 2,
+            "sensorError": 0,
+            "sensorValue": "23"
+        },
+        "sendExchange": "showcase.observation",
+        "sendExchangeType": "fanout",
+        "expectedResults": [
+            {
+                "exchange": "showcase.logged_observation",
+                "exchangeType": "fanout",
+                "expectedMessages": [
+                    {
+                        "result": {
+                            "timestamp": "2016-08-02T09:26:56.369421Z",
+                            "nodeId": "00000000D1EC2A39",
+                            "sensorId": 2,
+                            "sensorError": 0,
+                            "sensorValue": "23",
+                            "id": "**typeof number**"
+                        }
+                    }
+                ]
+            }
+        ],
+        "testTimeout": 400
+    }
+]
