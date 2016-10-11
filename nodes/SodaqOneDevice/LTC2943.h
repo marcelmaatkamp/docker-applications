@@ -175,7 +175,7 @@ private:
                                );
   
   //! Calculate the LTC2943 current with a sense resistor
-  //! @return Returns the current through the sense resisor
+  //! @return Returns the current through the sense resistor
   float LTC2943_code_to_current(uint16_t adc_code,                //!< The RAW ADC value
                                 float resistor                   //!< The sense resistor value
                                );

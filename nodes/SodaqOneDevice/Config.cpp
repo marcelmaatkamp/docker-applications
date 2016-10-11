@@ -88,6 +88,8 @@ void ConfigParams::reset()
     memset(_nwSKeyOrAppKey, 0x30, sizeof(_nwSKeyOrAppKey) - 1);
     _nwSKeyOrAppKey[sizeof(_nwSKeyOrAppKey) - 1] = '\0';
 
+    _chargeOffset = 0;
+
     _coordinateUploadCount = 1;
     _repeatCount = 0;
 
@@ -128,6 +130,8 @@ static const Command args[] = {
     { "DevAddr / DevEUI          ", "dev=", Command::set_string, Command::show_string, params._devAddrOrEUI, sizeof(params._devAddrOrEUI) },
     { "AppSKey / AppEUI          ", "app=", Command::set_string, Command::show_string, params._appSKeyOrEUI, sizeof(params._appSKeyOrEUI) },
     { "NWSKey / AppKey           ", "key=", Command::set_string, Command::show_string, params._nwSKeyOrAppKey, sizeof(params._nwSKeyOrAppKey) },
+
+    { "Accu charge offset        ", "cof=", Command::set_uint32, Command::show_uint32, &params._chargeOffset },
 
     { "Num Coords to Upload      ", "num=", Command::set_uint8, Command::show_uint8, &params._coordinateUploadCount },
     { "Repeat Count              ", "rep=", Command::set_uint8, Command::show_uint8, &params._repeatCount },
@@ -217,3 +221,4 @@ void ConfigParams::setConfigResetCallback(VoidCallbackMethodPtr callback)
 {
     configResetCallback = callback;
 }
+
