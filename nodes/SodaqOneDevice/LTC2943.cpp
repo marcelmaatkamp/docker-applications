@@ -138,7 +138,7 @@ float LTC::LTC2943_code_to_mAh(uint16_t adc_code, float resistor, uint16_t presc
 // The function converts the 16-bit RAW adc_code to mAh
 {
   float mAh_charge;
-  mAh_charge = 1000*(float)(adc_code*LTC2943_CHARGE_lsb*prescalar*50E-3)/(resistor*4096);
+  mAh_charge = 1000*(float)((adc_code-32767)*LTC2943_CHARGE_lsb*prescalar*50E-3)/(resistor*4096);
   return(mAh_charge);
 }
 
