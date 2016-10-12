@@ -51,6 +51,7 @@ struct ConfigParams
 
     uint8_t _isLedEnabled;
     uint8_t _isOtaaEnabled;
+    uint8_t _isGpsEnabled;
     
     char _devAddrOrEUI[16 + 1];
     char _appSKeyOrEUI[32 + 1];
@@ -82,6 +83,7 @@ public:
 
     uint8_t getIsLedEnabled() const { return _isLedEnabled; }
     uint8_t getIsOtaaEnabled() const { return _isOtaaEnabled; }
+    uint8_t getIsGpsEnabled() const { return _isGpsEnabled; }
     
     const char* getDevAddrOrEUI() const { return _devAddrOrEUI; }
     const char* getAppSKeyOrEUI() const { return _appSKeyOrEUI; }

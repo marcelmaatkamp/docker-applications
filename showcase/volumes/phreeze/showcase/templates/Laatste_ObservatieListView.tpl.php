@@ -21,7 +21,7 @@
 <div class="container">
 
 <h1>
-	<i class="icon-th-list"></i> Laatste_Observaties
+	<i class="icon-th-list"></i> Laatste Observaties Per Node/Sensor
 	<span id=loader class="loader progress progress-striped active"><span class="bar"></span></span>
 	<span class='input-append pull-right searchContainer'>
 		<input id='filter' type="text" placeholder="Search..." />
@@ -112,11 +112,9 @@
 				</div>
 			</fieldset>
 		</form>
-
-	
-	
 		
 		<!-- delete button is is a separate form to prevent enter key from triggering a delete -->
+		<!-- Disable delete
 		<form id="deleteLaatste_ObservatieButtonContainer" class="form-horizontal" onsubmit="return false;">
 			<fieldset>
 				<div class="control-group">
@@ -131,14 +129,18 @@
 				</div>
 			</fieldset>
 		</form>
+		
+		 -->
+		 
 	</script>
 
 	<!-- modal edit dialog -->
+	
 	<div class="modal hide fade" id="laatste_ObservatieDetailDialog">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">&times;</a>
 			<h3>
-				<i class="icon-edit"></i> Edit Laatste_Observatie
+				<i class="icon-edit"></i> Laatste Observatie
 				<span id="modelLoader" class="loader progress progress-striped active"><span class="bar"></span></span>
 			</h3>
 		</div>
@@ -146,21 +148,25 @@
 			<div id="modelAlert"></div>
 			<div id="laatste_ObservatieModelContainer"></div>
 		</div>
+		<!-- Disable Cancel/Save
 		<div class="modal-footer">
 			<button class="btn" data-dismiss="modal" >Cancel</button>
 			<button id="saveLaatste_ObservatieButton" class="btn btn-primary">Save Changes</button>
 		</div>
+		-->
 	</div>
-
+	
 	<div id="collectionAlert"></div>
 	
 	<div id="laatste_ObservatieCollectionContainer" class="collectionContainer">
 	</div>
-
+	
+	<!-- Disable Add
 	<p id="newButtonContainer" class="buttonContainer">
 		<button id="newLaatste_ObservatieButton" class="btn btn-primary">Add Laatste_Observatie</button>
 	</p>
-
+	-->
+	
 </div> <!-- /container -->
 
 <?php

@@ -32,7 +32,7 @@ class SensorController extends AppBaseController
 		$this->RequirePermission(User::$PERMISSION_EDIT,
 				'SecureExample.LoginForm',
 				'Please login to access this page',
-				'Admin permission is required to configure roles');
+				'Geen toegang tot deze pagina.');
 	}
 
 	/**

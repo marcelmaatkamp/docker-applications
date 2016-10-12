@@ -15,6 +15,7 @@ require_once("Model/User.php");
  * @author ClassBuilder
  * @version 1.0
  */
+ 
 class NodeController extends AppBaseController
 {
 
@@ -33,7 +34,7 @@ class NodeController extends AppBaseController
 		$this->RequirePermission(User::$PERMISSION_EDIT,
 				'SecureExample.LoginForm',
 				'Please login to access this page',
-				'');
+				'Geen toegang tot deze pagina.');
 				
 				
 				
@@ -191,10 +192,7 @@ class NodeController extends AppBaseController
 	public function Update()
 	{
 		
-		$this->RequirePermission(User::$PERMISSION_ADMIN,
-				'SecureExample.LoginForm',
-				'Please login to access this page',
-				'Admin permission is required to EDIT NODES');
+		
 		
 		try
 		{
