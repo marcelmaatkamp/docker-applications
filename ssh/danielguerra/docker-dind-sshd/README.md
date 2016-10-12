@@ -18,9 +18,9 @@ $ docker-compose up
 
 `tor_1  | Entrypoint INFO     ssh: xnjxo3uczacii3yr.onion:4848`
 
-## Set a password for root
+## Upload the public ssh key
 ```
-docker-compose exec ssh /usr/bin/passwd
+$ docker-compose -f docker-compose-ssh.yml exec ssh echo `cat ~/.ssh/id_rsa.pub` > ~/.ssh/authorized_keys
 ```
 
 ## Login
