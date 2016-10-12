@@ -75,9 +75,7 @@ int8_t LTC::Update()
   ack |= LTC2943_read_16_bits(LTC2943_I2C_ADDRESS, LTC2943_TEMPERATURE_MSB_REG, &temperature_code); //! Read MSB and LSB Temperature Registers for 16 bit temperature code
   ack |= LTC2943_read(LTC2943_I2C_ADDRESS, LTC2943_STATUS_REG, &status_code);                       //! Read Status Register for 8 bit status code
 
-
-  // Added by Theo
-  debugPrint("Verbruik uit LTC (charge_code): ");
+  debugPrint("Verbruik uitgelezen uit LTC (charge_code): ");
   debugPrint(charge_code);
 
   // Process only a valid charge reading
@@ -85,12 +83,14 @@ int8_t LTC::Update()
   {
     // Calculate new charge value (in mAh) based on an offset from flash and the charge value from the LTC (in mAh)
     charge = (float)params.getChargeOffset() + LTC2943_code_to_mAh(charge_code, resistor, prescalarValue);
- 
-    // Added by Theo
-    debugPrint(", Verbruik uit LTC (charge): ");
-    debugPrint(charge);
-
+    debugPrint(", Omgezet (charge): ");
+    debugPrintln(charge);
   }
+  else
+  {
+    debugPrintln(", Ack <> 0, dus niet omgezet");
+  }
+
   current = LTC2943_code_to_current(current_code, resistor);                //! Convert current code to Amperes
   voltage = LTC2943_code_to_voltage(voltage_code);                          //! Convert voltage code to Volts
   temperature = LTC2943_code_to_celcius_temperature(temperature_code);      //! Convert temperature code to Celcius
@@ -130,6 +130,17 @@ int8_t LTC::LTC2943_read_16_bits(uint8_t i2c_address, uint8_t adc_command, uint1
   int32_t ack;
 
   ack = i2c_read_word_data(i2c_address, adc_command, adc_code);
+
+  return(ack);
+}
+
+// Reset the Alert interrupt line through the Alert Respionse Protocol
+int8_t LTC::LTC2943_arp(uint8_t i2c_address, uint8_t *adc_code)
+// The function returns the state of the acknowledge bit after the I2C address read. 0=acknowledge, 1=no acknowledge.
+{
+  int32_t ack;
+
+  ack = i2c_arp(i2c_address, adc_code);
 
   return(ack);
 }
@@ -235,5 +246,83 @@ int8_t LTC::i2c_read_word_data(uint8_t address, uint8_t command, uint16_t *value
     return (1);                     //return 1
   return(0);                                      // Return success
 }
+
+
+// Alert Response Protocol funtion
+// To reset an Alert interrupt
+int8_t LTC::i2c_arp(uint8_t address, uint8_t *value)
+{
+  int8_t ret = 0;
+  union
+  {
+    uint8_t b[1];
+    uint8_t w;
+  } data;
+
+  Wire.requestFrom(address,1);
+  if (1 <= Wire.available()) {
+    data.b[0] = Wire.read(); 
+    ret++;                                      // Return success
+  }
+  *value = data.w;
+
+  if (ret!=2)                         //If NAK
+    return (1);                     //return 1
+  return(0);                                      // Return success
+}
+
+
+
+/*  
+ *   Function - int8_t LTC::ProcessInterrupt() 
+ *   
+ *  Process the  Fault indication of the LTC
+ *  The LTC module is connected to port A0 of the SodaqOne and pulls this line to LOW on an powerloss.
+ *  This function detect the LOW status, sets a corresponding s/w flag and resets the LTC.
+ *  It also copies the current accumulated charge value to Flash.
+ */
+int8_t LTC::ProcessInterrupt()
+{
+  int      _reading; // To hold the status of the LTC "interrupt"
+  uint32_t _charge;
+  uint8_t arp_code;
+  int8_t ack = 0;
+
+  
+
+  _reading = digitalRead(A0);
+   debugPrint("LTC::ProcessInterrupt(); Port read: ");
+   debugPrintln(_reading);
+
+  //if (_reading == 0)
+  {
+    IRSctr++;
+    debugPrint("LTC::ProcessInterrupt(); Interrupt: ");
+    debugPrintln(IRSctr);
+
+    // RESET LTC with ARAP procedure
+    // TO BE IMPLEMENTED
+
+    //    LTC2943_mode = LTC2943_AUTOMATIC_MODE | LTC2943_PRESCALAR_M_4096 | LTC2943_ALERT_MODE ;
+    //ack |= LTC2943_arp(LTC2943_I2C_ALERT_RESPONSE, &arp_code);
+    //    ack |= LTC2943_read_16_bits(LTC2943_I2C_ADDRESS, LTC2943_VOLTAGE_MSB_REG, &voltage_code);         //! Read MSB and LSB Voltage Registers for 16 bit voltage code
+    //    ack |= LTC2943_read_16_bits(LTC2943_I2C_ADDRESS, LTC2943_CURRENT_MSB_REG, &current_code);         //! Read MSB and LSB Current Registers for 16 bit current code
+    //    ack |= LTC2943_read_16_bits(LTC2943_I2C_ADDRESS, LTC2943_TEMPERATURE_MSB_REG, &temperature_code); //! Read MSB and LSB Temperature Registers for 16 bit temperature code
+    //    ack |= LTC2943_read(LTC2943_I2C_ADDRESS, LTC2943_STATUS_REG, &status_code);                       //! Read Status Register for 8 bit status code
+
+    
+    // Update Flash
+    _charge = (uint32_t)getCharge();
+    if (_charge != 0)
+    {
+      params._chargeOffset = _charge;
+      params.commit();
+      debugPrint("LTC::ProcessInterrupt(); Totale verbruik updated in Flash: ");
+      debugPrintln(_charge);
+    }
+  }
+}
+
+
 
 
