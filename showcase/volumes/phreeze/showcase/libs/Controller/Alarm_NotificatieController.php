@@ -29,7 +29,7 @@ class Alarm_NotificatieController extends AppBaseController
 		// TODO: add controller-wide bootstrap code
 		
 		// DO SOME CUSTOM AUTHENTICATION FOR THIS PAGE
-		$this->RequirePermission(User::$PERMISSION_READ,
+		$this->RequirePermission(User::$PERMISSION_EDIT,
 				'SecureExample.LoginForm',
 				'Please login to access this page',
 				'');
