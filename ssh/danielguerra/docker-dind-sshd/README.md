@@ -1,3 +1,9 @@
+# SSH as a Hidden service
+
+This docker-compose combines:
+ * https://hub.docker.com/r/danielguerra/docker-dind-sshd/
+ * https://hub.docker.com/r/goldy/tor-hidden-service/
+
 # Installation
 
 ## Enable overlayfs as docker storage 
