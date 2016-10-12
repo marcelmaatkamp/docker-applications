@@ -20,11 +20,23 @@ http://www.linear.com/product/LTC2943-1
 
 #include <Stream.h>
 #include <stdint.h>
+#include "Config.h"
 #include "LTC2943.h"
+
+#define DEBUG_STREAM SerialUSB
+
+#ifdef DEBUG
+#define debugPrint(x) DEBUG_STREAM.print(x)
+#define debugPrintln(x) DEBUG_STREAM.println(x)
+#else
+#define debugPrint(x)
+#define debugPrintln(x)
+#endif
 
 LTC::LTC(int pin) 
 {
   setPin(pin);
+  charge = 0;  // Initialize charge to an invalid value which should be ignored when processing
 }
 
 LTC::~LTC() {
@@ -56,17 +68,32 @@ int8_t LTC::Update()
   valid = true;
   
   LTC2943_mode = LTC2943_AUTOMATIC_MODE | LTC2943_PRESCALAR_M_4096 | LTC2943_ALERT_MODE ;
-  ack |= LTC2943_write(LTC2943_I2C_ADDRESS, LTC2943_CONTROL_REG, LTC2943_mode);   //! Writes the set mode to the LTC2943 control register
+  ack |= LTC2943_write(LTC2943_I2C_ADDRESS, LTC2943_CONTROL_REG, LTC2943_mode);                     //! Writes the set mode to the LTC2943 control register
   ack |= LTC2943_read_16_bits(LTC2943_I2C_ADDRESS, LTC2943_ACCUM_CHARGE_MSB_REG, &charge_code);     //! Read MSB and LSB Accumulated Charge Registers for 16 bit charge code
   ack |= LTC2943_read_16_bits(LTC2943_I2C_ADDRESS, LTC2943_VOLTAGE_MSB_REG, &voltage_code);         //! Read MSB and LSB Voltage Registers for 16 bit voltage code
   ack |= LTC2943_read_16_bits(LTC2943_I2C_ADDRESS, LTC2943_CURRENT_MSB_REG, &current_code);         //! Read MSB and LSB Current Registers for 16 bit current code
   ack |= LTC2943_read_16_bits(LTC2943_I2C_ADDRESS, LTC2943_TEMPERATURE_MSB_REG, &temperature_code); //! Read MSB and LSB Temperature Registers for 16 bit temperature code
   ack |= LTC2943_read(LTC2943_I2C_ADDRESS, LTC2943_STATUS_REG, &status_code);                       //! Read Status Register for 8 bit status code
 
-  charge = LTC2943_code_to_mAh(charge_code, resistor, prescalarValue);      //! Convert charge code to mAh if mAh units are desired.
+
+  // Added by Theo
+  debugPrint("Verbruik uit LTC (charge_code): ");
+  debugPrint(charge_code);
+
+  // Process only a valid charge reading
+  if (ack == 0)
+  {
+    // Calculate new charge value (in mAh) based on an offset from flash and the charge value from the LTC (in mAh)
+    charge = (float)params.getChargeOffset() + LTC2943_code_to_mAh(charge_code, resistor, prescalarValue);
+ 
+    // Added by Theo
+    debugPrint(", Verbruik uit LTC (charge): ");
+    debugPrint(charge);
+
+  }
   current = LTC2943_code_to_current(current_code, resistor);                //! Convert current code to Amperes
   voltage = LTC2943_code_to_voltage(voltage_code);                          //! Convert voltage code to Volts
-  temperature = LTC2943_code_to_celcius_temperature(temperature_code);  //! Convert temperature code to celcius
+  temperature = LTC2943_code_to_celcius_temperature(temperature_code);      //! Convert temperature code to Celcius
 
   if (ack > 0) 
   {
@@ -111,7 +138,7 @@ float LTC::LTC2943_code_to_mAh(uint16_t adc_code, float resistor, uint16_t presc
 // The function converts the 16-bit RAW adc_code to mAh
 {
   float mAh_charge;
-  mAh_charge = 1000*(float)(adc_code*LTC2943_CHARGE_lsb*prescalar*50E-3)/(resistor*4096);
+  mAh_charge = 1000*(float)((adc_code-32767)*LTC2943_CHARGE_lsb*prescalar*50E-3)/(resistor*4096);
   return(mAh_charge);
 }
 
