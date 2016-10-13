@@ -8,9 +8,10 @@ var merge = require('merge2');
 var ts = require('gulp-typescript');
 var tslint = require('gulp-tslint');
 var sourcemaps = require('gulp-sourcemaps');
+var mocha = require('gulp-spawn-mocha');
 
 // swallow errors in watch
-function swallowError (error) {
+function swallowError(error) {
 
   //If you want details of the error in the console
   console.log(error.toString());
@@ -27,8 +28,8 @@ var tsProject = ts.createProject({
 
 gulp.task('default', ['build:clean']);
 
-gulp.task('build', ['compile']);
-gulp.task('build:clean', ['clean', 'compile']);
+gulp.task('build', ['compile', 'test']);
+gulp.task('build:clean', ['clean', 'compile', 'test']);
 
 gulp.task('watch', ['clean', 'build'], function () {
   gulp.watch('code/**/*.ts', ['build']);
@@ -46,13 +47,14 @@ gulp.task('compile', function () {
   // compile typescript
   var tsResult = gulp.src('code/**/*.ts')
     .pipe(tslint({
+      formatter: 'prose',
       configuration: 'tools/tslint/tslint-node.json'
     }))
-    .pipe(tslint.report('prose', {
+    .pipe(tslint.report({
       emitError: false
     }))
-    .pipe (sourcemaps.init())
-    .pipe (ts(tsProject));
+    .pipe(sourcemaps.init())
+    .pipe(tsProject());
 
   return merge([
     tsResult.js
@@ -71,4 +73,16 @@ gulp.task('lint', function () {
       configuration: 'tools/tslint/tslint-node.json'
     }))
     .pipe(tslint.report('full'));
+});
+
+// unit tests, more a fast integration test because at the moment it uses an external AMQP server
+gulp.task('test', ['compile'], function () {
+  return gulp.src(['code/**/*.spec.js'], {
+    read: false
+  })
+    .pipe(mocha({
+      r: 'tools/mocha/setup.js',
+      reporter: 'dot' // 'spec', 'dot'
+    }))
+    .on('error', swallowError);
 });
