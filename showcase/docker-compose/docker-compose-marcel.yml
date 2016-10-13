@@ -14,3 +14,64 @@ services:
   image: dylanmei/zeppelin
   ports:
    - "8080:8080"
+
+ elasticsearch-master:
+  image: danielguerra/alpine-elasticsearch
+  command: -Des.network.bind_host=elasticsearch-master --cluster.name=bro --node.name=elasticsearch-master --discovery.zen.ping.multicast.enabled=false --network.host=elasticsearch-master
+  hostname: elasticsearch-master
+  volumes:
+   - "elasticsearch:/usr/share/elasticsearch/data"
+  ports:
+    - "9200:9200"
+    - "9300:9300"
+
+ elasticsearch-node01:
+  image: danielguerra/alpine-elasticsearch
+  command: -Des.network.bind_host=elasticsearch-node01 --cluster.name=bro --node.name=elasticsearch-node01 --discovery.zen.ping.unicast.hosts=master:9300  --network.host=elasticsearch-node01
+  hostname: elasticsearch-node01
+  links:
+   - "elasticsearch-master:master"
+  volumes:
+   - "elasticsearch:/usr/share/elasticsearch/data"
+  depends_on:
+   - elasticsearch-master
+
+ kibana:
+  image: kibana
+  hostname: kibana
+  ports:
+   - "5601:5601"
+  links:
+   - "elasticsearch-master:elasticsearch"
+  depends_on:
+   - elasticsearch-master
+
+ mongo:
+  image: "mongo:3"
+  volumes:
+   - /graylog/data/mongo:/data/db
+
+ graylog:
+  image: graylog2/server:2.1.1-1
+  volumes:
+   - graylog-journal:/usr/share/graylog/data/journal
+   - graylog-config:/usr/share/graylog/data/config
+  environment:
+   GRAYLOG_PASSWORD_SECRET: somepasswordpepper
+   GRAYLOG_ROOT_PASSWORD_SHA2: 8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+   GRAYLOG_WEB_ENDPOINT_URI: http://127.0.0.1:9000/api
+  links:
+   - mongo:mongo
+   - elasticsearch-master:elasticsearch
+  depends_on:
+   - mongo
+   - elasticsearch-master
+  ports:
+   - "9000:9000"
+   - "12201/udp:12201/udp"
+   - "1514/udp:1514/udp"
+
+volumes:
+ elasticsearch:
+ graylog-config:
+ graylog-journal:
