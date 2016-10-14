@@ -16,7 +16,7 @@ I2C/SMBus Interface
 http://www.linear.com/product/LTC2943
 http://www.linear.com/product/LTC2943-1
 */
-#define DEBUG
+//#define DEBUG
 
 #include <Stream.h>
 #include <stdint.h>
@@ -75,9 +75,7 @@ int8_t LTC::Update()
   ack |= LTC2943_read_16_bits(LTC2943_I2C_ADDRESS, LTC2943_TEMPERATURE_MSB_REG, &temperature_code); //! Read MSB and LSB Temperature Registers for 16 bit temperature code
   ack |= LTC2943_read(LTC2943_I2C_ADDRESS, LTC2943_STATUS_REG, &status_code);                       //! Read Status Register for 8 bit status code
 
-
-  // Added by Theo
-  debugPrint("Verbruik uit LTC (charge_code): ");
+  debugPrint("Verbruik  uit LTC (charge_code): ");
   debugPrint(charge_code);
 
   // Process only a valid charge reading
@@ -86,15 +84,14 @@ int8_t LTC::Update()
     // Calculate new charge value (in mAh) based on an offset from flash and the charge value from the LTC (in mAh)
     charge = (float)params.getChargeOffset() + LTC2943_code_to_mAh(charge_code, resistor, prescalarValue);
  
-    // Added by Theo
-    debugPrint(", Verbruik uit LTC (charge): ");
+    debugPrint(" mAh, Verbruik uit LTC (charge): ");
     debugPrint(charge);
-
   }
   current = LTC2943_code_to_current(current_code, resistor);                //! Convert current code to Amperes
   voltage = LTC2943_code_to_voltage(voltage_code);                          //! Convert voltage code to Volts
   temperature = LTC2943_code_to_celcius_temperature(temperature_code);      //! Convert temperature code to Celcius
 
+  debugPrintln(" mAh");
   if (ack > 0) 
   {
     valid = false;
