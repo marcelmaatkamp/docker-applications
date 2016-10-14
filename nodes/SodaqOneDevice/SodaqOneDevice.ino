@@ -112,6 +112,7 @@ ReportDataRecord pendingReportDataRecord;
 bool isPendingReportDataRecordNew; // this is set to true only when pendingReportDataRecord is written by the delegate
 
 volatile bool minuteFlag;
+volatile bool switchFlag;
 // LSM303 code
 int ax_o, ay_o, az_o;
 int d_x, d_y, d_z;
@@ -139,6 +140,7 @@ void setNow(uint32_t now);
 void handleBootUpCommands();
 void initRtc();
 void rtcAlarmHandler();
+void switchHandler();
 void initRtcTimer();
 void resetRtcTimerEvents();
 void initSleep();
@@ -159,10 +161,12 @@ void delegateNavPvt(NavigationPositionVelocityTimeSolution* NavPvt);
 bool getDataAndTransmit();
 bool getGpsFixAndTransmit();
 bool getAliveDataAndTransmit();
+void getSwitchDataAndTransmit();
 uint8_t getBatteryVoltage();
 int8_t getBoardTemperature();
 void updateGpsSendBuffer();
 void updateAliveSendBuffer();
+bool updateSwitchSendBuffer();
 void transmit();
 void updateConfigOverTheAir();
 void getHWEUI();
@@ -189,6 +193,9 @@ void setup()
   // enable power to the grove shield
   pinMode(11, OUTPUT);
   digitalWrite(11, HIGH);
+  // Define Pin A2 as interrupt input line 
+  pinMode(A2, INPUT_PULLUP);
+  attachInterrupt(A2, switchHandler, CHANGE);
 
   lastResetCause = PM->RCAUSE.reg;
   sodaq_wdt_enable();
@@ -246,17 +253,27 @@ void loop()
   sodaq_wdt_reset();
   sodaq_wdt_flag = false;
 
-  if (minuteFlag) {
-
-    if (params.getIsLedEnabled()) {
+  if (minuteFlag) 
+  {
+    if (params.getIsLedEnabled()) 
+    {
       setLedColor(BLUE);
     }
 
     timer.update(); // handle scheduled events
-
     minuteFlag = false;
   }
+  if (switchFlag)
+  {
+    if (params.getIsLedEnabled()) 
+    {
+      setLedColor(RED);
+    }
 
+    getSwitchDataAndTransmit();
+    switchFlag = false;
+  }
+  
   systemSleep();
 }
 
@@ -332,30 +349,21 @@ void updateGpsSendBuffer()
 */
 void updateAliveSendBuffer()
 {
-  debugPrint("LTC values: mAh ");
+  debugPrint("LTC values: Charge ");
   debugPrint(ltc.getCharge());
-  debugPrint(F(" mAh\t"));
-  debugPrint(F("Current "));
+  debugPrint(F(" mAh, Current "));
   debugPrint(ltc.getCurrent());
-  debugPrint(F(" A\t"));
-  debugPrint(F("Voltage "));
+  debugPrint(F(" A, Voltage "));
   debugPrint(ltc.getVoltage());
-  debugPrint(F(" V\t"));
-  debugPrint(F("Temperature "));
+  debugPrint(F(" V, Temperature "));
   debugPrint(ltc.getTemp());
   debugPrintln(F(" C"));
 
-  debugPrint("HTU values: ");
-  debugPrint(F("Temperature "));
+  debugPrint("HTU values: Temperature ");
   debugPrint(htu.getTemp());
-  debugPrint(F(" C"));
-  debugPrint(F("Humidity "));
+  debugPrint(F(" C, Humidity "));
   debugPrint(htu.getHum());
   debugPrintln(F(" %"));
-
-  // copy the pendingReportDataRecord into the sendBuffer
-  //  memcpy(sendBuffer, pendingReportDataRecord.getBuffer(), pendingReportDataRecord.getSize());
-  //  sendBufferSize = pendingReportDataRecord.getSize();
 
   NodeMessage nodemsg2 = NodeMessage_init_zero;
 
@@ -375,16 +383,6 @@ void updateAliveSendBuffer()
   else
   {
     sendBufferSize = stream2.bytes_written;
-    //      debugPrint("sendBufferSize:");
-    //      debugPrintln(sendBufferSize);
-    //      debugPrint("message:<");
-    //      for (uint8_t i = 0; i < sendBufferSize; i++)
-    //      {
-    //        debugPrint(sendBuffer[i]);
-    //        if (i < sendBufferSize - 1)
-    //          debugPrint(" ");
-    //      }
-    //      debugPrintln(">");
   }
 
   // add the humidity data to the output buffer
@@ -400,16 +398,6 @@ void updateAliveSendBuffer()
   else
   {
     sendBufferSize = stream2.bytes_written;
-    //      debugPrint("sendBufferSize:");
-    //      debugPrintln(sendBufferSize);
-    //      debugPrint("message:<");
-    //      for (uint8_t i = 0; i < sendBufferSize; i++)
-    //      {
-    //        debugPrint(sendBuffer[i]);
-    //        if (i < sendBufferSize - 1)
-    //          debugPrint(" ");
-    //      }
-    //      debugPrintln(">");
   }
 
   // add the voltage data to the output buffer
@@ -425,16 +413,6 @@ void updateAliveSendBuffer()
   else
   {
     sendBufferSize = stream2.bytes_written;
-    //      debugPrint("sendBufferSize:");
-    //      debugPrintln(sendBufferSize);
-    //      debugPrint("message:<");
-    //      for (uint8_t i = 0; i < sendBufferSize; i++)
-    //      {
-    //        debugPrint(sendBuffer[i]);
-    //        if (i < sendBufferSize - 1)
-    //          debugPrint(" ");
-    //      }
-    //      debugPrintln(">");
   }
 
   // add the current data to the output buffer
@@ -450,16 +428,6 @@ void updateAliveSendBuffer()
   else
   {
     sendBufferSize = stream2.bytes_written;
-    //      debugPrint("sendBufferSize:");
-    //      debugPrintln(sendBufferSize);
-    //      debugPrint("message:<");
-    //      for (uint8_t i = 0; i < sendBufferSize; i++)
-    //      {
-    //        debugPrint(sendBuffer[i]);
-    //        if (i < sendBufferSize - 1)
-    //          debugPrint(" ");
-    //      }
-    //      debugPrintln(">");
   }
 
   // add the charge data to the output buffer
@@ -475,16 +443,6 @@ void updateAliveSendBuffer()
   else
   {
     sendBufferSize = stream2.bytes_written;
-    //      debugPrint("sendBufferSize:");
-    //      debugPrintln(sendBufferSize);
-    //      debugPrint("message:<");
-    //      for (uint8_t i = 0; i < sendBufferSize; i++)
-    //      {
-    //        debugPrint(sendBuffer[i]);
-    //        if (i < sendBufferSize - 1)
-    //          debugPrint(" ");
-    //      }
-    //      debugPrintln(">");
   }
 
   // only send the number of retries if it is > 0
@@ -503,16 +461,6 @@ void updateAliveSendBuffer()
     else
     {
       sendBufferSize = stream2.bytes_written;
-      //        debugPrint("sendBufferSize:");
-      //        debugPrintln(sendBufferSize);
-      //        debugPrint("message:<");
-      //        for (uint8_t i = 0; i < sendBufferSize; i++)
-      //        {
-      //          debugPrint(sendBuffer[i]);
-      //          if (i < sendBufferSize - 1)
-      //            debugPrint(" ");
-      //        }
-      //        debugPrintln(">");
     }
   }
 
@@ -526,6 +474,50 @@ void updateAliveSendBuffer()
       debugPrint(" ");
   }
   debugPrintln(">");
+}
+
+bool updateSwitchSendBuffer()
+{
+  bool isSuccessful = false;
+  debugPrintln("updateSwitchSendBuffer....");
+  microSwitch.Update();
+
+  //Read the state of the microSwitch
+//  if (microSwitch.isChanged()) {
+    debugPrint("Switch state: ");
+    debugPrintln(microSwitch.ReadState());
+
+    NodeMessage nodemsg = NodeMessage_init_zero;
+
+    /* Create a stream that will write to our buffer. */
+    pb_ostream_t stream = pb_ostream_from_buffer(sendBuffer, sizeof(sendBuffer));
+
+    nodemsg.reading.funcs.encode = &switchsensor_callback;
+
+    /* Now we are ready to encode the message! */
+    /* Then just check for any errors.. */
+    if (!pb_encode(&stream, NodeMessage_fields, &nodemsg))
+    {
+      debugPrint("Encoding failed: ");
+      debugPrintln(PB_GET_ERROR(&stream));
+    }
+    else
+    {
+      sendBufferSize = stream.bytes_written;
+      debugPrint("sendBufferSize:");
+      debugPrintln(sendBufferSize);
+      debugPrint("message:<");
+      for (uint8_t i = 0; i < sendBufferSize; i++)
+      {
+        debugPrint(sendBuffer[i]);
+        if (i < sendBufferSize - 1)
+          debugPrint(" ");
+      }
+      debugPrintln(">");
+      isSuccessful = true;
+    }
+//  }
+  return isSuccessful;
 }
 
 /**
@@ -712,7 +704,7 @@ void systemSleep()
   // do not go to sleep if DEBUG is enabled, to keep USB connected
 #ifndef DEBUG
   noInterrupts();
-  if (!(sodaq_wdt_flag || minuteFlag)) {
+  if (!(sodaq_wdt_flag || minuteFlag || switchFlag)) {
     interrupts();
 
     __WFI(); // SAMD sleep
@@ -792,6 +784,14 @@ void initRtc()
 void rtcAlarmHandler()
 {
   minuteFlag = true;
+}
+
+/**
+   Runs if the switch is pressed.
+*/
+void switchHandler()
+{
+  switchFlag = true;
 }
 
 /**
@@ -960,7 +960,10 @@ bool getDataAndTransmit()
   {
     getGpsFixAndTransmit();
   }
-  getAliveDataAndTransmit();
+  else
+  {
+    getAliveDataAndTransmit();
+  }
 }
 
 /**
@@ -1035,8 +1038,7 @@ bool getGpsFixAndTransmit()
 }
 
 /**
-   Tries to get a GPS fix and sends the data through LoRa if applicable.
-   Times-out after params.getGpsFixTimeout seconds.
+   Tries to get the LTC and HTU data and sends the data through LoRa if applicable.
    Please see the documentation for more details on how this process works.
 */
 bool getAliveDataAndTransmit()
@@ -1046,7 +1048,6 @@ bool getAliveDataAndTransmit()
   bool isSuccessful = false;
 
   // update the sensors, get the data
-  microSwitch.Update();
   ltc.Update();
   LSM303_Update();
   htu.Update();
@@ -1058,6 +1059,19 @@ bool getAliveDataAndTransmit()
   transmit();
 
   return isSuccessful;
+}
+
+/**
+   Tries to get the Switch data and sends the data through LoRa if applicable.
+   Please see the documentation for more details on how this process works.
+*/
+void getSwitchDataAndTransmit()
+{
+  debugPrintln("Start getSwitchData...");
+  if (updateSwitchSendBuffer()) 
+  {
+    transmit();
+  }
 }
 
 /**
