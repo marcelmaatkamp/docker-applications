@@ -13,6 +13,8 @@ var receiveKPN_1 = require("./receiveKPN");
 var receiveTTN_1 = require("./receiveTTN");
 var decodeToObservations_1 = require("./decodeToObservations");
 var logObservation_1 = require("./logObservation");
+var processObservation_1 = require("./processObservation");
+var processAlert_1 = require("./processAlert");
 // declare mysql stuff
 var mysqlHost = process.env.SHOWCASE_MYSQL_HOST || "mysql";
 var mysqlUser = process.env.SHOWCASE_MYSQL_HOST || "root";
@@ -68,13 +70,16 @@ var processAmqp = new AmqpInOut({
     out: process.env.SHOWCASE_AMQP_LOG_EXCHANGE_IN || "showcase.alert"
 });
 var alertAmqp = new AmqpInOut({
-    in: process.env.SHOWCASE_AMQP_LOG_EXCHANGE_IN || processAmqp.outExchange
+    in: process.env.SHOWCASE_AMQP_LOG_EXCHANGE_IN || processAmqp.outExchange,
+    out: process.env.SHOWCASE_AMQP_LOG_EXCHANGE_IN || "showcase.notification"
 });
 // create and start the message processing elements
 new receiveTTN_1.default(mqttClient, ttnAmqp.send);
 new receiveKPN_1.default(kpnAmqp.receive, kpnAmqp.send);
 new decodeToObservations_1.default(decodeAmqp.receive, decodeAmqp.send, mysqlDb);
 new logObservation_1.default(logAmqp.receive, logAmqp.send, mysqlDb);
+new processObservation_1.default(processAmqp.receive, processAmqp.send, mysqlDb);
+new processAlert_1.default(alertAmqp.receive, alertAmqp.send, mysqlDb);
 var AmqpInOut = (function () {
     function AmqpInOut(create) {
         this.outExchange = this.getExchange(create.out);

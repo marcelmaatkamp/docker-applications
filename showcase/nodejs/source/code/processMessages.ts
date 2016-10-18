@@ -13,6 +13,8 @@ import ReceiveKPN from "./receiveKPN";
 import ReceiveTTN from "./receiveTTN";
 import DecodeToObservations from "./decodeToObservations";
 import LogObservation from "./logObservation";
+import ProcessObservation from "./processObservation";
+import ProcessAlert from "./processAlert";
 
 // declare mysql stuff
 const mysqlHost = process.env.SHOWCASE_MYSQL_HOST || "mysql";
@@ -75,7 +77,8 @@ var processAmqp = new AmqpInOut({
   out: process.env.SHOWCASE_AMQP_LOG_EXCHANGE_IN || "showcase.alert"
 });
 var alertAmqp = new AmqpInOut({
-  in: process.env.SHOWCASE_AMQP_LOG_EXCHANGE_IN || processAmqp.outExchange
+  in: process.env.SHOWCASE_AMQP_LOG_EXCHANGE_IN || processAmqp.outExchange,
+  out: process.env.SHOWCASE_AMQP_LOG_EXCHANGE_IN || "showcase.notification"
 });
 
 // create and start the message processing elements
@@ -83,6 +86,8 @@ new ReceiveTTN(mqttClient, ttnAmqp.send);
 new ReceiveKPN(kpnAmqp.receive, kpnAmqp.send);
 new DecodeToObservations(decodeAmqp.receive, decodeAmqp.send, mysqlDb);
 new LogObservation(logAmqp.receive, logAmqp.send, mysqlDb);
+new ProcessObservation(processAmqp.receive, processAmqp.send, mysqlDb);
+new ProcessAlert(alertAmqp.receive, alertAmqp.send, mysqlDb);
 
 interface AmqpIoDefinition {
   in?: string | amqp.Exchange;

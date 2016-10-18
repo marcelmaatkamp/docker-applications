@@ -6,8 +6,8 @@
 "use strict";
 var safeEval = require("safe-eval");
 var heartbeatTimers = {};
-var ProcessObservation = (function () {
-    function ProcessObservation(receiver, sender, sqlConnection) {
+var ProcessAlert = (function () {
+    function ProcessAlert(receiver, sender, sqlConnection) {
         var _this = this;
         this.receiver = receiver;
         this.sender = sender;
@@ -16,7 +16,7 @@ var ProcessObservation = (function () {
             _this.processObservation(msg);
         });
     }
-    ProcessObservation.prototype.processObservation = function (observation) {
+    ProcessAlert.prototype.processObservation = function (observation) {
         var _this = this;
         if (observation.sensorError) {
             return; // do not process  sensor observations with errors (for now)
@@ -39,7 +39,7 @@ var ProcessObservation = (function () {
             }
         });
     };
-    ProcessObservation.prototype.checkRules = function (observation, rules) {
+    ProcessAlert.prototype.checkRules = function (observation, rules) {
         var _this = this;
         if (observation.sensorId === 0) {
             // sensor 0 is the heartbeat, setup timeout(s)
@@ -83,19 +83,20 @@ var ProcessObservation = (function () {
             }
         }
     };
-    ProcessObservation.prototype.sendAlert = function (observation, rule) {
+    ProcessAlert.prototype.sendAlert = function (observation, rule) {
         var alertMsg = {
             nodeId: observation.nodeId,
             sensorId: observation.sensorId,
             sensorValue: observation.sensorValue,
+            sensorValueType: observation.sensorValueType,
             observationId: observation.logId,
             ruleId: rule.id
         };
         this.sender.send(alertMsg);
     };
-    return ProcessObservation;
+    return ProcessAlert;
 }());
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = ProcessObservation;
+exports.default = ProcessAlert;
 
 //# sourceMappingURL=processObservation.js.map

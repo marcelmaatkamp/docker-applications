@@ -11,7 +11,7 @@ var safeEval = require("safe-eval");
 
 var heartbeatTimers: { [nodeId: string]: NodeJS.Timer } = {};
 
-export default class ProcessObservation {
+export default class ProcessAlert {
   receiver: iot.ReceiveMessages;
   sender: iot.SendMessages;
   sqlConnection: mysql.IConnection;
@@ -93,10 +93,11 @@ export default class ProcessObservation {
   }
 
   private sendAlert(observation: iot.SensorObservation, rule) {
-    var alertMsg = {
+    var alertMsg: iot.SensorAlert = {
       nodeId: observation.nodeId,
       sensorId: observation.sensorId,
       sensorValue: observation.sensorValue,
+      sensorValueType: observation.sensorValueType,
       observationId: observation.logId,
       ruleId: rule.id
     };

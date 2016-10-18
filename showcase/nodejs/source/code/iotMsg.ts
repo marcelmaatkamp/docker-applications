@@ -116,6 +116,15 @@ export declare interface SensorObservation {
   logId?: any;
 }
 
+export declare interface SensorAlert {
+  nodeId: string;
+  sensorId: number;
+  sensorValue: any;
+  sensorValueType: string;
+  observationId: any;
+  ruleId: number;
+}
+
 export declare interface NodeRedEnvelope {
   payload: any;
 }

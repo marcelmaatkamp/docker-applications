@@ -26,6 +26,11 @@ amqpSupport.SetConnectionUrl({
 var mysqlConnection = {
     query: function (queryString, callback) {
         process.nextTick(callback, 0, [{
+                id: 3,
+                alarm_trigger: "false",
+                omrekenfactor: "x ? \"dicht\" : \"open\""
+            },
+            {
                 id: 4,
                 alarm_trigger: "true",
                 omrekenfactor: "x ? \"dicht\" : \"open\""
@@ -74,7 +79,8 @@ var observationExpectedResult = {
     sensorId: 1,
     sensorValue: 'open',
     observationId: 9798,
-    ruleId: 4
+    ruleId: 4,
+    sensorValueType: "stand"
 };
 
 //# sourceMappingURL=processObservation.spec.js.map
