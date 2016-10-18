@@ -147,7 +147,7 @@ class Laatste_ObservatieController extends AppBaseController
 		try
 		{
 			// TODO: views are read-only by default.  uncomment at your own discretion
-			throw new Exception('Dit rapport is niet te wijzigen.');
+			throw new Exception('Database views are read-only and cannot be updated');
 						
 			$json = json_decode(RequestUtil::GetBody());
 
@@ -195,7 +195,7 @@ class Laatste_ObservatieController extends AppBaseController
 		try
 		{
 			// TODO: views are read-only by default.  uncomment at your own discretion
-			throw new Exception('Dit rapport is niet te wijzigen.');
+			throw new Exception('Database views are read-only and cannot be updated');
 						
 			$json = json_decode(RequestUtil::GetBody());
 
@@ -255,7 +255,7 @@ class Laatste_ObservatieController extends AppBaseController
 		try
 		{
 			// TODO: views are read-only by default.  uncomment at your own discretion
-			throw new Exception('Dit rapport is niet te wijzigen.');
+			throw new Exception('Database views are read-only and cannot be updated');
 						
 			// TODO: if a soft delete is prefered, change this to update the deleted flag instead of hard-deleting
 

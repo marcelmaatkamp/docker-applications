@@ -119,8 +119,7 @@
 			</fieldset>
 		</form>
 
-		<!-- delete button is is a separate form to prevent enter key from triggering a delete
-		<!-- Disable Cancel/Save
+		<!-- delete button is is a separate form to prevent enter key from triggering a delete -->
 		<form id="deleteAlarmButtonContainer" class="form-horizontal" onsubmit="return false;">
 			<fieldset>
 				<div class="control-group">
@@ -135,9 +134,6 @@
 				</div>
 			</fieldset>
 		</form>
-		
-		-->
-		
 	</script>
 
 	<!-- modal edit dialog -->
@@ -145,7 +141,7 @@
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">&times;</a>
 			<h3>
-				<i class="icon-edit"></i> Alarm
+				<i class="icon-edit"></i> Edit Alarm
 				<span id="modelLoader" class="loader progress progress-striped active"><span class="bar"></span></span>
 			</h3>
 		</div>
@@ -153,24 +149,20 @@
 			<div id="modelAlert"></div>
 			<div id="alarmModelContainer"></div>
 		</div>
-			<!-- Disable Cancel/Save
 		<div class="modal-footer">
 			<button class="btn" data-dismiss="modal" >Cancel</button>
 			<button id="saveAlarmButton" class="btn btn-primary">Save Changes</button>
 		</div>
-		-->
 	</div>
 
 	<div id="collectionAlert"></div>
 	
 	<div id="alarmCollectionContainer" class="collectionContainer">
 	</div>
-	
-	<!-- Disable Add
+
 	<p id="newButtonContainer" class="buttonContainer">
 		<button id="newAlarmButton" class="btn btn-primary">Add Alarm</button>
 	</p>
-	-->
 
 </div> <!-- /container -->
 

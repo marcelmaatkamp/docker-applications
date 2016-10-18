@@ -29,7 +29,7 @@ class Alarm_RegelController extends AppBaseController
 		// TODO: add controller-wide bootstrap code
 		
 		// DO SOME CUSTOM AUTHENTICATION FOR THIS PAGE
-		$this->RequirePermission(User::$PERMISSION_EDIT,
+		$this->RequirePermission(User::$PERMISSION_READ,
 				'SecureExample.LoginForm',
 				'Please login to access this page',
 				'');

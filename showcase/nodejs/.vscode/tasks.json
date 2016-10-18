@@ -6,7 +6,7 @@
     "isShellCommand": true,
     "args": [
         "exec",
-        "showcase_nodejs_1"
+        "showcase_test_1"
     ],
     "showOutput": "always",
     "tasks": [
@@ -28,7 +28,7 @@
                 "node",
                 "--debug-brk",
                 "--nolazy",
-                "code/processMessages.js"
+                "code/showcase_tests.js"
             ]
         }
     ]

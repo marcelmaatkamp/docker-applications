@@ -133,7 +133,6 @@ public:
   // Sets the optional "Diagnostics and Debug" stream.
   void setDiag(Stream& stream);
   void setPin(int pin);
-  int8_t ProcessInterrupt();
 
 private:
   // The (optional) stream to show debug information.
@@ -141,8 +140,7 @@ private:
   float charge, current, voltage, temperature;
   int inputPin = -1;    // the number of the pin the Switch is connected to
   bool valid=false;
-  int IRSctr;  // To see the number of interrupts occurred (for debugging purposes)
-    
+
   //! Write an 8-bit code to the LTC2943.
   //! @return The function returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
   int8_t LTC2943_write(uint8_t i2c_address, //!< Register address for the LTC2943
@@ -163,13 +161,6 @@ private:
                               uint8_t adc_command, //!< The "command byte" for the LTC2943
                               uint16_t *adc_code   //!< Value that will be read from the register.
                              );
-
-  //! Reads a 8-bit adc_code from LTC2943 with the Special address 0C to follow the Alert Response Protocol
-  //! @return The function returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
-  int8_t LTC2943_arp(uint8_t i2c_address, //!< i2c address
-                     uint8_t *adc_code    //!< Value that will be read.
-                    );
-
   
   //! Calculate the LTC2943 charge in mAh
   //! @return Returns the Coulombs of charge in the ACR register.
@@ -213,12 +204,6 @@ private:
                             uint8_t command,   //!< Command byte
                             uint16_t *value    //!< Word to be read
                            );
-
-  //! Read a byte of data from the Special address 0C to follow the Alert Response Protocol
-  //! @return 0 on success, 1 on failure
-  int8_t i2c_arp(uint8_t address, //!< 7-bit I2C address
-                 uint8_t *value   //!< Byte to be read
-                );
 
 };
 

@@ -33,7 +33,7 @@ class RoleController extends AppBaseController
 		$this->RequirePermission(User::$PERMISSION_ADMIN,
 				'SecureExample.LoginForm',
 				'Please login to access this page',
-				'Geen toegang tot deze pagina.');
+				'Admin permission is required to configure roles');
 	}
 
 	/**

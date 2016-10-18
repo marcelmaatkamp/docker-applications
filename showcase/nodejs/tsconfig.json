@@ -2,9 +2,6 @@
   "compilerOptions": {
     "target": "ES6",
     "module": "commonjs",
-    "types" : [
-      "node"
-    ],
     "removeComments": true,
     "preserveConstEnums": true,
     "declaration": true,
