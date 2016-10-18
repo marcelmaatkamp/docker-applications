@@ -32,23 +32,23 @@ gulp.task('build', ['compile', 'test']);
 gulp.task('build:clean', ['clean', 'compile', 'test']);
 
 gulp.task('watch', ['clean', 'build'], function () {
-  gulp.watch('code/**/*.ts', ['build']);
+  gulp.watch('source/**/*.ts', ['build']);
 });
 
 gulp.task('clean', function (cb) {
   del.sync([
-    'code/**/*.js',
-    'code/**/*.js.map'
+    'coverage',
+    'result'
   ]);
   cb();
 });
 
 gulp.task('compile', function () {
   // compile typescript
-  var tsResult = gulp.src('code/**/*.ts')
+  var tsResult = gulp.src('source/**/*.ts')
     .pipe(tslint({
       formatter: 'prose',
-      configuration: 'tools/tslint/tslint-node.json'
+      configuration: 'tslint.json'
     }))
     .pipe(tslint.report({
       emitError: false
@@ -60,24 +60,24 @@ gulp.task('compile', function () {
     tsResult.js
       .pipe(sourcemaps.write('.', {
         includeContent: false,
-        sourceRoot: '../code/'
+        sourceRoot: '../source/'
       }))
-      .pipe(gulp.dest('code')) //,
+      .pipe(gulp.dest('result')) //,
     // tsResult.dts.pipe(gulp.dest('src'))
   ]);
 });
 
 gulp.task('lint', function () {
-  return gulp.src('code/**/*.ts')
+  return gulp.src('source/**/*.ts')
     .pipe(tslint({
-      configuration: 'tools/tslint/tslint-node.json'
+      configuration: 'tslint.json'
     }))
     .pipe(tslint.report('full'));
 });
 
 // unit tests, more a fast integration test because at the moment it uses an external AMQP server
 gulp.task('test', ['compile'], function () {
-  return gulp.src(['code/**/*.spec.js'], {
+  return gulp.src(['result/test/**/*.spec.js'], {
     read: false
   })
     .pipe(mocha({
@@ -85,4 +85,14 @@ gulp.task('test', ['compile'], function () {
       reporter: 'dot' // 'spec', 'dot'
     }))
     .on('error', swallowError);
+});
+
+gulp.task('test:coverage', ['compile'], function () {
+  return gulp.src('result/test/**/*.spec.js', {
+    read: false
+  })
+    .pipe(mocha({
+      reporter: 'spec', // 'spec', 'dot'
+      istanbul: true
+    }));
 });

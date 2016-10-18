@@ -1,0 +1,1 @@
+docker exec -it showcase_nodejs_1 bash
