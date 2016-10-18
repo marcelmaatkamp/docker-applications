@@ -6,7 +6,7 @@
     "isShellCommand": true,
     "args": [
         "exec",
-        "showcase_test_1"
+        "showcase_nodejs_1"
     ],
     "showOutput": "always",
     "tasks": [

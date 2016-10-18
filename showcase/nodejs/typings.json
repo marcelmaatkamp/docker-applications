@@ -1,15 +1,10 @@
 {
-  "dependencies": {
-    "bluebird": "registry:npm/bluebird#3.3.4+20160427051630"
-  },
-  "ambientDependencies": {
-    "node": "registry:dt/node#4.0.0+20160509082809",
-    "when": "registry:dt/when#2.4.0+20160317120654"
-  },
-  "devDependencies": {
-    "chai": "registry:npm/chai#3.5.0+20160415060238"
-  },
   "globalDependencies": {
-    "deep-equal": "registry:dt/deep-equal#0.0.0+20160316155526"
+    "bluebird": "registry:dt/bluebird#3.0.0+20160928162057",
+    "chai": "registry:dt/chai#3.4.0+20160601211834",
+    "mocha": "registry:dt/mocha#2.2.5+20160720003353",
+    "mqtt": "registry:dt/mqtt#0.0.0+20160317120654",
+    "mysql": "registry:dt/mysql#0.0.0+20160316155526",
+    "node": "registry:dt/node#6.0.0+20161010101523"
   }
 }
