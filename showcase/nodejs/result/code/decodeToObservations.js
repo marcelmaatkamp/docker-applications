@@ -13,14 +13,14 @@ var DecodeToObservations = (function () {
         this.sender = sender;
         this.sqlConnection = sqlConnection;
         receiver.startConsumer(function (msg) {
-            _this.MessageConsumerDecode(msg);
+            _this.messageConsumerDecode(msg);
         });
     }
     /**
      * adds the type of the sensor and converts the sensor value if needed
      * before sending the sensor to the destination exchange
      */
-    DecodeToObservations.prototype.SendCompletedObservation = function (observation) {
+    DecodeToObservations.prototype.sendCompletedObservation = function (observation) {
         var _this = this;
         var queryString = "SELECT omrekenfactor,eenheid" +
             " FROM sensor WHERE" +
@@ -51,7 +51,7 @@ var DecodeToObservations = (function () {
             }
         });
     };
-    DecodeToObservations.prototype.MessageConsumerDecode = function (message) {
+    DecodeToObservations.prototype.messageConsumerDecode = function (message) {
         try {
             // decode all readings to observations
             // expect ttnMsg to have a reading property that contains an array of objects
@@ -68,7 +68,7 @@ var DecodeToObservations = (function () {
                     sensorError: payload[i].error,
                     timestamp: timestamp
                 };
-                this.SendCompletedObservation(observation_1);
+                this.sendCompletedObservation(observation_1);
             }
             // check for skipped messages
             var currentCount = message.counter;

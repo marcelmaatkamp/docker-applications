@@ -55,11 +55,11 @@ export default class ReceiveKPN {
       ttnMQTT.subscribe("#");
     });
     ttnMQTT.on("message", (topic, message) => {
-      this.MessageConsumerMQTT(topic, message);
+      this.messageConsumerMQTT(topic, message);
     });
   }
 
-  private MessageConsumerMQTT (topic, messageRaw: Buffer) {
+  private messageConsumerMQTT (topic, messageRaw: Buffer) {
     var messageTTN = <MessageTTN> JSON.parse(messageRaw.toString());
     var rawPayload = new Buffer(messageTTN.payload, "base64");
     var payload = decodeProtoBuf(rawPayload);

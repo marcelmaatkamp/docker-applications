@@ -11,10 +11,10 @@ var ReceiveKPN = (function () {
         this.receiver = receiver;
         this.sender = sender;
         receiver.startConsumer(function (msg) {
-            _this.MessageConsumerKPN(msg);
+            _this.messageConsumerKPN(msg);
         });
     }
-    ReceiveKPN.prototype.MessageConsumerKPN = function (msg) {
+    ReceiveKPN.prototype.messageConsumerKPN = function (msg) {
         try {
             var rawPayload = new Buffer(msg.payload_hex, "hex");
             var payload = decodeProtoBuf_1.default(rawPayload);

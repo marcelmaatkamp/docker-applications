@@ -41,11 +41,11 @@ export default class ReceiveKPN {
     this.sender = sender;
 
     receiver.startConsumer((msg) => {
-      this.MessageConsumerKPN(msg);
+      this.messageConsumerKPN(msg);
     });
   }
 
-  private MessageConsumerKPN(msg) {
+  private messageConsumerKPN(msg) {
     try {
       var rawPayload = new Buffer(msg.payload_hex, "hex");
       var payload = decodeProtoBuf(rawPayload);

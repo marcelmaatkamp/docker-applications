@@ -22,7 +22,7 @@ export default class DecodeToObservations {
     this.sqlConnection = sqlConnection;
 
     receiver.startConsumer((msg) => {
-      this.MessageConsumerDecode(msg);
+      this.messageConsumerDecode(msg);
     });
   }
 
@@ -30,7 +30,7 @@ export default class DecodeToObservations {
    * adds the type of the sensor and converts the sensor value if needed
    * before sending the sensor to the destination exchange
    */
-  private SendCompletedObservation(observation: iot.SensorObservation) {
+  private sendCompletedObservation(observation: iot.SensorObservation) {
     var queryString = "SELECT omrekenfactor,eenheid" +
       " FROM sensor WHERE" +
       " sensor_id = " + observation.sensorId + ";";
@@ -59,7 +59,7 @@ export default class DecodeToObservations {
     });
   }
 
-  private MessageConsumerDecode(message) {
+  private messageConsumerDecode(message) {
     try {
       // decode all readings to observations
 
@@ -78,7 +78,7 @@ export default class DecodeToObservations {
           sensorError: payload[i].error,
           timestamp: timestamp
         };
-        this.SendCompletedObservation(observation);
+        this.sendCompletedObservation(observation);
       }
 
       // check for skipped messages

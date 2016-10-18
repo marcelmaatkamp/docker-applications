@@ -1,7 +1,8 @@
 /**
- * receive messages and decode them into observations
+ * log observations into the mysql database
+ * add the log index to the observation and forward it
  *
- * 2016-10-11 Ab Reitsma
+ * 2016-10-18 Ab Reitsma
  */
 "use strict";
 var LogObservation = (function () {
@@ -11,14 +12,14 @@ var LogObservation = (function () {
         this.sender = sender;
         this.sqlConnection = sqlConnection;
         receiver.startConsumer(function (msg) {
-            _this.SendLoggedObservation(msg);
+            _this.logObservation(msg);
         });
     }
     /**
      * adds the type of the sensor and converts the sensor value if needed
      * before sending the sensor to the destination exchange
      */
-    LogObservation.prototype.SendLoggedObservation = function (observation) {
+    LogObservation.prototype.logObservation = function (observation) {
         var _this = this;
         var observationTimestamp = observation.timestamp.slice(0, 19).replace('T', ' ');
         var nodeId = observation.nodeId;

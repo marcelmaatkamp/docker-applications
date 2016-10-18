@@ -15,10 +15,10 @@ var ReceiveKPN = (function () {
             ttnMQTT.subscribe("#");
         });
         ttnMQTT.on("message", function (topic, message) {
-            _this.MessageConsumerMQTT(topic, message);
+            _this.messageConsumerMQTT(topic, message);
         });
     }
-    ReceiveKPN.prototype.MessageConsumerMQTT = function (topic, messageRaw) {
+    ReceiveKPN.prototype.messageConsumerMQTT = function (topic, messageRaw) {
         var messageTTN = JSON.parse(messageRaw.toString());
         var rawPayload = new Buffer(messageTTN.payload, "base64");
         var payload = decodeProtoBuf_1.default(rawPayload);

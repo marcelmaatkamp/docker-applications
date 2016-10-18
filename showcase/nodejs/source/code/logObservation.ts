@@ -1,7 +1,8 @@
 /**
- * receive messages and decode them into observations
+ * log observations into the mysql database
+ * add the log index to the observation and forward it
  *
- * 2016-10-11 Ab Reitsma
+ * 2016-10-18 Ab Reitsma
  */
 
 import * as iot from "./iotMsg";
@@ -18,7 +19,7 @@ export default class LogObservation {
     this.sqlConnection = sqlConnection;
 
     receiver.startConsumer((msg) => {
-      this.SendLoggedObservation(msg);
+      this.logObservation(msg);
     });
   }
 
@@ -26,7 +27,7 @@ export default class LogObservation {
    * adds the type of the sensor and converts the sensor value if needed
    * before sending the sensor to the destination exchange
    */
-  private SendLoggedObservation(observation: iot.SensorObservation) {
+  private logObservation(observation: iot.SensorObservation) {
     var observationTimestamp = observation.timestamp.slice(0, 19).replace('T', ' ');
     var nodeId = observation.nodeId;
     var sensorId = observation.sensorId;
