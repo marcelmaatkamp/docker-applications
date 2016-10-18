@@ -5,11 +5,28 @@
  * 2016-10-10 Ab Reitsma
  */
 
+import * as mysql from "mysql";
 import * as mqtt from "mqtt";
 import * as amqp from "amqp-ts";
 import * as iot from "./iotMsg";
 import ReceiveKPN from "./receiveKPN";
-import ProcessTTN from "./receiveTTN";
+import ReceiveTTN from "./receiveTTN";
+import DecodeToObservations from "./decodeToObservations";
+import LogObservation from "./logObservation";
+
+// declare mysql stuff
+const mysqlHost = process.env.SHOWCASE_MYSQL_HOST || "mysql";
+const mysqlUser = process.env.SHOWCASE_MYSQL_HOST || "root";
+const mysqlPassword = process.env.SHOWCASE_MYSQL_HOST || "my-secret-pw";
+const mysqlDatabase = process.env.SHOWCASE_MYSQL_HOST || "showcase";
+
+// create mysql connection
+var mysqlDb = mysql.createConnection({
+  host: mysqlHost,
+  user: mysqlUser,
+  password: mysqlPassword,
+  database: mysqlDatabase
+});
 
 // declare mqtt stuff (for TTN)
 const ttnMqttServer = process.env.SHOWCASE_MQTT_SERVER || "staging.thethingsnetwork.org";
@@ -27,10 +44,10 @@ var mqttClient = mqtt.connect("mqtt://" + ttnMqttServer + ":" + ttnMqttPort, {
 });
 
 // declare amqp generic stuff
-var amqpServer = process.env.SHOWCASE_AMQP_PASSWORD || "rabbitmq";
+var amqpServer = process.env.SHOWCASE_AMQP_SERVER || "rabbitmq";
 var amqpPort = process.env.SHOWCASE_AMQP_PORT || 5672;
 var amqpUser = process.env.SHOWCASE_AMQP_USER || "guest";
-var amqpPassword = process.env.SHOWCASE_AMQP_SERVER || "guest";
+var amqpPassword = process.env.SHOWCASE_AMQP_PASSWORD || "guest";
 var amqpQueueSuffix = process.env.SHOWCASE_AMQP_QUEUE_SUFFIX || "nodejs_queue_";
 
 // create amqp connection
@@ -62,8 +79,10 @@ var alertAmqp = new AmqpInOut({
 });
 
 // create and start the message processing elements
-new ProcessTTN(mqttClient, ttnAmqp.send);
+new ReceiveTTN(mqttClient, ttnAmqp.send);
 new ReceiveKPN(kpnAmqp.receive, kpnAmqp.send);
+new DecodeToObservations(decodeAmqp.receive, decodeAmqp.send, mysqlDb);
+new LogObservation(logAmqp.receive, logAmqp.send, mysqlDb);
 
 interface AmqpIoDefinition {
   in?: string | amqp.Exchange;

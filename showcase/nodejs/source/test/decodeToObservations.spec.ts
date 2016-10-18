@@ -169,7 +169,7 @@ describe("Test DecodeToObservations", () => {
 });
 
 /**
- * KPN AMQP test message and expected result
+ * KPN test message and expected result
  */
 
 const decodeTestMessage1 = {

@@ -149,7 +149,7 @@ describe("Test DecodeToObservations", function () {
     });
 });
 /**
- * KPN AMQP test message and expected result
+ * KPN test message and expected result
  */
 var decodeTestMessage1 = {
     payload: [{

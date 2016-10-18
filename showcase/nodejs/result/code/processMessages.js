@@ -5,11 +5,26 @@
  * 2016-10-10 Ab Reitsma
  */
 "use strict";
+var mysql = require("mysql");
 var mqtt = require("mqtt");
 var amqp = require("amqp-ts");
 var iot = require("./iotMsg");
 var receiveKPN_1 = require("./receiveKPN");
 var receiveTTN_1 = require("./receiveTTN");
+var decodeToObservations_1 = require("./decodeToObservations");
+var logObservation_1 = require("./logObservation");
+// declare mysql stuff
+var mysqlHost = process.env.SHOWCASE_MYSQL_HOST || "mysql";
+var mysqlUser = process.env.SHOWCASE_MYSQL_HOST || "root";
+var mysqlPassword = process.env.SHOWCASE_MYSQL_HOST || "my-secret-pw";
+var mysqlDatabase = process.env.SHOWCASE_MYSQL_HOST || "showcase";
+// create mysql connection
+var mysqlDb = mysql.createConnection({
+    host: mysqlHost,
+    user: mysqlUser,
+    password: mysqlPassword,
+    database: mysqlDatabase
+});
 // declare mqtt stuff (for TTN)
 var ttnMqttServer = process.env.SHOWCASE_MQTT_SERVER || "staging.thethingsnetwork.org";
 var ttnMqttPort = process.env.SHOWCASE_MQTT_PORT || 1883;
@@ -24,10 +39,10 @@ var mqttClient = mqtt.connect("mqtt://" + ttnMqttServer + ":" + ttnMqttPort, {
     clean: true
 });
 // declare amqp generic stuff
-var amqpServer = process.env.SHOWCASE_AMQP_PASSWORD || "rabbitmq";
+var amqpServer = process.env.SHOWCASE_AMQP_SERVER || "rabbitmq";
 var amqpPort = process.env.SHOWCASE_AMQP_PORT || 5672;
 var amqpUser = process.env.SHOWCASE_AMQP_USER || "guest";
-var amqpPassword = process.env.SHOWCASE_AMQP_SERVER || "guest";
+var amqpPassword = process.env.SHOWCASE_AMQP_PASSWORD || "guest";
 var amqpQueueSuffix = process.env.SHOWCASE_AMQP_QUEUE_SUFFIX || "nodejs_queue_";
 // create amqp connection
 var connectionUrl = "amqp://" + amqpUser + ":" + amqpPassword + "@" + amqpServer + ":" + amqpPort;
@@ -58,6 +73,8 @@ var alertAmqp = new AmqpInOut({
 // create and start the message processing elements
 new receiveTTN_1.default(mqttClient, ttnAmqp.send);
 new receiveKPN_1.default(kpnAmqp.receive, kpnAmqp.send);
+new decodeToObservations_1.default(decodeAmqp.receive, decodeAmqp.send, mysqlDb);
+new logObservation_1.default(logAmqp.receive, logAmqp.send, mysqlDb);
 var AmqpInOut = (function () {
     function AmqpInOut(create) {
         this.outExchange = this.getExchange(create.out);

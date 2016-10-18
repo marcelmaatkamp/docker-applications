@@ -113,6 +113,7 @@ export declare interface SensorObservation {
   sensorValue8?: number;
   sensorValue9?: number;
   sensorValue10?: number;
+  logId?: any;
 }
 
 export declare interface NodeRedEnvelope {

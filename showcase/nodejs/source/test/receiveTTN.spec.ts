@@ -10,7 +10,7 @@ import * as Chai from "chai";
 var expect = Chai.expect;
 
 import * as iot from "../code/iotMsg";
-import ProcessTTN from "../code/receiveTTN";
+import ReceiveTTN from "../code/receiveTTN";
 
 import * as ttnSupport from "./_ttnTestSupport";
 
@@ -55,7 +55,7 @@ describe("Test ReceiveTTN", () => {
     var t = new ttnSupport.TtnToMessageTest(done, true);
     //tslint:disable-next-line:no-unused-variable
     var sender = new iot.SendMessagesAmqp(t.exchange, false);
-    new ProcessTTN(t.mqttClient, sender);
+    new ReceiveTTN(t.mqttClient, sender);
 
     t.queue.activateConsumer((msg) => {
       try {
