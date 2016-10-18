@@ -42,8 +42,6 @@ describe("Test ProcessObservation", function () {
         t.outQueue.activateConsumer(function (msg) {
             try {
                 var content = msg.getContent();
-                console.log("------------------");
-                console.log(content);
                 expect(content).to.deep.equal(observationExpectedResult);
                 t.finish();
             }

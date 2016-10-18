@@ -45,8 +45,6 @@ export default class ProcessObservation {
         console.log(queryString);
         console.log(err);
       } else {
-        console.log("------------------");
-        console.log(results);
         this.checkRules(observation, results);
       }
     });

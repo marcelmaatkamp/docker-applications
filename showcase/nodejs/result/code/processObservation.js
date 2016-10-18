@@ -35,8 +35,6 @@ var ProcessObservation = (function () {
                 console.log(err);
             }
             else {
-                console.log("------------------");
-                console.log(results);
                 _this.checkRules(observation, results);
             }
         });
