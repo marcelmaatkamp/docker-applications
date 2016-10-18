@@ -3,42 +3,59 @@ services:
 
  elasticsearch-master:
   image: danielguerra/alpine-elasticsearch
+  restart: always
   command: -Des.network.bind_host=elasticsearch-master --cluster.name=graylog --node.name=elasticsearch-master --discovery.zen.ping.multicast.enabled=false --network.host=elasticsearch-master
   hostname: elasticsearch-master
   volumes:
    - elastic-data:/usr/share/elasticsearch/data
-  ports:
-   - "9200:9200"
-   - "9300:9300"
+# ports:
+#  - "9200:9200"
+#  - "9300:9300"
+  networks:
+   mynet:
+#   ipv4_address: 172.25.0.100
 
  elasticsearch-node01:
   image: danielguerra/alpine-elasticsearch
+  restart: always
   command: -Des.network.bind_host=elasticsearch-node01 --cluster.name=graylog --node.name=elasticsearch-node01 --discovery.zen.ping.unicast.hosts=master:9300  --network.host=elasticsearch-node01
   hostname: elasticsearch-node01
   links:
    - "elasticsearch-master:master"
   volumes:
     - elastic-data:/usr/share/elasticsearch/data
+  networks:
+   mynet:
+#   ipv4_address: 172.25.0.101
 
  kibana:
   image: kibana
+  restart: always
   hostname: kibana
-  ports:
-   - "5601:5601"
+# ports:
+#  - "5601:5601"
   links:
    - "elasticsearch-master:elasticsearch"
+  networks:
+   mynet:
+#   ipv4_address: 172.25.0.102
 
  mongodb:
   image: mongo:3
+  restart: always
   command: "mongod --smallfiles"
-  ports:
-   - "27017:27017"
+# ports:
+#  - "27017:27017"
   volumes:
    - mongodb-conf:/etc/mongod.conf:ro
    - mongodb-data:/data/db
+  networks:
+   mynet:
+#   ipv4_address: 172.25.0.103
 
  graylog:
   image: "graylog2/server"
+  restart: always
   volumes:
    - graylog-data:/usr/share/graylog/data/journal
    - graylog-conf:/usr/share/graylog/data/config
@@ -46,13 +63,10 @@ services:
       GRAYLOG_PASSWORD_SECRET: somepasswordpepper
       GRAYLOG_ROOT_PASSWORD_SHA2: 8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
       GRAYLOG_WEB_ENDPOINT_URI: http://127.0.0.1:9000/api
-  ports:
-   - "9000:9000"
-   - "12900:12900"
-   - "5555:5555"
-   - "12201:12201/udp"
-   - "12201:12201"
-   - "1514/udp:1514/udp"
+# ports:
+#  - "9000:9000"
+#  - "12201:12201"
+#  - "12201:12201/udp"
   links:
    - mongodb:mongo
    - elasticsearch-master:elasticsearch
@@ -60,21 +74,9 @@ services:
    - mongodb
    - elasticsearch-master
    - elasticsearch-node01
-
-#hello:
-# image: hello-world
-# links:
-#  - "graylog:graylog"
-# links:
-#  - graylog:graylog
-# depends_on:
-#  - graylog
-# external_links:
-#  - graylog
-# logging:
-#  driver: "gelf"
-#  options:
-#   gelf-address: "udp://localhost:12201"
+  networks:
+   mynet:
+    ipv4_address: 172.25.0.100
 
 volumes:
  mongodb-data:
@@ -82,4 +84,3 @@ volumes:
  graylog-data:
  graylog-conf:
  elastic-data: 
-

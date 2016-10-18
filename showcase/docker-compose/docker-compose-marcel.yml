@@ -9,8 +9,7 @@ services:
   networks:
    mynet:
     ipv4_address: 172.25.0.8
-
- zeppelin:
-  image: dylanmei/zeppelin
-  ports:
-   - "8080:8080"
+  logging:
+   driver: "gelf"
+   options:
+    gelf-address: "udp://172.25.0.100:12201"
