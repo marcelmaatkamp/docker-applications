@@ -53,6 +53,7 @@ class NodeMap implements IDaoMap, IDaoMap2
 			self::$FM = Array();
 			self::$FM["DevEui"] = new FieldMap("DevEui","node","dev_eui",true,FM_TYPE_VARCHAR,255,null,false);
 			self::$FM["Omschrijving"] = new FieldMap("Omschrijving","node","omschrijving",false,FM_TYPE_VARCHAR,255,null,false);
+			self::$FM["Alias"] = new FieldMap("Alias","node","alias",false,FM_TYPE_VARCHAR,255,null,false);
 		}
 		return self::$FM;
 	}

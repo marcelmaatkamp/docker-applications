@@ -9,12 +9,13 @@ var page = {
 
 	nodes: new model.NodeCollection(),
 	collectionView: null,
+	filterView: null,
 	node: null,
 	modelView: null,
 	isInitialized: false,
 	isInitializing: false,
 
-	fetchParams: { filter: '', orderBy: '', orderDesc: '', page: 1 },
+	fetchParams: { filter: '', filter2: '', orderBy: '', orderDesc: '', page: 1 },
 	fetchInProgress: false,
 	dialogIsOpen: false,
 
@@ -26,6 +27,9 @@ var page = {
 		if (page.isInitialized || page.isInitializing) return;
 		page.isInitializing = true;
 
+		//$("#FilterAliasDisplay").hide();
+		//$("#FilterDevEuiDisplay").hide();			
+		
 		if (!$.isReady && console) console.warn('page was initialized before dom is ready.  views may not render properly.');
 
 		// make the new button clickable
@@ -57,13 +61,78 @@ var page = {
 			templateEl: $("#nodeCollectionTemplate"),
 			collection: page.nodes
 		});
+		
+		
+		// initialize the collection view
+		this.collectionView = new view.CollectionView({
+			el: $("#FilterAliasTemplateContainer"),
+			templateEl: $("#FilterAliasTemplate"),
+			collection: page.nodes
+		});
+		
+		// initialize the collection view
+		this.collectionView = new view.CollectionView({
+			el: $("#FilterDevEuiTemplateContainer"),
+			templateEl: $("#FilterDevEuiTemplate"),
+			collection: page.nodes
+		});
+						
 
 		// initialize the search filter
 		$('#filter').change(function(obj) {
 			page.fetchParams.filter = $('#filter').val();
 			page.fetchParams.page = 1;
 			page.fetchNodes(page.fetchParams);
+			console.log("normalfilter");
+						
 		});
+		
+		
+		
+		// initialize the Alias search filter
+		$(document).on('change','#FilterAlias',function(){
+			page.fetchParams.FilterAlias = $('#FilterAlias').val();
+			page.fetchParams.page = 1;
+			page.fetchNodes(page.fetchParams);
+			//console.log($('#FilterAlias').val()+' used');
+					console.log("FilterAlias Used");
+			
+			if ($('#FilterAlias').val()){
+				$("#FilterAliasDisplay").val("Filter: "+$('#FilterAlias').val());
+				$("#FilterAliasDisplay").css('color', 'red', 'important');
+			}
+			else{
+			//$("#FilterAliasDisplay").hide();	
+				$("#FilterAliasDisplay").val("-Geen Filter-");	
+				$("#FilterAliasDisplay").removeAttr('style');
+			}
+			
+		});
+		
+		// initialize the DevEui search filter
+		$(document).on('change','#FilterDevEui',function(){
+			page.fetchParams.FilterDevEui = $('#FilterDevEui').val();
+			page.fetchParams.page = 1;
+			page.fetchNodes(page.fetchParams);
+			
+			
+			if ($('#FilterDevEui').val()){
+				$("#FilterDevEuiDisplay").val("Filter: "+$('#FilterDevEui').val());
+				
+				
+			$("#FilterDevEuiDisplay").css('color', 'red', 'important');
+							
+				
+			
+				
+			}
+			else{
+				$("#FilterDevEuiDisplay").val("-Geen Filter-");	
+				$("#FilterDevEuiDisplay").removeAttr('style');
+			}
+			
+		});
+		
 		
 		// make the rows clickable ('rendered' is a custom event, not a standard backbone event)
 		this.collectionView.on('rendered',function(){
@@ -96,6 +165,8 @@ var page = {
 			
 			page.isInitialized = true;
 			page.isInitializing = false;
+			
+			
 		});
 
 		// backbone docs recommend bootstrapping data on initial page load, but we live by our own rules!
@@ -106,6 +177,9 @@ var page = {
 			el: $("#nodeModelContainer")
 		});
 
+		
+		
+		
 		// tell the model view where it's template is located
 		this.modelView.templateEl = $("#nodeModelTemplate");
 
@@ -264,7 +338,8 @@ var page = {
 
 		page.node.save({
 			'devEui': $('input#devEui').val(),
-			'omschrijving': $('input#omschrijving').val()
+			'omschrijving': $('input#omschrijving').val(),
+			'alias': $('input#alias').val()
 		}, {
 			wait: true,
 			success: function(){

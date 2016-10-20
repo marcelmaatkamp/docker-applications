@@ -32,7 +32,7 @@ class UserController extends AppBaseController
 		$this->RequirePermission(User::$PERMISSION_ADMIN,
 				'SecureExample.LoginForm',
 				'Please login to access this page',
-				'Edit permission is required to manage users');
+				'Geen toegang tot deze pagina.');
 	}
 
 	/**

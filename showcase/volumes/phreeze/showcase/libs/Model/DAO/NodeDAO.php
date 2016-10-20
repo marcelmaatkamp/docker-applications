@@ -26,6 +26,9 @@ class NodeDAO extends Phreezable
 
 	/** @var string */
 	public $Omschrijving;
+	
+	/** @var string */
+	public $Alias;
 
 
 	/**
