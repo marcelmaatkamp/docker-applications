@@ -18,11 +18,11 @@ var ReceiveKPN = (function () {
         try {
             var rawPayload = new Buffer(msg.payload_hex, "hex");
             var payload = decodeProtoBuf_1.default(rawPayload);
-            var metadata = {
-                server_time: new Date(msg.Time).toISOString(),
-                longitude: Number(msg.LrrLON),
-                latitude: Number(msg.LrrLAT)
-            };
+            var metadata = [{
+                    server_time: new Date(msg.Time).toISOString(),
+                    longitude: Number(msg.LrrLON),
+                    latitude: Number(msg.LrrLAT)
+                }];
             // convert payload
             var messageIot = {
                 payload: payload,

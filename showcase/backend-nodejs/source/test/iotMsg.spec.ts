@@ -130,5 +130,11 @@ describe("Test iotMsg SendMessageAmqp and ReceiveMessageAmqp", () => {
         t.finish(err);
       });
   });
+});
 
+describe("Test iotMsg AmqpInOut", () => {
+  it("should be able to create an amqp in queue and out exchange", (done) => {
+//todo: write test
+    done();
+  });
 });

@@ -74,11 +74,11 @@ const kpnExpectedResult = {
   counter: 2,
   dev_eui: "0059AC000018041B",
   metadata:
-  {
+  [{
     server_time: "2016-10-03T13:30:10.829Z",
     longitude: 5.304723,
     latitude: 52.085842
-  }
+  }]
 };
 
 

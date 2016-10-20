@@ -52,9 +52,11 @@ export default class ReceiveKPN {
 
     // initialize MQTT message receive
     ttnMQTT.on("connect", () => {
+      console.log("Connected to the TTN MQTT exchange.");
       ttnMQTT.subscribe("#");
     });
     ttnMQTT.on("message", (topic, message) => {
+      console.log("TTN message received.");
       this.messageConsumerMQTT(topic, message);
     });
   }

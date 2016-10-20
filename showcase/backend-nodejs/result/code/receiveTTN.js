@@ -12,9 +12,11 @@ var ReceiveKPN = (function () {
         this.sender = sender;
         // initialize MQTT message receive
         ttnMQTT.on("connect", function () {
+            console.log("Connected to the TTN MQTT exchange.");
             ttnMQTT.subscribe("#");
         });
         ttnMQTT.on("message", function (topic, message) {
+            console.log("TTN message received.");
             _this.messageConsumerMQTT(topic, message);
         });
     }

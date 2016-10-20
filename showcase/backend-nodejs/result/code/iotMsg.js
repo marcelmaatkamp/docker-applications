@@ -97,5 +97,34 @@ var ReceiveMessagesAmqp = (function () {
     return ReceiveMessagesAmqp;
 }());
 exports.ReceiveMessagesAmqp = ReceiveMessagesAmqp;
+var AmqpInOut = (function () {
+    function AmqpInOut(create) {
+        this.outExchange = this.getExchange(create.out);
+        this.send = new SendMessagesAmqp(this.outExchange);
+        var inExchange = this.getExchange(create.in);
+        if (inExchange) {
+            this.inQueue = AmqpInOut.amqpConnection.declareQueue(inExchange.name + "." + AmqpInOut.amqpQueueSuffix + this.nextQueueNr(), { durable: false });
+            this.inQueue.bind(inExchange);
+            this.receive = new ReceiveMessagesAmqp(this.inQueue);
+        }
+    }
+    AmqpInOut.preInitialize = function (amqpConnection, amqpQueueSuffix) {
+        AmqpInOut.amqpConnection = amqpConnection;
+        AmqpInOut.amqpQueueSuffix = amqpQueueSuffix;
+    };
+    AmqpInOut.prototype.nextQueueNr = function () {
+        return AmqpInOut._queueNr++;
+    };
+    AmqpInOut.prototype.getExchange = function (exchange) {
+        if (typeof exchange === "string") {
+            return AmqpInOut.amqpConnection.declareExchange(exchange, "fanout");
+        }
+        // expect it to be an amqp.Exchange or null
+        return exchange;
+    };
+    AmqpInOut._queueNr = 1;
+    return AmqpInOut;
+}());
+exports.AmqpInOut = AmqpInOut;
 
 //# sourceMappingURL=iotMsg.js.map

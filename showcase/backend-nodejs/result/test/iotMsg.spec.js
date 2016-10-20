@@ -121,5 +121,11 @@ describe("Test iotMsg SendMessageAmqp and ReceiveMessageAmqp", function () {
         });
     });
 });
+describe("Test iotMsg AmqpInOut", function () {
+    it("should be able to create an amqp in queue and out exchange", function (done) {
+        //todo: write test
+        done();
+    });
+});
 
 //# sourceMappingURL=iotMsg.spec.js.map

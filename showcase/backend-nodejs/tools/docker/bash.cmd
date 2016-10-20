@@ -1,1 +1,1 @@
-docker exec -it showcase_nodejs_1 bash
+docker exec -it showcase_backend_1 bash

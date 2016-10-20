@@ -67,7 +67,7 @@ export default class DecodeToObservations {
       // each object contains the properties defined in sensor.proto SensorReading
       var payload = message.payload;
       var nodeId = message.dev_eui;
-      var timestamp = message.metadata.server_time;
+      var timestamp = message.metadata[0].server_time;
 
       // send all sensor values as separate msg's
       for (let len = payload.length, i = 0; i < len; i++) {
