@@ -1,0 +1,65 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "0.1.0",
+  "command": "docker",
+  "isShellCommand": true,
+  "showOutput": "always",
+  "tasks": [
+    {
+      "taskName": "build",
+      "suppressTaskName": true,
+      "isBuildCommand": true,
+      "isWatching": false,
+      "args": [
+        "exec",
+        "showcase_backend_1",
+        "gulp"
+      ]
+    },
+    {
+      "taskName": "testcoverage",
+      "suppressTaskName": true,
+      "isBuildCommand": false,
+      "isWatching": false,
+      "args": [
+        "exec",
+        "-d",
+        "showcase_backend_1",
+        "gulp",
+        "test:coverage"
+      ]
+    },
+    {
+      "taskName": "debug processMessages",
+      "suppressTaskName": true,
+      "isBuildCommand": false,
+      "isWatching": false,
+      "args": [
+        "exec",
+        "-d",
+        "showcase_backend_1",
+        "node",
+        "--debug-brk",
+        "--nolazy",
+        "result/code/processMessages"
+      ]
+    },
+    {
+      "taskName": "debug tests",
+      "suppressTaskName": true,
+      "isBuildCommand": false,
+      "isWatching": false,
+      "args": [
+        "exec",
+        "showcase_backend_1",
+        "node",
+        "--debug-brk",
+        "--nolazy",
+        "node_modules/mocha/bin/_mocha",
+        "result/test/**/*.spec.js"
+      ]
+    }
+  ]
+}
+]

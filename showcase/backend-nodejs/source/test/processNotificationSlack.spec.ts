@@ -22,14 +22,14 @@ amqpSupport.SetConnectionUrl({
 });
 
 // real slack connection
-var hook_url = "https://hooks.slack.com/services/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";
-var slack = new Slack(hook_url);
+// var hook_url = "https://hooks.slack.com/services/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";
+// var slack = new Slack(hook_url);
 // dummy slack connection, always returns the expected results
-// var slack = <Slack>{
-//   send: (message: any ) => {
-//     return;
-//   }
-// };
+var slack = <Slack>{
+  send: (message: any ) => {
+    return;
+  }
+};
 
 
 // incomplete quick test to see if no errors occur,
