@@ -17,8 +17,13 @@ var ProcessAlert = (function () {
     ProcessAlert.prototype.processAlert = function (alert) {
         var _this = this;
         // haal alarmregels
-        var queryString = "SELECT kanaal, p1, p2, p3, p4, meldingtekst FROM alarm_notificatie " +
-            "WHERE alarm_regel = " + alert.ruleId + ";";
+        var queryString = "INSERT INTO alarm ( " +
+            "alarm_regel," +
+            "observatie) " +
+            "VALUES (" +
+            alert.ruleId + "," +
+            alert.observationId +
+            ");";
         this.sqlConnection.query(queryString, function (err, results) {
             if (err) {
                 //todo: log sql error
@@ -26,21 +31,22 @@ var ProcessAlert = (function () {
                 console.log(err);
             }
             else {
-                _this.sendNotifications(alert, results);
+                if (_this.sender) {
+                    try {
+                        alert.logId = results.insertId;
+                        _this.sender.send(alert);
+                    }
+                    catch (err) {
+                        //todo: log error
+                        console.log(err);
+                    }
+                }
             }
         });
-    };
-    ProcessAlert.prototype.sendNotifications = function (alert, notifications) {
-        for (var i = 0, len = notifications.length; i < len; i++) {
-            notifications[i].meldingtekst = notifications[i].meldingtekst
-                .replace("%v", alert.sensorValue)
-                .replace("%t", alert.sensorValueType);
-            this.sender.send(notifications[i]);
-        }
     };
     return ProcessAlert;
 }());
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = ProcessAlert;
 
-//# sourceMappingURL=processAlert.js.map
+//# sourceMappingURL=logAlert.js.map

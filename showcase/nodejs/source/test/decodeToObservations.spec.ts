@@ -22,14 +22,14 @@ amqpSupport.SetConnectionUrl({
 });
 
 // real mysql database connection
-// var mysqlDb = mysql.createConnection({
+// var mysqlConnection = mysql.createConnection({
 //   host: "mysql",
 //   user: "root",
 //   password: "my-secret-pw",
 //   database: "showcase"
 // });
 // dummy mysql, always returns the expected results
-var mysqlShim = {
+var mysqlConnection = <mysql.IConnection>{
   query: (queryString: string, callback: (err, results) => void) => {
     process.nextTick(callback, 0, [{
       omrekenfactor: "x ? \"dicht\" : \"open\"",
@@ -37,8 +37,6 @@ var mysqlShim = {
     }]);
   }
 };
-
-var mysqlConnection = <mysql.IConnection>mysqlShim;
 
 function deepEquals(a, b) {
   try {

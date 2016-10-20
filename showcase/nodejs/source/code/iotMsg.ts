@@ -123,6 +123,16 @@ export declare interface SensorAlert {
   sensorValueType: string;
   observationId: any;
   ruleId: number;
+  logId?: any;
+}
+
+export declare interface AlertNotification {
+  kanaal: string;
+  p1: string;
+  p2: string;
+  p3: string;
+  p4: string;
+  meldingtekst: string;
 }
 
 export declare interface NodeRedEnvelope {

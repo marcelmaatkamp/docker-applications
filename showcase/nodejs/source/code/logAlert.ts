@@ -12,7 +12,7 @@ export default class ProcessAlert {
   sender: iot.SendMessages;
   sqlConnection: mysql.IConnection;
 
-  constructor(receiver: iot.ReceiveMessages, sender: iot.SendMessages, sqlConnection: mysql.IConnection) {
+  constructor(receiver: iot.ReceiveMessages, sender: iot.SendMessages | null, sqlConnection: mysql.IConnection) {
     this.receiver = receiver;
     this.sender = sender;
     this.sqlConnection = sqlConnection;
@@ -25,26 +25,29 @@ export default class ProcessAlert {
   private processAlert(alert: iot.SensorAlert) {
     // haal alarmregels
     var queryString =
-      "SELECT kanaal, p1, p2, p3, p4, meldingtekst FROM alarm_notificatie " +
-      "WHERE alarm_regel = " + alert.ruleId + ";";
+      "INSERT INTO alarm ( " +
+      "alarm_regel," +
+      "observatie) " +
+      "VALUES (" +
+      alert.ruleId + "," +
+      alert.observationId +
+      ");";
     this.sqlConnection.query(queryString, (err, results) => {
       if (err) {
         //todo: log sql error
         console.log(queryString);
         console.log(err);
       } else {
-        this.sendNotifications(alert, results);
+        if (this.sender) {
+          try {
+            alert.logId = results.insertId;
+            this.sender.send(alert);
+          } catch (err) {
+            //todo: log error
+            console.log(err);
+          }
+        }
       }
     });
-  }
-
-  private sendNotifications(alert: iot.SensorAlert, notifications: any[]) {
-    for (var i = 0, len = notifications.length; i < len; i++) {
-      notifications[i].meldingtekst = notifications[i].meldingtekst
-        .replace("%v", alert.sensorValue)
-        .replace("%t", alert.sensorValueType);
-
-      this.sender.send(notifications[i]);
-    }
   }
 }

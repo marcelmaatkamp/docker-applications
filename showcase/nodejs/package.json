@@ -19,6 +19,7 @@
     "bluebird": "^3.4.6",
     "mqtt": "^2.0.1",
     "mysql": "^2.11.1",
+    "node-slack": "0.0.7",
     "protocol-buffers": "^3.1.6",
     "safe-eval": "^0.3.0"
   },

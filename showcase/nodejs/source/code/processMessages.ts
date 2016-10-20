@@ -8,6 +8,7 @@
 import * as mysql from "mysql";
 import * as mqtt from "mqtt";
 import * as amqp from "amqp-ts";
+import * as Slack from "node-slack";
 import * as iot from "./iotMsg";
 import ReceiveKPN from "./receiveKPN";
 import ReceiveTTN from "./receiveTTN";
@@ -15,6 +16,8 @@ import DecodeToObservations from "./decodeToObservations";
 import LogObservation from "./logObservation";
 import ProcessObservation from "./processObservation";
 import ProcessAlert from "./processAlert";
+import LogAlert from "./LogAlert";
+import ProcessNotificationSlack from "./ProcessNotificationSlack";
 
 // declare mysql stuff
 const mysqlHost = process.env.SHOWCASE_MYSQL_HOST || "mysql";
@@ -56,38 +59,54 @@ var amqpQueueSuffix = process.env.SHOWCASE_AMQP_QUEUE_SUFFIX || "nodejs_queue_";
 var connectionUrl = "amqp://" + amqpUser + ":" + amqpPassword + "@" + amqpServer + ":" + amqpPort;
 var amqpConnection = new amqp.Connection(connectionUrl);
 
+// create slack connection
+var slackHookUrl = process.env.SHOWCASE_SLACK_HOOK_URL ||
+  "https://hooks.slack.com/services/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";
+var slack = new Slack(slackHookUrl);
+
 // declare amqp exchange names
 var ttnAmqp = new AmqpInOut({
   out: process.env.SHOWCASE_AMQP_TTN_EXCHANGE_OUT || "showcase.ttn_message"
 });
 var kpnAmqp = new AmqpInOut({
   in: process.env.SHOWCASE_AMQP_KPN_EXCHANGE_IN || "showcase.kpn_message",
-  out: process.env.SHOWCASE_AMQP_KPN_EXCHANGE_IN || ttnAmqp.outExchange
+  out: process.env.SHOWCASE_AMQP_KPN_EXCHANGE_OUT || ttnAmqp.outExchange
 });
 var decodeAmqp = new AmqpInOut({
   in: process.env.SHOWCASE_AMQP_DECODE_EXCHANGE_IN || ttnAmqp.outExchange,
   out: process.env.SHOWCASE_AMQP_DECODE_EXCHANGE_OUT || "showcase.observation"
 });
-var logAmqp = new AmqpInOut({
-  in: process.env.SHOWCASE_AMQP_LOG_EXCHANGE_IN || decodeAmqp.outExchange,
-  out: process.env.SHOWCASE_AMQP_LOG_EXCHANGE_IN || "showcase.logged_observation"
+var logObservationAmqp = new AmqpInOut({
+  in: process.env.SHOWCASE_AMQP_OBSERVATION_LOG_EXCHANGE_IN || decodeAmqp.outExchange,
+  out: process.env.SHOWCASE_AMQP_OBSERVATION_LOG_EXCHANGE_OUT || "showcase.logged_observation"
 });
 var processAmqp = new AmqpInOut({
-  in: process.env.SHOWCASE_AMQP_LOG_EXCHANGE_IN || logAmqp.outExchange,
-  out: process.env.SHOWCASE_AMQP_LOG_EXCHANGE_IN || "showcase.alert"
+  in: process.env.SHOWCASE_AMQP_ALERT_EXCHANGE_IN || logObservationAmqp.outExchange,
+  out: process.env.SHOWCASE_AMQP_ALERT_EXCHANGE_OUT || "showcase.alert"
 });
 var alertAmqp = new AmqpInOut({
-  in: process.env.SHOWCASE_AMQP_LOG_EXCHANGE_IN || processAmqp.outExchange,
-  out: process.env.SHOWCASE_AMQP_LOG_EXCHANGE_IN || "showcase.notification"
+  in: process.env.SHOWCASE_AMQP_ALERT_LOG_EXCHANGE_IN || processAmqp.outExchange,
+  out: process.env.SHOWCASE_AMQP_ALERT_LOG_EXCHANGE_OUT || "showcase.notification"
+});
+var alertlogLogAmqp = new AmqpInOut({
+  in: process.env.SHOWCASE_AMQP_ALERT_LOG_EXCHANGE_IN || alertAmqp.outExchange,
+  out: process.env.SHOWCASE_AMQP_ALERT_LOG_EXCHANGE_OUT || "showcase.logged_notification"
+});
+var notificationSlackAmqp = new AmqpInOut({
+  in: process.env.SHOWCASE_AMQP_SLACK_EXCHANGE_IN || alertAmqp.outExchange,
+  out: process.env.SHOWCASE_AMQP_SLACK_EXCHANGE_OUT || "showcase.notification_sent_slack"
 });
 
 // create and start the message processing elements
 new ReceiveTTN(mqttClient, ttnAmqp.send);
 new ReceiveKPN(kpnAmqp.receive, kpnAmqp.send);
 new DecodeToObservations(decodeAmqp.receive, decodeAmqp.send, mysqlDb);
-new LogObservation(logAmqp.receive, logAmqp.send, mysqlDb);
+new LogObservation(logObservationAmqp.receive, logObservationAmqp.send, mysqlDb);
 new ProcessObservation(processAmqp.receive, processAmqp.send, mysqlDb);
 new ProcessAlert(alertAmqp.receive, alertAmqp.send, mysqlDb);
+new LogAlert(alertlogLogAmqp.receive, alertlogLogAmqp.send, mysqlDb);
+new ProcessNotificationSlack(notificationSlackAmqp.receive, notificationSlackAmqp.send, slack);
+
 
 interface AmqpIoDefinition {
   in?: string | amqp.Exchange;
