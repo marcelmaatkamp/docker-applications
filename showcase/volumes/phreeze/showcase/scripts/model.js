@@ -282,9 +282,11 @@ model.NodeModel = Backbone.Model.extend({
 	idAttribute: 'devEui',
 	devEui: '',
 	omschrijving: '',
+	alias: '',
 	defaults: {
 		'devEui': null,
-		'omschrijving': ''
+		'omschrijving': '',
+		'alias': ''
 	}
 });
 

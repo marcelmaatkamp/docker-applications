@@ -143,7 +143,7 @@ class AlarmController extends AppBaseController
 		try
 		{
 			// TODO: views are read-only by default.  uncomment at your own discretion
-			throw new Exception('Database views are read-only and cannot be updated');
+			throw new Exception('Dit rapport is niet te wijzigen.');
 						
 			$json = json_decode(RequestUtil::GetBody());
 
@@ -192,7 +192,7 @@ class AlarmController extends AppBaseController
 		try
 		{
 			// TODO: views are read-only by default.  uncomment at your own discretion
-			throw new Exception('Database views are read-only and cannot be updated');
+			throw new Exception('Dit rapport is niet te wijzigen.');
 						
 			$json = json_decode(RequestUtil::GetBody());
 
@@ -253,7 +253,7 @@ class AlarmController extends AppBaseController
 		try
 		{
 			// TODO: views are read-only by default.  uncomment at your own discretion
-			throw new Exception('Database views are read-only and cannot be updated');
+			throw new Exception('Dit rapport is niet te wijzigen.');
 						
 			// TODO: if a soft delete is prefered, change this to update the deleted flag instead of hard-deleting
 

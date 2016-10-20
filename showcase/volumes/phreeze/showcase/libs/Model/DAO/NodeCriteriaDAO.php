@@ -51,7 +51,21 @@ class NodeCriteriaDAO extends Criteria
 	public $Omschrijving_IsEmpty;
 	public $Omschrijving_BitwiseOr;
 	public $Omschrijving_BitwiseAnd;
-
+	public $Alias_Equals;
+	public $Alias_NotEquals;
+	public $Alias_IsLike;
+	public $Alias_IsNotLike;
+	public $Alias_BeginsWith;
+	public $Alias_EndsWith;
+	public $Alias_GreaterThan;
+	public $Alias_GreaterThanOrEqual;
+	public $Alias_LessThan;
+	public $Alias_LessThanOrEqual;
+	public $Alias_In;
+	public $Alias_IsNotEmpty;
+	public $Alias_IsEmpty;
+	public $Alias_BitwiseOr;
+	public $Alias_BitwiseAnd;
 }
 
 ?>

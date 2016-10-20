@@ -34,12 +34,12 @@
 		</div>
 		<form class="well" method="post" action="login">
 			<fieldset>
-			<legend>Enter your credentials</legend>
+			<legend>Login met gebruikersnaam en wachtwoord:</legend>
 				<div class="control-group">
-				<input id="username" name="username" type="text" placeholder="Username..." />
+				<input id="username" name="username" type="text" placeholder="Gebruikersnaam..." />
 				</div>
 				<div class="control-group">
-				<input id="password" name="password" type="password" placeholder="Password..." />
+				<input id="password" name="password" type="password" placeholder="Wachtwoord..." />
 				</div>
 				<div class="control-group">
 				<button type="submit" class="btn btn-primary">Login</button>
