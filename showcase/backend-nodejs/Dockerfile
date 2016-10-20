@@ -44,11 +44,8 @@ RUN npm install
 # default node debug port
 EXPOSE 5858
 
-# define the default rabbitmq server to use
-ENV AMQPTEST_CONNECTION_URL=amqp://rabbitmq
-
 # needed to keep the docker version of the libraries separate from the local version
 VOLUME ["/src", "/src/node_modules"]
 
-#initialize the docker development environment
-CMD ["npm", "run", "docker-develop"]
+#initialize the docker development or production environment
+CMD ["npm", "start"]
