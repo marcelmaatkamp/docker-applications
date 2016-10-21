@@ -18,6 +18,9 @@ var processObservation_1 = require("./processObservation");
 var processAlert_1 = require("./processAlert");
 var LogAlert_1 = require("./LogAlert");
 var ProcessNotificationSlack_1 = require("./ProcessNotificationSlack");
+var ProcessNotificationTelegram_1 = require("./ProcessNotificationTelegram");
+// unfortunately no typescript .d.ts exists for node-telegram-bot-api
+var TelegramBot = require("node-telegram-bot-api");
 // declare mysql stuff
 var mysqlHost = process.env.SHOWCASE_MYSQL_HOST || "mysql";
 var mysqlUser = process.env.SHOWCASE_MYSQL_USER || "root";
@@ -68,7 +71,11 @@ iot.AmqpInOut.preInitialize(amqpConnection, amqpQueueSuffix);
 // create slack connection
 var slackHookUrl = process.env.SHOWCASE_SLACK_HOOK_URL ||
     "https://hooks.slack.com/services/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";
-var slack = new Slack(slackHookUrl);
+var slackBot = new Slack(slackHookUrl);
+// create telegram connection
+var telegramBotToken = process.env.SHOWCASE_TELEGRAM_TOKEN ||
+    "292441232:AAHS3zE8dyJWRUCx29bLx-MOwWEpimRt0mk";
+var telegramBot = new TelegramBot(telegramBotToken);
 // declare amqp exchange names
 var ttnAmqp = new iot.AmqpInOut({
     out: process.env.SHOWCASE_AMQP_TTN_EXCHANGE_OUT || "showcase.ttn_message"
@@ -101,6 +108,10 @@ var notificationSlackAmqp = new iot.AmqpInOut({
     in: process.env.SHOWCASE_AMQP_SLACK_EXCHANGE_IN || alertAmqp.outExchange,
     out: process.env.SHOWCASE_AMQP_SLACK_EXCHANGE_OUT || "showcase.notification_sent_slack"
 });
+var notificationTelegramAmqp = new iot.AmqpInOut({
+    in: process.env.SHOWCASE_AMQP_TELKEGRAM_EXCHANGE_IN || alertAmqp.outExchange,
+    out: process.env.SHOWCASE_AMQP_TELEGRAM_EXCHANGE_OUT || "showcase.notification_sent_telegram"
+});
 // create and start the message processing elements
 new receiveTTN_1.default(mqttClient, ttnAmqp.send);
 new receiveKPN_1.default(kpnAmqp.receive, kpnAmqp.send);
@@ -109,6 +120,7 @@ new logObservation_1.default(logObservationAmqp.receive, logObservationAmqp.send
 new processObservation_1.default(processAmqp.receive, processAmqp.send, mysqlDb);
 new processAlert_1.default(alertAmqp.receive, alertAmqp.send, mysqlDb);
 new LogAlert_1.default(alertlogLogAmqp.receive, alertlogLogAmqp.send, mysqlDb);
-new ProcessNotificationSlack_1.default(notificationSlackAmqp.receive, notificationSlackAmqp.send, slack);
+new ProcessNotificationSlack_1.default(notificationSlackAmqp.receive, notificationSlackAmqp.send, slackBot);
+new ProcessNotificationTelegram_1.default(notificationTelegramAmqp.receive, notificationTelegramAmqp.send, telegramBot);
 
 //# sourceMappingURL=processMessages.js.map

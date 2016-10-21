@@ -18,6 +18,10 @@ import ProcessObservation from "./processObservation";
 import ProcessAlert from "./processAlert";
 import LogAlert from "./LogAlert";
 import ProcessNotificationSlack from "./ProcessNotificationSlack";
+import ProcessNotificationTelegram from "./ProcessNotificationTelegram";
+
+// unfortunately no typescript .d.ts exists for node-telegram-bot-api
+var TelegramBot = require("node-telegram-bot-api");
 
 // declare mysql stuff
 const mysqlHost = process.env.SHOWCASE_MYSQL_HOST || "mysql";
@@ -76,7 +80,12 @@ iot.AmqpInOut.preInitialize(amqpConnection, amqpQueueSuffix);
 // create slack connection
 var slackHookUrl = process.env.SHOWCASE_SLACK_HOOK_URL ||
   "https://hooks.slack.com/services/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";
-var slack = new Slack(slackHookUrl);
+var slackBot = new Slack(slackHookUrl);
+
+// create telegram connection
+var telegramBotToken = process.env.SHOWCASE_TELEGRAM_TOKEN ||
+  "292441232:AAHS3zE8dyJWRUCx29bLx-MOwWEpimRt0mk";
+var telegramBot = new TelegramBot(telegramBotToken);
 
 // declare amqp exchange names
 var ttnAmqp = new iot.AmqpInOut({
@@ -110,6 +119,10 @@ var notificationSlackAmqp = new iot.AmqpInOut({
   in: process.env.SHOWCASE_AMQP_SLACK_EXCHANGE_IN || alertAmqp.outExchange,
   out: process.env.SHOWCASE_AMQP_SLACK_EXCHANGE_OUT || "showcase.notification_sent_slack"
 });
+var notificationTelegramAmqp = new iot.AmqpInOut({
+  in: process.env.SHOWCASE_AMQP_TELKEGRAM_EXCHANGE_IN || alertAmqp.outExchange,
+  out: process.env.SHOWCASE_AMQP_TELEGRAM_EXCHANGE_OUT || "showcase.notification_sent_telegram"
+});
 
 // create and start the message processing elements
 new ReceiveTTN(mqttClient, ttnAmqp.send);
@@ -119,4 +132,5 @@ new LogObservation(logObservationAmqp.receive, logObservationAmqp.send, mysqlDb)
 new ProcessObservation(processAmqp.receive, processAmqp.send, mysqlDb);
 new ProcessAlert(alertAmqp.receive, alertAmqp.send, mysqlDb);
 new LogAlert(alertlogLogAmqp.receive, alertlogLogAmqp.send, mysqlDb);
-new ProcessNotificationSlack(notificationSlackAmqp.receive, notificationSlackAmqp.send, slack);
+new ProcessNotificationSlack(notificationSlackAmqp.receive, notificationSlackAmqp.send, slackBot);
+new ProcessNotificationTelegram(notificationTelegramAmqp.receive, notificationTelegramAmqp.send, telegramBot);

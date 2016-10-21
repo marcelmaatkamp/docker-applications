@@ -23,25 +23,6 @@ services:
   ports:
    - 82:80
 
-# Definieer test image om integration tests via RabbitMQ uit te kunnen voeren
-#  test:
-#   build: test
-#   hostname: test
-#   depends_on:
-#    - rabbitmq
-#    - mysql
-#    - nodered
-#   links:
-#    - rabbitmq:rabbitmq
-#    - mysql:mysql
-#   ports:
-#    - 5858:5858
-#   volumes:
-#    - ./test:/src
-#   networks:
-#    mynet:
-#     ipv4_address: 172.25.0.8
-
 # Nodejs backend als vervanging voor node-red
  backend:
   build: backend-nodejs
@@ -63,3 +44,23 @@ services:
   networks:
    mynet:
     ipv4_address: 172.25.0.8
+
+# Definieer test image om integration tests via RabbitMQ uit te kunnen voeren
+# alleen voor amqp based integratie tests
+#  test:
+#   build: test
+#   hostname: test
+#   depends_on:
+#    - rabbitmq
+#    - mysql
+#    - nodered
+#   links:
+#    - rabbitmq:rabbitmq
+#    - mysql:mysql
+#   ports:
+#    - 5858:5858
+#   volumes:
+#    - ./test:/src
+#   networks:
+#    mynet:
+#     ipv4_address: 172.25.0.8
