@@ -4,6 +4,7 @@
  * 2016-10-18 Ab Reitsma
  */
 
+import * as winston from "winston";
 import * as iot from "./iotMsg";
 
 export default class ProcessNotificationTelegram {
@@ -35,12 +36,13 @@ export default class ProcessNotificationTelegram {
     };
     this.telegramBot.sendMessage(message.chatId, message.text)
       .then(() => {
+        winston.info("Message sent to Telegram.");
         if (this.sender) {
           this.sender.send(message);
         }
       })
       .catch((err) => {
-        console.log("error sending telegram message: " + err.message);
+        winston.error("error sending telegram message: " + err.message, err);
       });
   }
 }

@@ -5,6 +5,7 @@
  * 2016-10-10 Ab Reitsma
  */
 "use strict";
+var winston = require("winston");
 var mysql = require("mysql");
 var mqtt = require("mqtt");
 var amqp = require("amqp-ts");
@@ -19,6 +20,19 @@ var processAlert_1 = require("./processAlert");
 var LogAlert_1 = require("./LogAlert");
 var ProcessNotificationSlack_1 = require("./ProcessNotificationSlack");
 var ProcessNotificationTelegram_1 = require("./ProcessNotificationTelegram");
+// define log settings
+winston.remove(winston.transports.Console);
+var formatter = require("winston-console-formatter").config();
+formatter.level = "error";
+winston.add(winston.transports.Console, formatter);
+// winston.add(require("winston-graylog2"), {
+//   name: "Graylog",
+//   level: "debug",
+//   graylog: {
+//     servers: [{host: "graylog", port: 12201}],
+//     hostname: "backend"
+//   }
+// });
 // unfortunately no typescript .d.ts exists for node-telegram-bot-api
 var TelegramBot = require("node-telegram-bot-api");
 // declare mysql stuff
@@ -47,16 +61,16 @@ var mqttClient = mqtt.connect("mqtt://" + ttnMqttServer + ":" + ttnMqttPort, {
     clean: true
 });
 mqttClient.on("error", function (err) {
-    console.log("An MQTT error occurred: " + err.message);
+    winston.error("An MQTT error occurred: " + err.message);
 });
 mqttClient.on("offline", function (err) {
-    console.log("TTN MQTT server offline.");
+    winston.warn("TTN MQTT server offline.");
 });
 mqttClient.on("reconnect", function (err) {
-    console.log("TTN MQTT server reconnect started.");
+    winston.warn("TTN MQTT server reconnect started.");
 });
 mqttClient.on("close", function (err) {
-    console.log("TTN MQTT server connection closed.");
+    winston.warn("TTN MQTT server connection closed.");
 });
 // declare amqp generic stuff
 var amqpServer = process.env.SHOWCASE_AMQP_SERVER || "rabbitmq";

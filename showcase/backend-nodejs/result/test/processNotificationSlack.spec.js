@@ -4,6 +4,7 @@
  * 2016-10-18 Ab Reitsma
  */
 "use strict";
+require("./_logSettings");
 var amqp = require("amqp-ts");
 var Chai = require("chai");
 var expect = Chai.expect;

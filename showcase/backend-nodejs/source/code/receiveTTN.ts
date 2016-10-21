@@ -4,6 +4,7 @@
  * 2016-10-11 Ab Reitsma
  */
 
+import * as winston from "winston";
 import * as mqtt from "mqtt";
 import * as iot from "./iotMsg";
 import decodeProtoBuf from "./decodeProtoBuf";
@@ -52,11 +53,11 @@ export default class ReceiveKPN {
 
     // initialize MQTT message receive
     ttnMQTT.on("connect", () => {
-      console.log("Connected to the TTN MQTT exchange.");
+      winston.info("Connected to the TTN MQTT exchange.");
       ttnMQTT.subscribe("#");
     });
     ttnMQTT.on("message", (topic, message) => {
-      console.log("TTN message received.");
+      winston.debug("TTN message received.");
       this.messageConsumerMQTT(topic, message);
     });
   }

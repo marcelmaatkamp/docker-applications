@@ -4,6 +4,7 @@
  * 2016-10-11 Ab Reitsma
  */
 "use strict";
+var winston = require("winston");
 var safeEval = require("safe-eval");
 var messageCounters = {};
 var DecodeToObservations = (function () {
@@ -27,9 +28,7 @@ var DecodeToObservations = (function () {
             " sensor_id = " + observation.sensorId + ";";
         this.sqlConnection.query(queryString, function (err, results) {
             if (err) {
-                //todo: log sql error
-                console.log(queryString);
-                console.log(err);
+                winston.error("Error executing sql query: " + err, queryString);
             }
             else {
                 try {
@@ -45,8 +44,7 @@ var DecodeToObservations = (function () {
                     _this.sender.send(observation);
                 }
                 catch (err) {
-                    //todo: log error
-                    console.log(err);
+                    winston.error("Error completing observation: " + err.message, err);
                 }
             }
         });
@@ -99,7 +97,7 @@ var DecodeToObservations = (function () {
             this.sender.send(observation);
         }
         catch (err) {
-            console.log(err);
+            winston.error("Error decoding message: " + err.message, err);
         }
     };
     return DecodeToObservations;

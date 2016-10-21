@@ -4,6 +4,7 @@
  * 2016-10-11 Ab Reitsma
  */
 
+import * as winston from "winston";
 import * as iot from "./iotMsg";
 import * as mysql from "mysql";
 
@@ -36,9 +37,7 @@ export default class DecodeToObservations {
       " sensor_id = " + observation.sensorId + ";";
     this.sqlConnection.query(queryString, (err, results) => {
       if (err) {
-        //todo: log sql error
-        console.log(queryString);
-        console.log(err);
+        winston.error("Error executing sql query: " + err, queryString);
       } else {
         try {
           var omrekenfactor = results[0].omrekenfactor;
@@ -52,8 +51,7 @@ export default class DecodeToObservations {
           }
           this.sender.send(observation);
         } catch (err) {
-          //todo: log error
-          console.log(err);
+          winston.error("Error completing observation: " + err.message, err);
         }
       }
     });
@@ -110,7 +108,7 @@ export default class DecodeToObservations {
       };
       this.sender.send(observation);
     } catch (err) {
-      console.log(err);
+      winston.error("Error decoding message: " + err.message, err);
     }
   }
 }

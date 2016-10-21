@@ -4,6 +4,7 @@
  * 2016-10-18 Ab Reitsma
  */
 
+require("./_logSettings");
 import * as amqp from "amqp-ts";
 import * as Chai from "chai";
 import * as mysql from "mysql";

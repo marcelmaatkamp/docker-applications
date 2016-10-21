@@ -4,6 +4,7 @@
  * 2016-10-11 Ab Reitsma
  */
 
+import * as winston from "winston";
 import * as iot from "./iotMsg";
 import decodeProtoBuf from "./decodeProtoBuf";
 
@@ -67,9 +68,10 @@ export default class ReceiveKPN {
       };
 
       // publish result
+      winston.info("Message received from KPN.");
       this.sender.send(messageIot);
     } catch (err) {
-      console.log(err);
+      winston.error("Error receiving KPN message: " + err.message, err);
     }
   }
 }

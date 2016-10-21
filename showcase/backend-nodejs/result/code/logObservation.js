@@ -5,6 +5,7 @@
  * 2016-10-18 Ab Reitsma
  */
 "use strict";
+var winston = require("winston");
 var LogObservation = (function () {
     function LogObservation(receiver, sender, sqlConnection) {
         var _this = this;
@@ -38,9 +39,7 @@ var LogObservation = (function () {
             ");";
         this.sqlConnection.query(queryString, function (err, results) {
             if (err) {
-                //todo: log sql error
-                console.log(queryString);
-                console.log(err);
+                winston.error("Error executing sql query: " + err, queryString);
             }
             else {
                 try {
@@ -48,8 +47,7 @@ var LogObservation = (function () {
                     _this.sender.send(observation);
                 }
                 catch (err) {
-                    //todo: log error
-                    console.log(err);
+                    winston.error("Error logging observation: " + err.message, err);
                 }
             }
         });

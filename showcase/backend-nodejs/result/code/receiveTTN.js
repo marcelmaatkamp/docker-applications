@@ -4,6 +4,7 @@
  * 2016-10-11 Ab Reitsma
  */
 "use strict";
+var winston = require("winston");
 var decodeProtoBuf_1 = require("./decodeProtoBuf");
 var ReceiveKPN = (function () {
     function ReceiveKPN(ttnMQTT, sender) {
@@ -12,11 +13,11 @@ var ReceiveKPN = (function () {
         this.sender = sender;
         // initialize MQTT message receive
         ttnMQTT.on("connect", function () {
-            console.log("Connected to the TTN MQTT exchange.");
+            winston.info("Connected to the TTN MQTT exchange.");
             ttnMQTT.subscribe("#");
         });
         ttnMQTT.on("message", function (topic, message) {
-            console.log("TTN message received.");
+            winston.debug("TTN message received.");
             _this.messageConsumerMQTT(topic, message);
         });
     }

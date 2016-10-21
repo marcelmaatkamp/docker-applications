@@ -1,9 +1,10 @@
 /**
- * tests for processNotificationSlack
+ * tests for processNotificationTelegram
  *
  * 2016-10-18 Ab Reitsma
  */
 "use strict";
+require("./_logSettings");
 var amqp = require("amqp-ts");
 var Promise = require("bluebird");
 var Chai = require("chai");

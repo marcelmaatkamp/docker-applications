@@ -4,6 +4,7 @@
  * 2016-10-11 Ab Reitsma
  */
 
+require("./_logSettings");
 import * as amqp from "amqp-ts";
 import * as Chai from "chai";
 var expect = Chai.expect;

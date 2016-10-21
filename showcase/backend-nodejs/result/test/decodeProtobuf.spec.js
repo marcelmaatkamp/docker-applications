@@ -1,9 +1,10 @@
 /**
- * tests for ProtocolBuffer
+ * tests for decodeProtoBuf
  *
  * 2016-10-11 Ab Reitsma
  */
 "use strict";
+require("./_logSettings");
 var Chai = require("chai");
 var expect = Chai.expect;
 var decodeProtobuf_1 = require("../code/decodeProtobuf");

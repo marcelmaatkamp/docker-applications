@@ -4,6 +4,7 @@
  * 2016-10-18 Ab Reitsma
  */
 
+import * as winston from "winston";
 import * as iot from "./iotMsg";
 import * as mysql from "mysql";
 
@@ -29,9 +30,7 @@ export default class ProcessAlert {
       "WHERE alarm_regel = " + alert.ruleId + ";";
     this.sqlConnection.query(queryString, (err, results) => {
       if (err) {
-        //todo: log sql error
-        console.log(queryString);
-        console.log(err);
+        winston.error("Error executing sql query: " + err, queryString);
       } else {
         this.sendNotifications(alert, results);
       }

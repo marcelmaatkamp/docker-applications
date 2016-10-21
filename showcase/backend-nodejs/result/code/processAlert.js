@@ -4,6 +4,7 @@
  * 2016-10-18 Ab Reitsma
  */
 "use strict";
+var winston = require("winston");
 var ProcessAlert = (function () {
     function ProcessAlert(receiver, sender, sqlConnection) {
         var _this = this;
@@ -21,9 +22,7 @@ var ProcessAlert = (function () {
             "WHERE alarm_regel = " + alert.ruleId + ";";
         this.sqlConnection.query(queryString, function (err, results) {
             if (err) {
-                //todo: log sql error
-                console.log(queryString);
-                console.log(err);
+                winston.error("Error executing sql query: " + err, queryString);
             }
             else {
                 _this.sendNotifications(alert, results);

@@ -4,6 +4,7 @@
  * 2016-10-18 Ab Reitsma
  */
 "use strict";
+var winston = require("winston");
 var ProcessNotificationTelegram = (function () {
     function ProcessNotificationTelegram(receiver, sender, telegramBot) {
         var _this = this;
@@ -28,12 +29,13 @@ var ProcessNotificationTelegram = (function () {
         };
         this.telegramBot.sendMessage(message.chatId, message.text)
             .then(function () {
+            winston.info("Message sent to Telegram.");
             if (_this.sender) {
                 _this.sender.send(message);
             }
         })
             .catch(function (err) {
-            console.log("error sending telegram message: " + err.message);
+            winston.error("error sending telegram message: " + err.message, err);
         });
     };
     return ProcessNotificationTelegram;

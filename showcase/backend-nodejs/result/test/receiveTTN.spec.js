@@ -1,9 +1,10 @@
 /**
- * tests for ProtocolBuffer
+ * tests for ReceiveTTN
  *
  * 2016-10-11 Ab Reitsma
  */
 "use strict";
+require("./_logSettings");
 var mqtt = require("mqtt");
 // import * as amqp from "amqp-ts";
 var Chai = require("chai");

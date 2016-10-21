@@ -18,13 +18,15 @@
   "dependencies": {
     "amqp-ts": "^1.2.0",
     "bluebird": "^3.4.6",
-    "graylog2": "^0.1.3",
     "mqtt": "^2.0.1",
     "mysql": "^2.11.1",
     "node-slack": "0.0.7",
     "node-telegram-bot-api": "^0.24.0",
     "protocol-buffers": "^3.1.6",
-    "safe-eval": "^0.3.0"
+    "safe-eval": "^0.3.0",
+    "winston": "^2.2.0",
+    "winston-console-formatter": "^0.3.1",
+    "winston-graylog2": "^0.5.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",

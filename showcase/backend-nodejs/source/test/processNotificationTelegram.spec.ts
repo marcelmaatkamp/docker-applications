@@ -1,9 +1,10 @@
 /**
- * tests for processNotificationSlack
+ * tests for processNotificationTelegram
  *
  * 2016-10-18 Ab Reitsma
  */
 
+require("./_logSettings");
 import * as amqp from "amqp-ts";
 import * as Promise from "bluebird";
 import * as Chai from "chai";

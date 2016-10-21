@@ -4,6 +4,7 @@
  * 2016-10-18 Ab Reitsma
  */
 "use strict";
+var winston = require("winston");
 var ProcessNotificationSlack = (function () {
     function ProcessNotificationSlack(receiver, sender, slack) {
         var _this = this;
@@ -27,6 +28,7 @@ var ProcessNotificationSlack = (function () {
             username: notification.p2 || "Sensormelding"
         };
         this.slack.send(message);
+        winston.info("Message sent to Slack.");
         if (this.sender) {
             this.sender.send(message);
         }

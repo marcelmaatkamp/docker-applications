@@ -4,6 +4,7 @@
  * 2016-10-18 Ab Reitsma
  */
 "use strict";
+var winston = require("winston");
 var safeEval = require("safe-eval");
 var heartbeatTimers = {};
 var ProcessAlert = (function () {
@@ -30,9 +31,7 @@ var ProcessAlert = (function () {
             " sensor = " + observation.sensorId + ";";
         this.sqlConnection.query(queryString, function (err, results) {
             if (err) {
-                //todo: log sql error
-                console.log(queryString);
-                console.log(err);
+                winston.error("Error executing sql query: " + err, queryString);
             }
             else {
                 _this.checkRules(observation, results);
@@ -69,16 +68,14 @@ var ProcessAlert = (function () {
                         x: observation.sensorValue
                     };
                     var result = safeEval(rules[i].alarm_trigger, evalContext);
-                    // node.warn("rule evaluation for rule " + rules[i].id +
-                    //     " on state '" + rules[i].alarm_trigger + "', with x = " + observation.sensorValue + " returns " + result);
                     if (result) {
                         this.sendAlert(observation, rules[i]);
                     }
                 }
                 catch (err) {
                     // todo: log rule evaluation error
-                    console.log("rule evaluation error for rule " + rules[i].id +
-                        " on state '" + rules[i].alarm_trigger + "', with x = " + observation.sensorValue);
+                    winston.error("rule evaluation error for rule " + rules[i].id +
+                        " on state '" + rules[i].alarm_trigger + "', with x = " + observation.sensorValue, err);
                 }
             }
         }

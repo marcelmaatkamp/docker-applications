@@ -4,6 +4,7 @@
  * 2016-10-11 Ab Reitsma
  */
 "use strict";
+var winston = require("winston");
 var decodeProtoBuf_1 = require("./decodeProtoBuf");
 var ReceiveKPN = (function () {
     function ReceiveKPN(receiver, sender) {
@@ -32,10 +33,11 @@ var ReceiveKPN = (function () {
                 metadata: metadata
             };
             // publish result
+            winston.info("Message received from KPN.");
             this.sender.send(messageIot);
         }
         catch (err) {
-            console.log(err);
+            winston.error("Error receiving KPN message: " + err.message, err);
         }
     };
     return ReceiveKPN;
