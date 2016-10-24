@@ -127,7 +127,7 @@ services:
    - mongodb-data:/data/db
   networks:
    mynet:
-    ipv4_address: $}SHOWCASE_IP_ADDRESS_MONGODB}
+    ipv4_address: ${SHOWCASE_IP_ADDRESS_MONGODB}
 
  graylog:
   image: "graylog2/server"
