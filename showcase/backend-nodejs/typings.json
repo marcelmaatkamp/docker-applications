@@ -8,6 +8,7 @@
     "mysql": "registry:dt/mysql#0.0.0+20160316155526",
     "node": "registry:dt/node#6.0.0+20161010101523",
     "node-slack": "registry:dt/node-slack#0.0.0+20160316155526",
-    "request": "registry:dt/request#0.0.0+20160726020908"
+    "request": "registry:dt/request#0.0.0+20160726020908",
+    "winston": "registry:dt/winston#0.0.0+20161006194546"
   }
 }

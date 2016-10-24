@@ -4,6 +4,7 @@
  * 2016-10-18 Ab Reitsma
  */
 
+import * as winston from "winston";
 import * as iot from "./iotMsg";
 import * as mysql from "mysql";
 
@@ -41,9 +42,7 @@ export default class ProcessAlert {
       " sensor = " + observation.sensorId + ";";
     this.sqlConnection.query(queryString, (err, results) => {
       if (err) {
-        //todo: log sql error
-        console.log(queryString);
-        console.log(err);
+        winston.error("Error executing sql query: " + err, queryString);
       } else {
         this.checkRules(observation, results);
       }
@@ -78,15 +77,13 @@ export default class ProcessAlert {
             x: observation.sensorValue
           };
           var result = safeEval(rules[i].alarm_trigger, evalContext);
-          // node.warn("rule evaluation for rule " + rules[i].id +
-          //     " on state '" + rules[i].alarm_trigger + "', with x = " + observation.sensorValue + " returns " + result);
           if (result) {
             this.sendAlert(observation, rules[i]);
           }
         } catch (err) {
           // todo: log rule evaluation error
-          console.log("rule evaluation error for rule " + rules[i].id +
-            " on state '" + rules[i].alarm_trigger + "', with x = " + observation.sensorValue);
+          winston.error("rule evaluation error for rule " + rules[i].id +
+            " on state '" + rules[i].alarm_trigger + "', with x = " + observation.sensorValue, err);
         }
       }
     }

@@ -4,6 +4,7 @@
  * 2016-10-11 Ab Reitsma
  */
 "use strict";
+var winston = require("winston");
 var amqp = require("amqp-ts");
 var Promise = require("bluebird");
 /**
@@ -39,6 +40,7 @@ var SendMessagesAmqp = (function () {
         }
         var amqpMsg = new amqp.Message(msg);
         this.amqpExchange.send(amqpMsg);
+        winston.debug("Message sent to AMQP exchange '" + this.amqpExchange.name + "'", msg);
     };
     return SendMessagesAmqp;
 }());
@@ -74,6 +76,7 @@ var ReceiveMessagesAmqp = (function () {
         if (this.inNodeRedEnvelope) {
             content = content.payload;
         }
+        winston.debug("Message received from AMQP exchange '" + this.amqpQueue.name + "'", content);
         this.msgReceiver(content);
     };
     ReceiveMessagesAmqp.prototype.startConsumer = function (msgReceiver) {
@@ -97,5 +100,34 @@ var ReceiveMessagesAmqp = (function () {
     return ReceiveMessagesAmqp;
 }());
 exports.ReceiveMessagesAmqp = ReceiveMessagesAmqp;
+var AmqpInOut = (function () {
+    function AmqpInOut(create) {
+        this.outExchange = this.getExchange(create.out);
+        this.send = new SendMessagesAmqp(this.outExchange);
+        var inExchange = this.getExchange(create.in);
+        if (inExchange) {
+            this.inQueue = AmqpInOut.amqpConnection.declareQueue(inExchange.name + "." + AmqpInOut.amqpQueueSuffix + this.nextQueueNr(), { durable: false });
+            this.inQueue.bind(inExchange);
+            this.receive = new ReceiveMessagesAmqp(this.inQueue);
+        }
+    }
+    AmqpInOut.preInitialize = function (amqpConnection, amqpQueueSuffix) {
+        AmqpInOut.amqpConnection = amqpConnection;
+        AmqpInOut.amqpQueueSuffix = amqpQueueSuffix;
+    };
+    AmqpInOut.prototype.nextQueueNr = function () {
+        return AmqpInOut._queueNr++;
+    };
+    AmqpInOut.prototype.getExchange = function (exchange) {
+        if (typeof exchange === "string") {
+            return AmqpInOut.amqpConnection.declareExchange(exchange, "fanout");
+        }
+        // expect it to be an amqp.Exchange or null
+        return exchange;
+    };
+    AmqpInOut._queueNr = 1;
+    return AmqpInOut;
+}());
+exports.AmqpInOut = AmqpInOut;
 
 //# sourceMappingURL=iotMsg.js.map

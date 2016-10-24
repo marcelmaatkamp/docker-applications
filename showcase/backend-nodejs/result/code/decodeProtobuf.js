@@ -5,6 +5,7 @@
  */
 "use strict";
 // initialize protocol buffers
+var winston = require("winston");
 var fs = require("fs");
 var path = require("path");
 var protoBuf = require("protocol-buffers");
@@ -12,7 +13,13 @@ var protobufFileLocation = path.join(__dirname, "..", "..", "data", "sensor.prot
 var protoBufMsg = protoBuf(fs.readFileSync(protobufFileLocation));
 function decodeProtoBuff(encodedMessage) {
     "use strict";
-    return protoBufMsg.NodeMessage.decode(encodedMessage).reading;
+    try {
+        return protoBufMsg.NodeMessage.decode(encodedMessage).reading;
+    }
+    catch (err) {
+        winston.error("Error decoding protocol buffers: " + err.message);
+        throw err;
+    }
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = decodeProtoBuff;

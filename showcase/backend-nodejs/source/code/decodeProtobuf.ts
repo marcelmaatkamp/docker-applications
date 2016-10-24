@@ -6,6 +6,7 @@
 
 // initialize protocol buffers
 
+import * as winston from "winston";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -18,5 +19,10 @@ var protoBufMsg = protoBuf(fs.readFileSync(protobufFileLocation));
 
 export default function decodeProtoBuff(encodedMessage: Buffer): iot.IotPayload {
     "use strict";
-    return <iot.IotPayload> protoBufMsg.NodeMessage.decode(encodedMessage).reading;
+    try {
+      return <iot.IotPayload> protoBufMsg.NodeMessage.decode(encodedMessage).reading;
+    } catch (err) {
+      winston.error("Error decoding protocol buffers: " + err.message);
+      throw err;
+    }
 }

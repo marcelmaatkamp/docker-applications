@@ -1,9 +1,10 @@
 /**
- * tests for ProtocolBuffer
+ * tests for decodeToObservations
  *
  * 2016-10-11 Ab Reitsma
  */
 "use strict";
+require("./_logSettings");
 var amqp = require("amqp-ts");
 var Chai = require("chai");
 var expect = Chai.expect;
@@ -168,11 +169,11 @@ var decodeTestMessage1 = {
     port: 1,
     counter: 1,
     dev_eui: "0059AC000018041B",
-    metadata: {
-        server_time: "2016-10-03T13:30:10.829Z",
-        longitude: 5.304723,
-        latitude: 52.085842
-    }
+    metadata: [{
+            server_time: "2016-10-03T13:30:10.829Z",
+            longitude: 5.304723,
+            latitude: 52.085842
+        }]
 };
 var decodeTestMessage2 = {
     payload: [{
@@ -192,11 +193,11 @@ var decodeTestMessage2 = {
     port: 1,
     counter: 2,
     dev_eui: "0059AC000018041B",
-    metadata: {
-        server_time: "2016-10-03T13:31:10.829Z",
-        longitude: 5.304723,
-        latitude: 52.085842
-    }
+    metadata: [{
+            server_time: "2016-10-03T13:31:10.829Z",
+            longitude: 5.304723,
+            latitude: 52.085842
+        }]
 };
 var decodeTestMessage3 = {
     payload: [{
@@ -216,11 +217,11 @@ var decodeTestMessage3 = {
     port: 1,
     counter: 3,
     dev_eui: "0059AC000018041B",
-    metadata: {
-        server_time: "2016-10-03T13:32:10.829Z",
-        longitude: 5.304723,
-        latitude: 52.085842
-    }
+    metadata: [{
+            server_time: "2016-10-03T13:32:10.829Z",
+            longitude: 5.304723,
+            latitude: 52.085842
+        }]
 };
 var decodeExpectedResult1 = {
     nodeId: "0059AC000018041B",

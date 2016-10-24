@@ -4,6 +4,7 @@
  * 2016-10-18 Ab Reitsma
  */
 "use strict";
+var winston = require("winston");
 var ProcessAlert = (function () {
     function ProcessAlert(receiver, sender, sqlConnection) {
         var _this = this;
@@ -26,9 +27,7 @@ var ProcessAlert = (function () {
             ");";
         this.sqlConnection.query(queryString, function (err, results) {
             if (err) {
-                //todo: log sql error
-                console.log(queryString);
-                console.log(err);
+                winston.error("Error executing sql query: " + err, queryString);
             }
             else {
                 if (_this.sender) {
@@ -37,8 +36,7 @@ var ProcessAlert = (function () {
                         _this.sender.send(alert);
                     }
                     catch (err) {
-                        //todo: log error
-                        console.log(err);
+                        winston.error("Error processing alert: " + err.message, err);
                     }
                 }
             }

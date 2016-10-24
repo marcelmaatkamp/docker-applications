@@ -1,9 +1,10 @@
 /**
- * tests for ProtocolBuffer
+ * tests for ReceiveKPN
  *
  * 2016-10-11 Ab Reitsma
  */
 
+require("./_logSettings");
 import * as amqp from "amqp-ts";
 import * as Chai from "chai";
 var expect = Chai.expect;
@@ -74,11 +75,11 @@ const kpnExpectedResult = {
   counter: 2,
   dev_eui: "0059AC000018041B",
   metadata:
-  {
+  [{
     server_time: "2016-10-03T13:30:10.829Z",
     longitude: 5.304723,
     latitude: 52.085842
-  }
+  }]
 };
 
 

@@ -4,7 +4,8 @@
  * 2016-10-11 Ab Reitsma
  */
 "use strict";
-var decodeProtoBuf_1 = require("./decodeProtoBuf");
+var winston = require("winston");
+var decodeProtobuf_1 = require("./decodeProtobuf");
 var ReceiveKPN = (function () {
     function ReceiveKPN(receiver, sender) {
         var _this = this;
@@ -17,12 +18,12 @@ var ReceiveKPN = (function () {
     ReceiveKPN.prototype.messageConsumerKPN = function (msg) {
         try {
             var rawPayload = new Buffer(msg.payload_hex, "hex");
-            var payload = decodeProtoBuf_1.default(rawPayload);
-            var metadata = {
-                server_time: new Date(msg.Time).toISOString(),
-                longitude: Number(msg.LrrLON),
-                latitude: Number(msg.LrrLAT)
-            };
+            var payload = decodeProtobuf_1.default(rawPayload);
+            var metadata = [{
+                    server_time: new Date(msg.Time).toISOString(),
+                    longitude: Number(msg.LrrLON),
+                    latitude: Number(msg.LrrLAT)
+                }];
             // convert payload
             var messageIot = {
                 payload: payload,
@@ -32,10 +33,11 @@ var ReceiveKPN = (function () {
                 metadata: metadata
             };
             // publish result
+            winston.info("Message received from KPN.");
             this.sender.send(messageIot);
         }
         catch (err) {
-            console.log(err);
+            winston.error("Error receiving KPN message: " + err.message, err);
         }
     };
     return ReceiveKPN;

@@ -4,6 +4,7 @@
  * 2016-10-11 Ab Reitsma
  */
 
+import * as winston from "winston";
 import * as amqp from "amqp-ts";
 import * as Promise from "bluebird";
 
@@ -94,7 +95,7 @@ export declare interface Message {
   port?: number;
   counter: number;
   dev_eui: string;
-  metadata: Metadata;
+  metadata: Metadata[];
 }
 
 export declare interface SensorObservation {
@@ -171,6 +172,7 @@ export class SendMessagesAmqp implements SendMessages {
     }
     var amqpMsg = new amqp.Message(msg);
     this.amqpExchange.send(amqpMsg);
+    winston.debug("Message sent to AMQP exchange '" + this.amqpExchange.name + "'", msg);
   }
 }
 
@@ -205,6 +207,7 @@ export class ReceiveMessagesAmqp implements ReceiveMessages {
     if (this.inNodeRedEnvelope) {
       content = content.payload;
     }
+    winston.debug("Message received from AMQP exchange '" + this.amqpQueue.name + "'", content);
     this.msgReceiver(content);
   }
 
@@ -227,5 +230,53 @@ export class ReceiveMessagesAmqp implements ReceiveMessages {
   }
 }
 
+/**
+ * support class for queue initialization
+ */
+
+export interface AmqpIoDefinition {
+  in?: string | amqp.Exchange;
+  out?: string | amqp.Exchange;
+}
+
+export class AmqpInOut {
+  static amqpConnection: amqp.Connection;
+  static amqpQueueSuffix: string;
+
+  static preInitialize(amqpConnection: amqp.Connection, amqpQueueSuffix: string) {
+    AmqpInOut.amqpConnection = amqpConnection;
+    AmqpInOut.amqpQueueSuffix = amqpQueueSuffix;
+  }
+  receive: ReceiveMessagesAmqp;
+  send: SendMessagesAmqp;
+  inQueue: amqp.Queue;
+  outExchange: amqp.Exchange;
+
+  private static _queueNr = 1;
+
+  private nextQueueNr(): number {
+    return AmqpInOut._queueNr++;
+  }
+
+  constructor(create: AmqpIoDefinition) {
+    this.outExchange = this.getExchange(create.out);
+    this.send = new SendMessagesAmqp(this.outExchange);
+
+    var inExchange = this.getExchange(create.in);
+    if (inExchange) {
+      this.inQueue = AmqpInOut.amqpConnection.declareQueue(inExchange.name + "." + AmqpInOut.amqpQueueSuffix + this.nextQueueNr(), { durable: false });
+      this.inQueue.bind(inExchange);
+      this.receive = new ReceiveMessagesAmqp(this.inQueue);
+    }
+  }
+
+  private getExchange(exchange: string | amqp.Exchange) {
+    if (typeof exchange === "string") {
+      return AmqpInOut.amqpConnection.declareExchange(exchange, "fanout");
+    }
+    // expect it to be an amqp.Exchange or null
+    return exchange;
+  }
+}
 
 

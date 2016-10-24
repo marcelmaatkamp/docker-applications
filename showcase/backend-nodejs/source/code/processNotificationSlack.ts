@@ -4,6 +4,7 @@
  * 2016-10-18 Ab Reitsma
  */
 
+import * as winston from "winston";
 import * as iot from "./iotMsg";
 import * as Slack from "node-slack";
 
@@ -36,6 +37,7 @@ export default class ProcessNotificationSlack {
       username: notification.p2 || "Sensormelding"
     };
     this.slack.send(message);
+    winston.info("Message sent to Slack.");
     if (this.sender) {
       this.sender.send(message);
     }

@@ -4,9 +4,10 @@
  * 2016-10-11 Ab Reitsma
  */
 
+import * as winston from "winston";
 import * as mqtt from "mqtt";
 import * as iot from "./iotMsg";
-import decodeProtoBuf from "./decodeProtoBuf";
+import decodeProtoBuf from "./decodeProtobuf";
 
 // TTN Lora JSON format:
 // {
@@ -52,9 +53,11 @@ export default class ReceiveKPN {
 
     // initialize MQTT message receive
     ttnMQTT.on("connect", () => {
+      winston.info("Connected to the TTN MQTT exchange.");
       ttnMQTT.subscribe("#");
     });
     ttnMQTT.on("message", (topic, message) => {
+      winston.debug("TTN message received.");
       this.messageConsumerMQTT(topic, message);
     });
   }

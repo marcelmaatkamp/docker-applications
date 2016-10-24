@@ -4,6 +4,7 @@
  * 2016-10-11 Ab Reitsma
  */
 
+require("./_logSettings");
 import * as amqp from "amqp-ts";
 import * as Chai from "chai";
 var expect = Chai.expect;
@@ -130,5 +131,11 @@ describe("Test iotMsg SendMessageAmqp and ReceiveMessageAmqp", () => {
         t.finish(err);
       });
   });
+});
 
+describe("Test iotMsg AmqpInOut", () => {
+  it("should be able to create an amqp in queue and out exchange", (done) => {
+//todo: write test
+    done();
+  });
 });

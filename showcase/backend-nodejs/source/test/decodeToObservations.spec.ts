@@ -1,9 +1,10 @@
 /**
- * tests for ProtocolBuffer
+ * tests for decodeToObservations
  *
  * 2016-10-11 Ab Reitsma
  */
 
+require("./_logSettings");
 import * as amqp from "amqp-ts";
 import * as Chai from "chai";
 import * as mysql from "mysql";
@@ -190,11 +191,11 @@ const decodeTestMessage1 = {
   counter: 1,
   dev_eui: "0059AC000018041B",
   metadata:
-  {
+  [{
     server_time: "2016-10-03T13:30:10.829Z",
     longitude: 5.304723,
     latitude: 52.085842
-  }
+  }]
 };
 
 const decodeTestMessage2 = {
@@ -217,11 +218,11 @@ const decodeTestMessage2 = {
   counter: 2,
   dev_eui: "0059AC000018041B",
   metadata:
-  {
+  [{
     server_time: "2016-10-03T13:31:10.829Z",
     longitude: 5.304723,
     latitude: 52.085842
-  }
+  }]
 };
 
 const decodeTestMessage3 = {
@@ -244,11 +245,11 @@ const decodeTestMessage3 = {
   counter: 3,
   dev_eui: "0059AC000018041B",
   metadata:
-  {
+  [{
     server_time: "2016-10-03T13:32:10.829Z",
     longitude: 5.304723,
     latitude: 52.085842
-  }
+  }]
 };
 
 const decodeExpectedResult1 = {

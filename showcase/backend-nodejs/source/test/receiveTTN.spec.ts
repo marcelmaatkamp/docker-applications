@@ -1,9 +1,10 @@
 /**
- * tests for ProtocolBuffer
+ * tests for ReceiveTTN
  *
  * 2016-10-11 Ab Reitsma
  */
 
+require("./_logSettings");
 import * as mqtt from "mqtt";
 // import * as amqp from "amqp-ts";
 import * as Chai from "chai";
@@ -16,6 +17,7 @@ import * as ttnSupport from "./_ttnTestSupport";
 
 var mqttBrokerUrl = "mqtt://rabbitmq:1883";
 var amqpBrokerUrl = "amqp://rabbitmq";
+
 
 // initialize support
 ttnSupport.SetConnectionUrl({

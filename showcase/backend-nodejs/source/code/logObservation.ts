@@ -5,6 +5,7 @@
  * 2016-10-18 Ab Reitsma
  */
 
+import * as winston from "winston";
 import * as iot from "./iotMsg";
 import * as mysql from "mysql";
 
@@ -47,16 +48,13 @@ export default class LogObservation {
       ");";
     this.sqlConnection.query(queryString, (err, results) => {
       if (err) {
-        //todo: log sql error
-        console.log(queryString);
-        console.log(err);
+        winston.error("Error executing sql query: " + err, queryString);
       } else {
         try {
           observation.logId = results.insertId;
           this.sender.send(observation);
         } catch (err) {
-          //todo: log error
-          console.log(err);
+          winston.error("Error logging observation: " + err.message, err);
         }
       }
     });

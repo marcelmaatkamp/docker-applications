@@ -4,6 +4,7 @@
  * 2016-10-11 Ab Reitsma
  */
 "use strict";
+var winston = require("winston");
 var safeEval = require("safe-eval");
 var messageCounters = {};
 var DecodeToObservations = (function () {
@@ -27,9 +28,7 @@ var DecodeToObservations = (function () {
             " sensor_id = " + observation.sensorId + ";";
         this.sqlConnection.query(queryString, function (err, results) {
             if (err) {
-                //todo: log sql error
-                console.log(queryString);
-                console.log(err);
+                winston.error("Error executing sql query: " + err, queryString);
             }
             else {
                 try {
@@ -45,8 +44,7 @@ var DecodeToObservations = (function () {
                     _this.sender.send(observation);
                 }
                 catch (err) {
-                    //todo: log error
-                    console.log(err);
+                    winston.error("Error completing observation: " + err.message, err);
                 }
             }
         });
@@ -58,7 +56,7 @@ var DecodeToObservations = (function () {
             // each object contains the properties defined in sensor.proto SensorReading
             var payload = message.payload;
             var nodeId = message.dev_eui;
-            var timestamp = message.metadata.server_time;
+            var timestamp = message.metadata[0].server_time;
             // send all sensor values as separate msg's
             for (var len = payload.length, i = 0; i < len; i++) {
                 var observation_1 = {
@@ -99,7 +97,7 @@ var DecodeToObservations = (function () {
             this.sender.send(observation);
         }
         catch (err) {
-            console.log(err);
+            winston.error("Error decoding message: " + err.message, err);
         }
     };
     return DecodeToObservations;

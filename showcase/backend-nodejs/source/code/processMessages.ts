@@ -5,6 +5,7 @@
  * 2016-10-10 Ab Reitsma
  */
 
+import * as winston from "winston";
 import * as mysql from "mysql";
 import * as mqtt from "mqtt";
 import * as amqp from "amqp-ts";
@@ -16,14 +17,54 @@ import DecodeToObservations from "./decodeToObservations";
 import LogObservation from "./logObservation";
 import ProcessObservation from "./processObservation";
 import ProcessAlert from "./processAlert";
-import LogAlert from "./LogAlert";
-import ProcessNotificationSlack from "./ProcessNotificationSlack";
+import LogAlert from "./logAlert";
+import ProcessNotificationSlack from "./processNotificationSlack";
+import ProcessNotificationTelegram from "./processNotificationTelegram";
+
+// define log settings
+const logToGrayLog = process.env.SHOWCASE_GRAYLOG || false;
+const graylogHost = process.env.SHOWCASE_GRAYLOG_HOST || "graylog";
+const graylogPort = process.env.SHOWCASE_GRAYLOG_PORT || 12201;
+const graylogLevel = process.env.SHOWCASE_GRAYLOG_LEVEL || "debug";
+
+const consoleLogLevel = process.env.SHOWCASE_LOG_LEVEL || "info";
+const consoleLogMeta = process.env.SHOWCASE_LOG_META || false;
+
+winston.remove(winston.transports.Console);
+winston.add(winston.transports.Console, {
+  level: consoleLogLevel,
+  timestamp: () => {
+    return "[" + new Date().toLocaleTimeString([], { hour12: false }) + "]";
+  },
+  formatter: (options) => {
+    return options.timestamp() + " " +
+      options.level.toUpperCase() + " " +
+      (options.message === undefined ? "" : options.message) +
+      (consoleLogMeta && options.meta && Object.keys(options.meta).length ?
+        '\n\t' + JSON.stringify(options.meta) : '');
+  }
+});
+console.log("Winston console logging started");
+if (logToGrayLog) {
+  winston.add(require("winston-graylog2"), {
+    name: "Graylog",
+    level: graylogLevel,
+    graylog: {
+      servers: [{ host: graylogHost, port: graylogPort }],
+      hostname: "backend"
+    }
+  });
+  console.log("Winston graylog logging started, host: '" + graylogHost + "' port: " + graylogPort);
+}
+
+// unfortunately no typescript .d.ts exists for node-telegram-bot-api
+var TelegramBot = require("node-telegram-bot-api");
 
 // declare mysql stuff
 const mysqlHost = process.env.SHOWCASE_MYSQL_HOST || "mysql";
-const mysqlUser = process.env.SHOWCASE_MYSQL_HOST || "root";
-const mysqlPassword = process.env.SHOWCASE_MYSQL_HOST || "my-secret-pw";
-const mysqlDatabase = process.env.SHOWCASE_MYSQL_HOST || "showcase";
+const mysqlUser = process.env.SHOWCASE_MYSQL_USER || "root";
+const mysqlPassword = process.env.SHOWCASE_MYSQL_PASSWORD || "my-secret-pw";
+const mysqlDatabase = process.env.SHOWCASE_MYSQL_DATABASE || "showcase";
 
 // create mysql connection
 var mysqlDb = mysql.createConnection({
@@ -37,15 +78,27 @@ var mysqlDb = mysql.createConnection({
 const ttnMqttServer = process.env.SHOWCASE_MQTT_SERVER || "staging.thethingsnetwork.org";
 const ttnMqttPort = process.env.SHOWCASE_MQTT_PORT || 1883;
 const ttnMqttUser = process.env.SHOWCASE_MQTT_USER;
-const ttnMqttToken = process.env.SHOWCASE_MQTT_TOKEN;
+const ttnMqttPassword = process.env.SHOWCASE_MQTT_PASSWORD;
 
 // create mqtt connection
 var mqttClient = mqtt.connect("mqtt://" + ttnMqttServer + ":" + ttnMqttPort, {
   username: ttnMqttUser,
-  password: ttnMqttToken,
-  protocolVersion: 3.1,
+  password: ttnMqttPassword,
+  protocolVersion: 4,
   keepalive: 60,
   clean: true
+});
+mqttClient.on("error", (err) => {
+  winston.error("An MQTT error occurred: " + err.message);
+});
+mqttClient.on("offline", (err) => {
+  winston.warn("TTN MQTT server offline.");
+});
+mqttClient.on("reconnect", (err) => {
+  winston.warn("TTN MQTT server reconnect started.");
+});
+mqttClient.on("close", (err) => {
+  winston.warn("TTN MQTT server connection closed.");
 });
 
 // declare amqp generic stuff
@@ -59,42 +112,53 @@ var amqpQueueSuffix = process.env.SHOWCASE_AMQP_QUEUE_SUFFIX || "nodejs_queue_";
 var connectionUrl = "amqp://" + amqpUser + ":" + amqpPassword + "@" + amqpServer + ":" + amqpPort;
 var amqpConnection = new amqp.Connection(connectionUrl);
 
+iot.AmqpInOut.preInitialize(amqpConnection, amqpQueueSuffix);
+
 // create slack connection
 var slackHookUrl = process.env.SHOWCASE_SLACK_HOOK_URL ||
   "https://hooks.slack.com/services/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";
-var slack = new Slack(slackHookUrl);
+var slackBot = new Slack(slackHookUrl);
+
+// create telegram connection
+var telegramBotToken = process.env.SHOWCASE_TELEGRAM_TOKEN ||
+  "292441232:AAHS3zE8dyJWRUCx29bLx-MOwWEpimRt0mk";
+var telegramBot = new TelegramBot(telegramBotToken);
 
 // declare amqp exchange names
-var ttnAmqp = new AmqpInOut({
+var ttnAmqp = new iot.AmqpInOut({
   out: process.env.SHOWCASE_AMQP_TTN_EXCHANGE_OUT || "showcase.ttn_message"
 });
-var kpnAmqp = new AmqpInOut({
+var kpnAmqp = new iot.AmqpInOut({
   in: process.env.SHOWCASE_AMQP_KPN_EXCHANGE_IN || "showcase.kpn_message",
   out: process.env.SHOWCASE_AMQP_KPN_EXCHANGE_OUT || ttnAmqp.outExchange
 });
-var decodeAmqp = new AmqpInOut({
+var decodeAmqp = new iot.AmqpInOut({
   in: process.env.SHOWCASE_AMQP_DECODE_EXCHANGE_IN || ttnAmqp.outExchange,
   out: process.env.SHOWCASE_AMQP_DECODE_EXCHANGE_OUT || "showcase.observation"
 });
-var logObservationAmqp = new AmqpInOut({
+var logObservationAmqp = new iot.AmqpInOut({
   in: process.env.SHOWCASE_AMQP_OBSERVATION_LOG_EXCHANGE_IN || decodeAmqp.outExchange,
   out: process.env.SHOWCASE_AMQP_OBSERVATION_LOG_EXCHANGE_OUT || "showcase.logged_observation"
 });
-var processAmqp = new AmqpInOut({
+var processAmqp = new iot.AmqpInOut({
   in: process.env.SHOWCASE_AMQP_ALERT_EXCHANGE_IN || logObservationAmqp.outExchange,
   out: process.env.SHOWCASE_AMQP_ALERT_EXCHANGE_OUT || "showcase.alert"
 });
-var alertAmqp = new AmqpInOut({
+var alertAmqp = new iot.AmqpInOut({
   in: process.env.SHOWCASE_AMQP_ALERT_LOG_EXCHANGE_IN || processAmqp.outExchange,
   out: process.env.SHOWCASE_AMQP_ALERT_LOG_EXCHANGE_OUT || "showcase.notification"
 });
-var alertlogLogAmqp = new AmqpInOut({
-  in: process.env.SHOWCASE_AMQP_ALERT_LOG_EXCHANGE_IN || alertAmqp.outExchange,
-  out: process.env.SHOWCASE_AMQP_ALERT_LOG_EXCHANGE_OUT || "showcase.logged_notification"
+var alertlogLogAmqp = new iot.AmqpInOut({
+  in: process.env.SHOWCASE_AMQP_NOTIFICATION_EXCHANGE_IN || processAmqp.outExchange,
+  out: process.env.SHOWCASE_AMQP_NOTIFICATION_EXCHANGE_OUT || "showcase.logged_notification"
 });
-var notificationSlackAmqp = new AmqpInOut({
+var notificationSlackAmqp = new iot.AmqpInOut({
   in: process.env.SHOWCASE_AMQP_SLACK_EXCHANGE_IN || alertAmqp.outExchange,
   out: process.env.SHOWCASE_AMQP_SLACK_EXCHANGE_OUT || "showcase.notification_sent_slack"
+});
+var notificationTelegramAmqp = new iot.AmqpInOut({
+  in: process.env.SHOWCASE_AMQP_TELKEGRAM_EXCHANGE_IN || alertAmqp.outExchange,
+  out: process.env.SHOWCASE_AMQP_TELEGRAM_EXCHANGE_OUT || "showcase.notification_sent_telegram"
 });
 
 // create and start the message processing elements
@@ -105,44 +169,5 @@ new LogObservation(logObservationAmqp.receive, logObservationAmqp.send, mysqlDb)
 new ProcessObservation(processAmqp.receive, processAmqp.send, mysqlDb);
 new ProcessAlert(alertAmqp.receive, alertAmqp.send, mysqlDb);
 new LogAlert(alertlogLogAmqp.receive, alertlogLogAmqp.send, mysqlDb);
-new ProcessNotificationSlack(notificationSlackAmqp.receive, notificationSlackAmqp.send, slack);
-
-
-interface AmqpIoDefinition {
-  in?: string | amqp.Exchange;
-  out?: string | amqp.Exchange;
-}
-
-class AmqpInOut {
-  receive: iot.ReceiveMessagesAmqp;
-  send: iot.SendMessagesAmqp;
-  inQueue: amqp.Queue;
-  outExchange: amqp.Exchange;
-
-  private static _queueNr = 1;
-
-  private nextQueueNr(): number {
-    return AmqpInOut._queueNr++;
-  }
-
-  constructor(create: AmqpIoDefinition) {
-    this.outExchange = this.getExchange(create.out);
-    this.send = new iot.SendMessagesAmqp(this.outExchange);
-
-    var inExchange = this.getExchange(create.in);
-    if (inExchange) {
-      this.inQueue = amqpConnection.declareQueue(inExchange.name + "." + amqpQueueSuffix + this.nextQueueNr(), { durable: false });
-      this.inQueue.bind(inExchange);
-      this.receive = new iot.ReceiveMessagesAmqp(this.inQueue);
-    }
-  }
-
-  private getExchange(exchange: string | amqp.Exchange) {
-    if (typeof exchange === "string") {
-      return amqpConnection.declareExchange(exchange, "fanout");
-    }
-    // expect it to be an amqp.Exchange or null
-    return exchange;
-  }
-}
-
+new ProcessNotificationSlack(notificationSlackAmqp.receive, notificationSlackAmqp.send, slackBot);
+new ProcessNotificationTelegram(notificationTelegramAmqp.receive, notificationTelegramAmqp.send, telegramBot);

@@ -4,8 +4,9 @@
  * 2016-10-11 Ab Reitsma
  */
 
+import * as winston from "winston";
 import * as iot from "./iotMsg";
-import decodeProtoBuf from "./decodeProtoBuf";
+import decodeProtoBuf from "./decodeProtobuf";
 
 
 declare interface MessageKPN {
@@ -50,12 +51,12 @@ export default class ReceiveKPN {
       var rawPayload = new Buffer(msg.payload_hex, "hex");
       var payload = decodeProtoBuf(rawPayload);
 
-      var metadata: iot.Metadata = {
+      var metadata: [iot.Metadata] = [{
         server_time: new Date(msg.Time).toISOString(),
         longitude: Number(msg.LrrLON),
         latitude: Number(msg.LrrLAT)
         // other metadata fields ignored for now
-      };
+      }];
 
       // convert payload
       var messageIot = {
@@ -67,9 +68,10 @@ export default class ReceiveKPN {
       };
 
       // publish result
+      winston.info("Message received from KPN.");
       this.sender.send(messageIot);
     } catch (err) {
-      console.log(err);
+      winston.error("Error receiving KPN message: " + err.message, err);
     }
   }
 }

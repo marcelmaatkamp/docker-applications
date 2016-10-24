@@ -1,9 +1,10 @@
 /**
- * tests for ProtocolBuffer
+ * tests for decodeProtoBuf
  *
  * 2016-10-11 Ab Reitsma
  */
 
+require("./_logSettings");
 import * as Chai from "chai";
 var expect = Chai.expect;
 

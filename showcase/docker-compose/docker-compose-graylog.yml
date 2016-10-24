@@ -13,7 +13,7 @@ services:
 #  - "9300:9300"
   networks:
    mynet:
-#   ipv4_address: 172.25.0.100
+    ipv4_address: 172.25.0.101
 
  elasticsearch-node01:
   image: danielguerra/alpine-elasticsearch
@@ -26,19 +26,7 @@ services:
     - elastic-data:/usr/share/elasticsearch/data
   networks:
    mynet:
-#   ipv4_address: 172.25.0.101
-
- kibana:
-  image: kibana
-  restart: always
-  hostname: kibana
-# ports:
-#  - "5601:5601"
-  links:
-   - "elasticsearch-master:elasticsearch"
-  networks:
-   mynet:
-#   ipv4_address: 172.25.0.102
+    ipv4_address: 172.25.0.102
 
  mongodb:
   image: mongo:3
@@ -51,7 +39,7 @@ services:
    - mongodb-data:/data/db
   networks:
    mynet:
-#   ipv4_address: 172.25.0.103
+    ipv4_address: 172.25.0.104
 
  graylog:
   image: "graylog2/server"
