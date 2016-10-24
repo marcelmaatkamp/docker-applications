@@ -4,6 +4,7 @@
  * 2016-10-11 Ab Reitsma
  */
 "use strict";
+var winston = require("winston");
 var amqp = require("amqp-ts");
 var Promise = require("bluebird");
 /**
@@ -39,6 +40,7 @@ var SendMessagesAmqp = (function () {
         }
         var amqpMsg = new amqp.Message(msg);
         this.amqpExchange.send(amqpMsg);
+        winston.debug("Message sent to AMQP exchange '" + this.amqpExchange.name + "'", amqpMsg);
     };
     return SendMessagesAmqp;
 }());
@@ -74,6 +76,7 @@ var ReceiveMessagesAmqp = (function () {
         if (this.inNodeRedEnvelope) {
             content = content.payload;
         }
+        winston.debug("Message received from AMQP exchange '" + this.amqpQueue.name + "'", content);
         this.msgReceiver(content);
     };
     ReceiveMessagesAmqp.prototype.startConsumer = function (msgReceiver) {

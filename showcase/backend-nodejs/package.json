@@ -25,7 +25,6 @@
     "protocol-buffers": "^3.1.6",
     "safe-eval": "^0.3.0",
     "winston": "^2.2.0",
-    "winston-console-formatter": "^0.3.1",
     "winston-graylog2": "^0.5.1"
   },
   "devDependencies": {

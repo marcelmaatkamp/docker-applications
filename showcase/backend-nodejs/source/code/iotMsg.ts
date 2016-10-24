@@ -4,6 +4,7 @@
  * 2016-10-11 Ab Reitsma
  */
 
+import * as winston from "winston";
 import * as amqp from "amqp-ts";
 import * as Promise from "bluebird";
 
@@ -171,6 +172,7 @@ export class SendMessagesAmqp implements SendMessages {
     }
     var amqpMsg = new amqp.Message(msg);
     this.amqpExchange.send(amqpMsg);
+    winston.debug("Message sent to AMQP exchange '" + this.amqpExchange.name + "'", amqpMsg);
   }
 }
 
@@ -205,6 +207,7 @@ export class ReceiveMessagesAmqp implements ReceiveMessages {
     if (this.inNodeRedEnvelope) {
       content = content.payload;
     }
+    winston.debug("Message received from AMQP exchange '" + this.amqpQueue.name + "'", content);
     this.msgReceiver(content);
   }
 

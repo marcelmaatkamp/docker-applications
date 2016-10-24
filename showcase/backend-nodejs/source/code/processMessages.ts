@@ -22,19 +22,38 @@ import ProcessNotificationSlack from "./ProcessNotificationSlack";
 import ProcessNotificationTelegram from "./ProcessNotificationTelegram";
 
 // define log settings
-winston.remove(winston.transports.Console);
-var formatter = require("winston-console-formatter").config();
-formatter.level = "error";
-winston.add(winston.transports.Console, formatter);
-// winston.add(require("winston-graylog2"), {
-//   name: "Graylog",
-//   level: "debug",
-//   graylog: {
-//     servers: [{host: "graylog", port: 12201}],
-//     hostname: "backend"
-//   }
-// });
+const logToGrayLog = process.env.SHOWCASE_GRAYLOG || false;
+const graylogHost = process.env.SHOWCASE_GRAYLOG_HOST || "graylog";
+const graylogPort = process.env.SHOWCASE_GRAYLOG_PORT || 12201;
+const graylogLevel = process.env.SHOWCASE_GRAYLOG_LEVEL || "debug";
 
+const consoleLogLevel = process.env.SHOWCASE_LOG_LEVEL || "info";
+const consoleLogMeta = process.env.SHOWCASE_LOG_META || false;
+
+winston.remove(winston.transports.Console);
+winston.add(winston.transports.Console, {
+  level: consoleLogLevel,
+  timestamp: () => {
+    return "[" + new Date().toLocaleTimeString([], { hour12: false }) + "]";
+  },
+  formatter: (options) => {
+    return options.timestamp() + " " +
+      options.level.toUpperCase() + " " +
+      (options.message === undefined ? "" : options.message) +
+      (consoleLogMeta && options.meta && Object.keys(options.meta).length ?
+        '\n\t' + JSON.stringify(options.meta) : '');
+  }
+});
+if (logToGrayLog) {
+  winston.add(require("winston-graylog2"), {
+    name: "Graylog",
+    level: graylogLevel,
+    graylog: {
+      servers: [{ host: graylogHost, port: graylogPort }],
+      hostname: "backend"
+    }
+  });
+}
 
 // unfortunately no typescript .d.ts exists for node-telegram-bot-api
 var TelegramBot = require("node-telegram-bot-api");
@@ -128,8 +147,8 @@ var alertAmqp = new iot.AmqpInOut({
   out: process.env.SHOWCASE_AMQP_ALERT_LOG_EXCHANGE_OUT || "showcase.notification"
 });
 var alertlogLogAmqp = new iot.AmqpInOut({
-  in: process.env.SHOWCASE_AMQP_ALERT_LOG_EXCHANGE_IN || alertAmqp.outExchange,
-  out: process.env.SHOWCASE_AMQP_ALERT_LOG_EXCHANGE_OUT || "showcase.logged_notification"
+  in: process.env.SHOWCASE_AMQP_NOTIFICATION_EXCHANGE_IN || alertAmqp.outExchange,
+  out: process.env.SHOWCASE_AMQP_NOTIFICATION_EXCHANGE_OUT || "showcase.logged_notification"
 });
 var notificationSlackAmqp = new iot.AmqpInOut({
   in: process.env.SHOWCASE_AMQP_SLACK_EXCHANGE_IN || alertAmqp.outExchange,
