@@ -25,18 +25,8 @@ services:
 
 # Nodejs backend als vervanging voor node-red
 backend:
-  build: backend-nodejs
-  hostname: backend
-  depends_on:
-   - rabbitmq
-   - mysql
-  links:
-   - rabbitmq:rabbitmq
-   - mysql:mysql
   ports:
    - 5858:5858
-  volumes:
-   - ./backend-nodejs:/src
   environment:
   # What kind of environment:
   # DEVELOP=0 # autostart processMessages
