@@ -23,7 +23,7 @@ FROM node:latest
 WORKDIR /src
 
 # install global modules needed
-RUN npm install -g gulp
+RUN npm install -g gulp typings
 
 # copy and install local development libraries
 COPY package.json /src/
