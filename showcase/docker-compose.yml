@@ -12,7 +12,7 @@ services:
    - /var/run/docker.sock:/var/run/docker.sock
   networks:
    mynet:
-    ipv4_address: 172.25.0.2
+    ipv4_address: ${SHOWCASE_IP_ADDRESS_DOCKERUI} 
 
  rabbitmq:
   image: marcelmaatkamp/rabbitmq-mqtt-ldap
@@ -26,7 +26,7 @@ services:
    - ./volumes/rabbitmq/mnesia:/var/lib/rabbitmq/mnesia
   networks:
    mynet:
-    ipv4_address: 172.25.0.3
+    ipv4_address: ${SHOWCASE_IP_ADDRESS_RABBITMQ}
 
  mysql:
   image: mysql
@@ -39,7 +39,7 @@ services:
    - ./mysql:/docker-entrypoint-initdb.d/
   networks:
    mynet:
-    ipv4_address: 172.25.0.4
+    ipv4_address: ${SHOWCASE_IP_ADDRESS_MYSQL}
 
  nodered:
   build: raptor-node-red
@@ -57,7 +57,7 @@ services:
    - ./volumes/nodered:/node-red-data/
   networks:
    mynet:
-    ipv4_address: 172.25.0.5
+    ipv4_address: ${SHOWCASE_IP_ADDRESS_NODERED}
 
  phpmyadmin:
   image: phpmyadmin/phpmyadmin
@@ -73,7 +73,7 @@ services:
    - ./volumes/phpmyadmin:/sessions
   networks:
    mynet:
-    ipv4_address: 172.25.0.6
+    ipv4_address: ${SHOWCASE_IP_ADDRESS_PHPMYADMIN}
 
  phreeze:
   image: marcelmaatkamp/phreeze
@@ -87,7 +87,7 @@ services:
 #   - 80:80
   networks:
    mynet:
-    ipv4_address: 172.25.0.7
+    ipv4_address: ${SHOWCASE_IP_ADDRESS_PHREEZE}
 
  elasticsearch-master:
   image: danielguerra/alpine-elasticsearch
@@ -101,7 +101,7 @@ services:
 #  - "9300:9300"
   networks:
    mynet:
-    ipv4_address: 172.25.0.101
+    ipv4_address: ${SHOWCASE_IP_ADDRESS_ES_MASTER}
 
  elasticsearch-node01:
   image: danielguerra/alpine-elasticsearch
@@ -114,7 +114,7 @@ services:
     - elastic-data:/usr/share/elasticsearch/data
   networks:
    mynet:
-    ipv4_address: 172.25.0.102
+    ipv4_address: ${SHOWCASE_IP_ADDRESS_ES_NODE01}
 
  mongodb:
   image: mongo:3
@@ -127,7 +127,7 @@ services:
    - mongodb-data:/data/db
   networks:
    mynet:
-    ipv4_address: 172.25.0.104
+    ipv4_address: $}SHOWCASE_IP_ADDRESS_MONGODB}
 
  graylog:
   image: "graylog2/server"
@@ -152,7 +152,7 @@ services:
    - elasticsearch-node01
   networks:
    mynet:
-    ipv4_address: 172.25.0.100
+    ipv4_address: ${SHOWCASE_IP_ADDRESS_GRAYLOG}
 
  backend:
   build: backend-nodejs
@@ -221,6 +221,9 @@ services:
   # Telegram settings
   # - SHOWCASE_TELEGRAM_TOKEN=292441232:AAHS3zE8dyJWRUCx29bLx-MOwWEpimRt0mk
   # - SHOWCASE_TELEGRAM_CHAT_ID=-1001097331998 # default chatid, if no chatid is defined in parameter p1
+  networks:
+   mynet:
+    ipv4_address: ${SHOWCASE_IP_ADDRESS_BACKEND}
 
 networks:
  mynet:
