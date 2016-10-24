@@ -40,7 +40,7 @@ var SendMessagesAmqp = (function () {
         }
         var amqpMsg = new amqp.Message(msg);
         this.amqpExchange.send(amqpMsg);
-        winston.debug("Message sent to AMQP exchange '" + this.amqpExchange.name + "'", amqpMsg);
+        winston.debug("Message sent to AMQP exchange '" + this.amqpExchange.name + "'", msg);
     };
     return SendMessagesAmqp;
 }());

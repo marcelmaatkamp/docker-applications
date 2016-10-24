@@ -135,7 +135,7 @@ var alertAmqp = new iot.AmqpInOut({
     out: process.env.SHOWCASE_AMQP_ALERT_LOG_EXCHANGE_OUT || "showcase.notification"
 });
 var alertlogLogAmqp = new iot.AmqpInOut({
-    in: process.env.SHOWCASE_AMQP_NOTIFICATION_EXCHANGE_IN || alertAmqp.outExchange,
+    in: process.env.SHOWCASE_AMQP_NOTIFICATION_EXCHANGE_IN || processAmqp.outExchange,
     out: process.env.SHOWCASE_AMQP_NOTIFICATION_EXCHANGE_OUT || "showcase.logged_notification"
 });
 var notificationSlackAmqp = new iot.AmqpInOut({
