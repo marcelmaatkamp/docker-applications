@@ -17,7 +17,7 @@ var decodeToObservations_1 = require("./decodeToObservations");
 var logObservation_1 = require("./logObservation");
 var processObservation_1 = require("./processObservation");
 var processAlert_1 = require("./processAlert");
-var LogAlert_1 = require("./LogAlert");
+var logAlert_1 = require("./logAlert");
 var ProcessNotificationSlack_1 = require("./ProcessNotificationSlack");
 var ProcessNotificationTelegram_1 = require("./ProcessNotificationTelegram");
 // define log settings
@@ -153,7 +153,7 @@ new decodeToObservations_1.default(decodeAmqp.receive, decodeAmqp.send, mysqlDb)
 new logObservation_1.default(logObservationAmqp.receive, logObservationAmqp.send, mysqlDb);
 new processObservation_1.default(processAmqp.receive, processAmqp.send, mysqlDb);
 new processAlert_1.default(alertAmqp.receive, alertAmqp.send, mysqlDb);
-new LogAlert_1.default(alertlogLogAmqp.receive, alertlogLogAmqp.send, mysqlDb);
+new logAlert_1.default(alertlogLogAmqp.receive, alertlogLogAmqp.send, mysqlDb);
 new ProcessNotificationSlack_1.default(notificationSlackAmqp.receive, notificationSlackAmqp.send, slackBot);
 new ProcessNotificationTelegram_1.default(notificationTelegramAmqp.receive, notificationTelegramAmqp.send, telegramBot);
 
