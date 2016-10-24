@@ -175,7 +175,7 @@ services:
    - DEVELOP=0 # keep docker image alive for development environment
   #  Alle environment variabelen met hun default waarden
   # graylog2 logging
-  # - SHOWCASE_GRAYLOG=0
+   - SHOWCASE_GRAYLOG=1
   # - SHOWCASE_GRAYLOG_HOST=graylog
   # - SHOWCASE_GRAYLOG_PORT=12201
   # - SHOWCASE_GRAYLOG_LEVEL=debug
