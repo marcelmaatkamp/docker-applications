@@ -7,7 +7,7 @@
 import * as winston from "winston";
 import * as mqtt from "mqtt";
 import * as iot from "./iotMsg";
-import decodeProtoBuf from "./decodeProtoBuf";
+import decodeProtoBuf from "./decodeProtobuf";
 
 // TTN Lora JSON format:
 // {

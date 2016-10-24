@@ -6,7 +6,7 @@
 
 import * as winston from "winston";
 import * as iot from "./iotMsg";
-import decodeProtoBuf from "./decodeProtoBuf";
+import decodeProtoBuf from "./decodeProtobuf";
 
 
 declare interface MessageKPN {

@@ -5,7 +5,7 @@
  */
 "use strict";
 var winston = require("winston");
-var decodeProtoBuf_1 = require("./decodeProtoBuf");
+var decodeProtobuf_1 = require("./decodeProtobuf");
 var ReceiveKPN = (function () {
     function ReceiveKPN(receiver, sender) {
         var _this = this;
@@ -18,7 +18,7 @@ var ReceiveKPN = (function () {
     ReceiveKPN.prototype.messageConsumerKPN = function (msg) {
         try {
             var rawPayload = new Buffer(msg.payload_hex, "hex");
-            var payload = decodeProtoBuf_1.default(rawPayload);
+            var payload = decodeProtobuf_1.default(rawPayload);
             var metadata = [{
                     server_time: new Date(msg.Time).toISOString(),
                     longitude: Number(msg.LrrLON),

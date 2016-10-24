@@ -5,7 +5,7 @@
  */
 "use strict";
 var winston = require("winston");
-var decodeProtoBuf_1 = require("./decodeProtoBuf");
+var decodeProtobuf_1 = require("./decodeProtobuf");
 var ReceiveKPN = (function () {
     function ReceiveKPN(ttnMQTT, sender) {
         var _this = this;
@@ -24,7 +24,7 @@ var ReceiveKPN = (function () {
     ReceiveKPN.prototype.messageConsumerMQTT = function (topic, messageRaw) {
         var messageTTN = JSON.parse(messageRaw.toString());
         var rawPayload = new Buffer(messageTTN.payload, "base64");
-        var payload = decodeProtoBuf_1.default(rawPayload);
+        var payload = decodeProtobuf_1.default(rawPayload);
         // convert payload
         var messageIot = {
             payload: payload,
