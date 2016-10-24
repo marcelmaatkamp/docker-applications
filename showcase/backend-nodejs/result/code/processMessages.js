@@ -18,8 +18,8 @@ var logObservation_1 = require("./logObservation");
 var processObservation_1 = require("./processObservation");
 var processAlert_1 = require("./processAlert");
 var logAlert_1 = require("./logAlert");
-var ProcessNotificationSlack_1 = require("./ProcessNotificationSlack");
-var ProcessNotificationTelegram_1 = require("./ProcessNotificationTelegram");
+var processNotificationSlack_1 = require("./processNotificationSlack");
+var processNotificationTelegram_1 = require("./processNotificationTelegram");
 // define log settings
 var logToGrayLog = process.env.SHOWCASE_GRAYLOG || false;
 var graylogHost = process.env.SHOWCASE_GRAYLOG_HOST || "graylog";
@@ -154,7 +154,7 @@ new logObservation_1.default(logObservationAmqp.receive, logObservationAmqp.send
 new processObservation_1.default(processAmqp.receive, processAmqp.send, mysqlDb);
 new processAlert_1.default(alertAmqp.receive, alertAmqp.send, mysqlDb);
 new logAlert_1.default(alertlogLogAmqp.receive, alertlogLogAmqp.send, mysqlDb);
-new ProcessNotificationSlack_1.default(notificationSlackAmqp.receive, notificationSlackAmqp.send, slackBot);
-new ProcessNotificationTelegram_1.default(notificationTelegramAmqp.receive, notificationTelegramAmqp.send, telegramBot);
+new processNotificationSlack_1.default(notificationSlackAmqp.receive, notificationSlackAmqp.send, slackBot);
+new processNotificationTelegram_1.default(notificationTelegramAmqp.receive, notificationTelegramAmqp.send, telegramBot);
 
 //# sourceMappingURL=processMessages.js.map

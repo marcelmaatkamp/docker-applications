@@ -18,8 +18,8 @@ import LogObservation from "./logObservation";
 import ProcessObservation from "./processObservation";
 import ProcessAlert from "./processAlert";
 import LogAlert from "./logAlert";
-import ProcessNotificationSlack from "./ProcessNotificationSlack";
-import ProcessNotificationTelegram from "./ProcessNotificationTelegram";
+import ProcessNotificationSlack from "./processNotificationSlack";
+import ProcessNotificationTelegram from "./processNotificationTelegram";
 
 // define log settings
 const logToGrayLog = process.env.SHOWCASE_GRAYLOG || false;
