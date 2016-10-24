@@ -16,3 +16,8 @@ services:
    driver: "gelf"
    options:
     gelf-address: "udp://172.25.0.100:12201"
+
+ backend:
+  environment:
+   - DEVELOP=0
+   - SHOWCASE_TELEGRAM_TOKEN=${SHOWCASE_TELEGRAM_BOT_ACC}
