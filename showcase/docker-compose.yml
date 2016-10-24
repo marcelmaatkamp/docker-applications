@@ -98,7 +98,7 @@ services:
   links:
    - rabbitmq:rabbitmq
    - mysql:mysql
-  ports:
+  # ports:
   #  - 5858:5858 # debug port
   volumes:
    - ./backend-nodejs:/src
