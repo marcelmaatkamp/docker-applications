@@ -1,4 +1,6 @@
-if (process.env.DEVELOP) {
+console.log ("process.env.DEVELOP: " + process.env.DEVELOP);
+
+if (process.env.DEVELOP == 1) {
   // keep docker container open for development, but do not start server
   console.log("Starting alive at " + new Date().toLocaleString());
   setInterval(function () {

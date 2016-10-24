@@ -44,6 +44,7 @@ winston.add(winston.transports.Console, {
         '\n\t' + JSON.stringify(options.meta) : '');
   }
 });
+console.log("Winston console logging started");
 if (logToGrayLog) {
   winston.add(require("winston-graylog2"), {
     name: "Graylog",
@@ -53,6 +54,7 @@ if (logToGrayLog) {
       hostname: "backend"
     }
   });
+  console.log("Winston graylog logging started, host: '" + graylogHost + "' port: " + graylogPort);
 }
 
 // unfortunately no typescript .d.ts exists for node-telegram-bot-api
