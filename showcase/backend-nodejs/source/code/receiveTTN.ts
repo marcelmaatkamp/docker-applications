@@ -57,7 +57,7 @@ export default class ReceiveKPN {
       ttnMQTT.subscribe("#");
     });
     ttnMQTT.on("message", (topic, message) => {
-      winston.debug("TTN message received.");
+      winston.debug("TTN message received.", message);
       this.messageConsumerMQTT(topic, message);
     });
   }
