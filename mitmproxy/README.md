@@ -1,4 +1,6 @@
 # MITMPROXY
+A docker-compose file which runs https://mitmproxy.org in a docker container (thanks to https://github.com/danielguerra69/alpine-mitmproxy)
+
 ![mitmproxy](https://mitmproxy.org/images/mitmproxy.png)
 
 # Start proxy
