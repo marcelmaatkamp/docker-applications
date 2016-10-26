@@ -90,6 +90,7 @@ public:
     const char* getNwSKeyOrAppKey() const { return _nwSKeyOrAppKey; }
 
     uint32_t getChargeOffset() const { return _chargeOffset; }
+    void     setChargeOffset(uint32_t offset) { _chargeOffset = offset; }
     
     uint8_t getCoordinateUploadCount() const { return _coordinateUploadCount; }
     uint8_t getRepeatCount() const { return _repeatCount; }

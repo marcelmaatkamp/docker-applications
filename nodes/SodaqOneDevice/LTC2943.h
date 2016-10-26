@@ -105,7 +105,8 @@ const float LTC2943_FULLSCALE_CURRENT = 60E-3;
 const float LTC2943_FULLSCALE_TEMPERATURE = 510;
 
 // Change resistor value to 50 mOhm (0.05) for DC1812AC (LTC2943-1)
-const float resistor = .05;                               //!< resistor value on demo board
+//const float resistor = .05;                               //!< resistor value on demo board
+const float resistor = .02;                               //!< resistor value on self-made printje
 
 #ifdef DEBUG
 #define debugPrintLn(...) { if (this->diagStream) this->diagStream->println(__VA_ARGS__); }
@@ -140,6 +141,7 @@ private:
   float charge, current, voltage, temperature;
   int inputPin = -1;    // the number of the pin the Switch is connected to
   bool valid=false;
+  bool chargeState=false; // Statemachine for measuring charge
 
   //! Write an 8-bit code to the LTC2943.
   //! @return The function returns the state of the acknowledge bit after the I2C address write. 0=acknowledge, 1=no acknowledge.
