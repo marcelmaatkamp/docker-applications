@@ -13,6 +13,10 @@ services:
   networks:
    mynet:
     ipv4_address: ${SHOWCASE_IP_ADDRESS_DOCKERUI} 
+  logging:
+   driver: "gelf"
+   options:
+    gelf-address: "udp://172.25.0.100:12201"
 
  rabbitmq:
   image: marcelmaatkamp/rabbitmq-mqtt-ldap
@@ -27,6 +31,10 @@ services:
   networks:
    mynet:
     ipv4_address: ${SHOWCASE_IP_ADDRESS_RABBITMQ}
+  logging:
+   driver: "gelf"
+   options:
+    gelf-address: "udp://172.25.0.100:12201"
 
  mysql:
   image: mysql
@@ -40,6 +48,10 @@ services:
   networks:
    mynet:
     ipv4_address: ${SHOWCASE_IP_ADDRESS_MYSQL}
+  logging:
+   driver: "gelf"
+   options:
+    gelf-address: "udp://172.25.0.100:12201"
 
  nodered:
   build: raptor-node-red
@@ -58,6 +70,10 @@ services:
   networks:
    mynet:
     ipv4_address: ${SHOWCASE_IP_ADDRESS_NODERED}
+  logging:
+   driver: "gelf"
+   options:
+    gelf-address: "udp://172.25.0.100:12201"
 
  phpmyadmin:
   image: phpmyadmin/phpmyadmin
@@ -74,6 +90,10 @@ services:
   networks:
    mynet:
     ipv4_address: ${SHOWCASE_IP_ADDRESS_PHPMYADMIN}
+  logging:
+   driver: "gelf"
+   options:
+    gelf-address: "udp://172.25.0.100:12201"
 
  phreeze:
   image: marcelmaatkamp/phreeze
@@ -88,6 +108,10 @@ services:
   networks:
    mynet:
     ipv4_address: ${SHOWCASE_IP_ADDRESS_PHREEZE}
+  logging:
+   driver: "gelf"
+   options:
+    gelf-address: "udp://172.25.0.100:12201"
 
  elasticsearch-master:
   image: danielguerra/alpine-elasticsearch
@@ -128,6 +152,10 @@ services:
   networks:
    mynet:
     ipv4_address: ${SHOWCASE_IP_ADDRESS_MONGODB}
+  logging:
+   driver: "gelf"
+   options:
+    gelf-address: "udp://172.25.0.100:12201"
 
  graylog:
   image: "graylog2/server"
@@ -224,6 +252,10 @@ services:
   networks:
    mynet:
     ipv4_address: ${SHOWCASE_IP_ADDRESS_BACKEND}
+  logging:
+   driver: "gelf"
+   options:
+    gelf-address: "udp://172.25.0.100:12201"
 
 networks:
  mynet:
