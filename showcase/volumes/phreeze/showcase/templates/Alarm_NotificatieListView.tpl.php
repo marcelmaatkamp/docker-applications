@@ -156,9 +156,9 @@ mysqli_close($db);
 				
 				
 				
-				<th id="header_AlarmRegel">Node<% if (page.orderBy == 'id') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+			<!-- 	<th id="header_AlarmRegel">Node<% if (page.orderBy == 'id') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th> -->
 				<th id="header_AlarmRegel">Node<% if (page.orderBy == 'nodeAlias') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_AlarmRegel">sensor<% if (page.orderBy == 'sensorOmschrijving') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_AlarmRegel">Sensor<% if (page.orderBy == 'sensorOmschrijving') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_AlarmRegel">Trigger<% if (page.orderBy == 'alarmTrigger') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				
 				
@@ -176,7 +176,7 @@ mysqli_close($db);
 		<% items.each(function(item) { %>
 			<tr id="<%= _.escape(item.get('id')) %>">
 			
-			<td><%= _.escape(item.get('id') || '') %></td>
+			<!-- <td><%= _.escape(item.get('id') || '') %></td> -->
 
 				
 					<td><%= _.escape(item.get('nodeAlias') || '') %></td>

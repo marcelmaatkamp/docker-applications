@@ -50,8 +50,23 @@ class AlarmController extends AppBaseController
 	{
 		try
 		{
+			
+				
 			$criteria = new AlarmCriteria();
 			$criteria->SetOrder('Id',true);
+			$filternode = RequestUtil::Get('FilterNode');
+			$filtersensor = RequestUtil::Get('FilterSensor');
+			
+			if ($filternode) $criteria->AddFilter(
+				new CriteriaFilter('nodeAlias', '%'.$filternode.'%')
+			);
+			
+			if ($filtersensor) $criteria->AddFilter(
+				new CriteriaFilter('sensorOmschrijving', '%'.$filtersensor.'%')
+			);
+			
+		
+
 			
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');
