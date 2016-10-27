@@ -63,6 +63,7 @@
 
 #define STR_CMD_SLEEP "sys sleep 259200000" // 3 days
 #define STR_CMD_GET_HWEUI "sys get hweui"
+#define STR_CMD_GET_VER "sys get ver"
 #define STR_CMD_SET_CHANNEL_STATUS "mac set ch status "
 
 #endif

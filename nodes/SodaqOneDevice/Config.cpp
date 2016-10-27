@@ -82,6 +82,7 @@ void ConfigParams::reset()
     _isLedEnabled = 0;  // default is Led disabled
     _isOtaaEnabled = 0; // default is Otaa disabled and ABP enabled
     _isGpsEnabled = 0;  // default is Gps disabled
+    _isAckEnabled = 0;  // default is Ack disabled
 
     memset(_devAddrOrEUI, 0x30, sizeof(_devAddrOrEUI) - 1);
     _devAddrOrEUI[sizeof(_devAddrOrEUI) - 1] = '\0';
@@ -140,7 +141,9 @@ static const Command args[] = {
     { "Num Coords to Upload      ", "num=", Command::set_uint8, Command::show_uint8, &params._coordinateUploadCount },
     { "Repeat Count              ", "rep=", Command::set_uint8, Command::show_uint8, &params._repeatCount },
     { "Status LED (OFF=0 / ON=1) ", "led=", Command::set_uint8, Command::show_uint8, &params._isLedEnabled },
-    { "GPS mode (OFF=0 / ON=1)   ", "gps=", Command::set_uint8, Command::show_uint8, &params._isGpsEnabled }
+    { "GPS mode (OFF=0 / ON=1)   ", "gps=", Command::set_uint8, Command::show_uint8, &params._isGpsEnabled },
+    { "ACK mode (OFF=0 / ON=1)   ", "ack=", Command::set_uint8, Command::show_uint8, &params._isAckEnabled },
+    { "Debug mode (OFF=0 / ON=1) ", "deb=", Command::set_uint8, Command::show_uint8, &params._isDebEnabled }
 };
 
 void ConfigParams::showConfig(Stream* stream)
@@ -224,6 +227,14 @@ bool ConfigParams::checkConfig(Stream& stream)
     }
     if (_isGpsEnabled > 1 || _isGpsEnabled < 0) {
         stream.println("GPS Mode must be either 0 or 1");
+        fail = true;
+    }
+    if (_isAckEnabled > 1 || _isAckEnabled < 0) {
+        stream.println("ACK Mode must be either 0 or 1");
+        fail = true;
+    }
+    if (_isDebEnabled > 1 || _isDebEnabled < 0) {
+        stream.println("Debug Mode must be either 0 or 1");
         fail = true;
     }
 

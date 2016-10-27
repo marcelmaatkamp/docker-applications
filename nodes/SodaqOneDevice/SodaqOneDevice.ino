@@ -51,7 +51,7 @@
 #include "pb_decode.h"
 #include "sensor.pb.h"
 
-//#define DEBUG
+#define DEBUG
 
 #define PROJECT_NAME "SodaqOne Monitoring Node"
 #define VERSION "1.0"
@@ -61,6 +61,7 @@
 #define GPS_FIX_FLAGS 0b00000001 // just gnssFixOK
 
 #define MAX_RTC_EPOCH_OFFSET 25
+#define NUM_TX_RETRIES 5
 
 #define ADC_AREF 3.3f
 #define BATVOLT_R1 2.0f
@@ -134,6 +135,7 @@ static uint8_t receiveBufferSize;
 static uint8_t sendBuffer[128];
 static uint8_t sendBufferSize;
 static uint8_t loraHWEui[8];
+static uint8_t loraFirmVer[40];
 static bool isLoraHWEuiInitialized;
 
 void setup();
@@ -173,7 +175,7 @@ int8_t getBoardTemperature();
 void updateGpsSendBuffer();
 void updateAliveSendBuffer();
 bool updateSwitchSendBuffer(int SwitchNo);
-void transmit();
+bool transmit();
 void updateConfigOverTheAir();
 void getHWEUI();
 void setDevAddrOrEUItoHWEUI();
@@ -306,10 +308,10 @@ void initSleep()
   // Set the XOSC32K to run in standby
   SYSCTRL->XOSC32K.bit.RUNSTDBY = 1;
 
-  // Configure EIC to use GCLK1 which uses XOSC32K 
+  // Configure EIC to use GCLK1 which uses XOSC32K
   // This has to be done after the first call to attachInterrupt()
-  GCLK->CLKCTRL.reg = GCLK_CLKCTRL_ID(GCM_EIC) | 
-                      GCLK_CLKCTRL_GEN_GCLK1 | 
+  GCLK->CLKCTRL.reg = GCLK_CLKCTRL_ID(GCM_EIC) |
+                      GCLK_CLKCTRL_GEN_GCLK1 |
                       GCLK_CLKCTRL_CLKEN;
 
   // Set the sleep mode
@@ -518,7 +520,7 @@ bool updateSwitchSendBuffer(int switchNo)
   debugPrintln("updateSwitchSendBuffer....");
   debugPrint("Get Switch: ");
   debugPrint(switchNo);
-  
+
   NodeMessage nodemsg = NodeMessage_init_zero;
 
   /* Create a stream that will write to our buffer. */
@@ -591,32 +593,97 @@ bool updateSwitchSendBuffer(int switchNo)
    Sends the current sendBuffer through lora (if enabled).
    Repeats the transmitions according to params.getRepeatCount().
 */
-void transmit()
+bool transmit()
 {
-  if (!isLoraInitialized) {
-    return;
-  }
+  bool retVal = true;
+  uint8_t sendReturn;
+  uint16_t recvSize;
+  bool retry = true;
+  int retCount = 0;
 
   setLoraActive(true);
 
-  for (uint8_t i = 0; i < 1 + params.getRepeatCount(); i++) {
-    if (LoRaBee.send(1, sendBuffer, sendBufferSize) != 0) {
-      debugPrintln("There was an error while transmitting through LoRaWAN.");
+  while (isLoraInitialized && retry)
+  {
+    if (params.getIsAckEnabled())
+    {
+      sendReturn = LoRaBee.sendReqAck(1, sendBuffer, sendBufferSize, 1);
     }
-    else {
-      debugPrintln("Data transmitted successfully.");
-
-      uint16_t size = LoRaBee.receive(receiveBuffer, sizeof(receiveBuffer));
-      receiveBufferSize = size;
-
-      if (size > 0) {
-        debugPrintln("Received OTA Configuration.");
-        updateConfigOverTheAir();
+    else
+    {
+      sendReturn = LoRaBee.send(1, sendBuffer, sendBufferSize);
+    }
+    switch (sendReturn)
+    {
+      case NoError:
+        debugPrintln("Data transmitted successfully.");
+        receiveBufferSize = LoRaBee.receive(receiveBuffer, sizeof(receiveBuffer));
+        if (receiveBufferSize > 0)
+        {
+          if (receiveBufferSize > 1)
+          {
+            debugPrint("Received OTA Configuration (#)");
+            debugPrintln(receiveBufferSize);
+            for (uint16_t i = 0; i < receiveBufferSize; i++)
+            {
+              debugPrintln(receiveBuffer[i]);
+            }
+            updateConfigOverTheAir();
+          }
+        }
+        retry = false;
+        break;
+      case NoResponse:
+        debugPrintln("There was no response from the device.");
+        break;
+      case Timeout:
+        debugPrintln("Connection timed-out. Check your serial connection to the device! Sleeping for 20sec.");
+        delay(20000);
+        break;
+      case PayloadSizeError:
+        debugPrintln("The size of the payload is greater than allowed. Transmission failed!");
+        break;
+      case InternalError:
+        debugPrintln("Oh No! This shouldn't happen. Something is really wrong! Try restarting the device!\r\nThe program will now halt.");
+        //      while (1) {};
+        retVal = false;
+        break;
+      case Busy:
+        debugPrintln("The device is busy. Sleeping for 2 extra seconds.");
+        delay(2000);
+        break;
+      case NetworkFatalError:
+        debugPrintln("There is a non-recoverable error with the network connection. You should re-connect.\r\nThe program will now halt.");
+        //        while (1) {};
+        retVal = false;
+        break;
+      case NotConnected:
+        debugPrintln("The device is not connected to the network. Please connect to the network before attempting to send data.\r\nThe program will now halt.");
+        //        while (1) {};
+        retVal = false;
+        break;
+      case NoAcknowledgment:
+        debugPrintln("There was no acknowledgment sent back!");
+        break;
+      default:
+        break;
+    }
+    if (sendReturn != NoError)
+    {
+      retCount++;
+      debugPrint("Retry number: ");
+      debugPrintln(retCount);
+      if (retCount > NUM_TX_RETRIES)
+      {
+        retry = false;
+        retVal = false;
       }
     }
   }
-
+  // bewaar het aantal zendpogingen
+  numTxRetries = retCount;
   setLoraActive(false);
+  return retVal;
 }
 
 /**
@@ -1484,8 +1551,6 @@ bool retriessensor_callback(pb_ostream_t *stream, const pb_field_t *field, void 
   return true;
 }
 
-
-
 /**
    Prints the cause of the last reset to the given stream.
 
@@ -1534,11 +1599,16 @@ static void printBootUpMessage(Stream& stream)
 {
   stream.println("** " PROJECT_NAME " - " VERSION " **");
 
-  getHWEUI();
+  getHWEUIAndFirmVer();
   stream.print("LoRa HWEUI: ");
   for (uint8_t i = 0; i < sizeof(loraHWEui); i++) {
     stream.print((char)NIBBLE_TO_HEX_CHAR(HIGH_NIBBLE(loraHWEui[i])));
     stream.print((char)NIBBLE_TO_HEX_CHAR(LOW_NIBBLE(loraHWEui[i])));
+  }
+  stream.println();
+  stream.print("LoRa Firmware version: ");
+  for (uint8_t i = 0; i < sizeof(loraFirmVer); i++) {
+    stream.print((char)(loraFirmVer[i]));
   }
   stream.println();
 
@@ -1556,7 +1626,7 @@ void onConfigReset(void)
   setDevAddrOrEUItoHWEUI();
 }
 
-void getHWEUI()
+void getHWEUIAndFirmVer()
 {
   // only read the HWEUI once
   if (!isLoraHWEuiInitialized) {
@@ -1564,17 +1634,17 @@ void getHWEUI()
     sodaq_wdt_safe_delay(10);
     setLoraActive(true);
     uint8_t len = LoRaBee.getHWEUI(loraHWEui, sizeof(loraHWEui));
-    setLoraActive(false);
-
     if (len == sizeof(loraHWEui)) {
       isLoraHWEuiInitialized = true;
     }
+    LoRaBee.getFirmVer(loraFirmVer, sizeof(loraFirmVer));
+    setLoraActive(false);
   }
 }
 
 void setDevAddrOrEUItoHWEUI()
 {
-  getHWEUI();
+  getHWEUIAndFirmVer();
 
   if (isLoraHWEuiInitialized) {
     for (uint8_t i = 0; i < sizeof(loraHWEui); i++) {
@@ -1583,3 +1653,4 @@ void setDevAddrOrEUItoHWEUI()
     }
   }
 }
+

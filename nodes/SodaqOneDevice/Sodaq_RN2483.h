@@ -118,6 +118,10 @@ public:
     // Returns the number of bytes written or 0 in case of error.
     uint8_t getHWEUI(uint8_t* buffer, uint8_t size);
 
+    // Gets the programmed Firmware version from the module.
+    // Returns the number of bytes written or 0 in case of error.
+    uint8_t getFirmVer(uint8_t* buffer, uint8_t size);
+
 #ifdef ENABLE_SLEEP
     void wakeUp();
 
