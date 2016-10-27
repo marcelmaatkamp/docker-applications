@@ -16,7 +16,7 @@ require_once("verysimple/HTTP/RequestUtil.php");
 
 /** database connection settings */
 GlobalConfig::$CONNECTION_SETTING = new ConnectionSetting();
-GlobalConfig::$CONNECTION_SETTING->ConnectionString = "mysql:3307";
+GlobalConfig::$CONNECTION_SETTING->ConnectionString = "mysql:3306";
 GlobalConfig::$CONNECTION_SETTING->Host = "mysql";
 GlobalConfig::$CONNECTION_SETTING->Port = "3306";
 GlobalConfig::$CONNECTION_SETTING->DBName = "showcase";
