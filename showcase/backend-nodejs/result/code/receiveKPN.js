@@ -20,6 +20,7 @@ var ReceiveKPN = (function () {
             var rawPayload = new Buffer(msg.payload_hex, "hex");
             var payload = decodeProtobuf_1.default(rawPayload);
             var metadata = [{
+                    rssi: Number(msg.LrrRSSI),
                     server_time: new Date(msg.Time).toISOString(),
                     longitude: Number(msg.LrrLON),
                     latitude: Number(msg.LrrLAT)

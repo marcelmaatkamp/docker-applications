@@ -17,7 +17,7 @@ var ReceiveKPN = (function () {
             ttnMQTT.subscribe("#");
         });
         ttnMQTT.on("message", function (topic, message) {
-            winston.debug("TTN message received.");
+            winston.debug("TTN message received.", message);
             _this.messageConsumerMQTT(topic, message);
         });
     }

@@ -89,8 +89,8 @@ var DecodeToObservations = (function () {
             var observation = {
                 nodeId: nodeId,
                 sensorId: 0,
-                sensorValue: 1,
-                sensorValueType: "alive",
+                sensorValue: message.metadata[0].rssi,
+                sensorValueType: "db",
                 sensorError: 0,
                 timestamp: timestamp
             };

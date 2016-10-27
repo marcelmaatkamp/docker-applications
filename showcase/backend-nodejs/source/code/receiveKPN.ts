@@ -52,6 +52,7 @@ export default class ReceiveKPN {
       var payload = decodeProtoBuf(rawPayload);
 
       var metadata: [iot.Metadata] = [{
+        rssi: Number(msg.LrrRSSI),
         server_time: new Date(msg.Time).toISOString(),
         longitude: Number(msg.LrrLON),
         latitude: Number(msg.LrrLAT)
