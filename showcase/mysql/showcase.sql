@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `alarm_notificatie` (
 -- Dumping data for table `alarm_notificatie`
 --
 
-INSERT INTO `alarm_notificatie` (`id`, `alarm_regel`, `kanaal`, `p1`, `p2`, `p3`, `p4`, `meldingtekst`) VALUES (1,1,'RabbitMQ','AT','OT','','','Temp is hier dan 80%'),(2,3,'rabbitmq','OT','AT','','','humidity > 95'),(3,5,'slack','koffer_1',NULL,NULL,NULL,'TEST: Temperatuur te hoog'),(4,6,'slack','koffer_1',NULL,NULL,NULL,'TEST: Temperatuur te laag'),(5,7,'slack','koffer_1',NULL,NULL,NULL,'TEST: Al 10 seconden geen heartbeat ontvangen'),(6,8,'slack','koffer_1',NULL,NULL,NULL,'TEST: Deksel dicht'),(7,9,'slack','koffer_1',NULL,NULL,NULL,'TEST: Deksel open'),(8,10,'slack','koffer_1','','','','Er staat een paard in de gang'),(9,11,'slack','koffer_1','','','','koffer 1 open'),(10,12,'slack','koffer_1','','','','koffer 1 dicht'),(11,11,'telegram','','','','','koffer is open dicht test'),(12,13,'slack','koffer_1','','','','Koffer danst'),(13,16,'slack','koffer_kpn','','','','Deurtje open via KPN');
+INSERT INTO `alarm_notificatie` (`id`, `alarm_regel`, `kanaal`, `p1`, `p2`, `p3`, `p4`, `meldingtekst`) VALUES (1,1,'RabbitMQ','AT','OT','','','Temp is hier dan 80%'),(2,3,'rabbitmq','OT','AT','','','humidity > 95'),(3,5,'slack','koffer_1',NULL,NULL,NULL,'TEST: Temperatuur te hoog: %v %t'),(4,6,'slack','koffer_1',NULL,NULL,NULL,'TEST: Temperatuur te laag: %v %t'),(5,7,'slack','koffer_1',NULL,NULL,NULL,'TEST: Al 10 seconden geen heartbeat ontvangen'),(6,8,'slack','koffer_1',NULL,NULL,NULL,'TEST: Deksel dicht'),(7,9,'slack','koffer_1',NULL,NULL,NULL,'TEST: Deksel open'),(8,10,'slack','koffer_1','','','','Er staat een paard in de gang'),(9,11,'slack','koffer_1','','','','koffer 1 open'),(10,12,'slack','koffer_1','','','','koffer 1 dicht'),(11,11,'telegram','','','','','koffer is open dicht test'),(12,13,'slack','koffer_1','','','','Koffer danst'),(13,16,'slack','koffer_kpn','','','','Deurtje open via KPN');
 
 --
 -- Table structure for table `alarm_regel`
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `alarm_regel` (
 -- Dumping data for table `alarm_regel`
 --
 
-INSERT INTO `alarm_regel` (`id`, `node`, `sensor`, `alarm_trigger`) VALUES (1,'00000000D1EC2A39','1','X > 80'),(2,'00000000D1EC2A39','2','X > 90'),(3,'00000000D1EC2A39','2','X > 95'),(4,'000000007FEE6E5B','1','true'),(5,'00000000D1EC2A39','2','x>75'),(6,'00000000D1EC2A39','2','x<5'),(7,'00000000D1EC2A39','0','10'),(8,'00000000D1EC2A39','1','x == 0'),(9,'00000000D1EC2A39','1','x == 1'),(10,'00000TEST','2','X > 90'),(11,'000000007FEE6E5B','1','x == 0'),(12,'000000007FEE6E5B','1','x == 1'),(13,'000000007FEE6E5B','7','x == 1'),(15,'000000007FEE6E5B','2','X > 240'),(16,'0059AC000018041B','1','x == 1');
+INSERT INTO `alarm_regel` (`id`, `node`, `sensor`, `alarm_trigger`) VALUES (1,'00000000D1EC2A39','1','X > 80'),(2,'00000000D1EC2A39','2','x > 90'),(3,'00000000D1EC2A39','2','x > 95'),(4,'000000007FEE6E5B','1','true'),(5,'00000000D1EC2A39','2','x>75'),(6,'00000000D1EC2A39','2','x < 5'),(7,'00000000D1EC2A39','0','10'),(8,'00000000D1EC2A39','1','x == 0'),(9,'00000000D1EC2A39','1','x == 1'),(10,'00000TEST','2','X > 90'),(11,'000000007FEE6E5B','1','x == 0'),(12,'000000007FEE6E5B','1','x == 1'),(13,'000000007FEE6E5B','7','x == 1'),(15,'000000007FEE6E5B','2','x > 240'),(16,'0059AC000018041B','1','x == 1');
 
 --
 -- Temporary view structure for view `alarm_report`
@@ -100,7 +100,7 @@ INSERT INTO `alarm_regel` (`id`, `node`, `sensor`, `alarm_trigger`) VALUES (1,'0
 
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE VIEW `alarm_report` AS SELECT 
+/*!50001 CREATE VIEW `alarm_report` AS SELECT
  1 AS `Id`,
  1 AS `Node`,
  1 AS `Sensor`,
@@ -115,7 +115,7 @@ SET character_set_client = @saved_cs_client;
 
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE VIEW `laatste_observatie_per_node_sensor` AS SELECT 
+/*!50001 CREATE VIEW `laatste_observatie_per_node_sensor` AS SELECT
  1 AS `ObservatieId`,
  1 AS `Node`,
  1 AS `Sensor`,
@@ -211,7 +211,7 @@ CREATE TABLE IF NOT EXISTS `sensor` (
 -- Dumping data for table `sensor`
 --
 
-INSERT INTO `sensor` (`sensor_id`, `omschrijving`, `eenheid`, `omrekenfactor`, `presentatie`) VALUES ('-1','Skipped message',NULL,NULL,NULL),('0','Keepalive',NULL,NULL,NULL),('1','Schakelaar',NULL,NULL,NULL),('2','Temperatuur','C','/10',''),('3','Luchtvochtigheid','%','',''),('4','Spanning','V','/1000',''),('5','Stroom','A','/1000',''),('6','Verbruik','uA/h','',''),('7','Beweging','(1=beweging)','',''),('8','Retry Counter',NULL,NULL,NULL);
+INSERT INTO `sensor` (`sensor_id`, `omschrijving`, `eenheid`, `omrekenfactor`, `presentatie`) VALUES ('-1','Skipped message',NULL,NULL,NULL),('0','Keepalive',NULL,NULL,NULL),('1','Schakelaar',NULL,NULL,NULL),('2','Temperatuur','C','x/10',''),('3','Luchtvochtigheid','%','',''),('4','Spanning','V','x/1000',''),('5','Stroom','A','x/1000',''),('6','Verbruik','uA/h','',''),('7','Beweging','(1=beweging)','',''),('8','Retry Counter',NULL,NULL,NULL);
 
 --
 -- Temporary view structure for view `sensor_node_observation`
@@ -219,7 +219,7 @@ INSERT INTO `sensor` (`sensor_id`, `omschrijving`, `eenheid`, `omrekenfactor`, `
 
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE VIEW `sensor_node_observation` AS SELECT 
+/*!50001 CREATE VIEW `sensor_node_observation` AS SELECT
  1 AS `Node`,
  1 AS `DevEui`,
  1 AS `Sensor`,

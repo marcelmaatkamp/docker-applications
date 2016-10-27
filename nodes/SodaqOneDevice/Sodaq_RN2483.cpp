@@ -218,6 +218,39 @@ uint8_t Sodaq_RN2483::getHWEUI(uint8_t* buffer, uint8_t size)
     return 0;
 }
 
+// Gets the programmed Firmware version from the module.
+// Returns the number of bytes written or 0 in case of error.
+uint8_t Sodaq_RN2483::getFirmVer(uint8_t* buffer, uint8_t size)
+{
+    debugPrintLn("[getFirmVer]");
+
+    this->loraStream->print(STR_CMD_GET_VER);
+    this->loraStream->print(CRLF);
+
+    // TODO move to general "read hex" method
+    uint8_t outputIndex = 0;
+
+    unsigned long start = millis();
+    while (millis() < start + DEFAULT_TIMEOUT) {
+        sodaq_wdt_reset();
+        debugPrint(".");
+
+        if (readLn() > 0) {
+            debugPrintLn(this->inputBuffer);
+            while (outputIndex < size) {
+                buffer[outputIndex] = this->inputBuffer[outputIndex];
+                outputIndex++;
+            }
+
+            debugPrint("[getFirmVer] count: "); debugPrintLn(outputIndex);
+            return outputIndex;
+        }
+    }
+
+    debugPrint("[getFirmVer] Timed out without a response!");
+    return 0;
+}
+
 #ifdef ENABLE_SLEEP
 
 void Sodaq_RN2483::wakeUp()

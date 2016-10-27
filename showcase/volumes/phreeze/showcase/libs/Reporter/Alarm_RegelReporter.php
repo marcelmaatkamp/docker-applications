@@ -24,7 +24,9 @@ class Alarm_RegelReporter extends Reporter
 
 	public $Id;
 	public $Node;
+	public $NodeAlias;
 	public $Sensor;
+	public $SensorOmschrijving;
 	public $AlarmTrigger;
 
 	/*
@@ -38,12 +40,16 @@ class Alarm_RegelReporter extends Reporter
 	static function GetCustomQuery($criteria)
 	{
 		$sql = "select
-			'custom value here...' as CustomFieldExample
-			,`alarm_regel`.`id` as Id
+			`alarm_regel`.`id` as Id
 			,`alarm_regel`.`node` as Node
+			,`node`.`alias` as NodeAlias
 			,`alarm_regel`.`sensor` as Sensor
+			,`sensor`.`omschrijving` as SensorOmschrijving
 			,`alarm_regel`.`alarm_trigger` as AlarmTrigger
-		from `alarm_regel`";
+		from `alarm_regel`
+		inner join node on node.dev_eui = alarm_regel.node
+		inner join sensor on sensor.sensor_id = alarm_regel.sensor";
+	
 
 		// the criteria can be used or you can write your own custom logic.
 		// be sure to escape any user input with $criteria->Escape()
@@ -64,7 +70,9 @@ class Alarm_RegelReporter extends Reporter
 	*/
 	static function GetCustomCountQuery($criteria)
 	{
-		$sql = "select count(1) as counter from `alarm_regel`";
+		$sql = "select count(1) as counter from `alarm_regel`
+		inner join node on node.dev_eui = alarm_regel.node
+		inner join sensor on sensor.sensor_id = alarm_regel.sensor";
 
 		// the criteria can be used or you can write your own custom logic.
 		// be sure to escape any user input with $criteria->Escape()

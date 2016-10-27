@@ -20,7 +20,7 @@ require_once("Model/User.php");
 class AppBaseController extends Controller
 {
 
-	static $DEFAULT_PAGE_SIZE = 10;
+	static $DEFAULT_PAGE_SIZE = 15;
 
 	/**
 	 * Init is called by the base controller before the action method

@@ -21,7 +21,7 @@
 <div class="container">
 
 <h1>
-	<i class="icon-th-list"></i> Laatste_Observaties
+	<i class="icon-th-list"></i> Laatste Observaties Per Node/Sensor
 	<span id=loader class="loader progress progress-striped active"><span class="bar"></span></span>
 	<span class='input-append pull-right searchContainer'>
 		<input id='filter' type="text" placeholder="Search..." />
@@ -29,8 +29,121 @@
 	</span>
 </h1>
 
+
+
+<script type="text/template" id="FilterNodeTemplate">	
+	
+	<select id=FilterNode>
+		<option value="" disabled selected hidden>Filter Node...</option>
+		<option value="">-- Verwijder Filter --</option>
 	
 	
+<?php
+
+				
+
+$db = new mysqli(
+GlobalConfig::$CONNECTION_SETTING->Host, 
+GlobalConfig::$CONNECTION_SETTING->Username,
+GlobalConfig::$CONNECTION_SETTING->Password,
+GlobalConfig::$CONNECTION_SETTING->DBName,
+GlobalConfig::$CONNECTION_SETTING->Port);
+
+
+if($db->connect_errno > 0){
+    die('Unable to connect to database [' . $db->connect_error . ']');
+}
+
+
+$sql = "select distinct `node`.`dev_eui`, `node`.`alias` as NodeAlias
+		from `observatie`
+		inner join node on node.dev_eui = observatie.node
+		inner join sensor on sensor.sensor_id = observatie.sensor
+        having NodeAlias is not null and NodeAlias != ''";
+
+
+if(!$result = $db->query($sql)){
+    die('There was an error running the query [' . $db->error . ']');
+}
+
+while($row = $result->fetch_assoc()){
+    echo '<option>' . $row['NodeAlias'] . '</option>';
+}
+
+mysqli_close($db);
+
+?>
+				
+	
+		</select>
+	</script>
+	
+
+<script type="text/template" id="FilterSensorTemplate">		
+	
+		<select id=FilterSensor>
+		<option value="" disabled selected hidden>Filter Sensor...</option>
+		<option value="">-- Verwijder Filter --</option>
+		<?php
+
+				
+
+$db = new mysqli(
+GlobalConfig::$CONNECTION_SETTING->Host, 
+GlobalConfig::$CONNECTION_SETTING->Username,
+GlobalConfig::$CONNECTION_SETTING->Password,
+GlobalConfig::$CONNECTION_SETTING->DBName,
+GlobalConfig::$CONNECTION_SETTING->Port);
+
+
+if($db->connect_errno > 0){
+    die('Unable to connect to database [' . $db->connect_error . ']');
+}
+
+
+$sql = "select distinct `sensor`.`omschrijving` as SensorOmschrijving
+		from `observatie`
+		inner join node on node.dev_eui = observatie.node
+		inner join sensor on sensor.sensor_id = observatie.sensor
+        having SensorOmschrijving is not null and SensorOmschrijving != ''";
+
+
+if(!$result = $db->query($sql)){
+    die('There was an error running the query [' . $db->error . ']');
+}
+
+while($row = $result->fetch_assoc()){
+    echo '<option>' . $row['SensorOmschrijving'] . '</option>';
+}
+
+mysqli_close($db);
+
+?>
+		</select>
+	</script>
+
+
+	<table>
+	<thead>
+	
+	<h4>Filters</h4>	
+
+	</thead>
+		<tbody>
+	<tr>
+	<td><div id="FilterNodeTemplateContainer" class="collectionContainer"></div></td>
+	<td><input type="text" id="FilterNodeDisplay" placeholder="-Geen Filter-"></td>
+	
+	</tr>
+	
+	<tr>
+	<td><div id="FilterSensorTemplateContainer" class="collectionContainer"></div></td>
+	<td><input type="text" id="FilterSensorDisplay" placeholder="-Geen Filter-"></td>
+	
+	</tr>
+	</tbody>
+	</table>
+		<br>
 	
 
 	<!-- underscore template for the collection -->
@@ -112,11 +225,9 @@
 				</div>
 			</fieldset>
 		</form>
-
-	
-	
 		
 		<!-- delete button is is a separate form to prevent enter key from triggering a delete -->
+		<!-- Disable delete
 		<form id="deleteLaatste_ObservatieButtonContainer" class="form-horizontal" onsubmit="return false;">
 			<fieldset>
 				<div class="control-group">
@@ -131,14 +242,18 @@
 				</div>
 			</fieldset>
 		</form>
+		
+		 -->
+		 
 	</script>
 
 	<!-- modal edit dialog -->
+	
 	<div class="modal hide fade" id="laatste_ObservatieDetailDialog">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">&times;</a>
 			<h3>
-				<i class="icon-edit"></i> Edit Laatste_Observatie
+				<i class="icon-edit"></i> Laatste Observatie
 				<span id="modelLoader" class="loader progress progress-striped active"><span class="bar"></span></span>
 			</h3>
 		</div>
@@ -146,21 +261,25 @@
 			<div id="modelAlert"></div>
 			<div id="laatste_ObservatieModelContainer"></div>
 		</div>
+		<!-- Disable Cancel/Save
 		<div class="modal-footer">
 			<button class="btn" data-dismiss="modal" >Cancel</button>
 			<button id="saveLaatste_ObservatieButton" class="btn btn-primary">Save Changes</button>
 		</div>
+		-->
 	</div>
-
+	
 	<div id="collectionAlert"></div>
 	
 	<div id="laatste_ObservatieCollectionContainer" class="collectionContainer">
 	</div>
-
+	
+	<!-- Disable Add
 	<p id="newButtonContainer" class="buttonContainer">
 		<button id="newLaatste_ObservatieButton" class="btn btn-primary">Add Laatste_Observatie</button>
 	</p>
-
+	-->
+	
 </div> <!-- /container -->
 
 <?php

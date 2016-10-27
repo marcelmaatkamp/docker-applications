@@ -170,6 +170,9 @@ model.Alarm_NotificatieModel = Backbone.Model.extend({
 	p3: '',
 	p4: '',
 	meldingtekst: '',
+	sensorOmschrijving: '',
+	nodeAlias: '',
+	alarmTrigger: '',
 	defaults: {
 		'id': null,
 		'alarmRegel': '',
@@ -198,7 +201,9 @@ model.Alarm_RegelModel = Backbone.Model.extend({
 	idAttribute: 'id',
 	id: '',
 	node: '',
+	nodeAlias: '',
 	sensor: '',
+	sensorOmschrijving: '',
 	alarmTrigger: '',
 	defaults: {
 		'id': null,
@@ -282,9 +287,11 @@ model.NodeModel = Backbone.Model.extend({
 	idAttribute: 'devEui',
 	devEui: '',
 	omschrijving: '',
+	alias: '',
 	defaults: {
 		'devEui': null,
-		'omschrijving': ''
+		'omschrijving': '',
+		'alias': ''
 	}
 });
 
@@ -304,7 +311,9 @@ model.ObservatieModel = Backbone.Model.extend({
 	idAttribute: 'id',
 	id: '',
 	node: '',
+	NodeAlias: '',
 	sensor: '',
+	SensorOmschrijving: '',
 	datumTijdAangemaakt: '',
 	waarde: '',
 	defaults: {

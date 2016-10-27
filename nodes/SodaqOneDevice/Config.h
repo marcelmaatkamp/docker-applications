@@ -51,10 +51,15 @@ struct ConfigParams
 
     uint8_t _isLedEnabled;
     uint8_t _isOtaaEnabled;
+    uint8_t _isGpsEnabled;
+    uint8_t _isAckEnabled;
+    uint8_t _isDebEnabled;
     
     char _devAddrOrEUI[16 + 1];
     char _appSKeyOrEUI[32 + 1];
     char _nwSKeyOrAppKey[32 + 1];
+
+    uint32_t _chargeOffset;
 
     uint8_t _coordinateUploadCount;
     uint8_t _repeatCount;
@@ -80,11 +85,17 @@ public:
 
     uint8_t getIsLedEnabled() const { return _isLedEnabled; }
     uint8_t getIsOtaaEnabled() const { return _isOtaaEnabled; }
+    uint8_t getIsGpsEnabled() const { return _isGpsEnabled; }
+    uint8_t getIsAckEnabled() const { return _isAckEnabled; }
+    uint8_t getIsDebugEnabled() const { return _isDebEnabled; }
     
     const char* getDevAddrOrEUI() const { return _devAddrOrEUI; }
     const char* getAppSKeyOrEUI() const { return _appSKeyOrEUI; }
     const char* getNwSKeyOrAppKey() const { return _nwSKeyOrAppKey; }
 
+    uint32_t getChargeOffset() const { return _chargeOffset; }
+    void     setChargeOffset(uint32_t offset) { _chargeOffset = offset; }
+    
     uint8_t getCoordinateUploadCount() const { return _coordinateUploadCount; }
     uint8_t getRepeatCount() const { return _repeatCount; }
 

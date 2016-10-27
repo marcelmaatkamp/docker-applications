@@ -1,0 +1,14 @@
+{
+  "globalDependencies": {
+    "bluebird": "registry:dt/bluebird#3.0.0+20160928162057",
+    "chai": "registry:dt/chai#3.4.0+20160601211834",
+    "form-data": "registry:dt/form-data#0.0.0+20160724024111",
+    "mocha": "registry:dt/mocha#2.2.5+20160720003353",
+    "mqtt": "registry:dt/mqtt#0.0.0+20160317120654",
+    "mysql": "registry:dt/mysql#0.0.0+20160316155526",
+    "node": "registry:dt/node#6.0.0+20161010101523",
+    "node-slack": "registry:dt/node-slack#0.0.0+20160316155526",
+    "request": "registry:dt/request#0.0.0+20160726020908",
+    "winston": "registry:dt/winston#0.0.0+20161006194546"
+  }
+}

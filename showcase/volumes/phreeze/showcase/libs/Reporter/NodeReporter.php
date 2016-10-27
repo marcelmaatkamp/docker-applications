@@ -24,7 +24,7 @@ class NodeReporter extends Reporter
 
 	public $DevEui;
 	public $Omschrijving;
-
+	public $Alias;
 	/*
 	* GetCustomQuery returns a fully formed SQL statement.  The result columns
 	* must match with the properties of this reporter object.
