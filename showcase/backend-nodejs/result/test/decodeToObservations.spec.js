@@ -170,6 +170,7 @@ var decodeTestMessage1 = {
     counter: 1,
     dev_eui: "0059AC000018041B",
     metadata: [{
+            rssi: -119,
             server_time: "2016-10-03T13:30:10.829Z",
             longitude: 5.304723,
             latitude: 52.085842
@@ -194,6 +195,7 @@ var decodeTestMessage2 = {
     counter: 2,
     dev_eui: "0059AC000018041B",
     metadata: [{
+            rssi: -119,
             server_time: "2016-10-03T13:31:10.829Z",
             longitude: 5.304723,
             latitude: 52.085842
@@ -218,6 +220,7 @@ var decodeTestMessage3 = {
     counter: 3,
     dev_eui: "0059AC000018041B",
     metadata: [{
+            rssi: -119,
             server_time: "2016-10-03T13:32:10.829Z",
             longitude: 5.304723,
             latitude: 52.085842
@@ -226,8 +229,8 @@ var decodeTestMessage3 = {
 var decodeExpectedResult1 = {
     nodeId: "0059AC000018041B",
     sensorId: 0,
-    sensorValue: 1,
-    sensorValueType: "alive",
+    sensorValue: -119,
+    sensorValueType: "db",
     sensorError: 0,
     timestamp: "2016-10-03T13:30:10.829Z"
 };
@@ -242,8 +245,8 @@ var decodeExpectedResult2 = {
 var decodeExpectedResult3 = {
     nodeId: "0059AC000018041B",
     sensorId: 0,
-    sensorValue: 1,
-    sensorValueType: "alive",
+    sensorValue: -119,
+    sensorValueType: "db",
     sensorError: 0,
     timestamp: "2016-10-03T13:31:10.829Z"
 };
@@ -258,8 +261,8 @@ var decodeExpectedResult4 = {
 var decodeExpectedResult5 = {
     nodeId: "0059AC000018041B",
     sensorId: 0,
-    sensorValue: 1,
-    sensorValueType: "alive",
+    sensorValue: -119,
+    sensorValueType: "db",
     sensorError: 0,
     timestamp: "2016-10-03T13:32:10.829Z"
 };

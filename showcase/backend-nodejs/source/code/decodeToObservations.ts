@@ -57,7 +57,7 @@ export default class DecodeToObservations {
     });
   }
 
-  private messageConsumerDecode(message) {
+  private messageConsumerDecode(message: iot.Message) {
     try {
       // decode all readings to observations
 
@@ -101,8 +101,8 @@ export default class DecodeToObservations {
       let observation: iot.SensorObservation = {
         nodeId: nodeId,
         sensorId: 0,
-        sensorValue: 1,
-        sensorValueType: "alive",
+        sensorValue: message.metadata[0].rssi,
+        sensorValueType: "db",
         sensorError: 0,
         timestamp: timestamp
       };

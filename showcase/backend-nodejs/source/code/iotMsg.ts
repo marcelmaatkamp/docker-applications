@@ -80,7 +80,7 @@ export declare interface Metadata {
   gateway_timestamp?: number;
   channel?: number;
   server_time: string; // ISO timestring
-  rssi?: number;
+  rssi: number;
   lsnr?: number;
   crc?: number;
   modulation?: number;
