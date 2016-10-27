@@ -26,6 +26,7 @@
     "safe-eval": "^0.3.0",
     "winston": "^2.2.0",
     "winston-graylog2": "^0.5.1"
+    "twilio": "^2.11.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
