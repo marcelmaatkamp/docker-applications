@@ -6,13 +6,12 @@
 "use strict";
 var winston = require("winston");
 var ProcessNotificationSMS = (function () {
-    function ProcessNotificationSMS(receiver, sender) {
+    function ProcessNotificationSMS(receiver, sender, client, fromPhone) {
         var _this = this;
         this.receiver = receiver;
         this.sender = sender;
-        var accountSid = 'AC600a293801150c7c3af3a5747a3ba4ae';
-        var authToken = 'ad1f82c56f5b9f048e72558ae984edf8';
-        this.client = require('twilio')(accountSid, authToken);
+        this.client = client;
+        this.fromPhone = fromPhone;
         receiver.startConsumer(function (msg) {
             _this.processNotification(msg);
         });
@@ -25,20 +24,20 @@ var ProcessNotificationSMS = (function () {
     };
     ProcessNotificationSMS.prototype.sendNotification = function (notification) {
         var _this = this;
-        this.client.messages.create({
+        this.client.sendMessage({
             to: notification.p1,
-            from: "+19787124065",
+            from: this.fromPhone,
             body: notification.meldingtekst,
-        }, function (err, message) {
-            console.log("error: " + JSON.stringify(err) + ", " + JSON.stringify(message));
-        }).then(function () {
-            winston.info("Message sent to SMS.");
-            if (_this.sender) {
-                _this.sender.send(notification.meldingtekst);
+        }, function (err, responseData) {
+            if (err) {
+                winston.error("error sending SMS message with twilio: " + err.message, err);
             }
-        })
-            .catch(function (err) {
-            winston.error("error sending telegram message: " + err.message, err);
+            else {
+                winston.info("Message sent to SMS.", responseData);
+                if (_this.sender) {
+                    _this.sender.send(notification.meldingtekst);
+                }
+            }
         });
     };
     return ProcessNotificationSMS;

@@ -9,16 +9,15 @@ import * as iot from "./iotMsg";
 
 export default class ProcessNotificationSMS {
   receiver: iot.ReceiveMessages;
-  sender: iot.SendMessages;  
-  client: any; 
+  sender: iot.SendMessages;
+  client: any;
+  fromPhone: string;
 
-  constructor(receiver: iot.ReceiveMessages, sender: iot.SendMessages | null) {
+  constructor(receiver: iot.ReceiveMessages, sender: iot.SendMessages | null, client: any, fromPhone: string) {
     this.receiver = receiver;
     this.sender = sender;
-
-    var accountSid = 'AC600a293801150c7c3af3a5747a3ba4ae';
-    var authToken = 'ad1f82c56f5b9f048e72558ae984edf8';
-    this.client = require('twilio')(accountSid, authToken);
+    this.client = client;
+    this.fromPhone = fromPhone;
 
     receiver.startConsumer((msg) => {
       this.processNotification(msg);
@@ -33,22 +32,19 @@ export default class ProcessNotificationSMS {
   }
 
   private sendNotification(notification: iot.AlertNotification) {
-
-
-    this.client.messages.create({
+    this.client.sendMessage({
         to:   notification.p1,
-        from: "+19787124065",
+        from: this.fromPhone,
         body:  notification.meldingtekst,
-    }, function(err, message) {
-        console.log("error: " + JSON.stringify(err) + ", " + JSON.stringify(message));
-    }).then(() => {
-        winston.info("Message sent to SMS.");
+    }, (err, responseData) => {
+      if(err) {
+        winston.error("error sending SMS message with twilio: " + err.message, err);
+      } else {
+        winston.info("Message sent to SMS.", responseData);
         if (this.sender) {
           this.sender.send(notification.meldingtekst);
         }
-      })
-      .catch((err) => {
-        winston.error("error sending telegram message: " + err.message, err);
-      });
+      }
+    });
   }
 }

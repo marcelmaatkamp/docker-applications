@@ -125,6 +125,13 @@ var telegramBotToken = process.env.SHOWCASE_TELEGRAM_TOKEN ||
   "292441232:AAHS3zE8dyJWRUCx29bLx-MOwWEpimRt0mk";
 var telegramBot = new TelegramBot(telegramBotToken);
 
+// create twilio connection
+var twilioAccountSid = process.env.SHOWCASE_TWILIO_SID || "AC600a293801150c7c3af3a5747a3ba4ae";
+var twilioAuthToken = process.env.SHOWCASE_TWILIO_TOKEN || "ad1f82c56f5b9f048e72558ae984edf8";
+var twilioFromPhone = process.env.SHOWCASE_TWILIO_FROM_PHONE || "+19787124065";
+
+var twilioClient = require("twilio")(twilioAccountSid, twilioAuthToken);
+
 // declare amqp exchange names
 var ttnAmqp = new iot.AmqpInOut({
   out: process.env.SHOWCASE_AMQP_TTN_EXCHANGE_OUT || "showcase.ttn_message"
@@ -176,4 +183,4 @@ new ProcessAlert(alertAmqp.receive, alertAmqp.send, mysqlDb);
 new LogAlert(alertlogLogAmqp.receive, alertlogLogAmqp.send, mysqlDb);
 new ProcessNotificationSlack(notificationSlackAmqp.receive, notificationSlackAmqp.send, slackBot);
 new ProcessNotificationTelegram(notificationTelegramAmqp.receive, notificationTelegramAmqp.send, telegramBot);
-new ProcessNotificationSMS(notificationSMSAmqp.receive, notificationSMSAmqp.send);
+new ProcessNotificationSMS(notificationSMSAmqp.receive, notificationSMSAmqp.send, twilioClient, twilioFromPhone);
