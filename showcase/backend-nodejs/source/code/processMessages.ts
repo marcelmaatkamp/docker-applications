@@ -20,6 +20,7 @@ import ProcessAlert from "./processAlert";
 import LogAlert from "./logAlert";
 import ProcessNotificationSlack from "./processNotificationSlack";
 import ProcessNotificationTelegram from "./processNotificationTelegram";
+import ProcessNotificationSMS from "./processNotificationSMS";
 
 // define log settings
 const logToGrayLog = process.env.SHOWCASE_GRAYLOG || false;
@@ -157,8 +158,12 @@ var notificationSlackAmqp = new iot.AmqpInOut({
   out: process.env.SHOWCASE_AMQP_SLACK_EXCHANGE_OUT || "showcase.notification_sent_slack"
 });
 var notificationTelegramAmqp = new iot.AmqpInOut({
-  in: process.env.SHOWCASE_AMQP_TELKEGRAM_EXCHANGE_IN || alertAmqp.outExchange,
+  in: process.env.SHOWCASE_AMQP_TELEGRAM_EXCHANGE_IN || alertAmqp.outExchange,
   out: process.env.SHOWCASE_AMQP_TELEGRAM_EXCHANGE_OUT || "showcase.notification_sent_telegram"
+});
+var notificationSMSAmqp = new iot.AmqpInOut({
+  in: process.env.SHOWCASE_AMQP_SMS_EXCHANGE_IN || alertAmqp.outExchange,
+  out: process.env.SHOWCASE_AMQP_SMS_EXCHANGE_OUT || "showcase.notification_sent_sms"
 });
 
 // create and start the message processing elements
@@ -171,3 +176,4 @@ new ProcessAlert(alertAmqp.receive, alertAmqp.send, mysqlDb);
 new LogAlert(alertlogLogAmqp.receive, alertlogLogAmqp.send, mysqlDb);
 new ProcessNotificationSlack(notificationSlackAmqp.receive, notificationSlackAmqp.send, slackBot);
 new ProcessNotificationTelegram(notificationTelegramAmqp.receive, notificationTelegramAmqp.send, telegramBot);
+new ProcessNotificationSMS(notificationSMSAmqp.receive, notificationSMSAmqp.send);
