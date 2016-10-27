@@ -52,6 +52,17 @@ class Laatste_ObservatieController extends AppBaseController
 		{
 			$criteria = new Laatste_ObservatieCriteria();
 			$criteria->SetOrder('Node',true);
+				
+			$filternode = RequestUtil::Get('FilterNode');
+			$filtersensor = RequestUtil::Get('FilterSensor');
+			
+			if ($filternode) $criteria->AddFilter(
+				new CriteriaFilter('Node', '%'.$filternode.'%')
+			);
+			
+			if ($filtersensor) $criteria->AddFilter(
+				new CriteriaFilter('Sensor', '%'.$filtersensor.'%')
+			);
 			
 			//observer not working
 			//$observer = new ObserveToBrowser();

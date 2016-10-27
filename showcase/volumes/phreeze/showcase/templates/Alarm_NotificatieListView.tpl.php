@@ -21,7 +21,7 @@
 <div class="container">
 
 <h1>
-	<i class="icon-th-list"></i> Alarm_Notificaties
+	<i class="icon-th-list"></i> Alarm Notificaties
 	<span id=loader class="loader progress progress-striped active"><span class="bar"></span></span>
 	<span class='input-append pull-right searchContainer'>
 		<input id='filter' type="text" placeholder="Search..." />
@@ -29,36 +29,169 @@
 	</span>
 </h1>
 
+	<script type="text/template" id="FilterNodeTemplate">	
+	
+	<select id=FilterNode>
+		<option value="" disabled selected hidden>Filter Node...</option>
+		<option value="">-- Verwijder Filter --</option>
+	
+				
+				
+				
+<?php
+
+				
+
+$db = new mysqli(
+GlobalConfig::$CONNECTION_SETTING->Host, 
+GlobalConfig::$CONNECTION_SETTING->Username,
+GlobalConfig::$CONNECTION_SETTING->Password,
+GlobalConfig::$CONNECTION_SETTING->DBName,
+GlobalConfig::$CONNECTION_SETTING->Port);
+
+
+if($db->connect_errno > 0){
+    die('Unable to connect to database [' . $db->connect_error . ']');
+}
+
+
+$sql = "select distinct
+			`node`.`alias` as NodeAlias
+			from `alarm_notificatie`
+		inner join alarm_regel on alarm_regel.id = alarm_notificatie.alarm_regel
+        inner join node on node.dev_eui = alarm_regel.node
+		inner join sensor on sensor.sensor_id = alarm_regel.sensor";
+
+
+if(!$result = $db->query($sql)){
+    die('There was an error running the query [' . $db->error . ']');
+}
+
+while($row = $result->fetch_assoc()){
+    echo '<option>' . $row['NodeAlias'] . '</option>';
+}
+
+mysqli_close($db);
+
+?>
+				
+	
+		</select>
+	</script>
+	
+
+<script type="text/template" id="FilterSensorTemplate">		
+	
+		<select id=FilterSensor>
+		<option value="" disabled selected hidden>Filter Sensor...</option>
+		<option value="">-- Verwijder Filter --</option>
+		<?php
+
+				
+
+$db = new mysqli(
+GlobalConfig::$CONNECTION_SETTING->Host, 
+GlobalConfig::$CONNECTION_SETTING->Username,
+GlobalConfig::$CONNECTION_SETTING->Password,
+GlobalConfig::$CONNECTION_SETTING->DBName,
+GlobalConfig::$CONNECTION_SETTING->Port);
+
+
+if($db->connect_errno > 0){
+    die('Unable to connect to database [' . $db->connect_error . ']');
+}
+
+
+$sql = "select distinct
+			`sensor`.`omschrijving` as SensorOmschrijving
+			from `alarm_notificatie`
+		inner join alarm_regel on alarm_regel.id = alarm_notificatie.alarm_regel
+        inner join node on node.dev_eui = alarm_regel.node
+		inner join sensor on sensor.sensor_id = alarm_regel.sensor";
+
+
+if(!$result = $db->query($sql)){
+    die('There was an error running the query [' . $db->error . ']');
+}
+
+while($row = $result->fetch_assoc()){
+    echo '<option>' . $row['SensorOmschrijving'] . '</option>';
+}
+
+mysqli_close($db);
+
+?>
+		</select>
+	</script>
+	
+	<table>
+	<h4>Filters</h4>	
+
+	</thead>
+	<tbody>
+	<tr>
+	<td><div id="FilterNodeTemplateContainer" class="collectionContainer"></div></td>
+	<td><input type="text" id="FilterNodeDisplay" placeholder="-Geen Filter-"></td>
+	
+	</tr>
+	
+	<tr>
+	<td><div id="FilterSensorTemplateContainer" class="collectionContainer"></div></td>
+	<td><input type="text" id="FilterSensorDisplay" placeholder="-Geen Filter-"></td>
+	
+	</tr>
+	</tbody>
+	</table>
+		<br>
+	
+	
+
+
+
 	<!-- underscore template for the collection -->
 	<script type="text/template" id="alarm_NotificatieCollectionTemplate">
 		<table class="collection table table-bordered table-hover">
 		<thead>
 			<tr>
-				<th id="header_Id">Id<% if (page.orderBy == 'Id') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_AlarmRegel">Alarm Regel<% if (page.orderBy == 'AlarmRegel') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				
+				
+				
+				<th id="header_AlarmRegel">Node<% if (page.orderBy == 'id') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_AlarmRegel">Node<% if (page.orderBy == 'nodeAlias') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_AlarmRegel">sensor<% if (page.orderBy == 'sensorOmschrijving') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_AlarmRegel">Trigger<% if (page.orderBy == 'alarmTrigger') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				
+				
 				<th id="header_Kanaal">Kanaal<% if (page.orderBy == 'Kanaal') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_P1">P1<% if (page.orderBy == 'P1') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_P2">P2<% if (page.orderBy == 'P2') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-<!-- UNCOMMENT TO SHOW ADDITIONAL COLUMNS
+
 				<th id="header_P3">P3<% if (page.orderBy == 'P3') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_P4">P4<% if (page.orderBy == 'P4') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_Meldingtekst">Meldingtekst<% if (page.orderBy == 'Meldingtekst') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
--->
+
 			</tr>
 		</thead>
 		<tbody>
 		<% items.each(function(item) { %>
 			<tr id="<%= _.escape(item.get('id')) %>">
-				<td><%= _.escape(item.get('id') || '') %></td>
-				<td><%= _.escape(item.get('alarmRegel') || '') %></td>
+			
+			<td><%= _.escape(item.get('id') || '') %></td>
+
+				
+					<td><%= _.escape(item.get('nodeAlias') || '') %></td>
+					<td><%= _.escape(item.get('sensorOmschrijving') || '') %></td>
+					<td><%= _.escape(item.get('alarmTrigger') || '') %></td>
+				
+				
 				<td><%= _.escape(item.get('kanaal') || '') %></td>
 				<td><%= _.escape(item.get('p1') || '') %></td>
 				<td><%= _.escape(item.get('p2') || '') %></td>
-<!-- UNCOMMENT TO SHOW ADDITIONAL COLUMNS
+
 				<td><%= _.escape(item.get('p3') || '') %></td>
 				<td><%= _.escape(item.get('p4') || '') %></td>
 				<td><%= _.escape(item.get('meldingtekst') || '') %></td>
--->
+
 			</tr>
 		<% }); %>
 		</tbody>
@@ -67,17 +200,18 @@
 		<%=  view.getPaginationHtml(page) %>
 	</script>
 
+	
 	<!-- underscore template for the model -->
 	<script type="text/template" id="alarm_NotificatieModelTemplate">
 		<form class="form-horizontal" onsubmit="return false;">
 			<fieldset>
-				<div id="idInputContainer" class="control-group">
+			<!--	<div id="idInputContainer" class="control-group">
 					<label class="control-label" for="id">Id</label>
 					<div class="controls inline-inputs">
 						<span class="input-xlarge uneditable-input" id="id"><%= _.escape(item.get('id') || '') %></span>
 						<span class="help-inline"></span>
 					</div>
-				</div>
+				</div>-->
 				<div id="alarmRegelInputContainer" class="control-group">
 					<label class="control-label" for="alarmRegel">Alarm Regel</label>
 					<div class="controls inline-inputs">
@@ -136,7 +270,7 @@
 				<div class="control-group">
 					<label class="control-label"></label>
 					<div class="controls">
-						<button id="deleteAlarm_NotificatieButton" class="btn btn-mini btn-danger"><i class="icon-trash icon-white"></i> Delete Alarm_Notificatie</button>
+						<button id="deleteAlarm_NotificatieButton" class="btn btn-mini btn-danger"><i class="icon-trash icon-white"></i> Delete Alarm Notificatie</button>
 						<span id="confirmDeleteAlarm_NotificatieContainer" class="hide">
 							<button id="cancelDeleteAlarm_NotificatieButton" class="btn btn-mini">Cancel</button>
 							<button id="confirmDeleteAlarm_NotificatieButton" class="btn btn-mini btn-danger">Confirm</button>
@@ -172,7 +306,7 @@
 	</div>
 
 	<p id="newButtonContainer" class="buttonContainer">
-		<button id="newAlarm_NotificatieButton" class="btn btn-primary">Add Alarm_Notificatie</button>
+		<button id="newAlarm_NotificatieButton" class="btn btn-primary">Add Alarm Notificatie</button>
 	</p>
 
 </div> <!-- /container -->

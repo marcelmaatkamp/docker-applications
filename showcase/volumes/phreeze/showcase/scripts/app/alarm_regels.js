@@ -58,12 +58,84 @@ var page = {
 			collection: page.alarm_Regels
 		});
 
+		
+					// initialize the collection view
+		this.collectionView = new view.CollectionView({
+			el: $("#FilterNodeTemplateContainer"),
+			templateEl: $("#FilterNodeTemplate"),
+			collection: page.alarm_Regels
+		});
+		
+		// initialize the collection view
+		this.collectionView = new view.CollectionView({
+			el: $("#FilterSensorTemplateContainer"),
+			templateEl: $("#FilterSensorTemplate"),
+			collection: page.alarm_Regels
+		});
+		
+
 		// initialize the search filter
 		$('#filter').change(function(obj) {
 			page.fetchParams.filter = $('#filter').val();
 			page.fetchParams.page = 1;
 			page.fetchAlarm_Regels(page.fetchParams);
 		});
+		
+		
+		
+		
+		
+		
+		// initialize the Node search filter
+		$(document).on('change','#FilterNode',function(){
+			
+			console.log("FilterNode Used");
+			page.fetchParams.FilterNode = $('#FilterNode').val();
+			page.fetchParams.page = 1;
+			page.fetchAlarm_Regels(page.fetchParams);
+			//console.log($('#FilterNode').val()+' used');
+					console.log("FilterNode Used");
+			
+			if ($('#FilterNode').val()){
+				$("#FilterNodeDisplay").val("Filter: "+$('#FilterNode').val());
+				$("#FilterNodeDisplay").css('color', 'red', 'important');
+			}
+			else{
+			//$("#FilterAliasDisplay").hide();	
+				$("#FilterNodeDisplay").val("-Geen Filter-");	
+				$("#FilterNodeDisplay").removeAttr('style');
+			}
+			
+		});
+		
+		// initialize the Sensor search filter
+		$(document).on('change','#FilterSensor',function(){
+			page.fetchParams.FilterSensor = $('#FilterSensor').val();
+			page.fetchParams.page = 1;
+			page.fetchAlarm_Regels(page.fetchParams);
+			
+			
+			if ($('#FilterSensor').val()){
+				$("#FilterSensorDisplay").val("Filter: "+$('#FilterSensor').val());
+				$("#FilterSensorDisplay").css('color', 'red', 'important');
+		
+			}
+			else{
+				$("#FilterSensorDisplay").val("-Geen Filter-");	
+				$("#FilterSensorDisplay").removeAttr('style');
+			}
+			
+		});
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		// make the rows clickable ('rendered' is a custom event, not a standard backbone event)
 		this.collectionView.on('rendered',function(){
@@ -233,7 +305,7 @@ var page = {
 				c.forEach(function(item,index) {
 					dd.append(app.getOptionHtml(
 						item.get('devEui'),
-						(item.get('devEui'))  + " - " + (item.get('omschrijving')),
+						item.get('alias'),
 						page.alarm_Regel.get('node') == item.get('devEui')
 					));
 				});
@@ -259,7 +331,7 @@ var page = {
 				c.forEach(function(item,index) {
 					dd.append(app.getOptionHtml(
 						item.get('sensorId'),
-						item.get('sensorId')+ " - " + (item.get('omschrijving')),
+						item.get('omschrijving'),
 						page.alarm_Regel.get('sensor') == item.get('sensorId')
 					));
 				});

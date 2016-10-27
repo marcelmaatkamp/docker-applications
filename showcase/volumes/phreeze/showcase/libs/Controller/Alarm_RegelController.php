@@ -50,7 +50,24 @@ class Alarm_RegelController extends AppBaseController
 	{
 		try
 		{
+			
+			
 			$criteria = new Alarm_RegelCriteria();
+			$criteria->SetOrder('Id',true);
+			$filternode = RequestUtil::Get('FilterNode');
+			$filtersensor = RequestUtil::Get('FilterSensor');
+			
+			if ($filternode) $criteria->AddFilter(
+				new CriteriaFilter('nodeAlias', '%'.$filternode.'%')
+			);
+			
+			if ($filtersensor) $criteria->AddFilter(
+				new CriteriaFilter('sensorOmschrijving', '%'.$filtersensor.'%')
+			);
+			
+			
+			
+			
 			
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');
@@ -90,7 +107,7 @@ class Alarm_RegelController extends AppBaseController
 				// if page is specified, use this instead (at the expense of one extra count query)
 				$pagesize = $this->GetDefaultPageSize();
 
-				$alarm_regels = $this->Phreezer->Query('Alarm_Regel',$criteria)->GetDataPage($page, $pagesize);
+				$alarm_regels = $this->Phreezer->Query('Alarm_RegelReporter',$criteria)->GetDataPage($page, $pagesize);
 				$output->rows = $alarm_regels->ToObjectArray(true,$this->SimpleObjectParams());
 				$output->totalResults = $alarm_regels->TotalResults;
 				$output->totalPages = $alarm_regels->TotalPages;
@@ -100,7 +117,7 @@ class Alarm_RegelController extends AppBaseController
 			else
 			{
 				// return all results
-				$alarm_regels = $this->Phreezer->Query('Alarm_Regel',$criteria);
+				$alarm_regels = $this->Phreezer->Query('Alarm_RegelReporter',$criteria);
 				$output->rows = $alarm_regels->ToObjectArray(true, $this->SimpleObjectParams());
 				$output->totalResults = count($output->rows);
 				$output->totalPages = 1;

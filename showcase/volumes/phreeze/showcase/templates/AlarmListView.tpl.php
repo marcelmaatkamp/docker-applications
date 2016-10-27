@@ -34,7 +34,7 @@
 		<table class="collection table table-bordered table-hover">
 		<thead>
 			<tr>
-				<th id="header_Id">Id<% if (page.orderBy == 'Id') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<!-- <th id="header_Id">Id<% if (page.orderBy == 'Id') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>-->
 				<th id="header_Node">Node<% if (page.orderBy == 'Node') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_Sensor">Sensor<% if (page.orderBy == 'Sensor') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_Alarmtrigger">Alarmtrigger<% if (page.orderBy == 'Alarmtrigger') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
@@ -47,7 +47,7 @@
 		<tbody>
 		<% items.each(function(item) { %>
 			<tr id="<%= _.escape(item.get('id')) %>">
-				<td><%= _.escape(item.get('id') || '') %></td>
+				<!--<td><%= _.escape(item.get('id') || '') %></td>-->
 				<td><%= _.escape(item.get('node') || '') %></td>
 				<td><%= _.escape(item.get('sensor') || '') %></td>
 				<td><%= _.escape(item.get('alarmtrigger') || '') %></td>

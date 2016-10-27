@@ -21,7 +21,7 @@
 <div class="container">
 
 <h1>
-	<i class="icon-th-list"></i> Alarm_Regels
+	<i class="icon-th-list"></i> Alarm Regels
 	<span id=loader class="loader progress progress-striped active"><span class="bar"></span></span>
 	<span class='input-append pull-right searchContainer'>
 		<input id='filter' type="text" placeholder="Search..." />
@@ -34,18 +34,18 @@
 		<table class="collection table table-bordered table-hover">
 		<thead>
 			<tr>
-				<th id="header_Id">Id<% if (page.orderBy == 'Id') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_Node">Node<% if (page.orderBy == 'Node') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_Sensor">Sensor<% if (page.orderBy == 'Sensor') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_Id">Id<% if (page.orderBy == 'Id') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th> 
+				<th id="header_Node">Node<% if (page.orderBy == 'NodeAlias') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_Sensor">Sensor<% if (page.orderBy == 'SensorOmschrijving') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_AlarmTrigger">Alarm Trigger<% if (page.orderBy == 'AlarmTrigger') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 			</tr>
 		</thead>
 		<tbody>
 		<% items.each(function(item) { %>
-			<tr id="<%= _.escape(item.get('id')) %>">
-				<td><%= _.escape(item.get('id') || '') %></td>
-				<td><%= _.escape(item.get('node') || '') %></td>
-				<td><%= _.escape(item.get('sensor') || '') %></td>
+			<tr id="<%= _.escape(item.get('id')) %>"> 
+				<td><%= _.escape(item.get('id') || '') %></td> 
+				<td><%= _.escape(item.get('nodeAlias') || '') %></td>
+				<td><%= _.escape(item.get('sensorOmschrijving') || '') %></td>
 				<td><%= _.escape(item.get('alarmTrigger') || '') %></td>
 			</tr>
 		<% }); %>
@@ -57,18 +57,138 @@
 	
 	
 
+	<script type="text/template" id="FilterNodeTemplate">	
+	
+	<select id=FilterNode>
+		<option value="" disabled selected hidden>Filter Node...</option>
+		<option value="">-- Verwijder Filter --</option>
+	
+				
+				
+				
+<?php
+
+				
+
+$db = new mysqli(
+GlobalConfig::$CONNECTION_SETTING->Host, 
+GlobalConfig::$CONNECTION_SETTING->Username,
+GlobalConfig::$CONNECTION_SETTING->Password,
+GlobalConfig::$CONNECTION_SETTING->DBName,
+GlobalConfig::$CONNECTION_SETTING->Port);
+
+
+if($db->connect_errno > 0){
+    die('Unable to connect to database [' . $db->connect_error . ']');
+}
+
+
+$sql = "select distinct `node`.`dev_eui`, `node`.`alias` as NodeAlias
+		from `alarm_regel`
+		inner join node on node.dev_eui = alarm_regel.node
+		inner join sensor on sensor.sensor_id = alarm_regel.sensor
+        having NodeAlias is not null and NodeAlias != ''";
+
+
+if(!$result = $db->query($sql)){
+    die('There was an error running the query [' . $db->error . ']');
+}
+
+while($row = $result->fetch_assoc()){
+    echo '<option>' . $row['NodeAlias'] . '</option>';
+}
+
+mysqli_close($db);
+
+?>
+				
+	
+		</select>
+	</script>
+	
+
+<script type="text/template" id="FilterSensorTemplate">		
+	
+		<select id=FilterSensor>
+		<option value="" disabled selected hidden>Filter Sensor...</option>
+		<option value="">-- Verwijder Filter --</option>
+		<?php
+
+				
+
+$db = new mysqli(
+GlobalConfig::$CONNECTION_SETTING->Host, 
+GlobalConfig::$CONNECTION_SETTING->Username,
+GlobalConfig::$CONNECTION_SETTING->Password,
+GlobalConfig::$CONNECTION_SETTING->DBName,
+GlobalConfig::$CONNECTION_SETTING->Port);
+
+
+if($db->connect_errno > 0){
+    die('Unable to connect to database [' . $db->connect_error . ']');
+}
+
+
+$sql = "select distinct `sensor`.`omschrijving` as SensorOmschrijving
+		from `alarm_regel`
+		inner join node on node.dev_eui = alarm_regel.node
+		inner join sensor on sensor.sensor_id = alarm_regel.sensor
+        having SensorOmschrijving is not null and SensorOmschrijving != ''";
+
+
+if(!$result = $db->query($sql)){
+    die('There was an error running the query [' . $db->error . ']');
+}
+
+while($row = $result->fetch_assoc()){
+    echo '<option>' . $row['SensorOmschrijving'] . '</option>';
+}
+
+mysqli_close($db);
+
+?>
+		</select>
+	</script>
+	
+	<table>
+	<h4>Filters</h4>	
+
+	</thead>
+	<tbody>
+	<tr>
+	<td><div id="FilterNodeTemplateContainer" class="collectionContainer"></div></td>
+	<td><input type="text" id="FilterNodeDisplay" placeholder="-Geen Filter-"></td>
+	
+	</tr>
+	
+	<tr>
+	<td><div id="FilterSensorTemplateContainer" class="collectionContainer"></div></td>
+	<td><input type="text" id="FilterSensorDisplay" placeholder="-Geen Filter-"></td>
+	
+	</tr>
+	</tbody>
+	</table>
+		<br>
+	
+	
+	
+	
+	
+	
+	
+	
 
 	<!-- underscore template for the model -->
 	<script type="text/template" id="alarm_RegelModelTemplate">
 		<form class="form-horizontal" onsubmit="return false;">
 			<fieldset>
-				<div id="idInputContainer" class="control-group">
+				<!-- <div id="idInputContainer" class="control-group">
 					<label class="control-label" for="id">Id</label>
 					<div class="controls inline-inputs">
 						<span class="input-xlarge uneditable-input" id="id"><%= _.escape(item.get('id') || '') %></span>
 						<span class="help-inline"></span>
 					</div>
-				</div>
+				</div>-->
 				<div id="nodeInputContainer" class="control-group">
 					<label class="control-label" for="node">Node</label>
 					<div class="controls inline-inputs">
@@ -135,7 +255,7 @@
 	</div>
 
 	<p id="newButtonContainer" class="buttonContainer">
-		<button id="newAlarm_RegelButton" class="btn btn-primary">Add Alarm_Regel</button>
+		<button id="newAlarm_RegelButton" class="btn btn-primary">Add Alarm Regel</button>
 	</p>
 
 </div> <!-- /container -->

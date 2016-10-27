@@ -33,17 +33,47 @@
 
 
 
+
+
+
+
 <script type="text/template" id="FilterDevEuiTemplate">		
 	<select id=FilterDevEui>
 		<option value="" disabled selected hidden>Filter Dev Eui...</option>
 		<option value="">-- Verwijder Filter --</option>
-		<% items.each(function(item) { %>
-			<% if (item.get('devEui')){ %>
-				<option>
-				<%= _.escape(item.get('devEui') || '')%>
-				</option>
-			<%}%>
-		<% }); %>
+				<?php
+
+				
+
+$db = new mysqli(
+GlobalConfig::$CONNECTION_SETTING->Host, 
+GlobalConfig::$CONNECTION_SETTING->Username,
+GlobalConfig::$CONNECTION_SETTING->Password,
+GlobalConfig::$CONNECTION_SETTING->DBName,
+GlobalConfig::$CONNECTION_SETTING->Port);
+
+
+if($db->connect_errno > 0){
+    die('Unable to connect to database [' . $db->connect_error . ']');
+}
+
+
+$sql = "select distinct dev_eui as NodeDevEui
+		from node
+		where dev_eui is not null and dev_eui != ''";
+
+
+if(!$result = $db->query($sql)){
+    die('There was an error running the query [' . $db->error . ']');
+}
+
+while($row = $result->fetch_assoc()){
+    echo '<option>' . $row['NodeDevEui'] . '</option>';
+}
+
+mysqli_close($db);
+
+?>
 		</select>
 	</script>
 	
@@ -53,13 +83,43 @@
 		<select id=FilterAlias>
 		<option value="" disabled selected hidden>Filter Alias...</option>
 		<option value="">-- Verwijder Filter --</option>
-		<% items.each(function(item) { %>
-			<% if (item.get('alias')){ %>
-				<option>
-				<%= _.escape(item.get('alias') || '')%>
-				</option>
-			<%}%>
-		<% }); %>
+		
+		
+		<?php
+
+				
+
+$db = new mysqli(
+GlobalConfig::$CONNECTION_SETTING->Host, 
+GlobalConfig::$CONNECTION_SETTING->Username,
+GlobalConfig::$CONNECTION_SETTING->Password,
+GlobalConfig::$CONNECTION_SETTING->DBName,
+GlobalConfig::$CONNECTION_SETTING->Port);
+
+
+if($db->connect_errno > 0){
+    die('Unable to connect to database [' . $db->connect_error . ']');
+}
+
+
+$sql = "select distinct alias as alias
+		from node
+		where alias is not null and alias != ''";
+
+
+if(!$result = $db->query($sql)){
+    die('There was an error running the query [' . $db->error . ']');
+}
+
+while($row = $result->fetch_assoc()){
+    echo '<option>' . $row['alias'] . '</option>';
+}
+
+mysqli_close($db);
+
+?>
+		
+		
 		</select>
 	</script>
 		<br>
@@ -84,7 +144,7 @@
 	
 	</tr>
 	</tbody>
-	<table>
+	</table>
 		<br>
 
  
