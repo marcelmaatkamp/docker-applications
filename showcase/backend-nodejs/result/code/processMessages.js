@@ -20,6 +20,7 @@ var processAlert_1 = require("./processAlert");
 var logAlert_1 = require("./logAlert");
 var processNotificationSlack_1 = require("./processNotificationSlack");
 var processNotificationTelegram_1 = require("./processNotificationTelegram");
+var processNotificationSMS_1 = require("./processNotificationSMS");
 // define log settings
 var logToGrayLog = process.env.SHOWCASE_GRAYLOG || false;
 var graylogHost = process.env.SHOWCASE_GRAYLOG_HOST || "graylog";
@@ -143,8 +144,12 @@ var notificationSlackAmqp = new iot.AmqpInOut({
     out: process.env.SHOWCASE_AMQP_SLACK_EXCHANGE_OUT || "showcase.notification_sent_slack"
 });
 var notificationTelegramAmqp = new iot.AmqpInOut({
-    in: process.env.SHOWCASE_AMQP_TELKEGRAM_EXCHANGE_IN || alertAmqp.outExchange,
+    in: process.env.SHOWCASE_AMQP_TELEGRAM_EXCHANGE_IN || alertAmqp.outExchange,
     out: process.env.SHOWCASE_AMQP_TELEGRAM_EXCHANGE_OUT || "showcase.notification_sent_telegram"
+});
+var notificationSMSAmqp = new iot.AmqpInOut({
+    in: process.env.SHOWCASE_AMQP_SMS_EXCHANGE_IN || alertAmqp.outExchange,
+    out: process.env.SHOWCASE_AMQP_SMS_EXCHANGE_OUT || "showcase.notification_sent_sms"
 });
 // create and start the message processing elements
 new receiveTTN_1.default(mqttClient, ttnAmqp.send);
@@ -156,5 +161,6 @@ new processAlert_1.default(alertAmqp.receive, alertAmqp.send, mysqlDb);
 new logAlert_1.default(alertlogLogAmqp.receive, alertlogLogAmqp.send, mysqlDb);
 new processNotificationSlack_1.default(notificationSlackAmqp.receive, notificationSlackAmqp.send, slackBot);
 new processNotificationTelegram_1.default(notificationTelegramAmqp.receive, notificationTelegramAmqp.send, telegramBot);
+new processNotificationSMS_1.default(notificationSMSAmqp.receive, notificationSMSAmqp.send);
 
 //# sourceMappingURL=processMessages.js.map
