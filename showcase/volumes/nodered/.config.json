@@ -327,7 +327,7 @@
   },
   "node-red-node-feedparser": {
    "name": "node-red-node-feedparser",
-   "version": "0.1.5",
+   "version": "0.1.6",
    "nodes": {
     "feedparse": {
      "name": "feedparse",
