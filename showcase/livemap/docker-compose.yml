@@ -10,6 +10,11 @@ web:
   environment:
     PORT: 3000
     DATABASE_URL: postgres://livemap:livemap@db/livemapdb
+    C_MQTT_URL: rabbitmq:1883
+    C_MQTT_TOPIC: livemap/devices
+    C_WCLIENT_NAME: "LoRa trackers"
+    #C_WCLIENT_LICENSE: "MIT"
+    #C_WCLIENT_ABOUT: ""
 db:
   build: ./postgres
   ports:
