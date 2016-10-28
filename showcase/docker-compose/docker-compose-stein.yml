@@ -1,21 +1,12 @@
 version: '2'
 services:
+
  nodered:
   extends:
    file: docker-compose/docker-compose-ttn-acc.yml
    service: nodered
   environment:
    - SHOWCASE_TELEGRAM_TOKEN=${SHOWCASE_TELEGRAM_BOT_ACC}
-  logging:
-   driver: "gelf"
-   options:
-    gelf-address: "udp://172.25.0.100:12201"
-
- phreeze:
-  logging:
-   driver: "gelf"
-   options:
-    gelf-address: "udp://172.25.0.100:12201"
 
  backend:
   environment:

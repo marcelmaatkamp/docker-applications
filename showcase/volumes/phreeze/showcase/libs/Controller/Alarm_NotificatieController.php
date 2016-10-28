@@ -50,12 +50,29 @@ class Alarm_NotificatieController extends AppBaseController
 	{
 		try
 		{
+			
+			
+			
+			
 			$criteria = new Alarm_NotificatieCriteria();
+			$criteria->SetOrder('Id',true);
+			$filternode = RequestUtil::Get('FilterNode');
+			$filtersensor = RequestUtil::Get('FilterSensor');
+			
+			if ($filternode) $criteria->AddFilter(
+				new CriteriaFilter('nodeAlias', '%'.$filternode.'%')
+			);
+			
+			if ($filtersensor) $criteria->AddFilter(
+				new CriteriaFilter('sensorOmschrijving', '%'.$filtersensor.'%')
+			);
+			
+			
 			
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');
 			if ($filter) $criteria->AddFilter(
-				new CriteriaFilter('Id,AlarmRegel,Kanaal,P1,P2,P3,P4,Meldingtekst'
+				new CriteriaFilter('Id,nodeAlias,sensorOmschrijving,AlarmRegel,Kanaal,P1,P2,P3,P4,Meldingtekst'
 				, '%'.$filter.'%')
 			);
 
@@ -90,7 +107,7 @@ class Alarm_NotificatieController extends AppBaseController
 				// if page is specified, use this instead (at the expense of one extra count query)
 				$pagesize = $this->GetDefaultPageSize();
 
-				$alarm_notificaties = $this->Phreezer->Query('Alarm_Notificatie',$criteria)->GetDataPage($page, $pagesize);
+				$alarm_notificaties = $this->Phreezer->Query('Alarm_NotificatieReporter',$criteria)->GetDataPage($page, $pagesize);
 				$output->rows = $alarm_notificaties->ToObjectArray(true,$this->SimpleObjectParams());
 				$output->totalResults = $alarm_notificaties->TotalResults;
 				$output->totalPages = $alarm_notificaties->TotalPages;
@@ -100,7 +117,7 @@ class Alarm_NotificatieController extends AppBaseController
 			else
 			{
 				// return all results
-				$alarm_notificaties = $this->Phreezer->Query('Alarm_Notificatie',$criteria);
+				$alarm_notificaties = $this->Phreezer->Query('Alarm_NotificatieReporter',$criteria);
 				$output->rows = $alarm_notificaties->ToObjectArray(true, $this->SimpleObjectParams());
 				$output->totalResults = count($output->rows);
 				$output->totalPages = 1;

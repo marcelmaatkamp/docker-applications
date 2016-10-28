@@ -1,7 +1,9 @@
 #!/bin/bash
-#!/bin/bash
 shopt -s expand_aliases
 
 server=server11
 alias dc="docker-compose -f docker-compose.yml -f docker-compose/docker-compose-$server.yml"
-dc up --build
+dc stop && dc rm -f --all 
+git fetch --all
+git reset --hard origin/master
+dc build && dc up -d

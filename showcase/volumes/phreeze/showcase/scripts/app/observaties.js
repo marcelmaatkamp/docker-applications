@@ -57,13 +57,73 @@ var page = {
 			templateEl: $("#observatieCollectionTemplate"),
 			collection: page.observaties
 		});
-
+		
+		
+			// initialize the collection view
+		this.collectionView = new view.CollectionView({
+			el: $("#FilterNodeTemplateContainer"),
+			templateEl: $("#FilterNodeTemplate"),
+			collection: page.observaties
+		});
+		
+		// initialize the collection view
+		this.collectionView = new view.CollectionView({
+			el: $("#FilterSensorTemplateContainer"),
+			templateEl: $("#FilterSensorTemplate"),
+			collection: page.observaties
+		});
+		
+				
 		// initialize the search filter
 		$('#filter').change(function(obj) {
 			page.fetchParams.filter = $('#filter').val();
 			page.fetchParams.page = 1;
 			page.fetchObservaties(page.fetchParams);
 		});
+		
+	
+			
+					// initialize the Node search filter
+		$(document).on('change','#FilterNode',function(){
+			
+			console.log("FilterNode Used");
+			page.fetchParams.FilterNode = $('#FilterNode').val();
+			page.fetchParams.page = 1;
+			page.fetchObservaties(page.fetchParams);
+			//console.log($('#FilterNode').val()+' used');
+					console.log("FilterNode Used");
+			
+			if ($('#FilterNode').val()){
+				$("#FilterNodeDisplay").val("Filter: "+$('#FilterNode').val());
+				$("#FilterNodeDisplay").css('color', 'red', 'important');
+			}
+			else{
+			//$("#FilterAliasDisplay").hide();	
+				$("#FilterNodeDisplay").val("-Geen Filter-");	
+				$("#FilterNodeDisplay").removeAttr('style');
+			}
+			
+		});
+		
+		// initialize the Sensor search filter
+		$(document).on('change','#FilterSensor',function(){
+			page.fetchParams.FilterSensor = $('#FilterSensor').val();
+			page.fetchParams.page = 1;
+			page.fetchObservaties(page.fetchParams);
+			
+			
+			if ($('#FilterSensor').val()){
+				$("#FilterSensorDisplay").val("Filter: "+$('#FilterSensor').val());
+				$("#FilterSensorDisplay").css('color', 'red', 'important');
+		
+			}
+			else{
+				$("#FilterSensorDisplay").val("-Geen Filter-");	
+				$("#FilterSensorDisplay").removeAttr('style');
+			}
+			
+		});
+		
 		
 		// make the rows clickable ('rendered' is a custom event, not a standard backbone event)
 		this.collectionView.on('rendered',function(){
@@ -233,7 +293,7 @@ var page = {
 				c.forEach(function(item,index) {
 					dd.append(app.getOptionHtml(
 						item.get('devEui'),
-						item.get('devEui'), // TODO: change fieldname if the dropdown doesn't show the desired column
+						(item.get('alias')), // TODO: change fieldname if the dropdown doesn't show the desired column
 						page.observatie.get('node') == item.get('devEui')
 					));
 				});
@@ -259,7 +319,7 @@ var page = {
 				c.forEach(function(item,index) {
 					dd.append(app.getOptionHtml(
 						item.get('sensorId'),
-						item.get('sensorId'), // TODO: change fieldname if the dropdown doesn't show the desired column
+						item.get('omschrijving'), // TODO: change fieldname if the dropdown doesn't show the desired column
 						page.observatie.get('sensor') == item.get('sensorId')
 					));
 				});

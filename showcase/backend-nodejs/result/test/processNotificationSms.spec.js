@@ -6,11 +6,11 @@
 "use strict";
 require("./_logSettings");
 var amqp = require("amqp-ts");
-var Promise = require("bluebird");
+// import * as Promise from "bluebird";
 var Chai = require("chai");
 var expect = Chai.expect;
 var iot = require("../code/iotMsg");
-var processNotificationTelegram_1 = require("../code/processNotificationTelegram");
+var processNotificationSms_1 = require("../code/processNotificationSms");
 var amqpSupport = require("./_amqpIoTestSupport");
 // unfortunately no typescript .d.ts exists for node-telegram-bot-api
 var amqpBrokerUrl = "amqp://rabbitmq";
@@ -18,25 +18,31 @@ var amqpBrokerUrl = "amqp://rabbitmq";
 amqpSupport.SetConnectionUrl({
     amqp: amqpBrokerUrl
 });
-// create telegram connection
-// var TelegramBot = require("node-telegram-bot-api");
-// var telegramBotToken = "292441232:AAHS3zE8dyJWRUCx29bLx-MOwWEpimRt0mk";
-// var telegramBot = new TelegramBot(telegramBotToken);
-// dummy telegram connection, always returns the expected results
-var telegramBot = {
-    sendMessage: function (chatId, message) {
-        return Promise.resolve();
+// twilio source phone number
+var twilioFromPhone = "+19787124065";
+// create twilio connection
+// var twilioAccountSid = "AC600a293801150c7c3af3a5747a3ba4ae";
+// var twilioAuthToken = "ad1f82c56f5b9f048e72558ae984edf8";
+// var twilioClient = require("twilio")(twilioAccountSid, twilioAuthToken);
+// dummy twilio connection, always returns the expected results
+var twilioClient = {
+    sendMessage: function (msgStruct, callback) {
+        callback(null, {
+            to: msgStruct.to,
+            from: twilioFromPhone,
+            body: msgStruct.body
+        });
     }
 };
 // incomplete quick test to see if no errors occur,
-// actual testing to see if the telegram notification works is not performed
-describe("Test ProcessNotificationTelegram", function () {
-    it("should process the telegram notification", function (done) {
+// actual testing to see if the sms notification works is not performed
+describe("Test ProcessNotificationSms", function () {
+    it("should process the sms notification", function (done) {
         var t = new amqpSupport.AmqpIoTest(done, true);
         var sender = new iot.SendMessagesAmqp(t.outExchange, false);
         var receiver = new iot.ReceiveMessagesAmqp(t.inQueue, false);
         // start the logging process
-        new processNotificationTelegram_1.default(receiver, sender, telegramBot);
+        new processNotificationSms_1.default(receiver, sender, twilioClient, twilioFromPhone);
         t.outQueue.activateConsumer(function (msg) {
             try {
                 var content = msg.getContent();
@@ -56,19 +62,20 @@ describe("Test ProcessNotificationTelegram", function () {
     });
 });
 /**
- * slack notification test message and expected results
+ * sms notification test message and expected results
  */
 var alertTestMessage = {
-    kanaal: 'telegram',
-    p1: '-1001097331998',
+    kanaal: "sms",
+    p1: "+31640053814",
     p2: null,
     p3: null,
     p4: null,
-    meldingtekst: 'TEST: Temperatuur te hoog: 65.3 C'
+    meldingtekst: "TEST: Temperatuur te hoog: 65.3 C"
 };
 var notificationExpectedResult = {
-    text: 'TEST: Temperatuur te hoog: 65.3 C',
-    chatId: '-1001097331998'
+    to: "+31640053814",
+    from: "+19787124065",
+    body: "TEST: Temperatuur te hoog: 65.3 C",
 };
 
-//# sourceMappingURL=processNotificationTelegram.spec.js.map
+//# sourceMappingURL=processNotificationSms.spec.js.map

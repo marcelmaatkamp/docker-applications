@@ -6,4 +6,4 @@ alias dc="docker-compose -f docker-compose.yml -f docker-compose/docker-compose-
 dc stop && dc rm -f --all 
 git fetch --all
 git reset --hard origin/master
-dc build && dc pull && dc up -d
+dc build && dc pull && dc up -d graylog && sleep 30 && dc up -d

@@ -29,8 +29,121 @@
 	</span>
 </h1>
 
+
+
+<script type="text/template" id="FilterNodeTemplate">	
+	
+	<select id=FilterNode>
+		<option value="" disabled selected hidden>Filter Node...</option>
+		<option value="">-- Verwijder Filter --</option>
 	
 	
+<?php
+
+				
+
+$db = new mysqli(
+GlobalConfig::$CONNECTION_SETTING->Host, 
+GlobalConfig::$CONNECTION_SETTING->Username,
+GlobalConfig::$CONNECTION_SETTING->Password,
+GlobalConfig::$CONNECTION_SETTING->DBName,
+GlobalConfig::$CONNECTION_SETTING->Port);
+
+
+if($db->connect_errno > 0){
+    die('Unable to connect to database [' . $db->connect_error . ']');
+}
+
+
+$sql = "select distinct `node`.`dev_eui`, `node`.`alias` as NodeAlias
+		from `observatie`
+		inner join node on node.dev_eui = observatie.node
+		inner join sensor on sensor.sensor_id = observatie.sensor
+        having NodeAlias is not null and NodeAlias != ''";
+
+
+if(!$result = $db->query($sql)){
+    die('There was an error running the query [' . $db->error . ']');
+}
+
+while($row = $result->fetch_assoc()){
+    echo '<option>' . $row['NodeAlias'] . '</option>';
+}
+
+mysqli_close($db);
+
+?>
+				
+	
+		</select>
+	</script>
+	
+
+<script type="text/template" id="FilterSensorTemplate">		
+	
+		<select id=FilterSensor>
+		<option value="" disabled selected hidden>Filter Sensor...</option>
+		<option value="">-- Verwijder Filter --</option>
+		<?php
+
+				
+
+$db = new mysqli(
+GlobalConfig::$CONNECTION_SETTING->Host, 
+GlobalConfig::$CONNECTION_SETTING->Username,
+GlobalConfig::$CONNECTION_SETTING->Password,
+GlobalConfig::$CONNECTION_SETTING->DBName,
+GlobalConfig::$CONNECTION_SETTING->Port);
+
+
+if($db->connect_errno > 0){
+    die('Unable to connect to database [' . $db->connect_error . ']');
+}
+
+
+$sql = "select distinct `sensor`.`omschrijving` as SensorOmschrijving
+		from `observatie`
+		inner join node on node.dev_eui = observatie.node
+		inner join sensor on sensor.sensor_id = observatie.sensor
+        having SensorOmschrijving is not null and SensorOmschrijving != ''";
+
+
+if(!$result = $db->query($sql)){
+    die('There was an error running the query [' . $db->error . ']');
+}
+
+while($row = $result->fetch_assoc()){
+    echo '<option>' . $row['SensorOmschrijving'] . '</option>';
+}
+
+mysqli_close($db);
+
+?>
+		</select>
+	</script>
+
+
+	<table>
+	<thead>
+	
+	<h4>Filters</h4>	
+
+	</thead>
+		<tbody>
+	<tr>
+	<td><div id="FilterNodeTemplateContainer" class="collectionContainer"></div></td>
+	<td><input type="text" id="FilterNodeDisplay" placeholder="-Geen Filter-"></td>
+	
+	</tr>
+	
+	<tr>
+	<td><div id="FilterSensorTemplateContainer" class="collectionContainer"></div></td>
+	<td><input type="text" id="FilterSensorDisplay" placeholder="-Geen Filter-"></td>
+	
+	</tr>
+	</tbody>
+	</table>
+		<br>
 	
 
 	<!-- underscore template for the collection -->

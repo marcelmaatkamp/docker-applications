@@ -29,12 +29,127 @@
 	</span>
 </h1>
 
+
+<script type="text/template" id="FilterNodeTemplate">	
+	
+	<select id=FilterNode>
+		<option value="" disabled selected hidden>Filter Node...</option>
+		<option value="">-- Verwijder Filter --</option>
+
+				
+<?php
+
+				
+
+$db = new mysqli(
+GlobalConfig::$CONNECTION_SETTING->Host, 
+GlobalConfig::$CONNECTION_SETTING->Username,
+GlobalConfig::$CONNECTION_SETTING->Password,
+GlobalConfig::$CONNECTION_SETTING->DBName,
+GlobalConfig::$CONNECTION_SETTING->Port);
+
+
+if($db->connect_errno > 0){
+    die('Unable to connect to database [' . $db->connect_error . ']');
+}
+
+
+$sql = "select distinct `node`.`dev_eui`, `node`.`alias` as NodeAlias
+		from `alarm_regel`
+		inner join node on node.dev_eui = alarm_regel.node
+		inner join sensor on sensor.sensor_id = alarm_regel.sensor
+        having NodeAlias is not null and NodeAlias != ''";
+
+
+if(!$result = $db->query($sql)){
+    die('There was an error running the query [' . $db->error . ']');
+}
+
+while($row = $result->fetch_assoc()){
+    echo '<option>' . $row['NodeAlias'] . '</option>';
+}
+
+mysqli_close($db);
+
+?>
+				
+	
+		</select>
+	</script>
+	
+
+<script type="text/template" id="FilterSensorTemplate">		
+	
+		<select id=FilterSensor>
+		<option value="" disabled selected hidden>Filter Sensor...</option>
+		<option value="">-- Verwijder Filter --</option>
+		<?php
+
+				
+
+$db = new mysqli(
+GlobalConfig::$CONNECTION_SETTING->Host, 
+GlobalConfig::$CONNECTION_SETTING->Username,
+GlobalConfig::$CONNECTION_SETTING->Password,
+GlobalConfig::$CONNECTION_SETTING->DBName,
+GlobalConfig::$CONNECTION_SETTING->Port);
+
+
+if($db->connect_errno > 0){
+    die('Unable to connect to database [' . $db->connect_error . ']');
+}
+
+
+$sql = "select distinct `sensor`.`omschrijving` as SensorOmschrijving
+		from `alarm_regel`
+		inner join node on node.dev_eui = alarm_regel.node
+		inner join sensor on sensor.sensor_id = alarm_regel.sensor
+        having SensorOmschrijving is not null and SensorOmschrijving != ''";
+
+
+if(!$result = $db->query($sql)){
+    die('There was an error running the query [' . $db->error . ']');
+}
+
+while($row = $result->fetch_assoc()){
+    echo '<option>' . $row['SensorOmschrijving'] . '</option>';
+}
+
+mysqli_close($db);
+
+?>
+		</select>
+	</script>
+	
+	<table>
+	<h4>Filters</h4>	
+
+	</thead>
+	<tbody>
+	<tr>
+	<td><div id="FilterNodeTemplateContainer" class="collectionContainer"></div></td>
+	<td><input type="text" id="FilterNodeDisplay" placeholder="-Geen Filter-"></td>
+	
+	</tr>
+	
+	<tr>
+	<td><div id="FilterSensorTemplateContainer" class="collectionContainer"></div></td>
+	<td><input type="text" id="FilterSensorDisplay" placeholder="-Geen Filter-"></td>
+	
+	</tr>
+	</tbody>
+	</table>
+		<br>
+	
+	
+	
+
 	<!-- underscore template for the collection -->
 	<script type="text/template" id="alarmCollectionTemplate">
 		<table class="collection table table-bordered table-hover">
 		<thead>
 			<tr>
-				<th id="header_Id">Id<% if (page.orderBy == 'Id') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<!-- <th id="header_Id">Id<% if (page.orderBy == 'Id') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>-->
 				<th id="header_Node">Node<% if (page.orderBy == 'Node') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_Sensor">Sensor<% if (page.orderBy == 'Sensor') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_Alarmtrigger">Alarmtrigger<% if (page.orderBy == 'Alarmtrigger') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
@@ -47,7 +162,7 @@
 		<tbody>
 		<% items.each(function(item) { %>
 			<tr id="<%= _.escape(item.get('id')) %>">
-				<td><%= _.escape(item.get('id') || '') %></td>
+				<!--<td><%= _.escape(item.get('id') || '') %></td>-->
 				<td><%= _.escape(item.get('node') || '') %></td>
 				<td><%= _.escape(item.get('sensor') || '') %></td>
 				<td><%= _.escape(item.get('alarmtrigger') || '') %></td>

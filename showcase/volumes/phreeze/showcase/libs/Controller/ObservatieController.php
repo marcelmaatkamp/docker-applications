@@ -17,6 +17,14 @@ require_once("Model/Observatie.php");
 class ObservatieController extends AppBaseController
 {
 
+
+
+
+
+
+
+
+
 	/**
 	 * Override here for any controller-specific functionality
 	 *
@@ -40,6 +48,10 @@ class ObservatieController extends AppBaseController
 	 */
 	public function ListView()
 	{
+		$this->Phreezer->SetLoadType("Observatie","FK_observatie_node",KM_LOAD_EAGER); // KM_LOAD_INNER | KM_LOAD_EAGER | KM_LOAD_LAZY
+		$this->Phreezer->SetLoadType("Observatie","FK_observatie_sensor",KM_LOAD_EAGER); // KM_LOAD_INNER | KM_LOAD_EAGER | KM_LOAD_LAZY
+		
+		
 		$this->Render();
 	}
 
@@ -52,6 +64,18 @@ class ObservatieController extends AppBaseController
 		{
 			$criteria = new ObservatieCriteria();
 			$criteria->SetOrder('Id',true);
+			$filternode = RequestUtil::Get('FilterNode');
+			$filtersensor = RequestUtil::Get('FilterSensor');
+			
+			if ($filternode) $criteria->AddFilter(
+				new CriteriaFilter('nodeAlias', '%'.$filternode.'%')
+			);
+			
+			if ($filtersensor) $criteria->AddFilter(
+				new CriteriaFilter('sensorOmschrijving', '%'.$filtersensor.'%')
+			);
+			
+			
 			
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');
@@ -91,7 +115,7 @@ class ObservatieController extends AppBaseController
 				// if page is specified, use this instead (at the expense of one extra count query)
 				$pagesize = $this->GetDefaultPageSize();
 
-				$observaties = $this->Phreezer->Query('Observatie',$criteria)->GetDataPage($page, $pagesize);
+				$observaties = $this->Phreezer->Query('ObservatieReporter',$criteria)->GetDataPage($page, $pagesize);
 				$output->rows = $observaties->ToObjectArray(true,$this->SimpleObjectParams());
 				$output->totalResults = $observaties->TotalResults;
 				$output->totalPages = $observaties->TotalPages;
@@ -101,7 +125,7 @@ class ObservatieController extends AppBaseController
 			else
 			{
 				// return all results
-				$observaties = $this->Phreezer->Query('Observatie',$criteria);
+				$observaties = $this->Phreezer->Query('ObservatieReporter',$criteria);
 				$output->rows = $observaties->ToObjectArray(true, $this->SimpleObjectParams());
 				$output->totalResults = count($output->rows);
 				$output->totalPages = 1;
