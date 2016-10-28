@@ -33,16 +33,20 @@ export default class ProcessNotificationSMS {
 
   private sendNotification(notification: iot.AlertNotification) {
     this.client.sendMessage({
-        to:   notification.p1,
-        from: this.fromPhone,
-        body:  notification.meldingtekst,
+      to: notification.p1,
+      from: this.fromPhone,
+      body: notification.meldingtekst,
     }, (err, responseData) => {
-      if(err) {
+      if (err) {
         winston.error("error sending SMS message with twilio: " + err.message, err);
       } else {
         winston.info("Message sent to SMS.", responseData);
         if (this.sender) {
-          this.sender.send(notification.meldingtekst);
+          this.sender.send({
+            to: notification.p1,
+            from: this.fromPhone,
+            body: notification.meldingtekst,
+          });
         }
       }
     });

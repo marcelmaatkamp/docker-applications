@@ -35,7 +35,11 @@ var ProcessNotificationSMS = (function () {
             else {
                 winston.info("Message sent to SMS.", responseData);
                 if (_this.sender) {
-                    _this.sender.send(notification.meldingtekst);
+                    _this.sender.send({
+                        to: notification.p1,
+                        from: _this.fromPhone,
+                        body: notification.meldingtekst,
+                    });
                 }
             }
         });
@@ -45,4 +49,4 @@ var ProcessNotificationSMS = (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = ProcessNotificationSMS;
 
-//# sourceMappingURL=processNotificationSMS.js.map
+//# sourceMappingURL=processNotificationSms.js.map
