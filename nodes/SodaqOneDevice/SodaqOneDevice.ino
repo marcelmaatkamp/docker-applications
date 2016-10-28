@@ -271,37 +271,40 @@ void loop()
   sodaq_wdt_reset();
   sodaq_wdt_flag = false;
 
-  if (switch1Flag)
+  if (!params.getIsGpsEnabled())
   {
-    debugPrintln("switch 1 Flag set");
-    if (params.getIsLedEnabled())
+    if (switch1Flag)
     {
-      setLedColor(RED);
-    }
+      debugPrintln("switch 1 Flag set");
+      if (params.getIsLedEnabled())
+      {
+        setLedColor(RED);
+      }
 
-    getSwitchDataAndTransmit(1);
-    switch1Flag = false;
-  }
-  if (switch2Flag)
-  {
-    debugPrintln("switch 2 Flag set");
-    if (params.getIsLedEnabled())
-    {
-      setLedColor(GREEN);
+      getSwitchDataAndTransmit(1);
+      switch1Flag = false;
     }
+    if (switch2Flag)
+    {
+      debugPrintln("switch 2 Flag set");
+      if (params.getIsLedEnabled())
+      {
+        setLedColor(GREEN);
+      }
 
-    getSwitchDataAndTransmit(2);
-    switch2Flag = false;
-  }
-  if (movedFlag)
-  {
-    debugPrintln("move Flag set");
-    if (params.getIsLedEnabled())
-    {
-      setLedColor(GREEN);
+      getSwitchDataAndTransmit(2);
+      switch2Flag = false;
     }
-    getMoveDataAndTransmit();
-    movedFlag = false;
+    if (movedFlag)
+    {
+      debugPrintln("move Flag set");
+      if (params.getIsLedEnabled())
+      {
+        setLedColor(GREEN);
+      }
+      getMoveDataAndTransmit();
+      movedFlag = false;
+    }
   }
   if (minuteFlag)
   {
@@ -309,7 +312,10 @@ void loop()
     {
       setLedColor(BLUE);
     }
-    getPowerlossDataAndTransmit();
+    if (!params.getIsGpsEnabled())
+    {
+      getPowerlossDataAndTransmit();
+    }
     timer.update(); // handle scheduled events
     minuteFlag = false;
   }
