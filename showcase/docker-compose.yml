@@ -12,7 +12,7 @@ services:
    - /var/run/docker.sock:/var/run/docker.sock
   networks:
    mynet:
-    ipv4_address: ${SHOWCASE_IP_ADDRESS_DOCKERUI} 
+    ipv4_address: ${SHOWCASE_IP_ADDRESS_DOCKERUI}
   logging:
    driver: "gelf"
    options:
@@ -242,13 +242,19 @@ services:
   # - SHOWCASE_AMQP_NOTIFICATION_EXCHANGE_OUT=showcase.logged_notification
   # - SHOWCASE_AMQP_SLACK_EXCHANGE_IN # defaults to SHOWCASE_AMQP_NOTIFICATION_EXCHANGE_OUT value
   # - SHOWCASE_AMQP_SLACK_EXCHANGE_OUT=showcase.notification_sent_slack
-  # - SHOWCASE_AMQP_TELKEGRAM_EXCHANGE_IN # defaults to SHOWCASE_AMQP_NOTIFICATION_EXCHANGE_OUT value
+  # - SHOWCASE_AMQP_TELEGRAM_EXCHANGE_IN # defaults to SHOWCASE_AMQP_NOTIFICATION_EXCHANGE_OUT value
   # - SHOWCASE_AMQP_TELEGRAM_EXCHANGE_OUT=showcase.notification_sent_telegram
+  # - SHOWCASE_AMQP_SMS_EXCHANGE_IN # defaults to SHOWCASE_AMQP_NOTIFICATION_EXCHANGE_OUT value
+  # - SHOWCASE_AMQP_SMS_EXCHANGE_OUT=showcase.notification_sent_sms
   # Slack settings
   # - SHOWCASE_SLACK_HOOK_URL=https://hooks.slack.com/services/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
   # Telegram settings
   # - SHOWCASE_TELEGRAM_TOKEN=292441232:AAHS3zE8dyJWRUCx29bLx-MOwWEpimRt0mk
   # - SHOWCASE_TELEGRAM_CHAT_ID=-1001097331998 # default chatid, if no chatid is defined in parameter p1
+  # Sms (twilio) settings
+  # - SHOWCASE_TWILIO_SID=AC600a293801150c7c3af3a5747a3ba4ae
+  # - SHOWCASE_TWILIO_TOKEN=ad1f82c56f5b9f048e72558ae984edf8
+  # - SHOWCASE_TWILIO_FROM_PHONE=+19787124065
   networks:
    mynet:
     ipv4_address: ${SHOWCASE_IP_ADDRESS_BACKEND}
