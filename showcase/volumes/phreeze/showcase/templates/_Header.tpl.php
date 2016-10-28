@@ -58,12 +58,7 @@
 			<div class="navbar navbar-inverse navbar-fixed-top">
 			
 			<?php if (isset($this->currentUser)) { ?>
-								
 				
-				
-				
-				
-			
 						<div class="navbar-inner">
 					<div class="container">
 					
@@ -76,7 +71,6 @@
 						<div class="nav-collapse collapse">
 							<ul class="nav">
 								
-								
 								<li <?php $this->eprint($this->title); ?></title></li>
 								
 								
@@ -86,26 +80,54 @@
 								<li <?php if ($this->nav=='sensoren') { echo 'class="active"'; } ?>><a href="./sensoren">Sensoren</a></li>
 								
 								<?php } ?>	
+																				
+								
+								<?php if ($this->currentUser->RoleId == 1) { ?>	
+								
+									<ul class="nav">
+										
+									
+												<li <?php if ($this->nav=='alarmen') { echo 'class="active"'; } ?>><a href="./alarmen">Alarm Rapport <b class="icon-eye-open"></b></a></li>
+												</li>
+											</ul>
+										</li>
+									</ul>	
+								
+								<?php } ?>	
 								
 								
-								
-								<?php if ($this->currentUser->RoleId >= 1) { ?>	
+								<?php if ($this->currentUser->RoleId > 1) { ?>	
 								
 									<ul class="nav">
 										<li class="dropdown">
 											<a href="#" class="dropdown-toggle" data-toggle="dropdown">Alarmen <b class="caret"></b></a>
 											<ul class="dropdown-menu">
 									
-												<li <?php if ($this->nav=='alarmen') { echo 'class="active"'; } ?>><a href="./alarmen">Alarm Rapport <b class="icon-eye-open"></b></a></li>
+												
 												<li <?php if ($this->nav=='alarm_regels') { echo 'class="active"'; } ?>><a href="./alarm_regels">Alarm Regels</a></li>
 												<li <?php if ($this->nav=='alarm_notificaties') { echo 'class="active"'; } ?>><a href="./alarm_notificaties">Alarm Notificaties</a></li>
+												<li <?php if ($this->nav=='alarmen') { echo 'class="active"'; } ?>><a href="./alarmen">Alarm Rapport <b class="icon-eye-open"></b></a></li>
 											</ul>
 										</li>
 									</ul>	
 								
 								<?php } ?>	
 									
-								<?php if ($this->currentUser->RoleId >= 1) { ?>
+								<?php if ($this->currentUser->RoleId == 1) { ?>
+								
+									<ul class="nav">
+										
+											
+											
+											<li <?php if ($this->nav=='laatste_observaties') { echo 'class="active"'; } ?>><a href="./laatste_observaties">Observatie Rapport <b class="icon-eye-open"></b></a></li>	
+											
+											
+										
+									</ul>	
+								
+								<?php } ?>	
+								
+								<?php if ($this->currentUser->RoleId > 1) { ?>
 								
 									<ul class="nav">
 										<li class="dropdown">
@@ -121,11 +143,12 @@
 								
 								<?php } ?>	
 								
+								
 								<?php if ($this->currentUser->RoleId == 4) { ?>
 								
 									<ul class="nav">
 										<li class="dropdown">
-											<a href="#" class="dropdown-toggle" data-toggle="dropdown">Gebruikersbeheer<b class="caret"></b></a>
+											<a href="#" class="dropdown-toggle" data-toggle="dropdown">Toegangsbeheer<b class="caret"></b></a>
 											<ul class="dropdown-menu">
 									
 												<li <?php if ($this->nav=='roles') { echo 'class="active"'; } ?>><a href="./roles">Rollen</a></li>
@@ -137,50 +160,32 @@
 							
 								<?php } ?>	
 							
-							
-							
 							<ul class="nav">
 								<li>
 								
-								
-								
 								<a href="./logout"><i class="icon-lock"></i> Logout
 								
-								
-								
-								
-								 <i class="caret"></i></a>
-								
-								
+								<i class="caret"></i></a>
 								
 								<!--<li><a href="./loginform">Login/Logout <?php $this->eprint($this->currentUser->Username); ?> </a></li>-->
 								
 							</ul>
-							
 							
 							
 							<ul class="nav pull-right">
 								<li>
 								
-								
-								
 								<p class="navbar-text"><code>
 								<?php $this->eprint($this->currentUser->Username);?>
-								<?php if ($this->currentUser->RoleId == 4) { ?>(Admin)<?php } ?>
-								<?php if ($this->currentUser->RoleId == 3) { ?>(Editor)<?php } ?>
-								<?php if ($this->currentUser->RoleId == 1) { ?>(ReadOnly)<?php } ?>
+								<?php if ($this->currentUser->RoleId == 4) { ?>(Tech. Beheerder)<?php } ?>
+								<?php if ($this->currentUser->RoleId == 3) { ?>(Func. Beheerder)<?php } ?>
+								<?php if ($this->currentUser->RoleId == 1) { ?>(Gebruiker)<?php } ?>
 								
 								</code></p>
-								
-								
-					
-								
-								
 								
 								<!--<li><a href="./loginform">Login/Logout <?php $this->eprint($this->currentUser->Username); ?> </a></li>-->
 								
 							</ul>
-							
 							
 						</div><!--/.nav-collapse -->
 					</div>

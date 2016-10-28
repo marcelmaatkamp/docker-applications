@@ -25,20 +25,20 @@ class ObservatieCriteria extends ObservatieCriteriaDAO
 	 * 
 	 * @see Criteria::GetFieldFromProp()
 	 */
-	/*
+	
 	public function GetFieldFromProp($propname)
 	{
 		switch($propname)
 		{
-			 case 'CustomProp1':
-			 	return 'my_db_column_1';
-			 case 'CustomProp2':
-			 	return 'my_db_column_2';
+			 case 'nodeAlias':
+			 	return 'node.alias';
+			 case 'sensorOmschrijving':
+			 	return 'sensor.omschrijving';
 			default:
 				return parent::GetFieldFromProp($propname);
 		}
 	}
-	*/
+	
 	
 	/**
 	 * For custom query logic, you may override OnPrepare and set the $this->_where to whatever

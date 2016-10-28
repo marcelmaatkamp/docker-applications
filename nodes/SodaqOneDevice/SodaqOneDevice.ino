@@ -61,13 +61,15 @@
 #define GPS_FIX_FLAGS 0b00000001 // just gnssFixOK
 
 #define MAX_RTC_EPOCH_OFFSET 25
+#define NUM_TX_RETRIES 5
 
 #define ADC_AREF 3.3f
 #define BATVOLT_R1 2.0f
 #define BATVOLT_R2 2.0f
 
 #define TEMPERATURE_OFFSET 20.0
-#define MICROSWITCH_PIN 2
+#define MICROSWITCH1_PIN 2
+#define MICROSWITCH2_PIN 3
 
 #define DEBUG_STREAM SerialUSB
 #define CONSOLE_STREAM SerialUSB
@@ -99,12 +101,13 @@ enum LedColor {
   BLUE
 };
 
-RTCZero rtc;
+RTCZero rtcMinute;
 RTCTimer timer;
 UBlox ublox;
 Time time;
 LSM303 lsm303;
-Switch microSwitch(MICROSWITCH_PIN);
+//Switch microSwitch1(MICROSWITCH1_PIN);
+//Switch microSwitch2(MICROSWITCH2_PIN);
 LTC ltc(1);
 HTU21DF htu;
 
@@ -112,7 +115,9 @@ ReportDataRecord pendingReportDataRecord;
 bool isPendingReportDataRecordNew; // this is set to true only when pendingReportDataRecord is written by the delegate
 
 volatile bool minuteFlag;
-volatile bool switchFlag;
+volatile bool switch1Flag;
+volatile bool switch2Flag;
+LedColor ledColor = RED;
 // LSM303 code
 int ax_o, ay_o, az_o;
 int d_x, d_y, d_z;
@@ -130,6 +135,7 @@ static uint8_t receiveBufferSize;
 static uint8_t sendBuffer[128];
 static uint8_t sendBufferSize;
 static uint8_t loraHWEui[8];
+static uint8_t loraFirmVer[40];
 static bool isLoraHWEuiInitialized;
 
 void setup();
@@ -139,8 +145,10 @@ uint32_t getNow();
 void setNow(uint32_t now);
 void handleBootUpCommands();
 void initRtc();
-void rtcAlarmHandler();
-void switchHandler();
+void rtcMinuteAlarmHandler();
+void switch1Handler();
+void switch2Handler();
+void attachHandlers();
 void initRtcTimer();
 void resetRtcTimerEvents();
 void initSleep();
@@ -161,18 +169,19 @@ void delegateNavPvt(NavigationPositionVelocityTimeSolution* NavPvt);
 bool getDataAndTransmit();
 bool getGpsFixAndTransmit();
 bool getAliveDataAndTransmit();
-void getSwitchDataAndTransmit();
+void getSwitchDataAndTransmit(int SwitchNo);
 uint8_t getBatteryVoltage();
 int8_t getBoardTemperature();
 void updateGpsSendBuffer();
 void updateAliveSendBuffer();
-bool updateSwitchSendBuffer();
-void transmit();
+bool updateSwitchSendBuffer(int SwitchNo);
+bool transmit();
 void updateConfigOverTheAir();
 void getHWEUI();
 void setDevAddrOrEUItoHWEUI();
 void onConfigReset(void);
-bool switchsensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg);
+bool switch1sensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg);
+bool switch2sensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg);
 bool tempsensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg);
 bool humsensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg);
 bool voltsensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg);
@@ -193,9 +202,9 @@ void setup()
   // enable power to the grove shield
   pinMode(11, OUTPUT);
   digitalWrite(11, HIGH);
-  // Define Pin A2 as interrupt input line 
-  pinMode(A2, INPUT_PULLUP);
-  attachInterrupt(A2, switchHandler, CHANGE);
+  // Define the switch Pin as interrupt input line
+  pinMode(MICROSWITCH1_PIN, INPUT);
+  pinMode(MICROSWITCH2_PIN, INPUT);
 
   lastResetCause = PM->RCAUSE.reg;
   sodaq_wdt_enable();
@@ -207,6 +216,8 @@ void setup()
   printBootUpMessage(SerialUSB);
 
   gpsFixLiFoRingBuffer_init();
+  // attach the interrupts
+  attachHandlers();
   initSleep();
   initRtc();
 
@@ -253,9 +264,31 @@ void loop()
   sodaq_wdt_reset();
   sodaq_wdt_flag = false;
 
-  if (minuteFlag) 
+  if (switch1Flag)
   {
-    if (params.getIsLedEnabled()) 
+    debugPrintln("switch 1 Flag set");
+    if (params.getIsLedEnabled())
+    {
+      setLedColor(RED);
+    }
+
+    getSwitchDataAndTransmit(1);
+    switch1Flag = false;
+  }
+  if (switch2Flag)
+  {
+    debugPrintln("switch 2 Flag set");
+    if (params.getIsLedEnabled())
+    {
+      setLedColor(GREEN);
+    }
+
+    getSwitchDataAndTransmit(2);
+    switch2Flag = false;
+  }
+  if (minuteFlag)
+  {
+    if (params.getIsLedEnabled())
     {
       setLedColor(BLUE);
     }
@@ -263,17 +296,7 @@ void loop()
     timer.update(); // handle scheduled events
     minuteFlag = false;
   }
-  if (switchFlag)
-  {
-    if (params.getIsLedEnabled()) 
-    {
-      setLedColor(RED);
-    }
 
-    getSwitchDataAndTransmit();
-    switchFlag = false;
-  }
-  
   systemSleep();
 }
 
@@ -282,6 +305,15 @@ void loop()
 */
 void initSleep()
 {
+  // Set the XOSC32K to run in standby
+  SYSCTRL->XOSC32K.bit.RUNSTDBY = 1;
+
+  // Configure EIC to use GCLK1 which uses XOSC32K
+  // This has to be done after the first call to attachInterrupt()
+  GCLK->CLKCTRL.reg = GCLK_CLKCTRL_ID(GCM_EIC) |
+                      GCLK_CLKCTRL_GEN_GCLK1 |
+                      GCLK_CLKCTRL_CLKEN;
+
   // Set the sleep mode
   SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
 }
@@ -313,6 +345,12 @@ int8_t getBoardTemperature()
   setLsm303Active(false);
 
   return round(TEMPERATURE_OFFSET + rawTemp / 8.0);
+}
+
+void attachHandlers()
+{
+  attachInterrupt(MICROSWITCH1_PIN, switch1Handler, CHANGE);
+  attachInterrupt(MICROSWITCH2_PIN, switch2Handler, CHANGE);
 }
 
 /**
@@ -476,23 +514,24 @@ void updateAliveSendBuffer()
   debugPrintln(">");
 }
 
-bool updateSwitchSendBuffer()
+bool updateSwitchSendBuffer(int switchNo)
 {
   bool isSuccessful = false;
   debugPrintln("updateSwitchSendBuffer....");
-  microSwitch.Update();
+  debugPrint("Get Switch: ");
+  debugPrint(switchNo);
 
-  //Read the state of the microSwitch
-//  if (microSwitch.isChanged()) {
-    debugPrint("Switch state: ");
-    debugPrintln(microSwitch.ReadState());
+  NodeMessage nodemsg = NodeMessage_init_zero;
 
-    NodeMessage nodemsg = NodeMessage_init_zero;
+  /* Create a stream that will write to our buffer. */
+  pb_ostream_t stream = pb_ostream_from_buffer(sendBuffer, sizeof(sendBuffer));
 
-    /* Create a stream that will write to our buffer. */
-    pb_ostream_t stream = pb_ostream_from_buffer(sendBuffer, sizeof(sendBuffer));
+  //Read the state of microSwitch1
+  if (switchNo == 1) {
+    debugPrint(" state: ");
+    debugPrintln(digitalRead(MICROSWITCH1_PIN));
 
-    nodemsg.reading.funcs.encode = &switchsensor_callback;
+    nodemsg.reading.funcs.encode = &switch1sensor_callback;
 
     /* Now we are ready to encode the message! */
     /* Then just check for any errors.. */
@@ -516,7 +555,37 @@ bool updateSwitchSendBuffer()
       debugPrintln(">");
       isSuccessful = true;
     }
-//  }
+  }
+  //Read the state of microSwitch2
+  if (switchNo == 2) {
+    debugPrint(" state: ");
+    debugPrintln(digitalRead(MICROSWITCH2_PIN));
+
+    nodemsg.reading.funcs.encode = &switch2sensor_callback;
+
+    /* Now we are ready to encode the message! */
+    /* Then just check for any errors.. */
+    if (!pb_encode(&stream, NodeMessage_fields, &nodemsg))
+    {
+      debugPrint("Encoding failed: ");
+      debugPrintln(PB_GET_ERROR(&stream));
+    }
+    else
+    {
+      sendBufferSize = stream.bytes_written;
+      debugPrint("sendBufferSize:");
+      debugPrintln(sendBufferSize);
+      debugPrint("message:<");
+      for (uint8_t i = 0; i < sendBufferSize; i++)
+      {
+        debugPrint(sendBuffer[i]);
+        if (i < sendBufferSize - 1)
+          debugPrint(" ");
+      }
+      debugPrintln(">");
+      isSuccessful = true;
+    }
+  }
   return isSuccessful;
 }
 
@@ -524,32 +593,97 @@ bool updateSwitchSendBuffer()
    Sends the current sendBuffer through lora (if enabled).
    Repeats the transmitions according to params.getRepeatCount().
 */
-void transmit()
+bool transmit()
 {
-  if (!isLoraInitialized) {
-    return;
-  }
+  bool retVal = true;
+  uint8_t sendReturn;
+  uint16_t recvSize;
+  bool retry = true;
+  int retCount = 0;
 
   setLoraActive(true);
 
-  for (uint8_t i = 0; i < 1 + params.getRepeatCount(); i++) {
-    if (LoRaBee.send(1, sendBuffer, sendBufferSize) != 0) {
-      debugPrintln("There was an error while transmitting through LoRaWAN.");
+  while (isLoraInitialized && retry)
+  {
+    if (params.getIsAckEnabled())
+    {
+      sendReturn = LoRaBee.sendReqAck(1, sendBuffer, sendBufferSize, 1);
     }
-    else {
-      debugPrintln("Data transmitted successfully.");
-
-      uint16_t size = LoRaBee.receive(receiveBuffer, sizeof(receiveBuffer));
-      receiveBufferSize = size;
-
-      if (size > 0) {
-        debugPrintln("Received OTA Configuration.");
-        updateConfigOverTheAir();
+    else
+    {
+      sendReturn = LoRaBee.send(1, sendBuffer, sendBufferSize);
+    }
+    switch (sendReturn)
+    {
+      case NoError:
+        debugPrintln("Data transmitted successfully.");
+        receiveBufferSize = LoRaBee.receive(receiveBuffer, sizeof(receiveBuffer));
+        if (receiveBufferSize > 0)
+        {
+          if (receiveBufferSize > 1)
+          {
+            debugPrint("Received OTA Configuration (#)");
+            debugPrintln(receiveBufferSize);
+            for (uint16_t i = 0; i < receiveBufferSize; i++)
+            {
+              debugPrintln(receiveBuffer[i]);
+            }
+            updateConfigOverTheAir();
+          }
+        }
+        retry = false;
+        break;
+      case NoResponse:
+        debugPrintln("There was no response from the device.");
+        break;
+      case Timeout:
+        debugPrintln("Connection timed-out. Check your serial connection to the device! Sleeping for 20sec.");
+        delay(20000);
+        break;
+      case PayloadSizeError:
+        debugPrintln("The size of the payload is greater than allowed. Transmission failed!");
+        break;
+      case InternalError:
+        debugPrintln("Oh No! This shouldn't happen. Something is really wrong! Try restarting the device!\r\nThe program will now halt.");
+        //      while (1) {};
+        retVal = false;
+        break;
+      case Busy:
+        debugPrintln("The device is busy. Sleeping for 2 extra seconds.");
+        delay(2000);
+        break;
+      case NetworkFatalError:
+        debugPrintln("There is a non-recoverable error with the network connection. You should re-connect.\r\nThe program will now halt.");
+        //        while (1) {};
+        retVal = false;
+        break;
+      case NotConnected:
+        debugPrintln("The device is not connected to the network. Please connect to the network before attempting to send data.\r\nThe program will now halt.");
+        //        while (1) {};
+        retVal = false;
+        break;
+      case NoAcknowledgment:
+        debugPrintln("There was no acknowledgment sent back!");
+        break;
+      default:
+        break;
+    }
+    if (sendReturn != NoError)
+    {
+      retCount++;
+      debugPrint("Retry number: ");
+      debugPrintln(retCount);
+      if (retCount > NUM_TX_RETRIES)
+      {
+        retry = false;
+        retVal = false;
       }
     }
   }
-
+  // bewaar het aantal zendpogingen
+  numTxRetries = retCount;
   setLoraActive(false);
+  return retVal;
 }
 
 /**
@@ -577,7 +711,7 @@ void updateConfigOverTheAir()
     params.commit();
     debugPrintln("OTAA Config commited!");
 
-    // apply the rtc timer changes
+    // apply the rtcMinute timer changes
     resetRtcTimerEvents();
   }
   else {
@@ -704,7 +838,7 @@ void systemSleep()
   // do not go to sleep if DEBUG is enabled, to keep USB connected
 #ifndef DEBUG
   noInterrupts();
-  if (!(sodaq_wdt_flag || minuteFlag || switchFlag)) {
+  if (!(sodaq_wdt_flag || minuteFlag || switch1Flag || switch2Flag)) {
     interrupts();
 
     __WFI(); // SAMD sleep
@@ -721,7 +855,7 @@ void systemSleep()
 */
 uint32_t getNow()
 {
-  return rtc.getEpoch();
+  return rtcMinute.getEpoch();
 }
 
 /**
@@ -737,7 +871,7 @@ void setNow(uint32_t newEpoch)
   debugPrintln(newEpoch);
 
   rtcEpochDelta = newEpoch - currentEpoch;
-  rtc.setEpoch(newEpoch);
+  rtcMinute.setEpoch(newEpoch);
 
   timer.adjust(currentEpoch, newEpoch);
 
@@ -764,24 +898,25 @@ void handleBootUpCommands()
 */
 void initRtc()
 {
-  rtc.begin();
+  // activate the minute event
+  rtcMinute.begin();
 
   // Schedule the wakeup interrupt for every minute
   // Alarm is triggered 1 cycle after match
-  rtc.setAlarmSeconds(59);
-  rtc.enableAlarm(RTCZero::MATCH_SS); // alarm every minute
+  rtcMinute.setAlarmSeconds(59);
+  rtcMinute.enableAlarm(RTCZero::MATCH_SS); // alarm every minute
 
   // Attach handler
-  rtc.attachInterrupt(rtcAlarmHandler);
+  rtcMinute.attachInterrupt(rtcMinuteAlarmHandler);
 
   // This sets it to 2000-01-01
-  rtc.setEpoch(0);
+  rtcMinute.setEpoch(0);
 }
 
 /**
-   Runs every minute by the rtc alarm.
+   Runs every minute by the rtcMinute alarm.
 */
-void rtcAlarmHandler()
+void rtcMinuteAlarmHandler()
 {
   minuteFlag = true;
 }
@@ -789,9 +924,17 @@ void rtcAlarmHandler()
 /**
    Runs if the switch is pressed.
 */
-void switchHandler()
+void switch1Handler()
 {
-  switchFlag = true;
+  switch1Flag = true;
+}
+
+/**
+   Runs if the switch is pressed.
+*/
+void switch2Handler()
+{
+  switch2Flag = true;
 }
 
 /**
@@ -847,7 +990,7 @@ bool isAlternativeFixEventApplicable()
 */
 bool isCurrentTimeOfDayWithin(uint32_t daySecondsFrom, uint32_t daySecondsTo)
 {
-  uint32_t daySecondsCurrent = rtc.getHours() * 60 * 60 + rtc.getMinutes() * 60;
+  uint32_t daySecondsCurrent = rtcMinute.getHours() * 60 * 60 + rtcMinute.getMinutes() * 60;
 
   return (daySecondsCurrent >= daySecondsFrom && daySecondsCurrent < daySecondsTo);
 }
@@ -1065,10 +1208,10 @@ bool getAliveDataAndTransmit()
    Tries to get the Switch data and sends the data through LoRa if applicable.
    Please see the documentation for more details on how this process works.
 */
-void getSwitchDataAndTransmit()
+void getSwitchDataAndTransmit(int SwitchNo)
 {
   debugPrintln("Start getSwitchData...");
-  if (updateSwitchSendBuffer()) 
+  if (updateSwitchSendBuffer(SwitchNo))
   {
     transmit();
   }
@@ -1170,14 +1313,36 @@ void LSM303_Update()
   setLsm303Active(false);
 }
 
-bool switchsensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg)
+bool switch1sensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg)
 {
   SensorReading sensormsg = SensorReading_init_zero;
 
   /* Fill in the lucky number */
   sensormsg.id = 1;
   sensormsg.has_id = true;
-  sensormsg.value1 = microSwitch.ReadState();
+  sensormsg.value1 = digitalRead(MICROSWITCH1_PIN);
+  sensormsg.has_value1 = true;
+
+  /* This encodes the header for the field, based on the constant info
+     from pb_field_t. */
+  if (!pb_encode_tag_for_field(stream, field))
+    return false;
+
+  /* This encodes the data for the field, based on our FileInfo structure. */
+  if (!pb_encode_submessage(stream, SensorReading_fields, &sensormsg))
+    return false;
+
+  return true;
+}
+
+bool switch2sensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg)
+{
+  SensorReading sensormsg = SensorReading_init_zero;
+
+  /* Fill in the lucky number */
+  sensormsg.id = 9;
+  sensormsg.has_id = true;
+  sensormsg.value1 = digitalRead(MICROSWITCH2_PIN);
   sensormsg.has_value1 = true;
 
   /* This encodes the header for the field, based on the constant info
@@ -1386,8 +1551,6 @@ bool retriessensor_callback(pb_ostream_t *stream, const pb_field_t *field, void 
   return true;
 }
 
-
-
 /**
    Prints the cause of the last reset to the given stream.
 
@@ -1436,11 +1599,16 @@ static void printBootUpMessage(Stream& stream)
 {
   stream.println("** " PROJECT_NAME " - " VERSION " **");
 
-  getHWEUI();
+  getHWEUIAndFirmVer();
   stream.print("LoRa HWEUI: ");
   for (uint8_t i = 0; i < sizeof(loraHWEui); i++) {
     stream.print((char)NIBBLE_TO_HEX_CHAR(HIGH_NIBBLE(loraHWEui[i])));
     stream.print((char)NIBBLE_TO_HEX_CHAR(LOW_NIBBLE(loraHWEui[i])));
+  }
+  stream.println();
+  stream.print("LoRa Firmware version: ");
+  for (uint8_t i = 0; i < sizeof(loraFirmVer); i++) {
+    stream.print((char)(loraFirmVer[i]));
   }
   stream.println();
 
@@ -1458,7 +1626,7 @@ void onConfigReset(void)
   setDevAddrOrEUItoHWEUI();
 }
 
-void getHWEUI()
+void getHWEUIAndFirmVer()
 {
   // only read the HWEUI once
   if (!isLoraHWEuiInitialized) {
@@ -1466,17 +1634,17 @@ void getHWEUI()
     sodaq_wdt_safe_delay(10);
     setLoraActive(true);
     uint8_t len = LoRaBee.getHWEUI(loraHWEui, sizeof(loraHWEui));
-    setLoraActive(false);
-
     if (len == sizeof(loraHWEui)) {
       isLoraHWEuiInitialized = true;
     }
+    LoRaBee.getFirmVer(loraFirmVer, sizeof(loraFirmVer));
+    setLoraActive(false);
   }
 }
 
 void setDevAddrOrEUItoHWEUI()
 {
-  getHWEUI();
+  getHWEUIAndFirmVer();
 
   if (isLoraHWEuiInitialized) {
     for (uint8_t i = 0; i < sizeof(loraHWEui); i++) {
@@ -1485,3 +1653,4 @@ void setDevAddrOrEUItoHWEUI()
     }
   }
 }
+

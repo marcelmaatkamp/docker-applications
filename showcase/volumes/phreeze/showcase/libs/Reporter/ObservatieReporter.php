@@ -4,6 +4,7 @@
 /** import supporting libraries */
 require_once("verysimple/Phreeze/Reporter.php");
 
+
 /**
  * This is an example Reporter based on the Observatie object.  The reporter object
  * allows you to run arbitrary queries that return data which may or may not fith within
@@ -20,11 +21,12 @@ class ObservatieReporter extends Reporter
 
 	// the properties in this class must match the columns returned by GetCustomQuery().
 	// 'CustomFieldExample' is an example that is not part of the `observatie` table
-	public $CustomFieldExample;
-
+	
 	public $Id;
 	public $Node;
+	public $NodeAlias;
 	public $Sensor;
+	public $SensorOmschrijving;
 	public $DatumTijdAangemaakt;
 	public $Waarde;
 
@@ -39,13 +41,16 @@ class ObservatieReporter extends Reporter
 	static function GetCustomQuery($criteria)
 	{
 		$sql = "select
-			'custom value here...' as CustomFieldExample
-			,`observatie`.`id` as Id
+			`observatie`.`id` as Id
 			,`observatie`.`node` as Node
+			,`node`.`alias` as NodeAlias
 			,`observatie`.`sensor` as Sensor
+			,`sensor`.`omschrijving` as SensorOmschrijving
 			,`observatie`.`datum_tijd_aangemaakt` as DatumTijdAangemaakt
 			,`observatie`.`waarde` as Waarde
-		from `observatie`";
+		from `observatie`
+		inner join node on node.dev_eui = observatie.node
+		inner join sensor on sensor.sensor_id = observatie.sensor";
 
 		// the criteria can be used or you can write your own custom logic.
 		// be sure to escape any user input with $criteria->Escape()
@@ -66,7 +71,9 @@ class ObservatieReporter extends Reporter
 	*/
 	static function GetCustomCountQuery($criteria)
 	{
-		$sql = "select count(1) as counter from `observatie`";
+		$sql = "select count(1) as counter from `observatie`
+		inner join node on node.dev_eui = observatie.node
+		inner join sensor on sensor.sensor_id = observatie.sensor";
 
 		// the criteria can be used or you can write your own custom logic.
 		// be sure to escape any user input with $criteria->Escape()

@@ -74,6 +74,10 @@ GlobalConfig::$ROUTE_MAP = array(
 
 	// default controller when no route specified
 	'GET:' => array('route' => 'Default.Home'),
+	
+	
+	
+	'GET:export' => array('route' => 'Node.Export'),
 		
 	// example authentication routes
 	'GET:loginform' => array('route' => 'SecureExample.LoginForm'),

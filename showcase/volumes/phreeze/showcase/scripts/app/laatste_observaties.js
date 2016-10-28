@@ -50,6 +50,21 @@ var page = {
 			e.preventDefault();
 			page.updateModel();
 		});
+		
+		
+			// initialize the collection view
+		this.collectionView = new view.CollectionView({
+			el: $("#FilterNodeTemplateContainer"),
+			templateEl: $("#FilterNodeTemplate"),
+			collection: page.laatste_Observaties
+		});
+		
+		// initialize the collection view
+		this.collectionView = new view.CollectionView({
+			el: $("#FilterSensorTemplateContainer"),
+			templateEl: $("#FilterSensorTemplate"),
+			collection: page.laatste_Observaties
+		});
 
 		// initialize the collection view
 		this.collectionView = new view.CollectionView({
@@ -58,6 +73,56 @@ var page = {
 			collection: page.laatste_Observaties
 		});
 
+		
+			// initialize the Node search filter
+		$(document).on('change','#FilterNode',function(){
+			
+			console.log("FilterNode Used");
+			page.fetchParams.FilterNode = $('#FilterNode').val();
+			page.fetchParams.page = 1;
+			page.fetchLaatste_Observaties(page.fetchParams);
+			//console.log($('#FilterNode').val()+' used');
+					console.log("FilterNode Used");
+			
+			if ($('#FilterNode').val()){
+				$("#FilterNodeDisplay").val("Filter: "+$('#FilterNode').val());
+				$("#FilterNodeDisplay").css('color', 'red', 'important');
+			}
+			else{
+			//$("#FilterAliasDisplay").hide();	
+				$("#FilterNodeDisplay").val("-Geen Filter-");	
+				$("#FilterNodeDisplay").removeAttr('style');
+			}
+			
+		});
+		
+		// initialize the Sensor search filter
+		$(document).on('change','#FilterSensor',function(){
+			page.fetchParams.FilterSensor = $('#FilterSensor').val();
+			page.fetchParams.page = 1;
+			page.fetchLaatste_Observaties(page.fetchParams);
+			
+			
+			if ($('#FilterSensor').val()){
+				$("#FilterSensorDisplay").val("Filter: "+$('#FilterSensor').val());
+				$("#FilterSensorDisplay").css('color', 'red', 'important');
+		
+			}
+			else{
+				$("#FilterSensorDisplay").val("-Geen Filter-");	
+				$("#FilterSensorDisplay").removeAttr('style');
+			}
+			
+		});
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		// initialize the search filter
 		$('#filter').change(function(obj) {
 			page.fetchParams.filter = $('#filter').val();
@@ -65,18 +130,7 @@ var page = {
 			page.fetchLaatste_Observaties(page.fetchParams);
 		});
 		
-			this.collectionView = new view.CollectionView({
-			el: $("#laatste_ObservatieCollectionContainer"),
-			templateEl: $("#laatste_ObservatieCollectionTemplate"),
-			collection: page.laatste_Observaties
-		});
 		
-			// initialize the dropdown filter
-		$('#drowpdownfilter').change(function(obj) {
-			page.fetchParams.filter = $('#drowpdownfilter').val();
-			page.fetchParams.page = 1;
-			page.fetchLaatste_Observaties(page.fetchParams);
-		});
 		
 		
 		// make the rows clickable ('rendered' is a custom event, not a standard backbone event)

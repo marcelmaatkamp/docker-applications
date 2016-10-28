@@ -21,24 +21,140 @@
 <div class="container">
 
 <h1>
-	<i class="icon-th-list"></i> Nodes
+	<i class="icon-th-list"></i> Nodes 
 	<span id=loader class="loader progress progress-striped active"><span class="bar"></span></span>
 	<span class='input-append pull-right searchContainer'>
+		
 		<input id='filter' type="text" placeholder="Search..." />
 		<button class='btn add-on'><i class="icon-search"></i></button>
-	</span>
+	
+			</span>
 </h1>
 
 
 
 
 
+
+
+<script type="text/template" id="FilterDevEuiTemplate">		
+	<select id=FilterDevEui>
+		<option value="" disabled selected hidden>Filter Dev Eui...</option>
+		<option value="">-- Verwijder Filter --</option>
+				<?php
+
+				
+
+$db = new mysqli(
+GlobalConfig::$CONNECTION_SETTING->Host, 
+GlobalConfig::$CONNECTION_SETTING->Username,
+GlobalConfig::$CONNECTION_SETTING->Password,
+GlobalConfig::$CONNECTION_SETTING->DBName,
+GlobalConfig::$CONNECTION_SETTING->Port);
+
+
+if($db->connect_errno > 0){
+    die('Unable to connect to database [' . $db->connect_error . ']');
+}
+
+
+$sql = "select distinct dev_eui as NodeDevEui
+		from node
+		where dev_eui is not null and dev_eui != ''";
+
+
+if(!$result = $db->query($sql)){
+    die('There was an error running the query [' . $db->error . ']');
+}
+
+while($row = $result->fetch_assoc()){
+    echo '<option>' . $row['NodeDevEui'] . '</option>';
+}
+
+mysqli_close($db);
+
+?>
+		</select>
+	</script>
+	
+		
+	<script type="text/template" id="FilterAliasTemplate">		
+	
+		<select id=FilterAlias>
+		<option value="" disabled selected hidden>Filter Alias...</option>
+		<option value="">-- Verwijder Filter --</option>
+		
+		
+		<?php
+
+				
+
+$db = new mysqli(
+GlobalConfig::$CONNECTION_SETTING->Host, 
+GlobalConfig::$CONNECTION_SETTING->Username,
+GlobalConfig::$CONNECTION_SETTING->Password,
+GlobalConfig::$CONNECTION_SETTING->DBName,
+GlobalConfig::$CONNECTION_SETTING->Port);
+
+
+if($db->connect_errno > 0){
+    die('Unable to connect to database [' . $db->connect_error . ']');
+}
+
+
+$sql = "select distinct alias as alias
+		from node
+		where alias is not null and alias != ''";
+
+
+if(!$result = $db->query($sql)){
+    die('There was an error running the query [' . $db->error . ']');
+}
+
+while($row = $result->fetch_assoc()){
+    echo '<option>' . $row['alias'] . '</option>';
+}
+
+mysqli_close($db);
+
+?>
+		
+		
+		</select>
+	</script>
+		<br>
+
+
+	<table>
+	<thead>
+	
+	<h4>Filters</h4>	
+
+	</thead>
+		<tbody>
+	<tr>
+	<td><div id="FilterDevEuiTemplateContainer" class="collectionContainer"></div></td>
+	<td><input type="text" id="FilterDevEuiDisplay" placeholder="-Geen Filter-"></td>
+	
+	</tr>
+	
+	<tr>
+	<td><div id="FilterAliasTemplateContainer" class="collectionContainer"></div></td>
+	<td><input type="text" id="FilterAliasDisplay" placeholder="-Geen Filter-"></td>
+	
+	</tr>
+	</tbody>
+	</table>
+		<br>
+
+ 
 	<!-- underscore template for the collection -->
 	<script type="text/template" id="nodeCollectionTemplate">
 		<table class="collection table table-bordered table-hover">
 		<thead>
 			<tr>
 				<th id="header_DevEui">Dev Eui<% if (page.orderBy == 'DevEui') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_Alias">Alias<% if (page.orderBy == 'Alias') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_Omschrijving">Omschrijving<% if (page.orderBy == 'Omschrijving') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 			</tr>
 		</thead>
@@ -46,12 +162,14 @@
 		<% items.each(function(item) { %>
 			<tr id="<%= _.escape(item.get('devEui')) %>">
 				<td><%= _.escape(item.get('devEui') || '') %></td>
+				<td><%= _.escape(item.get('alias') || '') %></td>
 				<td><%= _.escape(item.get('omschrijving') || '') %></td>
 			</tr>
 		<% }); %>
+		
 		</tbody>
 		</table>
-
+	
 		<%=  view.getPaginationHtml(page) %>
 	</script>
 
@@ -66,6 +184,14 @@
 						<span class="help-inline"></span>
 					</div>
 				</div>
+				<div id="aliasInputContainer" class="control-group">
+					<label class="control-label" for="alias">Alias</label>
+					<div class="controls inline-inputs">
+						<input type="text" class="input-xlarge" id="alias" placeholder="Alias" value="<%= _.escape(item.get('alias') || '') %>">
+						<span class="help-inline"></span>
+					</div>
+				</div>
+				
 				<div id="omschrijvingInputContainer" class="control-group">
 					<label class="control-label" for="omschrijving">Omschrijving</label>
 					<div class="controls inline-inputs">
@@ -114,8 +240,12 @@
 
 	<div id="collectionAlert"></div>
 	
+
+	
 	<div id="nodeCollectionContainer" class="collectionContainer">
 	</div>
+	
+
 
 	<p id="newButtonContainer" class="buttonContainer">
 		<button id="newNodeButton" class="btn btn-primary">Add Node</button>

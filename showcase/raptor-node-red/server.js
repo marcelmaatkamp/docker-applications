@@ -64,6 +64,7 @@ var settings = {
     functionGlobalContext: {
       safeEval: require("safe-eval"),
       protoBuf: require("protocol-buffers"),
+      twilio: require("twilio"),
       fs: require("fs")
      },    // enables global context
     // enable verbose output (command line -v option)

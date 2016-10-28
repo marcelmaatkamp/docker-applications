@@ -6,6 +6,7 @@ require_once("AppBaseController.php");
 require_once("Model/Node.php");
 require_once("Model/User.php");
 
+
 /**
  * NodeController is the controller class for the Node object.  The
  * controller is responsible for processing input from the user, reading/updating
@@ -15,6 +16,7 @@ require_once("Model/User.php");
  * @author ClassBuilder
  * @version 1.0
  */
+ 
 class NodeController extends AppBaseController
 {
 
@@ -33,7 +35,7 @@ class NodeController extends AppBaseController
 		$this->RequirePermission(User::$PERMISSION_EDIT,
 				'SecureExample.LoginForm',
 				'Please login to access this page',
-				'');
+				'Geen toegang tot deze pagina.');
 				
 				
 				
@@ -49,8 +51,9 @@ class NodeController extends AppBaseController
 	public function ListView()
 	{
 		$this->Render();
+		
+	
 	}
-
 	/**
 	 * API Method queries for Node records and render as JSON
 	 */
@@ -60,13 +63,28 @@ class NodeController extends AppBaseController
 		{
 			$criteria = new NodeCriteria();
 			
+			
 			// TODO: this will limit results based on all properties included in the filter list 
+			//$filter = RequestUtil::Get('filter');
 			$filter = RequestUtil::Get('filter');
-			if ($filter) $criteria->AddFilter(
-				new CriteriaFilter('DevEui,Omschrijving'
-				, '%'.$filter.'%')
-			);
+			$filteralias = RequestUtil::Get('FilterAlias');
+			$filterdeveui = RequestUtil::Get('FilterDevEui');
+		
 
+
+		
+			if ($filter) $criteria->AddFilter(
+				new CriteriaFilter('Alias,Omschrijving,DevEui', '%'.$filter.'%')
+			);
+			
+			if ($filteralias) $criteria->AddFilter(
+				new CriteriaFilter('Alias', '%'.$filteralias.'%')
+			);
+			
+			if ($filterdeveui) $criteria->AddFilter(
+				new CriteriaFilter('DevEui', '%'.$filterdeveui.'%')
+			);
+		
 			// TODO: this is generic query filtering based only on criteria properties
 			foreach (array_keys($_REQUEST) as $prop)
 			{
@@ -163,7 +181,8 @@ class NodeController extends AppBaseController
 
 			$node->DevEui = $this->SafeGetVal($json, 'devEui');
 			$node->Omschrijving = $this->SafeGetVal($json, 'omschrijving');
-
+			$node->Alias = $this->SafeGetVal($json, 'alias');
+			
 			$node->Validate();
 			$errors = $node->GetValidationErrors();
 
@@ -191,10 +210,7 @@ class NodeController extends AppBaseController
 	public function Update()
 	{
 		
-		$this->RequirePermission(User::$PERMISSION_ADMIN,
-				'SecureExample.LoginForm',
-				'Please login to access this page',
-				'Admin permission is required to EDIT NODES');
+		
 		
 		try
 		{
@@ -215,6 +231,7 @@ class NodeController extends AppBaseController
 			// $node->DevEui = $this->SafeGetVal($json, 'devEui', $node->DevEui);
 
 			$node->Omschrijving = $this->SafeGetVal($json, 'omschrijving', $node->Omschrijving);
+			$node->Alias = $this->SafeGetVal($json, 'alias', $node->Alias);
 
 			$node->Validate();
 			$errors = $node->GetValidationErrors();
@@ -271,6 +288,42 @@ class NodeController extends AppBaseController
 			$this->RenderExceptionJSON($ex);
 		}
 	}
+	
+	
+	
+	
+	
+	public function Export(){
+		
+
+    $samples = $this->Phreezer->Query('Node');
+   $objects = $samples->ToObjectArray();
+  
+echo 'DONE 1';
+
+//  header("Content-Type: application/download");
+//  header("Content-Disposition: attachment;filename=export.csv");
+  
+require_once 'verysimple/Phreeze/ExportUtility.php';
+ 
+echo 'DONE 2';
+
+header("Content-Type: application/download");
+header("Content-Disposition: attachment;filename=export.csv");
+  
+//ExportUtility::OutputAsExcel($objects, $this->Phreezer);
+//ExportUtility::OutputAsExcel($objects, $this->Phreezer, "Report Title", "export.xls", "My App Name");
+
+ echo 'DONE 3';
+  
+  }
+	
+	
+		
+	
+	
+	
+	
 }
 
 ?>

@@ -1,2 +1,10 @@
 #!/bin/bash
-docker-compose -f docker-compose.yml -f docker-compose/docker-compose-graylog.yml up -d graylog
+shopt -s expand_aliases
+
+server=graylog
+alias dc="docker-compose -f docker-compose.yml -f docker-compose/docker-compose-$server.yml"
+
+dc stop graylog elasticsearch-master elasticsearch-node01 mongodb &&\
+dc rm -f --all graylog elasticsearch-master elasticsearch-node01 mongodb &&\
+dc pull graylog elasticsearch-master elasticsearch-node01 mongodb &&\
+dc up -d graylog elasticsearch-master elasticsearch-node01 mongodb
