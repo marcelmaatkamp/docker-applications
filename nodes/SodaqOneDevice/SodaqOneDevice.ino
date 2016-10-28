@@ -117,12 +117,13 @@ bool isPendingReportDataRecordNew; // this is set to true only when pendingRepor
 volatile bool minuteFlag;
 volatile bool switch1Flag;
 volatile bool switch2Flag;
+volatile bool movedFlag;
 LedColor ledColor = RED;
 // LSM303 code
 int ax_o, ay_o, az_o;
 int d_x, d_y, d_z;
 bool hasMoved;
-
+bool powerlossSend = false;
 static uint8_t lastResetCause;
 static bool isLoraInitialized;
 static bool isRtcInitialized;
@@ -170,11 +171,15 @@ bool getDataAndTransmit();
 bool getGpsFixAndTransmit();
 bool getAliveDataAndTransmit();
 void getSwitchDataAndTransmit(int SwitchNo);
+void getMoveDataAndTransmit();
+void getPowerlossDataAndTransmit();
 uint8_t getBatteryVoltage();
 int8_t getBoardTemperature();
 void updateGpsSendBuffer();
 void updateAliveSendBuffer();
 bool updateSwitchSendBuffer(int SwitchNo);
+bool updateMoveSendBuffer();
+bool updatePowerlossSendBuffer();
 bool transmit();
 void updateConfigOverTheAir();
 void getHWEUI();
@@ -188,6 +193,7 @@ bool voltsensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * c
 bool currentsensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg);
 bool chargesensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg);
 bool movesensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg);
+bool powerlosssensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg);
 bool retriessensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg);
 
 static void printCpuResetCause(Stream& stream);
@@ -224,6 +230,7 @@ void setup()
   Wire.begin();
   ublox.enable(); // turn power on early for faster initial fix
   htu.begin();
+  ltc.setDiag(DEBUG_STREAM);
 
   // init params
   params.setConfigResetCallback(onConfigReset);
@@ -264,27 +271,40 @@ void loop()
   sodaq_wdt_reset();
   sodaq_wdt_flag = false;
 
-  if (switch1Flag)
+  if (!params.getIsGpsEnabled())
   {
-    debugPrintln("switch 1 Flag set");
-    if (params.getIsLedEnabled())
+    if (switch1Flag)
     {
-      setLedColor(RED);
-    }
+      debugPrintln("switch 1 Flag set");
+      if (params.getIsLedEnabled())
+      {
+        setLedColor(RED);
+      }
 
-    getSwitchDataAndTransmit(1);
-    switch1Flag = false;
-  }
-  if (switch2Flag)
-  {
-    debugPrintln("switch 2 Flag set");
-    if (params.getIsLedEnabled())
+      getSwitchDataAndTransmit(1);
+      switch1Flag = false;
+    }
+    if (switch2Flag)
     {
-      setLedColor(GREEN);
-    }
+      debugPrintln("switch 2 Flag set");
+      if (params.getIsLedEnabled())
+      {
+        setLedColor(GREEN);
+      }
 
-    getSwitchDataAndTransmit(2);
-    switch2Flag = false;
+      getSwitchDataAndTransmit(2);
+      switch2Flag = false;
+    }
+    if (movedFlag)
+    {
+      debugPrintln("move Flag set");
+      if (params.getIsLedEnabled())
+      {
+        setLedColor(GREEN);
+      }
+      getMoveDataAndTransmit();
+      movedFlag = false;
+    }
   }
   if (minuteFlag)
   {
@@ -292,7 +312,10 @@ void loop()
     {
       setLedColor(BLUE);
     }
-
+    if (!params.getIsGpsEnabled())
+    {
+      getPowerlossDataAndTransmit();
+    }
     timer.update(); // handle scheduled events
     minuteFlag = false;
   }
@@ -387,7 +410,9 @@ void updateGpsSendBuffer()
 */
 void updateAliveSendBuffer()
 {
-  debugPrint("LTC values: Charge ");
+  debugPrint("LTC values: Valid ");
+  debugPrint(ltc.isValid());
+  debugPrint(" Charge ");
   debugPrint(ltc.getCharge());
   debugPrint(F(" mAh, Current "));
   debugPrint(ltc.getCurrent());
@@ -585,6 +610,80 @@ bool updateSwitchSendBuffer(int switchNo)
       debugPrintln(">");
       isSuccessful = true;
     }
+  }
+  return isSuccessful;
+}
+
+bool updateMoveSendBuffer()
+{
+  bool isSuccessful = false;
+  debugPrintln("updateMoveSendBuffer....");
+
+  NodeMessage nodemsg = NodeMessage_init_zero;
+
+  /* Create a stream that will write to our buffer. */
+  pb_ostream_t stream = pb_ostream_from_buffer(sendBuffer, sizeof(sendBuffer));
+
+  nodemsg.reading.funcs.encode = &movesensor_callback;
+
+  /* Now we are ready to encode the message! */
+  /* Then just check for any errors.. */
+  if (!pb_encode(&stream, NodeMessage_fields, &nodemsg))
+  {
+    debugPrint("Encoding failed: ");
+    debugPrintln(PB_GET_ERROR(&stream));
+  }
+  else
+  {
+    sendBufferSize = stream.bytes_written;
+    debugPrint("sendBufferSize:");
+    debugPrintln(sendBufferSize);
+    debugPrint("message:<");
+    for (uint8_t i = 0; i < sendBufferSize; i++)
+    {
+      debugPrint(sendBuffer[i]);
+      if (i < sendBufferSize - 1)
+        debugPrint(" ");
+    }
+    debugPrintln(">");
+    isSuccessful = true;
+  }
+  return isSuccessful;
+}
+
+bool updatePowerlossSendBuffer()
+{
+  bool isSuccessful = false;
+  debugPrintln("updatePowerlossSendBuffer....");
+
+  NodeMessage nodemsg = NodeMessage_init_zero;
+
+  /* Create a stream that will write to our buffer. */
+  pb_ostream_t stream = pb_ostream_from_buffer(sendBuffer, sizeof(sendBuffer));
+
+  nodemsg.reading.funcs.encode = &powerlosssensor_callback;
+
+  /* Now we are ready to encode the message! */
+  /* Then just check for any errors.. */
+  if (!pb_encode(&stream, NodeMessage_fields, &nodemsg))
+  {
+    debugPrint("Encoding failed: ");
+    debugPrintln(PB_GET_ERROR(&stream));
+  }
+  else
+  {
+    sendBufferSize = stream.bytes_written;
+    debugPrint("sendBufferSize:");
+    debugPrintln(sendBufferSize);
+    debugPrint("message:<");
+    for (uint8_t i = 0; i < sendBufferSize; i++)
+    {
+      debugPrint(sendBuffer[i]);
+      if (i < sendBufferSize - 1)
+        debugPrint(" ");
+    }
+    debugPrintln(">");
+    isSuccessful = true;
   }
   return isSuccessful;
 }
@@ -1213,7 +1312,50 @@ void getSwitchDataAndTransmit(int SwitchNo)
   debugPrintln("Start getSwitchData...");
   if (updateSwitchSendBuffer(SwitchNo))
   {
+    if (transmit())
+    {
+      // apply the rtcMinute timer changes
+      resetRtcTimerEvents();
+    }
+  }
+}
+
+/**
+   Tries to get the Move data and sends the data through LoRa if applicable.
+   Please see the documentation for more details on how this process works.
+*/
+void getMoveDataAndTransmit()
+{
+  debugPrintln("Start getMoveData...");
+  if (updateMoveSendBuffer())
+  {
     transmit();
+  }
+}
+
+/**
+   Tries to get the Powerloss data and sends the data through LoRa if applicable.
+   Please see the documentation for more details on how this process works.
+*/
+void getPowerlossDataAndTransmit()
+{
+  debugPrintln("Start getPowerlossDataAndTransmit...");
+  ltc.Update();
+  if (!ltc.isValid() && !powerlossSend)
+  {
+    powerlossSend = true;
+    if (updatePowerlossSendBuffer())
+    {
+      transmit();
+    }
+  }
+  if (ltc.isValid() && powerlossSend)
+  {
+    powerlossSend = false;
+    if (updatePowerlossSendBuffer())
+    {
+      transmit();
+    }
   }
 }
 
@@ -1515,6 +1657,28 @@ bool movesensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * c
   sensormsg.id = 7;
   sensormsg.has_id = true;
   sensormsg.value1 = 1;
+  sensormsg.has_value1 = true;
+
+  /* This encodes the header for the field, based on the constant info
+     from pb_field_t. */
+  if (!pb_encode_tag_for_field(stream, field))
+    return false;
+
+  /* This encodes the data for the field, based on our FileInfo structure. */
+  if (!pb_encode_submessage(stream, SensorReading_fields, &sensormsg))
+    return false;
+
+  return true;
+}
+
+bool powerlosssensor_callback(pb_ostream_t *stream, const pb_field_t *field, void * const *arg)
+{
+  SensorReading sensormsg = SensorReading_init_zero;
+
+  /* Fill in the lucky number */
+  sensormsg.id = 10;
+  sensormsg.has_id = true;
+  sensormsg.value1 = !(ltc.isValid());
   sensormsg.has_value1 = true;
 
   /* This encodes the header for the field, based on the constant info
