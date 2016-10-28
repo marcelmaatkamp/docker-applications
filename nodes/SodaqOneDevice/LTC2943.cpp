@@ -23,11 +23,9 @@ http://www.linear.com/product/LTC2943-1
 #include "Config.h"
 #include "LTC2943.h"
 
-#define DEBUG_STREAM SerialUSB
-
 #ifdef DEBUG
-#define debugPrint(x) DEBUG_STREAM.print(x)
-#define debugPrintln(x) DEBUG_STREAM.println(x)
+#define debugPrint(x) diagStream->print(x)
+#define debugPrintln(x) diagStream->println(x)
 #else
 #define debugPrint(x)
 #define debugPrintln(x)
@@ -88,39 +86,35 @@ int8_t LTC::Update()
      chargeState = true;
      
      chargeReading = LTC2943_code_to_mAh(charge_code, resistor, prescalarValue);
-     debugPrint("Verbruik  uit LTC (in mAH): ");
-     debugPrint(chargeReading);
-     debugPrint(" mAh\n");
+     debugPrint("Verbruik  uit LTC (in mAh): ");
+     debugPrintln(chargeReading);
      
      if (status_code && 1 == 1) { // UVLO bit = 1, Accu is los geweest (UVLO bit wordt automatically gereset door lezen van Status register
-        debugPrint("Case 1\n");
+        debugPrintln("Case 1");
 
         // charge -> flash (eenmalig)
         params.setChargeOffset(charge);
-        debugPrint("Verbruik van RAM naar Flash (chargeOffset): ");
-        debugPrint(charge);
-        debugPrint(" mAh\n");
+        debugPrint("Verbruik van RAM naar Flash (chargeOffset in mAh): ");
+        debugPrintln(charge);
      } else {
-        debugPrint("Case 2\n");
+        debugPrintln("Case 2");
      }
      // Calculate new charge value (in mAh) based on an offset from flash and the charge value from the LTC (in mAh)
      charge = (float)params.getChargeOffset() + chargeReading;
-     debugPrint("Verbruik naar RAM (charge): ");
-     debugPrint(charge);
-     debugPrint(" mAh\n");
+     debugPrint("Verbruik naar RAM (charge in mAh): ");
+     debugPrintln(charge);
 
   }  else {        // I2C error
      if (chargeState == true) {  // Accu is los(1e keer gedetecteerd)
-        debugPrint("Case 3\n");
+        debugPrintln("Case 3");
 
         params.setChargeOffset(charge); // charge -> flash (eenmalig)
-        debugPrint("Verbruik van RAM naar Flash (chargeOffset): ");
-        debugPrint(charge);
-        debugPrint(" mAh\n");
+        debugPrint("Verbruik van RAM naar Flash (chargeOffset in mAh): ");
+        debugPrintln(charge);
 
         chargeState = false; 
      } else {
-        debugPrint("Case 4\n");
+        debugPrintln("Case 4");
      }
   }
 
