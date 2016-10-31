@@ -270,7 +270,7 @@ services:
    - "/var/lib/docker:/var/lib/docker:rw"
   networks:
    mynet:
-    ipv4_address: ${SHOWCASE_IP_ADDRESS_BACKEND}
+    ipv4_address: ${SHOWCASE_IP_ADDRESS_CLEANUP}
   logging:
    driver: "gelf"
    options:
