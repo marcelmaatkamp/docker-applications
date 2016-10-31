@@ -99,7 +99,7 @@ public:
     bool initABP(SerialType& stream, const uint8_t devAddr[4], const uint8_t appSKey[16], const uint8_t nwkSKey[16], bool adr = true);
 
     // Sets the optional "Diagnostics and Debug" stream.
-    void setDiag(Stream& stream) { diagStream = &stream; };
+    void setDiag(Stream& stream, bool debug) { diagStream = &stream; debug = debug;};
 
     // Sends the given payload without acknowledgement.
     // Returns 0 (NoError) when transmission is successful or one of the MacTransmitErrorCodes otherwise.
@@ -147,6 +147,7 @@ private:
 
     // The (optional) stream to show debug information.
     Stream* diagStream;
+    bool debug=false;
 
     // The size of the input buffer. Equals DEFAULT_INPUT_BUFFER_SIZE
     // by default or (optionally) a user-defined value when using USE_DYNAMIC_BUFFER.

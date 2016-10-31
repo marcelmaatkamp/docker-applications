@@ -28,14 +28,16 @@
 #define HTU21DF_READREG       0xE7
 #define HTU21DF_RESET       0xFE
 
-#ifdef DEBUG
-#define debugPrintLn(...) { if (this->diagStream) this->diagStream->println(__VA_ARGS__); }
-#define debugPrint(...) { if (this->diagStream) this->diagStream->print(__VA_ARGS__); }
-#warning "Debug mode is ON"
-#else
-#define debugPrintLn(...)
-#define debugPrint(...)
-#endif
+#define debugPrintln(...) { if (this->diagStream && debug) this->diagStream->println(__VA_ARGS__); }
+#define debugPrint(...) { if (this->diagStream && debug) this->diagStream->print(__VA_ARGS__); }
+//#ifdef DEBUG
+//#define debugPrintLn(...) { if (this->diagStream) this->diagStream->println(__VA_ARGS__); }
+//#define debugPrint(...) { if (this->diagStream) this->diagStream->print(__VA_ARGS__); }
+//#warning "Debug mode is ON"
+//#else
+//#define debugPrintLn(...)
+//#define debugPrint(...)
+//#endif
 
 class HTU21DF {
 public:
@@ -47,11 +49,12 @@ public:
   void reset(void);
   bool isValid() {return valid;};
   // Sets the optional "Diagnostics and Debug" stream.
-  void setDiag(Stream& stream);
+  void setDiag(Stream& stream, bool debug);
 private:
   boolean readData(void);
   float humidity, temp;
   Stream* diagStream;
+  bool debug=false;
   bool valid=false;
   void readTemperature(void);
   void readHumidity(void);

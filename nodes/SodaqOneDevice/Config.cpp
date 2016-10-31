@@ -83,6 +83,7 @@ void ConfigParams::reset()
     _isOtaaEnabled = 0; // default is Otaa disabled and ABP enabled
     _isGpsEnabled = 0;  // default is Gps disabled
     _isAckEnabled = 0;  // default is Ack disabled
+    _isDbgEnabled = 0;  // default is Ack disabled
 
     memset(_devAddrOrEUI, 0x30, sizeof(_devAddrOrEUI) - 1);
     _devAddrOrEUI[sizeof(_devAddrOrEUI) - 1] = '\0';
@@ -143,7 +144,7 @@ static const Command args[] = {
     { "Status LED (OFF=0 / ON=1) ", "led=", Command::set_uint8, Command::show_uint8, &params._isLedEnabled },
     { "GPS mode (OFF=0 / ON=1)   ", "gps=", Command::set_uint8, Command::show_uint8, &params._isGpsEnabled },
     { "ACK mode (OFF=0 / ON=1)   ", "ack=", Command::set_uint8, Command::show_uint8, &params._isAckEnabled },
-    { "Debug mode (OFF=0 / ON=1) ", "deb=", Command::set_uint8, Command::show_uint8, &params._isDebEnabled }
+    { "Debug mode (OFF=0 / ON=1) ", "dbg=", Command::set_uint8, Command::show_uint8, &params._isDbgEnabled }
 };
 
 void ConfigParams::showConfig(Stream* stream)
@@ -233,7 +234,7 @@ bool ConfigParams::checkConfig(Stream& stream)
         stream.println("ACK Mode must be either 0 or 1");
         fail = true;
     }
-    if (_isDebEnabled > 1 || _isDebEnabled < 0) {
+    if (_isDbgEnabled > 1 || _isDbgEnabled < 0) {
         stream.println("Debug Mode must be either 0 or 1");
         fail = true;
     }

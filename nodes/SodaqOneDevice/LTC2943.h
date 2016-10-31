@@ -108,14 +108,14 @@ const float LTC2943_FULLSCALE_TEMPERATURE = 510;
 //const float resistor = .05;                               //!< resistor value on demo board
 const float resistor = .02;                               //!< resistor value on self-made printje
 
-#ifdef DEBUG
-#define debugPrintLn(...) { if (this->diagStream) this->diagStream->println(__VA_ARGS__); }
-#define debugPrint(...) { if (this->diagStream) this->diagStream->print(__VA_ARGS__); }
-#warning "Debug mode is ON"
-#else
-#define debugPrintLn(...)
-#define debugPrint(...)
-#endif
+//#ifdef DEBUG
+//#define debugPrintln(...) { if ((diagStream != 0) && (debug==true)) this->diagStream->println(__VA_ARGS__); }
+//#define debugPrint(...) { if ((diagStream != 0) && (debug==true)) this->diagStream->print(__VA_ARGS__); }
+//#warning "Debug mode is ON"
+//#else
+//#define debugPrintLn(...)
+//#define debugPrint(...)
+//#endif
 
 class LTC {
 public:
@@ -132,12 +132,13 @@ public:
   bool isValid() {return valid;};
   
   // Sets the optional "Diagnostics and Debug" stream.
-  void setDiag(Stream& stream);
+  void setDiag(Stream& stream, bool dbg);
   void setPin(int pin);
 
 private:
   // The (optional) stream to show debug information.
   Stream* diagStream;
+  bool debugFlag=false;
   float charge, current, voltage, temperature;
   int inputPin = -1;    // the number of the pin the Switch is connected to
   bool valid=false;

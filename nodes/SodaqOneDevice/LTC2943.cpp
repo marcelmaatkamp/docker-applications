@@ -23,13 +23,15 @@ http://www.linear.com/product/LTC2943-1
 #include "Config.h"
 #include "LTC2943.h"
 
-#ifdef DEBUG
-#define debugPrint(x) diagStream->print(x)
-#define debugPrintln(x) diagStream->println(x)
-#else
-#define debugPrint(x)
-#define debugPrintln(x)
-#endif
+#define debugPrintln(...)  if (debugFlag==1) diagStream->println(__VA_ARGS__); 
+#define debugPrint(x)    if (debugFlag==1) diagStream->print(x); 
+//#ifdef DEBUG
+//#define debugPrint(x) diagStream->print(x)
+//#define debugPrintln(x) diagStream->println(x)
+//#else
+//#define debugPrint(x)
+//#define debugPrintln(x)
+//#endif
 
 LTC::LTC(int pin) 
 {
@@ -49,9 +51,10 @@ void LTC::setPin(int pin)
 }
 
 // Sets the optional "Diagnostics and Debug" stream.
-void LTC::setDiag(Stream& stream) 
+void LTC::setDiag(Stream& stream, bool dbg) 
 { 
   diagStream = &stream; 
+  debugFlag = dbg;
 }
 
 int8_t LTC::Update()

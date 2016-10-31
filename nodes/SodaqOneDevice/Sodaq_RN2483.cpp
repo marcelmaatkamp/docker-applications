@@ -25,14 +25,16 @@
 
 //#define DEBUG
 
-#ifdef DEBUG
-#define debugPrintLn(...) { if (this->diagStream) this->diagStream->println(__VA_ARGS__); }
-#define debugPrint(...) { if (this->diagStream) this->diagStream->print(__VA_ARGS__); }
-#warning "Debug mode is ON"
-#else
-#define debugPrintLn(...)
-#define debugPrint(...)
-#endif
+#define debugPrintLn(...) { if (this->diagStream && (debug==true)) this->diagStream->println(__VA_ARGS__); }
+#define debugPrint(...) { if (this->diagStream && (debug==true)) this->diagStream->print(__VA_ARGS__); }
+//#ifdef DEBUG
+//#define debugPrintLn(...) { if (this->diagStream) this->diagStream->println(__VA_ARGS__); }
+//#define debugPrint(...) { if (this->diagStream) this->diagStream->print(__VA_ARGS__); }
+//#warning "Debug mode is ON"
+//#else
+//#define debugPrintLn(...)
+//#define debugPrint(...)
+//#endif
 
 // Structure for mapping error response strings and error codes.
 typedef struct StringEnumPair

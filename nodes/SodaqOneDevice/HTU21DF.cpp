@@ -42,9 +42,10 @@ void HTU21DF::reset(void) {
 }
 
 // Sets the optional "Diagnostics and Debug" stream.
-void HTU21DF::setDiag(Stream& stream) 
+void HTU21DF::setDiag(Stream& stream, bool debug) 
 { 
   diagStream = &stream; 
+  debug = debug;
 }
 
 void HTU21DF::Update()

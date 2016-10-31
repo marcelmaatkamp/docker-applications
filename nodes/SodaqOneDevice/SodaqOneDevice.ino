@@ -51,7 +51,7 @@
 #include "pb_decode.h"
 #include "sensor.pb.h"
 
-#define DEBUG
+//#define DEBUG
 
 #define PROJECT_NAME "SodaqOne Monitoring Node"
 #define VERSION "1.0"
@@ -86,13 +86,8 @@
 #define consolePrint(x) CONSOLE_STREAM.print(x)
 #define consolePrintln(x) CONSOLE_STREAM.println(x)
 
-#ifdef DEBUG
-#define debugPrint(x) DEBUG_STREAM.print(x)
-#define debugPrintln(x) DEBUG_STREAM.println(x)
-#else
-#define debugPrint(x)
-#define debugPrintln(x)
-#endif
+#define debugPrint(x)   { if (params.getIsDbgEnabled()) DEBUG_STREAM.print(x); }
+#define debugPrintln(x) { if (params.getIsDbgEnabled()) DEBUG_STREAM.println(x); }
 
 enum LedColor {
   NONE = 0,
@@ -230,7 +225,8 @@ void setup()
   Wire.begin();
   ublox.enable(); // turn power on early for faster initial fix
   htu.begin();
-  ltc.setDiag(DEBUG_STREAM);
+  htu.setDiag(DEBUG_STREAM, params.getIsDbgEnabled());
+  ltc.setDiag(DEBUG_STREAM, params.getIsDbgEnabled());
 
   // init params
   params.setConfigResetCallback(onConfigReset);
@@ -250,14 +246,16 @@ void setup()
   sodaq_wdt_reset();
 
   // disable the USB if the app is not in debug mode
-#ifndef DEBUG
-  consolePrintln("The USB is going to be disabled now.");
-  SerialUSB.flush();
-  sodaq_wdt_safe_delay(3000);
-  SerialUSB.end();
-  USBDevice.detach();
-  USB->DEVICE.CTRLA.reg &= ~USB_CTRLA_ENABLE; // Disable USB
-#endif
+  //#ifndef DEBUG
+  if (!params.getIsDbgEnabled()) {
+    consolePrintln("The USB is going to be disabled now.");
+    SerialUSB.flush();
+    sodaq_wdt_safe_delay(3000);
+    SerialUSB.end();
+    USBDevice.detach();
+    USB->DEVICE.CTRLA.reg &= ~USB_CTRLA_ENABLE; // Disable USB
+  }
+  //#endif
 
   if (getDataAndTransmit()) {
     setLedColor(GREEN);
@@ -861,9 +859,12 @@ bool initLora(bool supressMessages)
   }
 
   LORA_STREAM.begin(LoRaBee.getDefaultBaudRate());
-#ifdef DEBUG
-  LoRaBee.setDiag(DEBUG_STREAM);
-#endif
+  //#ifdef DEBUG
+  if (params.getIsDbgEnabled())
+  {
+    LoRaBee.setDiag(DEBUG_STREAM, true);
+  }
+  //#endif
 
   bool allParametersValid;
   bool result;
@@ -935,15 +936,18 @@ void systemSleep()
   sodaq_wdt_disable();
 
   // do not go to sleep if DEBUG is enabled, to keep USB connected
-#ifndef DEBUG
-  noInterrupts();
-  if (!(sodaq_wdt_flag || minuteFlag || switch1Flag || switch2Flag)) {
-    interrupts();
+  //#ifndef DEBUG
+  if (!params.getIsDbgEnabled())
+  {
+    noInterrupts();
+    if (!(sodaq_wdt_flag || minuteFlag || switch1Flag || switch2Flag)) {
+      interrupts();
 
-    __WFI(); // SAMD sleep
+      __WFI(); // SAMD sleep
+    }
+    interrupts();
   }
-  interrupts();
-#endif
+  //#endif
 
   // Re-enable watchdog
   sodaq_wdt_enable();
@@ -1268,11 +1272,14 @@ bool getGpsFixAndTransmit()
     pendingReportDataRecord.setLong(record.getLong());
   }
 
-#ifdef DEBUG
-  pendingReportDataRecord.printHeaderLn(&DEBUG_STREAM);
-  pendingReportDataRecord.printRecordLn(&DEBUG_STREAM);
-  debugPrintln();
-#endif
+  //#ifdef DEBUG
+  if (params.getIsDbgEnabled())
+  {
+    pendingReportDataRecord.printHeaderLn(&DEBUG_STREAM);
+    pendingReportDataRecord.printRecordLn(&DEBUG_STREAM);
+    debugPrintln();
+  }
+  //#endif
   updateGpsSendBuffer();
   transmit();
 
@@ -1343,6 +1350,7 @@ void getPowerlossDataAndTransmit()
   ltc.Update();
   if (!ltc.isValid() && !powerlossSend)
   {
+    debugPrintln("Powerloss...");
     powerlossSend = true;
     if (updatePowerlossSendBuffer())
     {
@@ -1351,6 +1359,7 @@ void getPowerlossDataAndTransmit()
   }
   if (ltc.isValid() && powerlossSend)
   {
+    debugPrintln("No powerloss...");
     powerlossSend = false;
     if (updatePowerlossSendBuffer())
     {
@@ -1817,4 +1826,5 @@ void setDevAddrOrEUItoHWEUI()
     }
   }
 }
+
 
