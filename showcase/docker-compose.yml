@@ -1,9 +1,9 @@
-version: '2'
+version: "2"
 
 services:
 
  docker-ui:
-  image: uifd/ui-for-docker
+  image: "uifd/ui-for-docker"
   restart: always
   privileged: true
 #  ports:
@@ -16,7 +16,7 @@ services:
   logging:
    driver: "gelf"
    options:
-    gelf-address: "udp://172.25.0.100:12201"
+    gelf-address: "${SHOWCASE_IP_ADDRESS_LOGGING}"
 
  rabbitmq:
   image: marcelmaatkamp/rabbitmq-mqtt-ldap
@@ -34,7 +34,7 @@ services:
   logging:
    driver: "gelf"
    options:
-    gelf-address: "udp://172.25.0.100:12201"
+    gelf-address: "${SHOWCASE_IP_ADDRESS_LOGGING}"
 
  mysql:
   image: mysql
@@ -51,7 +51,7 @@ services:
   logging:
    driver: "gelf"
    options:
-    gelf-address: "udp://172.25.0.100:12201"
+    gelf-address: "${SHOWCASE_IP_ADDRESS_LOGGING}"
 
  nodered:
   build: raptor-node-red
@@ -73,7 +73,7 @@ services:
   logging:
    driver: "gelf"
    options:
-    gelf-address: "udp://172.25.0.100:12201"
+    gelf-address: "${SHOWCASE_IP_ADDRESS_LOGGING}"
 
  phpmyadmin:
   image: phpmyadmin/phpmyadmin
@@ -93,7 +93,7 @@ services:
   logging:
    driver: "gelf"
    options:
-    gelf-address: "udp://172.25.0.100:12201"
+    gelf-address: "${SHOWCASE_IP_ADDRESS_LOGGING}"
 
  phreeze:
   image: marcelmaatkamp/phreeze
@@ -111,7 +111,7 @@ services:
   logging:
    driver: "gelf"
    options:
-    gelf-address: "udp://172.25.0.100:12201"
+    gelf-address: "${SHOWCASE_IP_ADDRESS_LOGGING}"
 
  elasticsearch-master:
   image: danielguerra/alpine-elasticsearch
@@ -155,7 +155,7 @@ services:
   logging:
    driver: "gelf"
    options:
-    gelf-address: "udp://172.25.0.100:12201"
+    gelf-address: "${SHOWCASE_IP_ADDRESS_LOGGING}"
 
  graylog:
   image: "graylog2/server"
@@ -261,7 +261,20 @@ services:
   logging:
    driver: "gelf"
    options:
-    gelf-address: "udp://172.25.0.100:12201"
+    gelf-address: "${SHOWCASE_IP_ADDRESS_LOGGING}"
+
+ cleanup:
+  image: "meltwater/docker-cleanup:latest"
+  volumes:
+   - "/var/run/docker.sock:/var/run/docker.sock:rw"
+   - "/var/lib/docker:/var/lib/docker:rw"
+  networks:
+   mynet:
+    ipv4_address: ${SHOWCASE_IP_ADDRESS_BACKEND}
+  logging:
+   driver: "gelf"
+   options:
+    gelf-address: "${SHOWCASE_IP_ADDRESS_LOGGING}"
 
 networks:
  mynet:
