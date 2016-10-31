@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+ 
+ zeronet:
+  image: nofish/zeronet
+  environment:
+   - ENABLE_TOR=true
+  volumes:
+   - zeronet:/root/data
+  ports:
+   - "15441:15441"
+   - "127.0.0.1:43110:43110"
+
+volumes:
+ zeronet:
