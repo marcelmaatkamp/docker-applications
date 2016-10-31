@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+ ipfs: 
+  image: "ipfs/go-ipfs:latest"
+  ports:
+   - "8081:8080"
+   - "4001:4001"
+   - "5001:5001"
+  volumes:
+   - ipfsi-staging:/export
+   - ipfsi-data:/data/ipfs
+
+volumes:
+ ipfsi-staging:
+ ipfsi-data:
