@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+ 
+ mitmproxy:
+  image: danielguerra/alpine-mitmproxy
+  command: mitmdump
+  ports:
+   - "8081:8080"
+  volumes:
+   - mitmproxy:/root/.mitmproxy
+  environment:
+   - "LANG=C.UTF-8"
+
+volumes:
+ mitmproxy:

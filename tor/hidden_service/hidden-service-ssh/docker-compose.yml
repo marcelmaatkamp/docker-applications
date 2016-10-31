@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+ ssh:
+  image: danielguerra/docker-dind-sshd
+  hostname: ssh
+  privileged: true
+  volumes:
+   - ssh-data:/root/showcase/
+   - ssh-keys:/root/.ssh/
+
+ tor:
+  image: goldy/tor-hidden-service
+  links:
+   - ssh
+  depends_on:
+   - ssh
+  environment:
+   - SSH_PORTS=4848:22
+  volumes:
+   - ./volumes/tor:/var/lib/tor/hidden_service
+
+volumes:
+ ssh-keys:
+ ssh-data:
