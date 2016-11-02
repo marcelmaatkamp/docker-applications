@@ -20,7 +20,7 @@ connection.completeConfiguration().then(() => {
    if(!(wifi.packet.payload.ieee802_11Frame.type == 0 && wifi.packet.payload.ieee802_11Frame.subType == 8)) { 
      var msg = new amqp.Message(JSON.stringify(wifi));
      exchange.send(msg,addr);
-     // console.log(addr + " " + JSON.stringify(wifi));
+     console.log(addr + " " + JSON.stringify(wifi));
    } else { 
      // console.log(addr);
    }
