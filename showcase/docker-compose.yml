@@ -1,7 +1,6 @@
 version: '2'
 
 services:
-
  docker-ui:
   image: uifd/ui-for-docker
   restart: always
@@ -16,7 +15,7 @@ services:
   logging:
    driver: "gelf"
    options:
-    gelf-address: "udp://172.25.0.100:12201"
+    gelf-address: "${SHOWCASE_IP_ADDRESS_GELF}"
 
  rabbitmq:
   image: marcelmaatkamp/rabbitmq-mqtt-ldap
@@ -34,7 +33,7 @@ services:
   logging:
    driver: "gelf"
    options:
-    gelf-address: "udp://172.25.0.100:12201"
+    gelf-address: "${SHOWCASE_IP_ADDRESS_GELF}"
 
  mysql:
   image: mysql
@@ -51,7 +50,7 @@ services:
   logging:
    driver: "gelf"
    options:
-    gelf-address: "udp://172.25.0.100:12201"
+    gelf-address: "${SHOWCASE_IP_ADDRESS_GELF}"
 
  nodered:
   build: raptor-node-red
@@ -73,7 +72,7 @@ services:
   logging:
    driver: "gelf"
    options:
-    gelf-address: "udp://172.25.0.100:12201"
+    gelf-address: "${SHOWCASE_IP_ADDRESS_GELF}"
 
  phpmyadmin:
   image: phpmyadmin/phpmyadmin
@@ -93,7 +92,7 @@ services:
   logging:
    driver: "gelf"
    options:
-    gelf-address: "udp://172.25.0.100:12201"
+    gelf-address: "${SHOWCASE_IP_ADDRESS_GELF}"
 
  phreeze:
   image: marcelmaatkamp/phreeze
@@ -111,7 +110,7 @@ services:
   logging:
    driver: "gelf"
    options:
-    gelf-address: "udp://172.25.0.100:12201"
+    gelf-address: "${SHOWCASE_IP_ADDRESS_GELF}"
 
  elasticsearch-master:
   image: danielguerra/alpine-elasticsearch
@@ -155,7 +154,7 @@ services:
   logging:
    driver: "gelf"
    options:
-    gelf-address: "udp://172.25.0.100:12201"
+    gelf-address: "${SHOWCASE_IP_ADDRESS_GELF}"
 
  graylog:
   image: "graylog2/server"
@@ -261,7 +260,48 @@ services:
   logging:
    driver: "gelf"
    options:
-    gelf-address: "udp://172.25.0.100:12201"
+    gelf-address: "${SHOWCASE_IP_ADDRESS_GELF}"
+
+ livemap-web:
+  build: livemap/
+  command: node app.js
+  restart: always
+#  ports:
+#    - "3000:3000"
+  volumes:
+    - ./volumes/overlays:/src/staticlayers
+  links:
+    - livemap-db:db
+  environment:
+    PORT: 3000
+    DATABASE_URL: postgres://livemap:livemap@db/livemapdb
+    C_MQTT_URL: mqtt://rabbitmq:1883
+    C_MQTT_TOPIC: livemap/#
+    C_WCLIENT_NAME: "LoRa trackers"
+    #C_WCLIENT_LICENSE: "MIT"
+    #C_WCLIENT_ABOUT: "Deze kaart is onderdeel van het Showcase project en heeft tot doel inzicht te geven in dekking van LoRa."
+  networks:
+   mynet:
+    ipv4_address: ${SHOWCASE_IP_ADDRESS_LIVEMAP_WEB}
+  logging:
+   driver: "gelf"
+   options:
+    gelf-address: "${SHOWCASE_IP_ADDRESS_GELF}"
+
+ livemap-db:
+  build: livemap/postgres/
+#  ports:
+#   - "5432:5432"
+  volumes:
+   - livemap-data:/var/lib/postgresql/data
+  restart: always
+  networks:
+   mynet:
+    ipv4_address: ${SHOWCASE_IP_ADDRESS_LIVEMAP_DB}
+  logging:
+   driver: "gelf"
+   options:
+    gelf-address: "${SHOWCASE_IP_ADDRESS_GELF}"
 
 networks:
  mynet:
@@ -277,3 +317,4 @@ volumes:
  graylog-data:
  graylog-conf:
  elastic-data:
+ livemap-data:
