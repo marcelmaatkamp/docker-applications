@@ -1,7 +1,32 @@
-domoticz:
- image: sdesbure/domoticz
- volumes:
-  - ./volume/config:/config 
-  - /etc/localtime:/etc/localtime:ro
- ports:
-  - 8091:8080
+version: '2'
+
+services:
+ rabbitmq:
+  image: marcelmaatkamp/rabbitmq-mqtt-ldap
+  restart: always
+  hostname: rabbitmq
+  ports:
+   - 15672:15672
+   - 5672:5672
+   - 1883
+  environment:
+    RABBITMQ_NODENAME: rabbitmq@rabbitmq
+  volumes:
+   - "rabbitmq:/var/lib/rabbitmq/mnesia"
+ 
+ domoticz:
+  image: sdesbure/domoticz
+  restart: always
+  volumes:
+   - "domoticz:/config"
+   - "/etc/localtime:/etc/localtime:ro"
+  devices:
+   - "/dev/ttyUSB0:/dev/ttyUSB0"
+  links:
+   - rabbitmq
+  ports:
+   - 8080:8080
+
+volumes:
+ rabbitmq:
+ domoticz:
