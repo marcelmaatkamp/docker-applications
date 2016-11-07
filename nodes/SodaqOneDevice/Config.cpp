@@ -97,7 +97,7 @@ void ConfigParams::reset()
     _chargeOffset = 0;
 
     _coordinateUploadCount = 1;
-    _repeatCount = 0;
+    _repeatCount = 5;
 
     if (configResetCallback) {
         configResetCallback();
@@ -141,6 +141,8 @@ static const Command args[] = {
 
     { "Num Coords to Upload      ", "num=", Command::set_uint8, Command::show_uint8, &params._coordinateUploadCount },
     { "Repeat Count              ", "rep=", Command::set_uint8, Command::show_uint8, &params._repeatCount },
+    { "Frame Up Count            ", "fup=", Command::set_uint32, Command::show_uint32, &params._frameUpCount },
+    { "Frame Down Count          ", "fdw=", Command::set_uint32, Command::show_uint32, &params._frameDownCount },
     { "Status LED (OFF=0 / ON=1) ", "led=", Command::set_uint8, Command::show_uint8, &params._isLedEnabled },
     { "GPS mode (OFF=0 / ON=1)   ", "gps=", Command::set_uint8, Command::show_uint8, &params._isGpsEnabled },
     { "ACK mode (OFF=0 / ON=1)   ", "ack=", Command::set_uint8, Command::show_uint8, &params._isAckEnabled },
@@ -214,6 +216,24 @@ bool ConfigParams::checkConfig(Stream& stream)
 
     if (_coordinateUploadCount < 1 || _coordinateUploadCount > 4) {
         stream.println("\n\nERROR: \"Num Coords to Upload\" must be between 1 and 4");
+
+        fail = true;
+    }
+
+    if (_repeatCount < 0 || _repeatCount > 10) {
+        stream.println("\n\nERROR: \"Repeat count\" must be between 0 and 10");
+
+        fail = true;
+    }
+
+    if (_frameUpCount < 0) {
+        stream.println("\n\nERROR: \"Frame Up count\" must be bigger then or equal to 0");
+
+        fail = true;
+    }
+
+    if (_frameDownCount < 0) {
+        stream.println("\n\nERROR: \"Frame Down count\" must be bigger then or equal to 0");
 
         fail = true;
     }
