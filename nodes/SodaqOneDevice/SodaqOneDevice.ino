@@ -112,6 +112,8 @@ bool isPendingReportDataRecordNew; // this is set to true only when pendingRepor
 volatile bool minuteFlag;
 volatile bool switch1Flag;
 volatile bool switch2Flag;
+volatile bool accel1Flag;
+volatile bool accel2Flag;
 volatile bool movedFlag;
 LedColor ledColor = RED;
 // LSM303 code
@@ -144,6 +146,8 @@ void initRtc();
 void rtcMinuteAlarmHandler();
 void switch1Handler();
 void switch2Handler();
+void accel1Handler();
+void accel2Handler();
 void attachHandlers();
 void initRtcTimer();
 void resetRtcTimerEvents();
@@ -206,6 +210,9 @@ void setup()
   // Define the switch Pin as interrupt input line
   pinMode(MICROSWITCH1_PIN, INPUT);
   pinMode(MICROSWITCH2_PIN, INPUT);
+  // Define the accelerometer pins as interrupt input line
+  pinMode(ACCEL_INT1, INPUT_PULLUP);
+  pinMode(ACCEL_INT2, INPUT_PULLUP);
 
   lastResetCause = PM->RCAUSE.reg;
   sodaq_wdt_enable();
@@ -227,6 +234,7 @@ void setup()
   htu.begin();
   htu.setDiag(DEBUG_STREAM, params.getIsDbgEnabled());
   ltc.setDiag(DEBUG_STREAM, params.getIsDbgEnabled());
+  lsm303.setDiag(DEBUG_STREAM, params.getIsDbgEnabled());
 
   // init params
   params.setConfigResetCallback(onConfigReset);
@@ -239,6 +247,7 @@ void setup()
 
   isLoraInitialized = initLora();
   initRtcTimer();
+  initLsm303();
 
   isDeviceInitialized = true;
 
@@ -293,15 +302,16 @@ void loop()
       getSwitchDataAndTransmit(2);
       switch2Flag = false;
     }
-    if (movedFlag)
+    if (accel1Flag || accel2Flag)
     {
-      debugPrintln("move Flag set");
+      debugPrintln("accelerator Flag set");
       if (params.getIsLedEnabled())
       {
         setLedColor(GREEN);
       }
       getMoveDataAndTransmit();
-      movedFlag = false;
+      accel1Flag = false;
+      accel2Flag = false;
     }
   }
   if (minuteFlag)
@@ -372,6 +382,8 @@ void attachHandlers()
 {
   attachInterrupt(MICROSWITCH1_PIN, switch1Handler, CHANGE);
   attachInterrupt(MICROSWITCH2_PIN, switch2Handler, CHANGE);
+  attachInterrupt(ACCEL_INT1, accel1Handler, FALLING);
+  attachInterrupt(ACCEL_INT2, accel2Handler, FALLING);
 }
 
 /**
@@ -932,7 +944,7 @@ bool initLora(bool supressMessages)
   }
   LoRaBee.setUpCntr(params.getFrameUpCount());
   LoRaBee.setDownCntr(params.getFrameDownCount());
-  
+
   setLoraActive(false);
   return result; // false by default
 }
@@ -1053,6 +1065,22 @@ void switch2Handler()
 }
 
 /**
+   Runs if the accelerometer is activated
+*/
+void accel1Handler()
+{
+  accel1Flag = true;
+}
+
+/**
+   Runs if the accelerometer is activated
+*/
+void accel2Handler()
+{
+  accel2Flag = true;
+}
+
+/**
    Initializes the RTC Timer and schedules the default events.
 */
 void initRtcTimer()
@@ -1063,6 +1091,17 @@ void initRtcTimer()
   resetRtcTimerEvents();
 }
 
+/**
+   Initializes the RTC Timer and schedules the default events.
+*/
+void initLsm303()
+{
+  if (!lsm303.init(LSM303::device_D, LSM303::sa0_low)) {
+    debugPrintln("Initialization of the LSM303 failed!");
+    return;
+  }
+  lsm303.enableAccelInterrupt();
+}
 /**
    Clears the RTC Timer events and schedules the default events.
 */
@@ -1310,7 +1349,7 @@ bool getAliveDataAndTransmit()
 
   // update the sensors, get the data
   ltc.Update();
-  LSM303_Update();
+  //  LSM303_Update();
   htu.Update();
 
   // check the sensor data and prepare the message
@@ -1348,7 +1387,11 @@ void getMoveDataAndTransmit()
   debugPrintln("Start getMoveData...");
   if (updateMoveSendBuffer())
   {
-    transmit();
+    if (transmit())
+    {
+      // apply the rtcMinute timer changes
+      resetRtcTimerEvents();
+    }
   }
 }
 

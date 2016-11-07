@@ -29,6 +29,8 @@
 #include <math.h>
 
 // Defines ////////////////////////////////////////////////////////////////
+#define debugPrintLn(...) { if (this->diagStream) this->diagStream->println(__VA_ARGS__); }
+#define debugPrint(...) { if (this->diagStream) this->diagStream->print(__VA_ARGS__); }
 
 // The Arduino two-wire interface uses a 7-bit number for the address,
 // and sets the last bit correctly based on reads and writes
@@ -48,13 +50,17 @@
 LSM303::LSM303(void)
 {
   /*
-  These values lead to an assumed magnetometer bias of 0.
-  Use the Calibrate example program to determine appropriate values
-  for your particular unit. The Heading example demonstrates how to
-  adjust these values in your own sketch.
+    These values lead to an assumed magnetometer bias of 0.
+    Use the Calibrate example program to determine appropriate values
+    for your particular unit. The Heading example demonstrates how to
+    adjust these values in your own sketch.
   */
-  m_min = (LSM303::vector<int16_t>){-32767, -32767, -32767};
-  m_max = (LSM303::vector<int16_t>){+32767, +32767, +32767};
+  m_min = (LSM303::vector<int16_t>) {
+    -32767, -32767, -32767
+  };
+  m_max = (LSM303::vector<int16_t>) {
+    +32767, +32767, +32767
+  };
 
   _device = device_auto;
 
@@ -105,7 +111,7 @@ bool LSM303::init(deviceType device, sa0State sa0)
         sa0 = sa0_low;
       }
     }
-    
+
     // check for LSM303DLHC, DLM, DLH if device is still unidentified or was specified to be one of these types
     if (device == device_auto || device == device_DLHC || device == device_DLM || device == device_DLH)
     {
@@ -115,7 +121,7 @@ bool LSM303::init(deviceType device, sa0State sa0)
         // device responds to address 0011001; it's a DLHC, DLM with SA0 high, or DLH with SA0 high
         sa0 = sa0_high;
         if (device == device_auto)
-        { 
+        {
           // use magnetometer WHO_AM_I register to determine device type
           //
           // DLHC seems to respond to WHO_AM_I request the same way as DLM, even though this
@@ -138,16 +144,16 @@ bool LSM303::init(deviceType device, sa0State sa0)
         }
       }
     }
-    
+
     // make sure device and SA0 were successfully detected; otherwise, indicate failure
     if (device == device_auto || sa0 == sa0_auto)
     {
       return false;
     }
   }
-  
+
   _device = device;
-  
+
   // set device addresses and translated register addresses
   switch (device)
   {
@@ -194,22 +200,28 @@ bool LSM303::init(deviceType device, sa0State sa0)
       translated_regs[-OUT_Z_L_M] = DLH_OUT_Z_L_M;
       break;
   }
-  
+
+  debugPrint("Device:");
+  debugPrintLn(device);
+  debugPrint("acc_address:");
+  debugPrintLn(acc_address);
+  debugPrint("mag_address:");
+  debugPrintLn(mag_address);
   return true;
 }
 
 /*
-Enables the LSM303's accelerometer and magnetometer. Also:
-- Sets sensor full scales (gain) to default power-on values, which are
+  Enables the LSM303's accelerometer and magnetometer. Also:
+  - Sets sensor full scales (gain) to default power-on values, which are
   +/- 2 g for accelerometer and +/- 1.3 gauss for magnetometer
   (+/- 4 gauss on LSM303D).
-- Selects 50 Hz ODR (output data rate) for accelerometer and 7.5 Hz
+  - Selects 50 Hz ODR (output data rate) for accelerometer and 7.5 Hz
   ODR for magnetometer (6.25 Hz on LSM303D). (These are the ODR
   settings for which the electrical characteristics are specified in
   the datasheets.)
-- Enables high resolution modes (if available).
-Note that this function will also reset other settings controlled by
-the registers it writes to.
+  - Enables high resolution modes (if available).
+  Note that this function will also reset other settings controlled by
+  the registers it writes to.
 */
 void LSM303::enableDefault(void)
 {
@@ -243,7 +255,7 @@ void LSM303::enableDefault(void)
   else
   {
     // Accelerometer
-    
+
     if (_device == device_DLHC)
     {
       // 0x08 = 0b00001000
@@ -281,6 +293,45 @@ void LSM303::enableDefault(void)
   }
 }
 
+void LSM303::enableAccelInterrupt(void)
+{
+  if (_device == device_D)
+  {
+    debugPrintLn("enableAccelInterrupt");
+    // Reboot
+    // CTRL0
+    writeAccReg(CTRL0, 0b10000000);
+
+    // Set to 50z all axes active
+    // CTRL1
+    writeAccReg(CTRL1, 0b01010111);
+
+    // Interrupt source 1
+    // Set to be Y sensitive
+    // IG_SRC1
+    writeAccReg(IG_CFG1, 0b10001000); // Axes mask
+    writeAccReg(IG_THS1, 0b00111111); // Threshold
+    writeAccReg(IG_DUR1, 0b00000000); // Duration
+
+    // Interrupt source 2
+    // Set to be X sensitive
+    // IG_SRC2
+    writeAccReg(IG_CFG2, 0b10000010); // Axes mask
+    writeAccReg(IG_THS2, 0b00111111); // Threshold
+    writeAccReg(IG_DUR2, 0b00000000); // Duration
+
+    // CTRL3 (INT1)
+    // INT1 sources from IG_SRC1
+    writeAccReg(CTRL3, 0b00100000);
+
+    // CTRL4 (INT2)
+    // INT2 sources from IG_SRC2
+    // Note the bit positions are different
+    // in CTRL3 and CTRL4 Datasheet p.38
+    writeAccReg(CTRL4, 0b00100000);
+  }
+}
+
 // Writes an accelerometer register
 void LSM303::writeAccReg(byte reg, byte value)
 {
@@ -288,6 +339,7 @@ void LSM303::writeAccReg(byte reg, byte value)
   Wire.write(reg);
   Wire.write(value);
   last_status = Wire.endTransmission();
+  delay(10);
 }
 
 // Reads an accelerometer register
@@ -467,23 +519,27 @@ void LSM303::read(void)
 }
 
 /*
-Returns the angular difference in the horizontal plane between a
-default vector and north, in degrees.
+  Returns the angular difference in the horizontal plane between a
+  default vector and north, in degrees.
 
-The default vector here is chosen to point along the surface of the
-PCB, in the direction of the top of the text on the silkscreen.
-This is the +X axis on the Pololu LSM303D carrier and the -Y axis on
-the Pololu LSM303DLHC, LSM303DLM, and LSM303DLH carriers.
+  The default vector here is chosen to point along the surface of the
+  PCB, in the direction of the top of the text on the silkscreen.
+  This is the +X axis on the Pololu LSM303D carrier and the -Y axis on
+  the Pololu LSM303DLHC, LSM303DLM, and LSM303DLH carriers.
 */
 float LSM303::heading(void)
 {
   if (_device == device_D)
   {
-    return heading((vector<int>){1, 0, 0});
+    return heading((vector<int>) {
+      1, 0, 0
+    });
   }
   else
   {
-    return heading((vector<int>){0, -1, 0});
+    return heading((vector<int>) {
+      0, -1, 0
+    });
   }
 }
 

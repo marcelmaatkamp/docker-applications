@@ -199,6 +199,7 @@ class LSM303
     deviceType getDeviceType(void) { return _device; }
 
     void enableDefault(void);
+    void enableAccelInterrupt(void);
 
     void writeAccReg(byte reg, byte value);
     byte readAccReg(byte reg);
@@ -224,6 +225,12 @@ class LSM303
     template <typename Ta, typename Tb> static float vector_dot(const vector<Ta> *a, const vector<Tb> *b);
     static void vector_normalize(vector<float> *a);
 
+    // Sets the optional "Diagnostics and Debug" stream.
+    void setDiag(Stream& stream, bool debug) {
+      diagStream = &stream;
+      debug = debug;
+    };
+
   private:
     deviceType _device; // chip type (D, DLHC, DLM, or DLH)
     byte acc_address;
@@ -234,6 +241,10 @@ class LSM303
 
     unsigned int io_timeout;
     bool did_timeout;
+
+    // The (optional) stream to show debug information.
+    Stream* diagStream;
+    bool debug = false;
 
     int testReg(byte address, regAddr reg);
 };
