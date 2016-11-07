@@ -694,7 +694,7 @@ bool transmit()
 {
   bool retVal = true;
   uint8_t sendReturn;
-  uint8_t downCnt, upCnt;
+  uint32_t downCnt, upCnt;
   uint16_t recvSize;
   bool retry = true;
   int retCount = 0;
