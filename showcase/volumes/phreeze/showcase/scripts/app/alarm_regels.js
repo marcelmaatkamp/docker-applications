@@ -108,6 +108,44 @@ var page = {
 			
 		});
 		
+		
+		
+		
+		
+		
+		$(document).on('change','#sensor',function(){
+			
+				if ($('#sensor').val()){
+					console.log($('#sensor').val()+' selected');
+						
+					$("#alarmTriggerlist").empty();
+					
+					if ($('#sensor').val()==3){
+						$("#alarmTriggerlist").empty();
+						$('#alarmTriggerlist').append('<option value="X<20">Minder dan 20% luchtvochtigheid</option>');
+						$('#alarmTriggerlist').append('<option value="X>50">Meer dan 50% luchtvochtigheid</option>');
+						$('#alarmTriggerlist').append('<option value="X>80">Meer dan 80% luchtvochtigheid</option>');
+					}
+					
+					if ($('#sensor').val()==4){
+						$("#alarmTriggerlist").empty();
+						$('#alarmTriggerlist').append('<option value="X<9">Minder dan 9V</option>');
+						$('#alarmTriggerlist').append('<option value="X<12">Minder dan 12V</option>');
+						$('#alarmTriggerlist').append('<option value="X>14">Meer dan 14V</option>');
+					}
+					
+				    if ($('#sensor').val()==2){
+						$("#alarmTriggerlist").empty();
+						$('#alarmTriggerlist').append('<option value="X<10">Kouder dan 10C</option>');
+						$('#alarmTriggerlist').append('<option value="X>50">Warmer dan 50C</option>');
+					}
+				
+				
+				
+				}
+			
+		});
+		
 		// initialize the Sensor search filter
 		$(document).on('change','#FilterSensor',function(){
 			page.fetchParams.FilterSensor = $('#FilterSensor').val();
@@ -126,11 +164,6 @@ var page = {
 			}
 			
 		});
-		
-		
-		
-		
-		
 		
 		
 		
@@ -186,6 +219,11 @@ var page = {
 
 				if (!page.dialogIsOpen)	{
 					page.fetchAlarm_Regels(page.fetchParams,true);
+					
+					var now = new Date().toLocaleTimeString();
+					console.log(now);
+					$("#last-refresh").text('Refresh ' + now + ' (CET)');
+					
 				}
 
 			}, model.longPollDuration);

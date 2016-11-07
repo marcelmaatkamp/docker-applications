@@ -26,7 +26,7 @@
 class GlobalConfig
 {
 	/** @var set to true to send debug info to the browser */
-	public static $DEBUG_MODE = false;
+	public static $DEBUG_MODE = true;
 
 	/** @var default action is the controller.method fired when no route is specified */
 	public static $DEFAULT_ACTION = "Default.Home";

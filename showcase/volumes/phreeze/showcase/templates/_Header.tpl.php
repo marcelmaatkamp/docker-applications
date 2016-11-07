@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+	
+		 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+     <meta http-equiv="Pragma" content="no-cache"/>
+     <meta http-equiv="Expires" content="0"/>
+	
 		<meta charset="utf-8">
 		<meta http-equiv="X-Frame-Options" content="deny">
 		<base href="<?php $this->eprint($this->ROOT_URL); ?>" />
@@ -67,7 +72,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</a>
-						<a class="brand" href="">SHOWCASE HELP</a>
+						<a class="brand" href="">SHOWCASE</a>
 						<div class="nav-collapse collapse">
 							<ul class="nav">
 								
@@ -106,7 +111,7 @@
 												
 												<li <?php if ($this->nav=='alarm_regels') { echo 'class="active"'; } ?>><a href="./alarm_regels">Alarm Regels</a></li>
 												<li <?php if ($this->nav=='alarm_notificaties') { echo 'class="active"'; } ?>><a href="./alarm_notificaties">Alarm Notificaties</a></li>
-												<li <?php if ($this->nav=='alarmen') { echo 'class="active"'; } ?>><a href="./alarmen">Alarm Rapport <b class="icon-eye-open"></b></a></li>
+												
 											</ul>
 										</li>
 									</ul>	
@@ -119,7 +124,7 @@
 										
 											
 											
-											<li <?php if ($this->nav=='laatste_observaties') { echo 'class="active"'; } ?>><a href="./laatste_observaties">Observatie Rapport <b class="icon-eye-open"></b></a></li>	
+											<li <?php if ($this->nav=='laatste_observaties') { echo 'class="active"'; } ?>><a href="./laatste_observaties">Observatie<b class="icon-eye-open"></b></a></li>	
 											
 											
 										
@@ -131,11 +136,11 @@
 								
 									<ul class="nav">
 										<li class="dropdown">
-											<a href="#" class="dropdown-toggle" data-toggle="dropdown">Observaties<b class="caret"></b></a>
+											<a href="#" class="dropdown-toggle" data-toggle="dropdown">Rapportages<b class="caret"></b></a>
 											<ul class="dropdown-menu">
-									
-											<li <?php if ($this->nav=='observaties') { echo 'class="active"'; } ?>><a href="./observaties">Observaties</a></li>
-											<li <?php if ($this->nav=='laatste_observaties') { echo 'class="active"'; } ?>><a href="./laatste_observaties">Observatie Rapport <b class="icon-eye-open"></b></a></li>	
+											<li <?php if ($this->nav=='alarmen') { echo 'class="active"'; } ?>><a href="./alarmen">Alarmen <b class="icon-eye-open"></b></a></li>
+											<li <?php if ($this->nav=='observaties') { echo 'class="active"'; } ?>><a href="./observaties">Observaties <b class="icon-eye-open"></b></a></li>
+											<li <?php if ($this->nav=='laatste_observaties') { echo 'class="active"'; } ?>><a href="./laatste_observaties">Laatste Observaties <b class="icon-eye-open"></b></a></li>	
 											
 											</ul>
 										</li>
@@ -168,24 +173,45 @@
 								<i class="caret"></i></a>
 								
 								<!--<li><a href="./loginform">Login/Logout <?php $this->eprint($this->currentUser->Username); ?> </a></li>-->
-								
+								</li>
 							</ul>
 							
 							
 							<ul class="nav pull-right">
-								<li>
+						
 								
 								<p class="navbar-text"><code>
 								<?php $this->eprint($this->currentUser->Username);?>
 								<?php if ($this->currentUser->RoleId == 4) { ?>(Tech. Beheerder)<?php } ?>
 								<?php if ($this->currentUser->RoleId == 3) { ?>(Func. Beheerder)<?php } ?>
 								<?php if ($this->currentUser->RoleId == 1) { ?>(Gebruiker)<?php } ?>
+								<span id="last-refresh"></span>	</code></p>
+							
 								
-								</code></p>
+								
+								
+							
+								
+							
+								
+								
+								
+							
+								
+
+								
+						
 								
 								<!--<li><a href="./loginform">Login/Logout <?php $this->eprint($this->currentUser->Username); ?> </a></li>-->
 								
 							</ul>
+							
+								
+							
+							
+							
+							
+							
 							
 						</div><!--/.nav-collapse -->
 					</div>

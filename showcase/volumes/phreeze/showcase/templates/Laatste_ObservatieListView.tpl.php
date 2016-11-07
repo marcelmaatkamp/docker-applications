@@ -28,7 +28,7 @@
 		<button class='btn add-on'><i class="icon-search"></i></button>
 	</span>
 </h1>
-
+<br>
 
 
 <script type="text/template" id="FilterNodeTemplate">	
@@ -151,11 +151,11 @@ mysqli_close($db);
 		<table class="collection table table-bordered table-hover">
 		<thead>
 			<tr>
-				<!--<th id="header_Observatieid">Observatieid<% if (page.orderBy == 'Observatieid') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>-->
+				<!-- <th id="header_Observatieid">Observatieid<% if (page.orderBy == 'Observatieid') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>-->
 				<th id="header_Node">Node<% if (page.orderBy == 'Node') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_Sensor">Sensor<% if (page.orderBy == 'Sensor') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_Observatiewaarde">Observatiewaarde<% if (page.orderBy == 'Observatiewaarde') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_Observatiedatum">Observatiedatum<% if (page.orderBy == 'Observatiedatum') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_Observatiedatum">Datum Tijd (UTC)<% if (page.orderBy == 'Observatiedatum') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -164,8 +164,8 @@ mysqli_close($db);
 				<!--<td><%= _.escape(item.get('observatieid') || '') %></td>-->
 				<td><%= _.escape(item.get('node') || '') %></td>
 				<td><%= _.escape(item.get('sensor') || '') %></td>
-				<td><%= _.escape(item.get('observatiewaarde') || '') %></td>
-				<td><%if (item.get('observatiedatum')) { %><%= _date(app.parseDate(item.get('observatiedatum'))).format('MMM D, YYYY h:mm A') %><% } else { %>NULL<% } %></td>
+				<td><%= _.escape(item.get('observatiewaarde') || '')%> <%= _.escape(item.get('sensoreenheid') || '')  %></td>
+				<td><%if (item.get('observatiedatum')) { %><%= _date(app.parseDate(item.get('observatiedatum'))).format('DD-MM-YYYY - HH:mm:ss') %><% } else { %>NULL<% } %></td>
 			</tr>
 		<% }); %>
 		</tbody>
@@ -210,7 +210,7 @@ mysqli_close($db);
 					</div>
 				</div>
 				<div id="observatiedatumInputContainer" class="control-group">
-					<label class="control-label" for="observatiedatum">Observatiedatum</label>
+					<label class="control-label" for="observatiedatum">Datum Tijd (UTC)</label>
 					<div class="controls inline-inputs">
 						<div class="input-append date date-picker" data-date-format="yyyy-mm-dd">
 							<input id="observatiedatum" type="text" value="<%= _date(app.parseDate(item.get('observatiedatum'))).format('YYYY-MM-DD') %>" />

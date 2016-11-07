@@ -40,7 +40,16 @@ class AlarmController extends AppBaseController
 	 */
 	public function ListView()
 	{
+		
+		//$this->StartObserving();
+		
+		//$alarmen = $this->Phreezer->Query('Alarm');
+		
+		//while ($alarm = $alarmen->Next()){
+			
+		//}
 		$this->Render();
+		
 	}
 
 	/**
@@ -58,11 +67,11 @@ class AlarmController extends AppBaseController
 			$filtersensor = RequestUtil::Get('FilterSensor');
 			
 			if ($filternode) $criteria->AddFilter(
-				new CriteriaFilter('nodeAlias', '%'.$filternode.'%')
+				new CriteriaFilter('Node', '%'.$filternode.'%')
 			);
 			
 			if ($filtersensor) $criteria->AddFilter(
-				new CriteriaFilter('sensorOmschrijving', '%'.$filtersensor.'%')
+				new CriteriaFilter('Sensor', '%'.$filtersensor.'%')
 			);
 			
 		
@@ -71,7 +80,7 @@ class AlarmController extends AppBaseController
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');
 			if ($filter) $criteria->AddFilter(
-				new CriteriaFilter('Id,Node,Sensor,Alarmtrigger,Observatiewaarde,Observatietijdstip'
+				new CriteriaFilter('Id,Node,Sensor,Alarmtrigger,Sensoreenheid, Observatiewaarde,Observatietijdstip'
 				, '%'.$filter.'%')
 			);
 
@@ -174,6 +183,7 @@ class AlarmController extends AppBaseController
 			$alarm->Id = $this->SafeGetVal($json, 'id');
 			$alarm->Node = $this->SafeGetVal($json, 'node');
 			$alarm->Sensor = $this->SafeGetVal($json, 'sensor');
+			$alarm->Sensoreenheid = $this->SafeGetVal($json, 'sensoreenheid');
 			$alarm->Alarmtrigger = $this->SafeGetVal($json, 'alarmtrigger');
 			$alarm->Observatiewaarde = $this->SafeGetVal($json, 'observatiewaarde');
 			$alarm->Observatietijdstip = date('Y-m-d H:i:s',strtotime($this->SafeGetVal($json, 'observatietijdstip')));
@@ -226,6 +236,7 @@ class AlarmController extends AppBaseController
 
 			$alarm->Node = $this->SafeGetVal($json, 'node', $alarm->Node);
 			$alarm->Sensor = $this->SafeGetVal($json, 'sensor', $alarm->Sensor);
+			$alarm->Sensoreenheid = $this->SafeGetVal($json, 'sensoreenheid', $alarm->Sensor);
 			$alarm->Alarmtrigger = $this->SafeGetVal($json, 'alarmtrigger', $alarm->Alarmtrigger);
 			$alarm->Observatiewaarde = $this->SafeGetVal($json, 'observatiewaarde', $alarm->Observatiewaarde);
 			$alarm->Observatietijdstip = date('Y-m-d H:i:s',strtotime($this->SafeGetVal($json, 'observatietijdstip', $alarm->Observatietijdstip)));

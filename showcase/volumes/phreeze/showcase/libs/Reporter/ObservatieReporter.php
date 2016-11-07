@@ -29,6 +29,7 @@ class ObservatieReporter extends Reporter
 	public $SensorOmschrijving;
 	public $DatumTijdAangemaakt;
 	public $Waarde;
+	public $SensorEenheid;
 
 	/*
 	* GetCustomQuery returns a fully formed SQL statement.  The result columns
@@ -46,6 +47,7 @@ class ObservatieReporter extends Reporter
 			,`node`.`alias` as NodeAlias
 			,`observatie`.`sensor` as Sensor
 			,`sensor`.`omschrijving` as SensorOmschrijving
+			,`sensor`.`eenheid` as SensorEenheid
 			,`observatie`.`datum_tijd_aangemaakt` as DatumTijdAangemaakt
 			,`observatie`.`waarde` as Waarde
 		from `observatie`

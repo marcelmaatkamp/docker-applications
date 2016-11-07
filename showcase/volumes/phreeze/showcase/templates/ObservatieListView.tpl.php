@@ -29,9 +29,6 @@ include_once("_global_config.php");
 
 
 		
-<script type="text/javascript" src="fusioncharts-suite-xt/js/fusioncharts.js"></script>
-<script type="text/javascript" src="fusioncharts-suite-xt/js/themes/fusioncharts.theme.ocean.js"></script>
-
 
 
 <div class="container">
@@ -46,7 +43,7 @@ include_once("_global_config.php");
 		<button class='btn add-on'><i class="icon-search"></i></button>
 	</span>
 </h1>
-
+<br>
 <script type="text/template" id="FilterNodeTemplate">	
 	
 	<select id=FilterNode>
@@ -175,8 +172,8 @@ mysqli_close($db);
 				<!--<th id="header_Id">Id<% if (page.orderBy == 'Id') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>-->
 				<th id="header_Node">Node<% if (page.orderBy == 'nodeAlias') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_Sensor">Sensor<% if (page.orderBy == 'sensorOmschrijving') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_DatumTijdAangemaakt">Datum Tijd Aangemaakt<% if (page.orderBy == 'DatumTijdAangemaakt') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_Waarde">Waarde<% if (page.orderBy == 'Waarde') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_Waarde">Observatiewaarde<% if (page.orderBy == 'Waarde') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_DatumTijdAangemaakt">Observatietijdstip (UTC)<% if (page.orderBy == 'DatumTijdAangemaakt') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -185,8 +182,8 @@ mysqli_close($db);
 				<!--<td><%= _.escape(item.get('id') || '') %></td>-->
 				<td><%= _.escape(item.get('nodeAlias') || '') %></td>
 				<td><%= _.escape(item.get('sensorOmschrijving') || '') %></td>
-				<td><%if (item.get('datumTijdAangemaakt')) { %><%= _date(app.parseDate(item.get('datumTijdAangemaakt'))).format('MMM D, YYYY h:mm A') %><% } else { %>NULL<% } %></td>
-				<td><%= _.escape(item.get('waarde') || '') %></td>
+				<td><%= _.escape(item.get('waarde') || '') %> <%= _.escape(item.get('sensorEenheid') || '') %></td>
+				<td><%if (item.get('datumTijdAangemaakt')) { %><%= _date(app.parseDate(item.get('datumTijdAangemaakt'))).format('DD-MM-YYYY - HH:mm:ss') %><% } else { %>NULL<% } %></td>
 			</tr>
 		<% }); %>
 		</tbody>
@@ -199,36 +196,36 @@ mysqli_close($db);
 	<script type="text/template" id="observatieModelTemplate">
 		<form class="form-horizontal" onsubmit="return false;">
 			<fieldset>
-				<div id="idInputContainer" class="control-group">
+					<!--<div id="idInputContainer" class="control-group">
 					<label class="control-label" for="id">Id</label>
 					<div class="controls inline-inputs">
 						<span class="input-xlarge uneditable-input" id="id"><%= _.escape(item.get('id') || '') %></span>
 						<span class="help-inline"></span>
-					</div>
+					</div>-->
 				</div>
 				<div id="nodeInputContainer" class="control-group">
 					<label class="control-label" for="node">Node</label>
 					<div class="controls inline-inputs">
-						<select id="node" name="node"></select>
+						<select id="node" class="uneditable-input" name="node"></select><span>
 						<span class="help-inline"></span>
 					</div>
 				</div>
 				<div id="sensorInputContainer" class="control-group">
 					<label class="control-label" for="sensor">Sensor</label>
 					<div class="controls inline-inputs">
-						<select id="sensor" name="sensor"></select>
+						<select id="sensor" class="uneditable-input" name="sensor"></select>
 						<span class="help-inline"></span>
 					</div>
 				</div>
 				<div id="datumTijdAangemaaktInputContainer" class="control-group">
-					<label class="control-label" for="datumTijdAangemaakt">Datum Tijd Aangemaakt</label>
+					<label class="control-label" for="datumTijdAangemaakt">Datum Tijd (UTC)</label>
 					<div class="controls inline-inputs">
-						<div class="input-append date date-picker" data-date-format="yyyy-mm-dd">
-							<input id="datumTijdAangemaakt" type="text" value="<%= _date(app.parseDate(item.get('datumTijdAangemaakt'))).format('YYYY-MM-DD') %>" />
+						<div class="input-append date date-picker" data-date-format="dd-mm-yyyy">
+							<input id="datumTijdAangemaakt" type="text" class="uneditable-input" value="<%= _date(app.parseDate(item.get('datumTijdAangemaakt'))).format('DD-MM-YYYY') %>" />
 							<span class="add-on"><i class="icon-calendar"></i></span>
 						</div>
 						<div class="input-append bootstrap-timepicker-component">
-							<input id="datumTijdAangemaakt-time" type="text" class="timepicker-default input-small" value="<%= _date(app.parseDate(item.get('datumTijdAangemaakt'))).format('h:mm A') %>" />
+							<input id="datumTijdAangemaakt-time" type="text" class="timepicker-default input-small uneditable-input" value="<%= _date(app.parseDate(item.get('datumTijdAangemaakt'))).format('h:mm:ss') %>" />
 							<span class="add-on"><i class="icon-time"></i></span>
 						</div>
 						<span class="help-inline"></span>
@@ -236,8 +233,8 @@ mysqli_close($db);
 				</div>
 				<div id="waardeInputContainer" class="control-group">
 					<label class="control-label" for="waarde">Waarde</label>
-					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="waarde" placeholder="Waarde" value="<%= _.escape(item.get('waarde') || '') %>">
+					<div class="controls inline-inputs ">
+						<input type="text" class="input-xlarge uneditable-input" id="waarde" placeholder="Waarde" value="<%= _.escape(item.get('waarde') || '') %> ">
 						<span class="help-inline"></span>
 					</div>
 				</div>
@@ -266,7 +263,7 @@ mysqli_close($db);
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">&times;</a>
 			<h3>
-				<i class="icon-edit"></i> Edit Observatie
+				<i class="icon-edit"></i> Observatie
 				<span id="modelLoader" class="loader progress progress-striped active"><span class="bar"></span></span>
 			</h3>
 		</div>
@@ -274,20 +271,20 @@ mysqli_close($db);
 			<div id="modelAlert"></div>
 			<div id="observatieModelContainer"></div>
 		</div>
-		<div class="modal-footer">
+			<!-- <div class="modal-footer">
 			<button class="btn" data-dismiss="modal" >Cancel</button>
 			<button id="saveObservatieButton" class="btn btn-primary">Save Changes</button>
-		</div>
+		</div>-->
 	</div>
 
 	<div id="collectionAlert"></div>
 	
 	<div id="observatieCollectionContainer" class="collectionContainer">
 	</div>
-
+	<!-- Disable Add
 	<p id="newButtonContainer" class="buttonContainer">
 		<button id="newObservatieButton" class="btn btn-primary">Add Observatie TEST ONLY</button>
-	</p>
+	</p>-->
 
 </p>	
 

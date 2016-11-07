@@ -1,6 +1,6 @@
 <?php
-	$this->assign('title','AUTHEXAMPLE Secure Example');
-	$this->assign('nav','secureexample');
+	$this->assign('title','Phreeze Login');
+	$this->assign('nav','Showcase Login');
 	$this->display('_Header.tpl.php');
 ?>
 

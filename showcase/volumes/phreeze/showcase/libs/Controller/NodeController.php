@@ -38,7 +38,8 @@ class NodeController extends AppBaseController
 				'Geen toegang tot deze pagina.');
 				
 				
-				
+		
+			//$criteria->SetOrder('Omschrijving',true);		
 				
 	}
 	
@@ -50,6 +51,8 @@ class NodeController extends AppBaseController
 	 */
 	public function ListView()
 	{
+		
+		
 		$this->Render();
 		
 	
@@ -62,6 +65,8 @@ class NodeController extends AppBaseController
 		try
 		{
 			$criteria = new NodeCriteria();
+	$criteria->SetOrder('Alias');
+
 			
 			
 			// TODO: this will limit results based on all properties included in the filter list 
@@ -70,12 +75,6 @@ class NodeController extends AppBaseController
 			$filteralias = RequestUtil::Get('FilterAlias');
 			$filterdeveui = RequestUtil::Get('FilterDevEui');
 		
-
-
-		
-			if ($filter) $criteria->AddFilter(
-				new CriteriaFilter('Alias,Omschrijving,DevEui', '%'.$filter.'%')
-			);
 			
 			if ($filteralias) $criteria->AddFilter(
 				new CriteriaFilter('Alias', '%'.$filteralias.'%')
@@ -83,6 +82,10 @@ class NodeController extends AppBaseController
 			
 			if ($filterdeveui) $criteria->AddFilter(
 				new CriteriaFilter('DevEui', '%'.$filterdeveui.'%')
+			);
+				
+			if ($filter) $criteria->AddFilter(
+				new CriteriaFilter('Alias,Omschrijving,DevEui', '%'.$filter.'%')
 			);
 		
 			// TODO: this is generic query filtering based only on criteria properties
@@ -107,7 +110,10 @@ class NodeController extends AppBaseController
 			// if a sort order was specified then specify in the criteria
  			$output->orderBy = RequestUtil::Get('orderBy');
  			$output->orderDesc = RequestUtil::Get('orderDesc') != '';
- 			if ($output->orderBy) $criteria->SetOrder($output->orderBy, $output->orderDesc);
+ 			
+			//$output->orderBy = 'Alias';
+			//$criteria->SetOrder('Alias',0);
+						
 
 			$page = RequestUtil::Get('page');
 
@@ -115,6 +121,7 @@ class NodeController extends AppBaseController
 			{
 				// if page is specified, use this instead (at the expense of one extra count query)
 				$pagesize = $this->GetDefaultPageSize();
+				
 
 				$nodes = $this->Phreezer->Query('Node',$criteria)->GetDataPage($page, $pagesize);
 				$output->rows = $nodes->ToObjectArray(true,$this->SimpleObjectParams());
@@ -126,6 +133,7 @@ class NodeController extends AppBaseController
 			else
 			{
 				// return all results
+				
 				$nodes = $this->Phreezer->Query('Node',$criteria);
 				$output->rows = $nodes->ToObjectArray(true, $this->SimpleObjectParams());
 				$output->totalResults = count($output->rows);

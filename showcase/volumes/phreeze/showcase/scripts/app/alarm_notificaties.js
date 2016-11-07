@@ -82,10 +82,24 @@ var page = {
 			
 		});
 		
-		
-		
+	
+ 
+ $(document).on('change','#alarmRegel',function(){
+	 console.log($('#alarmRegel').val()+' selected');
+	 $('#kanaalInputContainer').fadeIn( "fast" );
+
+ });
+	
+	
+	
+
 		
 		// initialize the Node search filter
+		
+
+		
+		
+		
 		$(document).on('change','#FilterNode',function(){
 			
 			console.log("FilterNode Used");
@@ -177,6 +191,18 @@ var page = {
 
 				if (!page.dialogIsOpen)	{
 					page.fetchAlarm_Notificaties(page.fetchParams,true);
+					
+					
+					
+					var now = new Date().toLocaleTimeString();
+					console.log(now);
+					$("#last-refresh").text('Refresh ' + now + ' (CET)');
+					
+					
+					
+					
+					
+					
 				}
 
 			}, model.longPollDuration);
@@ -269,9 +295,104 @@ var page = {
 	 */
 	renderModelView: function(showDeleteButton)	{
 		page.modelView.render();
+		
+		
+	if ($('#kanaal').val()!=''){	
 
+	console.log('kanaal niet leeg, alles zichtbaar');
+	
+		$('#p1InputContainer').show();
+		$('#p2InputContainer').hide();
+		$('#p3InputContainer').hide();
+		$('#p4InputContainer').hide();
+		$('#meldingtekstInputContainer').show();
+		$('#kanaalInputContainer').show();
+	
+			
+	}
+
+
+else {
+	
+	console.log('kanaal wel leeg, niet alles zichtbaar');
+	
+	
+		$('#p1InputContainer').hide();
+		$('#p2InputContainer').hide();
+		$('#p3InputContainer').hide();
+		$('#p4InputContainer').hide();
+		$('#meldingtekstInputContainer').hide();
+		$('#kanaalInputContainer').hide();
+	
+	$(document).on('input','#kanaal',function(){
+			
+				//$('#p1InputContainer').hide();
+				//$('#meldingtekstInputContainer').hide();
+				//$("#p1").val("");	
+			
+				if ($('#kanaal').val()){
+					console.log($('#kanaal').val()+' selected');
+					$("#p1").val("");	
+										
+					
+					if ($('#kanaal').val().toLowerCase()=='sms'){
+													
+						$('#p1InputContainer').show();
+						$('#meldingtekstInputContainer').fadeIn( "fast" );
+						
+						$("label[for='p1']").text("Internationale Telefoonnummers");
+															
+						 $("#p1").val("0031612345678, ..");
+						 console.log($('#kanaal').val()+' selected after input');
+						
+					}
+					
+					if ($('#kanaal').val().toLowerCase()=='slack'){
+													
+						$('#p1InputContainer').show();
+						$('#meldingtekstInputContainer').fadeIn( "fast" );
+						
+						$("label[for='p1']").text("SlackChannel Naam");
+															
+						 $("#p1").val("..");
+						 console.log($('#kanaal').val()+' selected after input');
+						
+					}
+					
+					if ($('#kanaal').val().toLowerCase()=='telegram'){
+													
+						$('#p1InputContainer').show();
+						$('#meldingtekstInputContainer').fadeIn( "fast" );
+						
+						$("label[for='p1']").text("TelegramChannel Naam");
+															
+						 $("#p1").val("..");
+						 console.log($('#kanaal').val()+' selected after input');
+						
+					}
+					
+					
+				
+				
+				
+				}
+			
+})
+	
+}
+
+;
+		
+		
+		
+		
+		
+		
 		app.hideProgress('modelLoader');
 
+	
+		
+		
 		// initialize any special controls
 		try {
 			$('.date-picker')
@@ -292,20 +413,14 @@ var page = {
 		alarmRegelValues.fetch({
 			success: function(c){
 				var dd = $('#alarmRegel');
-				dd.append('<option value="x">x</option>');
+				dd.append('<option value=""></option>');
 				c.forEach(function(item,index) {
 					dd.append(app.getOptionHtml(
 						item.get('id'),
-						(item.get('id')) + " ---> " + (item.get('nodeAlias'))  + " --> " + (item.get('sensorOmschrijving'))  + " --> " + (item.get('alarmTrigger')),
+						(item.get('nodeAlias'))  + " --> " + (item.get('sensorOmschrijving'))  + " --> " + (item.get('alarmTrigger')),
 						page.alarm_Notificatie.get('alarmRegel') == item.get('id')
 						
-						
-						
-						
-						
-						
-						
-						
+										
 						
 					));
 					

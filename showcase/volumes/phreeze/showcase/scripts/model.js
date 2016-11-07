@@ -14,7 +14,7 @@ var model = {};
  * long polling duration in miliseconds.  (5000 = recommended, 0 = disabled)
  * warning: setting this to a low number will increase server load
  */
-model.longPollDuration = 0;
+model.longPollDuration = 10000;
 
 /**
  * whether to refresh the collection immediately after a model is updated
@@ -230,6 +230,7 @@ model.AlarmModel = Backbone.Model.extend({
 	id: '',
 	node: '',
 	sensor: '',
+	sensoreenheid: '',
 	alarmtrigger: '',
 	observatiewaarde: '',
 	observatietijdstip: '',
@@ -260,12 +261,14 @@ model.Laatste_ObservatieModel = Backbone.Model.extend({
 	observatieid: '',
 	node: '',
 	sensor: '',
+	sensoreenheid: '',
 	observatiewaarde: '',
 	observatiedatum: '',
 	defaults: {
 		'observatieid': null,
 		'node': '',
 		'sensor': '',
+		'sensoreenheid': '',
 		'observatiewaarde': '',
 		'observatiedatum': new Date()
 	}

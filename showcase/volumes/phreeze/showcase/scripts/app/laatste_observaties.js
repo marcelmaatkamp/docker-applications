@@ -182,6 +182,11 @@ var page = {
 
 				if (!page.dialogIsOpen)	{
 					page.fetchLaatste_Observaties(page.fetchParams,true);
+					
+					var now = new Date().toLocaleTimeString();
+					console.log(now);
+					$("#last-refresh").text('Refresh ' + now + ' (CET)');
+					
 				}
 
 			}, model.longPollDuration);

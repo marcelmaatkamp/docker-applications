@@ -55,6 +55,7 @@ class AlarmMap implements IDaoMap, IDaoMap2
 			self::$FM["Node"] = new FieldMap("Node","alarm_report","Node",false,FM_TYPE_VARCHAR,255,null,false);
 			self::$FM["Sensor"] = new FieldMap("Sensor","alarm_report","Sensor",false,FM_TYPE_VARCHAR,255,null,false);
 			self::$FM["Alarmtrigger"] = new FieldMap("Alarmtrigger","alarm_report","AlarmTrigger",false,FM_TYPE_VARCHAR,255,null,false);
+			self::$FM["Sensoreenheid"] = new FieldMap("Sensoreenheid","alarm_report","SensorEenheid",false,FM_TYPE_VARCHAR,255,null,false);
 			self::$FM["Observatiewaarde"] = new FieldMap("Observatiewaarde","alarm_report","ObservatieWaarde",false,FM_TYPE_VARCHAR,255,null,false);
 			self::$FM["Observatietijdstip"] = new FieldMap("Observatietijdstip","alarm_report","Observatietijdstip",false,FM_TYPE_DATETIME,null,null,false);
 		}

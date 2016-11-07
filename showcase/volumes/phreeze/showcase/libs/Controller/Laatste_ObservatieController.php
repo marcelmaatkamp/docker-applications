@@ -51,7 +51,8 @@ class Laatste_ObservatieController extends AppBaseController
 		try
 		{
 			$criteria = new Laatste_ObservatieCriteria();
-			$criteria->SetOrder('Node',true);
+			$criteria->SetOrder('Observatieid',true);
+			
 				
 			$filternode = RequestUtil::Get('FilterNode');
 			$filtersensor = RequestUtil::Get('FilterSensor');
@@ -174,6 +175,7 @@ class Laatste_ObservatieController extends AppBaseController
 			$laatste_observatie->Observatieid = $this->SafeGetVal($json, 'observatieid');
 			$laatste_observatie->Node = $this->SafeGetVal($json, 'node');
 			$laatste_observatie->Sensor = $this->SafeGetVal($json, 'sensor');
+			$laatste_observatie->Sensoreenheid = $this->SafeGetVal($json, 'sensoreenheid');
 			$laatste_observatie->Observatiewaarde = $this->SafeGetVal($json, 'observatiewaarde');
 			$laatste_observatie->Observatiedatum = date('Y-m-d H:i:s',strtotime($this->SafeGetVal($json, 'observatiedatum')));
 

@@ -88,16 +88,17 @@ var page = {
 		});
 		
 		
-		
 		// initialize the Alias search filter
 		$(document).on('change','#FilterAlias',function(){
+			console.log("FilterAlias Used");
 			page.fetchParams.FilterAlias = $('#FilterAlias').val();
 			page.fetchParams.page = 1;
 			page.fetchNodes(page.fetchParams);
-			//console.log($('#FilterAlias').val()+' used');
-					console.log("FilterAlias Used");
+			console.log($('#FilterAlias').val()+' used');
+		
 			
 			if ($('#FilterAlias').val()){
+		
 				$("#FilterAliasDisplay").val("Filter: "+$('#FilterAlias').val());
 				$("#FilterAliasDisplay").css('color', 'red', 'important');
 			}
@@ -188,6 +189,11 @@ var page = {
 
 				if (!page.dialogIsOpen)	{
 					page.fetchNodes(page.fetchParams,true);
+					
+					var now = new Date().toLocaleTimeString();
+					console.log(now);
+					$("#last-refresh").text('Refresh ' + now + ' (CET)');
+					
 				}
 
 			}, model.longPollDuration);
@@ -304,6 +310,9 @@ var page = {
 			$('#deleteNodeButton').click(function(e) {
 				e.preventDefault();
 				$('#confirmDeleteNodeContainer').show('fast');
+				
+				
+				
 			});
 
 			$('#cancelDeleteNodeButton').click(function(e) {

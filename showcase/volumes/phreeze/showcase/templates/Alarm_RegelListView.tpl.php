@@ -28,7 +28,7 @@
 		<button class='btn add-on'><i class="icon-search"></i></button>
 	</span>
 </h1>
-
+<br>
 	<!-- underscore template for the collection -->
 	<script type="text/template" id="alarm_RegelCollectionTemplate">
 		<table class="collection table table-bordered table-hover">
@@ -203,6 +203,7 @@ mysqli_close($db);
 						<span class="help-inline"></span>
 					</div>
 				</div>
+				<!-- 
 				<div id="alarmTriggerInputContainer" class="control-group">
 					<label class="control-label" for="alarmTrigger">Alarm Trigger</label>
 					<div class="controls inline-inputs">
@@ -210,6 +211,18 @@ mysqli_close($db);
 						<span class="help-inline"></span>
 					</div>
 				</div>
+				-->
+				
+				<div id="alarmTriggerInputContainer" class="control-group">
+				<label class="control-label" for="alarmTrigger">Alarm Trigger</label>
+				<div class="controls inline-inputs">
+				<input type="search" id="alarmTrigger" name="alarmTrigger" list="alarmTriggerlist" autocomplete="off" placeholder="Alarm Trigger" value="<%= _.escape(item.get('alarmTrigger') || '') %>">
+					<datalist id="alarmTriggerlist">
+					</datalist>
+			<span class="help-inline">(Selecteer of type een alarm trigger)</span>			
+				</div>
+			</div>
+				
 			</fieldset>
 		</form>
 
@@ -219,11 +232,20 @@ mysqli_close($db);
 				<div class="control-group">
 					<label class="control-label"></label>
 					<div class="controls">
-						<button id="deleteAlarm_RegelButton" class="btn btn-mini btn-danger"><i class="icon-trash icon-white"></i> Delete Alarm_Regel</button>
+						<button id="deleteAlarm_RegelButton" class="btn btn-mini btn-danger"><i class="icon-trash icon-white"></i> Delete Alarm Regel</button>
+												
+						<br>
 						<span id="confirmDeleteAlarm_RegelContainer" class="hide">
+						
+							<br>
+							<p><i class="icon-warning-sign"></i> Let op: je verwijdert ook alle aan deze Alarm Regel <br>
+							gekoppelde Alarm Notificaties!</p>
+							<br>	
+						
 							<button id="cancelDeleteAlarm_RegelButton" class="btn btn-mini">Cancel</button>
-							<button id="confirmDeleteAlarm_RegelButton" class="btn btn-mini btn-danger">Confirm</button>
+							<button id="confirmDeleteAlarm_RegelButton" class="btn btn-mini btn-danger">Bevestig Delete</button>
 						</span>
+					
 					</div>
 				</div>
 			</fieldset>
@@ -235,7 +257,7 @@ mysqli_close($db);
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">&times;</a>
 			<h3>
-				<i class="icon-edit"></i> Edit Alarm_Regel
+				<i class="icon-edit"></i> Alarm Regel
 				<span id="modelLoader" class="loader progress progress-striped active"><span class="bar"></span></span>
 			</h3>
 		</div>
@@ -245,7 +267,7 @@ mysqli_close($db);
 		</div>
 		<div class="modal-footer">
 			<button class="btn" data-dismiss="modal" >Cancel</button>
-			<button id="saveAlarm_RegelButton" class="btn btn-primary">Save Changes</button>
+			<button id="saveAlarm_RegelButton" class="btn btn-primary">Save</button>
 		</div>
 	</div>
 
@@ -255,7 +277,7 @@ mysqli_close($db);
 	</div>
 
 	<p id="newButtonContainer" class="buttonContainer">
-		<button id="newAlarm_RegelButton" class="btn btn-primary">Add Alarm Regel</button>
+		<button id="newAlarm_RegelButton" class="btn btn-primary">Voeg Alarm Regel Toe</button>
 	</p>
 
 </div> <!-- /container -->

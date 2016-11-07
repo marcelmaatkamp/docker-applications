@@ -30,14 +30,14 @@
 <div class="container">
 
 <h1>
-	<i class="icon-th-list"></i> Users
+	<i class="icon-th-list"></i> Gebruikers
 	<span id=loader class="loader progress progress-striped active"><span class="bar"></span></span>
 	<span class='input-append pull-right searchContainer'>
 		<input id='filter' type="text" placeholder="Search..." />
 		<button class='btn add-on'><i class="icon-search"></i></button>
 	</span>
 </h1>
-
+<br>
 	<!-- underscore template for the collection -->
 	<script type="text/template" id="userCollectionTemplate">
 		<table class="collection table table-bordered table-hover">

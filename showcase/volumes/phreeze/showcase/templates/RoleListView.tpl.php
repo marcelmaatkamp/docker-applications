@@ -30,14 +30,14 @@
 <div class="container">
 
 <h1>
-	<i class="icon-th-list"></i> Roles
+	<i class="icon-th-list"></i> Rollen
 	<span id=loader class="loader progress progress-striped active"><span class="bar"></span></span>
 	<span class='input-append pull-right searchContainer'>
 		<input id='filter' type="text" placeholder="Search..." />
 		<button class='btn add-on'><i class="icon-search"></i></button>
 	</span>
 </h1>
-
+<br>
 	<!-- underscore template for the collection -->
 	<script type="text/template" id="roleCollectionTemplate">
 		<table class="collection table table-bordered table-hover">
@@ -139,7 +139,7 @@
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">&times;</a>
 			<h3>
-				<i class="icon-edit"></i> Edit Role
+				<i class="icon-edit"></i> Rol
 				<span id="modelLoader" class="loader progress progress-striped active"><span class="bar"></span></span>
 			</h3>
 		</div>

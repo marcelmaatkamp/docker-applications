@@ -54,6 +54,7 @@ class Laatste_ObservatieMap implements IDaoMap, IDaoMap2
 			self::$FM["Observatieid"] = new FieldMap("Observatieid","laatste_observatie_per_node_sensor","ObservatieId",true,FM_TYPE_BIGINT,20,null,false);
 			self::$FM["Node"] = new FieldMap("Node","laatste_observatie_per_node_sensor","Node",false,FM_TYPE_VARCHAR,255,null,false);
 			self::$FM["Sensor"] = new FieldMap("Sensor","laatste_observatie_per_node_sensor","Sensor",false,FM_TYPE_VARCHAR,255,null,false);
+			self::$FM["Sensoreenheid"] = new FieldMap("Sensoreenheid","laatste_observatie_per_node_sensor","SensorEenheid",false,FM_TYPE_VARCHAR,255,null,false);
 			self::$FM["Observatiewaarde"] = new FieldMap("Observatiewaarde","laatste_observatie_per_node_sensor","ObservatieWaarde",false,FM_TYPE_VARCHAR,255,null,false);
 			self::$FM["Observatiedatum"] = new FieldMap("Observatiedatum","laatste_observatie_per_node_sensor","ObservatieDatum",false,FM_TYPE_DATETIME,null,null,false);
 		}

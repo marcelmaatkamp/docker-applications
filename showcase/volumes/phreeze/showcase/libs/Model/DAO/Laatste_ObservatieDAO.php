@@ -29,6 +29,9 @@ class Laatste_ObservatieDAO extends Phreezable
 
 	/** @var string */
 	public $Sensor;
+	
+	/** @var string */
+	public $Sensoreenheid;
 
 	/** @var string */
 	public $Observatiewaarde;

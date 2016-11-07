@@ -34,9 +34,6 @@
 
 
 
-
-
-
 <script type="text/template" id="FilterDevEuiTemplate">		
 	<select id=FilterDevEui>
 		<option value="" disabled selected hidden>Filter Dev Eui...</option>
@@ -209,9 +206,20 @@ mysqli_close($db);
 					<label class="control-label"></label>
 					<div class="controls">
 						<button id="deleteNodeButton" class="btn btn-mini btn-danger"><i class="icon-trash icon-white"></i> Delete Node</button>
+						<br>
 						<span id="confirmDeleteNodeContainer" class="hide">
+													
+							<br>
+							<p><i class="icon-warning-sign"></i> Let op: je verwijdert ook alle aan deze node <br>
+							gekoppelde data (alarmregels, observaties, enz.)!</p>
+							<br>										
+							
 							<button id="cancelDeleteNodeButton" class="btn btn-mini">Cancel</button>
-							<button id="confirmDeleteNodeButton" class="btn btn-mini btn-danger">Confirm</button>
+							<button id="confirmDeleteNodeButton" class="btn btn-mini btn-danger">Bevestig Delete</button>
+							<br>
+							<br>
+							
+						</div>
 						</span>
 					</div>
 				</div>
@@ -224,7 +232,7 @@ mysqli_close($db);
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">&times;</a>
 			<h3>
-				<i class="icon-edit"></i> Edit Node
+				<i class="icon-edit"></i> Node
 				<span id="modelLoader" class="loader progress progress-striped active"><span class="bar"></span></span>
 			</h3>
 		</div>
@@ -234,7 +242,7 @@ mysqli_close($db);
 		</div>
 		<div class="modal-footer">
 			<button class="btn" data-dismiss="modal" >Cancel</button>
-			<button id="saveNodeButton" class="btn btn-primary">Save Changes</button>
+			<button id="saveNodeButton" class="btn btn-primary">Save</button>
 		</div>
 	</div>
 
@@ -248,7 +256,7 @@ mysqli_close($db);
 
 
 	<p id="newButtonContainer" class="buttonContainer">
-		<button id="newNodeButton" class="btn btn-primary">Add Node</button>
+		<button id="newNodeButton" class="btn btn-primary">Voeg Node Toe</button>
 	</p>
 
 </div> <!-- /container -->

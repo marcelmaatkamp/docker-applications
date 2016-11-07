@@ -117,6 +117,11 @@ var page = {
 				if (!page.dialogIsOpen)
 				{
 					page.fetchUsers(page.fetchParams,true);
+					
+					var now = new Date().toLocaleTimeString();
+					console.log(now);
+					$("#last-refresh").text('Refresh ' + now + ' (CET)');
+					
 				}
 
 			}, model.longPollDuration);

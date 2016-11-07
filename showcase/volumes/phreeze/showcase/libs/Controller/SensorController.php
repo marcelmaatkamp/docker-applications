@@ -51,6 +51,8 @@ class SensorController extends AppBaseController
 		try
 		{
 			$criteria = new SensorCriteria();
+				$criteria->SetOrder('Omschrijving');
+			
 			
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');
@@ -80,8 +82,14 @@ class SensorController extends AppBaseController
 			// if a sort order was specified then specify in the criteria
  			$output->orderBy = RequestUtil::Get('orderBy');
  			$output->orderDesc = RequestUtil::Get('orderDesc') != '';
+			
+		
+		
+			
  			if ($output->orderBy) $criteria->SetOrder($output->orderBy, $output->orderDesc);
-
+			
+		
+			
 			$page = RequestUtil::Get('page');
 
 			if ($page != '')

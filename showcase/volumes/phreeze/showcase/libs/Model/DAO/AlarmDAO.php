@@ -31,6 +31,9 @@ class AlarmDAO extends Phreezable
 	public $Sensor;
 
 	/** @var string */
+	public $Sensoreenheid;
+	
+	/** @var string */
 	public $Alarmtrigger;
 
 	/** @var string */

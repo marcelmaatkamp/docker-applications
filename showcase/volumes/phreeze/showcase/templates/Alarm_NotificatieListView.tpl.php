@@ -28,7 +28,7 @@
 		<button class='btn add-on'><i class="icon-search"></i></button>
 	</span>
 </h1>
-
+<br>
 	<script type="text/template" id="FilterNodeTemplate">	
 	
 	<select id=FilterNode>
@@ -163,11 +163,11 @@ mysqli_close($db);
 				
 				
 				<th id="header_Kanaal">Kanaal<% if (page.orderBy == 'Kanaal') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_P1">P1<% if (page.orderBy == 'P1') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_P2">P2<% if (page.orderBy == 'P2') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_P1">Geadresseerde<% if (page.orderBy == 'P1') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<!-- <th id="header_P2">P2<% if (page.orderBy == 'P2') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>-->
 
-				<th id="header_P3">P3<% if (page.orderBy == 'P3') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_P4">P4<% if (page.orderBy == 'P4') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<!-- <th id="header_P3">P3<% if (page.orderBy == 'P3') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>-->
+				<!-- <th id="header_P4">P4<% if (page.orderBy == 'P4') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>-->
 				<th id="header_Meldingtekst">Meldingtekst<% if (page.orderBy == 'Meldingtekst') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 
 			</tr>
@@ -186,10 +186,10 @@ mysqli_close($db);
 				
 				<td><%= _.escape(item.get('kanaal') || '') %></td>
 				<td><%= _.escape(item.get('p1') || '') %></td>
-				<td><%= _.escape(item.get('p2') || '') %></td>
+				<!--<td><%= _.escape(item.get('p2') || '') %></td>-->
 
-				<td><%= _.escape(item.get('p3') || '') %></td>
-				<td><%= _.escape(item.get('p4') || '') %></td>
+				<!--<td><%= _.escape(item.get('p3') || '') %></td>-->
+				<!--<td><%= _.escape(item.get('p4') || '') %></td>-->
 				<td><%= _.escape(item.get('meldingtekst') || '') %></td>
 
 			</tr>
@@ -219,13 +219,53 @@ mysqli_close($db);
 						<span class="help-inline"></span>
 					</div>
 				</div>
+				
+
+	
+			
+				
+				
+				<div id="kanaalInputContainer" class="control-group">
+				<label class="control-label" for="kanaal">Kanaal</label>
+				<div class="controls inline-inputs">
+				<input type="search" id="kanaal" name="kanaal" list="kanaallist" autocomplete="off" placeholder="Kanaal" value="<%= _.escape(item.get('kanaal') || '') %>">
+<datalist id="kanaallist">
+    <option value="Slack">Slack</option>
+    <option value="Telegram">Telegram</option>
+    <option value="Sms">Sms</option>
+</datalist>
+	<span class="help-inline">(Selecteer of type een kanaal)</span>			
+		</div>
+				</div>
+				
+		
+				
+<!-- 
+
+				<div id="alarmRegelInputContainer" class="control-group">	
+<label class="control-label" for="kanaal">Kanaal</label>	
+<div class="controls inline-inputs">				
+		<select id=kanaal>
+		<option value="<%= _.escape(item.get('kanaal') || '') %>"><%= _.escape(item.get('kanaal') || '') %></option>
+		<option value="Slack">Slack</option>';
+		<option value="Telegram">Telegram</option>';
+		<option value="SMS">SMS</option>';
+		</select>
+		<span class="help-inline"></span>
+		</div>
+	</div>		
+	
+		 -->
+				<!-- 
 				<div id="kanaalInputContainer" class="control-group">
 					<label class="control-label" for="kanaal">Kanaal</label>
 					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="kanaal" placeholder="Kanaal" value="<%= _.escape(item.get('kanaal') || '') %>">
+						<input type="text" class="input-xlarge" id="kanaal" placeholder="Kanaal" value="">
 						<span class="help-inline"></span>
 					</div>
 				</div>
+				
+					 -->
 				<div id="p1InputContainer" class="control-group">
 					<label class="control-label" for="p1">P1</label>
 					<div class="controls inline-inputs">
@@ -273,7 +313,8 @@ mysqli_close($db);
 						<button id="deleteAlarm_NotificatieButton" class="btn btn-mini btn-danger"><i class="icon-trash icon-white"></i> Delete Alarm Notificatie</button>
 						<span id="confirmDeleteAlarm_NotificatieContainer" class="hide">
 							<button id="cancelDeleteAlarm_NotificatieButton" class="btn btn-mini">Cancel</button>
-							<button id="confirmDeleteAlarm_NotificatieButton" class="btn btn-mini btn-danger">Confirm</button>
+							<BR>
+														<button id="confirmDeleteAlarm_NotificatieButton" class="btn btn-mini btn-danger">Bevestig Delete</button>
 						</span>
 					</div>
 				</div>
@@ -286,7 +327,7 @@ mysqli_close($db);
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">&times;</a>
 			<h3>
-				<i class="icon-edit"></i> Edit Alarm_Notificatie
+				<i class="icon-edit"></i> Alarm Notificatie
 				<span id="modelLoader" class="loader progress progress-striped active"><span class="bar"></span></span>
 			</h3>
 		</div>
@@ -296,7 +337,7 @@ mysqli_close($db);
 		</div>
 		<div class="modal-footer">
 			<button class="btn" data-dismiss="modal" >Cancel</button>
-			<button id="saveAlarm_NotificatieButton" class="btn btn-primary">Save Changes</button>
+			<button id="saveAlarm_NotificatieButton" class="btn btn-primary">Save</button>
 		</div>
 	</div>
 
@@ -306,7 +347,7 @@ mysqli_close($db);
 	</div>
 
 	<p id="newButtonContainer" class="buttonContainer">
-		<button id="newAlarm_NotificatieButton" class="btn btn-primary">Add Alarm Notificatie</button>
+		<button id="newAlarm_NotificatieButton" class="btn btn-primary">Voeg Alarm Notificatie Toe</button>
 	</p>
 
 </div> <!-- /container -->

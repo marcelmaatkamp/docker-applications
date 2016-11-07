@@ -28,7 +28,7 @@
 		<button class='btn add-on'><i class="icon-search"></i></button>
 	</span>
 </h1>
-
+<br>
 	<!-- underscore template for the collection -->
 	<script type="text/template" id="sensorCollectionTemplate">
 		<table class="collection table table-bordered table-hover">
@@ -112,9 +112,16 @@
 					<label class="control-label"></label>
 					<div class="controls">
 						<button id="deleteSensorButton" class="btn btn-mini btn-danger"><i class="icon-trash icon-white"></i> Delete Sensor</button>
+							<br>
 						<span id="confirmDeleteSensorContainer" class="hide">
+						
+							<br>
+							<p><i class="icon-warning-sign"></i> Let op: je verwijdert ook alle aan deze sensor <br>
+							gekoppelde data (alarmregels, observaties, enz)!</p>
+							<br>	
+						
 							<button id="cancelDeleteSensorButton" class="btn btn-mini">Cancel</button>
-							<button id="confirmDeleteSensorButton" class="btn btn-mini btn-danger">Confirm</button>
+							<button id="confirmDeleteSensorButton" class="btn btn-mini btn-danger">Bevestig Delete</button>
 						</span>
 					</div>
 				</div>
@@ -137,7 +144,7 @@
 		</div>
 		<div class="modal-footer">
 			<button class="btn" data-dismiss="modal" >Cancel</button>
-			<button id="saveSensorButton" class="btn btn-primary">Save Changes</button>
+			<button id="saveSensorButton" class="btn btn-primary">Save</button>
 		</div>
 	</div>
 
@@ -147,7 +154,7 @@
 	</div>
 
 	<p id="newButtonContainer" class="buttonContainer">
-		<button id="newSensorButton" class="btn btn-primary">Add Sensor</button>
+		<button id="newSensorButton" class="btn btn-primary">Voeg Sensor Toe</button>
 	</p>
 
 </div> <!-- /container -->

@@ -33,7 +33,7 @@ class NodeReporter extends Reporter
 	* @param Criteria $criteria
 	* @return string SQL statement
 	*/
-	static function GetCustomQuery($criteria)
+	/*static function GetCustomQuery($criteria)
 	{
 		$sql = "select
 			'custom value here...' as CustomFieldExample
@@ -48,7 +48,7 @@ class NodeReporter extends Reporter
 
 		return $sql;
 	}
-	
+	*/
 	/*
 	* GetCustomCountQuery returns a fully formed SQL statement that will count
 	* the results.  This query must return the correct number of results that

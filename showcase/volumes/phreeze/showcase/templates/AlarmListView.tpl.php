@@ -21,7 +21,7 @@
 <div class="container">
 
 <h1>
-	<i class="icon-th-list"></i> Alarmen
+	<i class="icon-th-list"></i> Alarm Rapport
 	<span id=loader class="loader progress progress-striped active"><span class="bar"></span></span>
 	<span class='input-append pull-right searchContainer'>
 		<input id='filter' type="text" placeholder="Search..." />
@@ -29,7 +29,7 @@
 	</span>
 </h1>
 
-
+<br>
 <script type="text/template" id="FilterNodeTemplate">	
 	
 	<select id=FilterNode>
@@ -149,13 +149,13 @@ mysqli_close($db);
 		<table class="collection table table-bordered table-hover">
 		<thead>
 			<tr>
-				<!-- <th id="header_Id">Id<% if (page.orderBy == 'Id') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>-->
+				<!--<th id="header_Id">Id<% if (page.orderBy == 'Id') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>-->
 				<th id="header_Node">Node<% if (page.orderBy == 'Node') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_Sensor">Sensor<% if (page.orderBy == 'Sensor') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_Alarmtrigger">Alarmtrigger<% if (page.orderBy == 'Alarmtrigger') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_Observatiewaarde">Observatiewaarde<% if (page.orderBy == 'Observatiewaarde') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 
-				<th id="header_Observatietijdstip">Observatietijdstip<% if (page.orderBy == 'Observatietijdstip') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_Observatietijdstip">Observatietijdstip (UTC)<% if (page.orderBy == 'Observatietijdstip') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 
 			</tr>
 		</thead>
@@ -166,9 +166,11 @@ mysqli_close($db);
 				<td><%= _.escape(item.get('node') || '') %></td>
 				<td><%= _.escape(item.get('sensor') || '') %></td>
 				<td><%= _.escape(item.get('alarmtrigger') || '') %></td>
-				<td><%= _.escape(item.get('observatiewaarde') || '') %></td>
+				<td><%= _.escape(item.get('observatiewaarde')  || '') %> <%= _.escape(item.get('sensoreenheid')  || '') %></td>
+				
+				
 
-				<td><%if (item.get('observatietijdstip')) { %><%= _date(app.parseDate(item.get('observatietijdstip'))).format('MMM D, YYYY h:mm A') %><% } else { %>NULL<% } %></td>
+				<td><%if (item.get('observatietijdstip')) { %><%= _date(app.parseDate(item.get('observatietijdstip'))).format('DD-MM-YYYY - HH:mm:ss') %><% } else { %>NULL<% } %></td>
 
 			</tr>
 		<% }); %>
@@ -182,50 +184,50 @@ mysqli_close($db);
 	<script type="text/template" id="alarmModelTemplate">
 		<form class="form-horizontal" onsubmit="return false;">
 			<fieldset>
-				<div id="idInputContainer" class="control-group">
+				<!-- <div id="idInputContainer" class="control-group">
 					<label class="control-label" for="id">Id</label>
 					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="id" placeholder="Id" value="<%= _.escape(item.get('id') || '') %>">
+						<input type="text" class="input-xlarge uneditable-input" id="id" placeholder="Id" value="<%= _.escape(item.get('id') || '') %>">
 						<span class="help-inline"></span>
 					</div>
-				</div>
+				</div>-->
 				<div id="nodeInputContainer" class="control-group">
 					<label class="control-label" for="node">Node</label>
 					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="node" placeholder="Node" value="<%= _.escape(item.get('node') || '') %>">
+						<input type="text" class="input-xlarge uneditable-input" id="node" placeholder="Node" value="<%= _.escape(item.get('node') || '') %>">
 						<span class="help-inline"></span>
 					</div>
 				</div>
 				<div id="sensorInputContainer" class="control-group">
 					<label class="control-label" for="sensor">Sensor</label>
 					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="sensor" placeholder="Sensor" value="<%= _.escape(item.get('sensor') || '') %>">
+						<input type="text" class="input-xlarge uneditable-input" id="sensor" placeholder="Sensor" value="<%= _.escape(item.get('sensor') || '') %>">
 						<span class="help-inline"></span>
 					</div>
 				</div>
 				<div id="alarmtriggerInputContainer" class="control-group">
 					<label class="control-label" for="alarmtrigger">Alarmtrigger</label>
 					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="alarmtrigger" placeholder="Alarmtrigger" value="<%= _.escape(item.get('alarmtrigger') || '') %>">
+						<input type="text" class="input-xlarge uneditable-input" id="alarmtrigger" placeholder="Alarmtrigger" value="<%= _.escape(item.get('alarmtrigger') || '') %>">
 						<span class="help-inline"></span>
 					</div>
 				</div>
 				<div id="observatiewaardeInputContainer" class="control-group">
 					<label class="control-label" for="observatiewaarde">Observatiewaarde</label>
 					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="observatiewaarde" placeholder="Observatiewaarde" value="<%= _.escape(item.get('observatiewaarde') || '') %>">
+						<input type="text" class="input-xlarge uneditable-input" id="observatiewaarde" placeholder="Observatiewaarde" value="<%= _.escape(item.get('observatiewaarde') || '') %>">
 						<span class="help-inline"></span>
 					</div>
 				</div>
 				<div id="observatietijdstipInputContainer" class="control-group">
 					<label class="control-label" for="observatietijdstip">Observatietijdstip</label>
 					<div class="controls inline-inputs">
-						<div class="input-append date date-picker" data-date-format="yyyy-mm-dd">
-							<input id="observatietijdstip" type="text" value="<%= _date(app.parseDate(item.get('observatietijdstip'))).format('YYYY-MM-DD') %>" />
+						<div class="input-append date date-picker" data-date-format="dd-mm-yyyy">
+							<input id="observatietijdstip" type="text" class="input-xlarge uneditable-input" value="<%= _date(app.parseDate(item.get('observatietijdstip'))).format('DD-MM-YYYY') %>" />
 							<span class="add-on"><i class="icon-calendar"></i></span>
 						</div>
 						<div class="input-append bootstrap-timepicker-component">
-							<input id="observatietijdstip-time" type="text" class="timepicker-default input-small" value="<%= _date(app.parseDate(item.get('observatietijdstip'))).format('h:mm A') %>" />
+							<input id="observatietijdstip-time" type="text" class="timepicker-default input-small uneditable-input" value="<%= _date(app.parseDate(item.get('observatietijdstip'))).format('hh:mm:ss') %>" />
 							<span class="add-on"><i class="icon-time"></i></span>
 						</div>
 						<span class="help-inline"></span>
@@ -244,7 +246,7 @@ mysqli_close($db);
 						<button id="deleteAlarmButton" class="btn btn-mini btn-danger"><i class="icon-trash icon-white"></i> Delete Alarm</button>
 						<span id="confirmDeleteAlarmContainer" class="hide">
 							<button id="cancelDeleteAlarmButton" class="btn btn-mini">Cancel</button>
-							<button id="confirmDeleteAlarmButton" class="btn btn-mini btn-danger">Confirm</button>
+							<button id="confirmDeleteAlarmButton" class="btn btn-mini btn-danger">Bevestig Delete</button>
 						</span>
 					</div>
 				</div>

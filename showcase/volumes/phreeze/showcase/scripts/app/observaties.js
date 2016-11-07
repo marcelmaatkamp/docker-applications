@@ -174,6 +174,11 @@ var page = {
 
 				if (!page.dialogIsOpen)	{
 					page.fetchObservaties(page.fetchParams,true);
+					
+					var now = new Date().toLocaleTimeString();
+					console.log(now);
+					$("#last-refresh").text('Refresh ' + now + ' (CET)');
+					
 				}
 
 			}, model.longPollDuration);
@@ -281,7 +286,8 @@ var page = {
 			if (console) console.log('datepicker error: '+error.message);
 		}
 		
-		$('.timepicker-default').timepicker({ defaultTime: 'value' });
+		$('.timepicker-default').timepicker({ defaultTime: 'value', showMeridian: false, showInputs: false, minuteStep: 1, showSeconds:true, secondStep:1});
+
 
 		// populate the dropdown options for node
 		// TODO: load only the selected value, then fetch all options when the drop-down is clicked

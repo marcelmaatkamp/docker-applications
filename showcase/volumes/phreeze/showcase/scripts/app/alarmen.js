@@ -111,8 +111,7 @@ var page = {
 			page.fetchParams.FilterSensor = $('#FilterSensor').val();
 			page.fetchParams.page = 1;
 			page.fetchAlarmen(page.fetchParams);
-			
-			
+					
 			if ($('#FilterSensor').val()){
 				$("#FilterSensorDisplay").val("Filter: "+$('#FilterSensor').val());
 				$("#FilterSensorDisplay").css('color', 'red', 'important');
@@ -178,6 +177,15 @@ var page = {
 
 				if (!page.dialogIsOpen)	{
 					page.fetchAlarmen(page.fetchParams,true);
+					
+					
+					var now = new Date().toLocaleTimeString();
+					console.log(now);
+					$("#last-refresh").text('Refresh ' + now + ' (CET)');
+		
+		
+		
+					
 				}
 
 			}, model.longPollDuration);
@@ -285,8 +293,10 @@ var page = {
 			if (console) console.log('datepicker error: '+error.message);
 		}
 		
-		$('.timepicker-default').timepicker({ defaultTime: 'value' });
 
+		$('.timepicker-default').timepicker({ defaultTime: 'value', showMeridian: false, showInputs: false, minuteStep: 1, showSeconds:true, secondStep:1});
+
+	//$('.timepicker-default').timepicker({ defaultTime: 'value'});
 
 		if (showDeleteButton) {
 			// attach click handlers to the delete buttons
