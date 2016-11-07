@@ -6,8 +6,8 @@
 "use strict";
 var winston = require("winston");
 var decodeProtobuf_1 = require("./decodeProtobuf");
-var ReceiveKPN = (function () {
-    function ReceiveKPN(ttnMQTT, sender) {
+var ReceiveTTN = (function () {
+    function ReceiveTTN(ttnMQTT, sender) {
         var _this = this;
         this.mqttClient = ttnMQTT;
         this.sender = sender;
@@ -21,7 +21,7 @@ var ReceiveKPN = (function () {
             _this.messageConsumerMQTT(topic, message);
         });
     }
-    ReceiveKPN.prototype.messageConsumerMQTT = function (topic, messageRaw) {
+    ReceiveTTN.prototype.messageConsumerMQTT = function (topic, messageRaw) {
         var messageTTN = JSON.parse(messageRaw.toString());
         var rawPayload = new Buffer(messageTTN.payload, "base64");
         var payload = decodeProtobuf_1.default(rawPayload);
@@ -36,9 +36,9 @@ var ReceiveKPN = (function () {
         // publish
         this.sender.send(messageIot);
     };
-    return ReceiveKPN;
+    return ReceiveTTN;
 }());
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = ReceiveKPN;
+exports.default = ReceiveTTN;
 
 //# sourceMappingURL=receiveTTN.js.map
