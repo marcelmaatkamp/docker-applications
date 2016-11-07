@@ -43,6 +43,7 @@
 #define STR_DEVICE_TYPE_RN2903 "RN2903"
 
 #define STR_CMD_SET "mac set "
+#define STR_CMD_SAVE "mac save"
 #define STR_RETRIES "retx "
 #define STR_DEV_ADDR "devaddr "
 #define STR_APP_SESSION_KEY "appskey "
@@ -65,5 +66,10 @@
 #define STR_CMD_GET_HWEUI "sys get hweui"
 #define STR_CMD_GET_VER "sys get ver"
 #define STR_CMD_SET_CHANNEL_STATUS "mac set ch status "
+#define STR_CMD_GET_DNCTR "mac get dnctr"
+#define STR_CMD_GET_UPCTR "mac get upctr"
+#define STR_CMD_SET_DNCTR "dnctr "
+#define STR_CMD_SET_UPCTR "upctr "
 
 #endif
+

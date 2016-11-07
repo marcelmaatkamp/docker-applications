@@ -1,21 +1,21 @@
 /*
-* Copyright (c) 2015 SODAQ. All rights reserved.
-*
-* This file is part of Sodaq_RN2483.
-*
-* Sodaq_RN2483 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Lesser General Public License as
-* published by the Free Software Foundation, either version 3 of
-* the License, or(at your option) any later version.
-*
-* Sodaq_RN2483 is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with Sodaq_RN2483.  If not, see
-* <http://www.gnu.org/licenses/>.
+  Copyright (c) 2015 SODAQ. All rights reserved.
+
+  This file is part of Sodaq_RN2483.
+
+  Sodaq_RN2483 is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation, either version 3 of
+  the License, or(at your option) any later version.
+
+  Sodaq_RN2483 is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with Sodaq_RN2483.  If not, see
+  <http://www.gnu.org/licenses/>.
 */
 
 #ifndef _Sodaq_RN2483_h
@@ -29,20 +29,20 @@
 
 /**
 
- Notes:
+  Notes:
 
- - uint16_t is preferred over size_t because long is never needed by the
+  - uint16_t is preferred over size_t because long is never needed by the
    size of the packets or the buffers of this application.
    (Kees Bakker does not agree with this. size_t is not the same as long.
     On AVR a size_t is uint16_t. On SAMD we don't care too much about the
     data size, a long is fine.)
- - Currently, only one received packet is supported. Every time a packet is
+  - Currently, only one received packet is supported. Every time a packet is
    received, the previous one is overwritten.
- - Also multiple responses from the server (with Frame Pending Bit set) are
+  - Also multiple responses from the server (with Frame Pending Bit set) are
    not supported.
- - The port of the received packet is not returned.
+  - The port of the received packet is not returned.
 
- */
+*/
 
 //#define USE_DYNAMIC_BUFFER
 
@@ -65,15 +65,15 @@ typedef Stream SerialType;
 // Available error codes.
 enum MacTransmitErrorCodes
 {
-    NoError = 0,
-    NoResponse = 1,
-    Timeout = 2,
-    PayloadSizeError = 3,
-    InternalError = 4,
-    Busy = 5,
-    NetworkFatalError = 6,
-    NotConnected = 7,
-    NoAcknowledgment = 8,
+  NoError = 0,
+  NoResponse = 1,
+  Timeout = 2,
+  PayloadSizeError = 3,
+  InternalError = 4,
+  Busy = 5,
+  NetworkFatalError = 6,
+  NotConnected = 7,
+  NoAcknowledgment = 8,
 };
 
 // Provides a simple, abstracted interface to Microchip's RN2483 LoRaWAN module.
@@ -83,12 +83,14 @@ enum MacTransmitErrorCodes
 // and not to create a new instance.
 class Sodaq_RN2483 : public SwitchableDevice
 {
-public:
+  public:
     // Creates a new Sodaq_RN2483 instance.
     Sodaq_RN2483();
 
     // Returns the correct baudrate for the serial port that connects to the device.
-    uint32_t getDefaultBaudRate() { return 57600; };
+    uint32_t getDefaultBaudRate() {
+      return 57600;
+    };
 
     // Initializes the device and connects to the network using Over-The-Air Activation.
     // Returns true on successful connection.
@@ -99,7 +101,10 @@ public:
     bool initABP(SerialType& stream, const uint8_t devAddr[4], const uint8_t appSKey[16], const uint8_t nwkSKey[16], bool adr = true);
 
     // Sets the optional "Diagnostics and Debug" stream.
-    void setDiag(Stream& stream, bool debug) { diagStream = &stream; debug = debug;};
+    void setDiag(Stream& stream, bool debug) {
+      diagStream = &stream;
+      debug = debug;
+    };
 
     // Sends the given payload without acknowledgement.
     // Returns 0 (NoError) when transmission is successful or one of the MacTransmitErrorCodes otherwise.
@@ -122,32 +127,44 @@ public:
     // Returns the number of bytes written or 0 in case of error.
     uint8_t getFirmVer(uint8_t* buffer, uint8_t size);
 
+    uint32_t getDownCntr();
+    uint32_t getUpCntr();
+    bool setUpCntr(uint32_t cntr);
+    bool setDownCntr(uint32_t cntr);
+    
+    // Sends a save command to the device and waits for the response (or timeout).
+    // Returns true on success.
+    bool save();
+
 #ifdef ENABLE_SLEEP
     void wakeUp();
-
     void sleep();
 #endif
 
 #ifdef USE_DYNAMIC_BUFFER
     // Sets the size of the input buffer.
     // Needs to be called before initOTA()/initABP().
-    void setInputBufferSize(uint16_t value) { this->inputBufferSize = value; };
+    void setInputBufferSize(uint16_t value) {
+      this->inputBufferSize = value;
+    };
 
     // Sets the size of the "Received Payload" buffer.
     // Needs to be called before initOTA()/initABP().
-    void setReceivedPayloadBufferSize(uint16_t value) { this->receivedPayloadBufferSize = value; };
+    void setReceivedPayloadBufferSize(uint16_t value) {
+      this->receivedPayloadBufferSize = value;
+    };
 #endif
 
     // Provides a quick test of several methods as a pseudo-unit test.
     void runTestSequence(SerialType& loraStream, Stream& debugStream);
 
-private:
+  private:
     // The stream that communicates with the device.
     SerialType* loraStream;
 
     // The (optional) stream to show debug information.
     Stream* diagStream;
-    bool debug=false;
+    bool debug = false;
 
     // The size of the input buffer. Equals DEFAULT_INPUT_BUFFER_SIZE
     // by default or (optionally) a user-defined value when using USE_DYNAMIC_BUFFER.
@@ -181,7 +198,9 @@ private:
 
     // Reads a line from the device stream into the input buffer.
     // Returns the number of bytes read.
-    uint16_t readLn() { return readLn(this->inputBuffer, this->inputBufferSize); };
+    uint16_t readLn() {
+      return readLn(this->inputBuffer, this->inputBufferSize);
+    };
 
     // Waits for the given string. Returns true if the string is received before a timeout.
     // Returns false if a timeout occurs or if another string is received.

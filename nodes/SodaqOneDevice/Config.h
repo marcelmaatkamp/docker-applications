@@ -63,6 +63,8 @@ struct ConfigParams
 
     uint8_t _coordinateUploadCount;
     uint8_t _repeatCount;
+    uint32_t _frameUpCount;
+    uint32_t _frameDownCount;
 
     uint16_t _crc16;
 
@@ -98,6 +100,8 @@ public:
     
     uint8_t getCoordinateUploadCount() const { return _coordinateUploadCount; }
     uint8_t getRepeatCount() const { return _repeatCount; }
+    uint32_t getFrameUpCount() const { return _frameUpCount; }
+    uint32_t getFrameDownCount() const { return _frameDownCount; }
 
     static void showConfig(Stream* stream);
     bool checkConfig(Stream& stream);

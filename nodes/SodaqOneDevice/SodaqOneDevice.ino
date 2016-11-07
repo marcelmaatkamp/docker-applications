@@ -694,6 +694,7 @@ bool transmit()
 {
   bool retVal = true;
   uint8_t sendReturn;
+  uint8_t downCnt, upCnt;
   uint16_t recvSize;
   bool retry = true;
   int retCount = 0;
@@ -728,6 +729,15 @@ bool transmit()
             updateConfigOverTheAir();
           }
         }
+        downCnt = LoRaBee.getDownCntr();
+        upCnt = LoRaBee.getUpCntr();
+        debugPrint("Down counter:");
+        debugPrintln(downCnt);
+        debugPrint("Up counter:");
+        debugPrintln(upCnt);
+        params._frameUpCount = upCnt;
+        params._frameDownCount = downCnt;
+        params.commit(true);
         retry = false;
         break;
       case NoResponse:
@@ -770,7 +780,7 @@ bool transmit()
       retCount++;
       debugPrint("Retry number: ");
       debugPrintln(retCount);
-      if (retCount > NUM_TX_RETRIES)
+      if (retCount > params.getRepeatCount())
       {
         retry = false;
         retVal = false;
@@ -920,7 +930,9 @@ bool initLora(bool supressMessages)
 
     result = false; // override the result from the initialization above
   }
-
+  LoRaBee.setUpCntr(params.getFrameUpCount());
+  LoRaBee.setDownCntr(params.getFrameDownCount());
+  
   setLoraActive(false);
   return result; // false by default
 }
