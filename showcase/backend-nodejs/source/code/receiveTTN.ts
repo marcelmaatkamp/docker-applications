@@ -43,7 +43,7 @@ declare interface MessageTTN {
   metadata: iot.Metadata;
 }
 
-export default class ReceiveKPN {
+export default class ReceiveTTN {
   mqttClient: mqtt.Client;
   sender: iot.SendMessages;
 
