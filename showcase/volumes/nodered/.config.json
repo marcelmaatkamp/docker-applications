@@ -327,7 +327,7 @@
   },
   "node-red-node-feedparser": {
    "name": "node-red-node-feedparser",
-   "version": "0.1.5",
+   "version": "0.1.6",
    "nodes": {
     "feedparse": {
      "name": "feedparse",
@@ -374,7 +374,7 @@
   },
   "node-red-node-twitter": {
    "name": "node-red-node-twitter",
-   "version": "0.1.6",
+   "version": "0.1.7",
    "nodes": {
     "twitter": {
      "name": "twitter",
@@ -457,7 +457,7 @@
   },
   "node-red-contrib-chatbot": {
    "name": "node-red-contrib-chatbot",
-   "version": "0.5.13",
+   "version": "0.5.14",
    "nodes": {
     "chatbot-message": {
      "name": "chatbot-message",
@@ -681,6 +681,55 @@
      "enabled": true,
      "module": "node-red-contrib-telegrambot",
      "file": "/node-red/node_modules/node-red-contrib-telegrambot/telegrambot/99-telegrambot.js"
+    }
+   }
+  },
+  "node-red-contrib-twilio": {
+   "name": "node-red-contrib-twilio",
+   "version": "0.0.5",
+   "nodes": {
+    "twilio-connection": {
+     "name": "twilio-connection",
+     "types": [
+      "twilio-connection"
+     ],
+     "enabled": true,
+     "module": "node-red-contrib-twilio",
+     "file": "/node-red/node_modules/node-red-contrib-twilio/twilio-connection.js"
+    },
+    "twilio-call": {
+     "name": "twilio-call",
+     "types": [
+      "twilio-call"
+     ],
+     "enabled": true,
+     "module": "node-red-contrib-twilio",
+     "file": "/node-red/node_modules/node-red-contrib-twilio/twilio-call.js"
+    },
+    "twilio-say": {
+     "name": "twilio-say",
+     "types": [
+      "twilio-say"
+     ],
+     "enabled": true,
+     "module": "node-red-contrib-twilio",
+     "file": "/node-red/node_modules/node-red-contrib-twilio/twilio-say.js"
+    }
+   }
+  },
+  "node-red-node-twilio": {
+   "name": "node-red-node-twilio",
+   "version": "0.0.8",
+   "nodes": {
+    "twilio": {
+     "name": "twilio",
+     "types": [
+      "twilio out",
+      "twilio-api"
+     ],
+     "enabled": true,
+     "module": "node-red-node-twilio",
+     "file": "/node-red/node_modules/node-red-node-twilio/56-twilio.js"
     }
    }
   }
