@@ -269,7 +269,7 @@ services:
 #  ports:
 #    - "3000:3000"
   volumes:
-    - ./volumes/overlays:/src/staticlayers
+    - ./volumes/nodered/mapoverlays:/src/staticlayers/
   links:
     - livemap-db:db
   environment:
