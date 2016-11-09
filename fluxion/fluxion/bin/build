@@ -1,0 +1,2 @@
+#!/bin/bash
+docker run --rm -v $(pwd):/home/sdk danielguerra/alpine-sdk-build:3.1 build unmaintained macchanger
