@@ -12,15 +12,3 @@ services:
   environment:
    - DEVELOP=0
    - SHOWCASE_TELEGRAM_TOKEN=${SHOWCASE_TELEGRAM_BOT_ACC}
-
- domoticz:
-  image: sdesbure/domoticz
-  networks:
-   mynet:
-    ipv4_address: ${SHOWCASE_IP_ADDRESS_DOMOTICZ}
-  links:
-   - rabbitmq:rabbitmq
-  logging:
-   driver: "gelf"
-   options:
-    gelf-address: "${SHOWCASE_IP_ADDRESS_GELF}"
