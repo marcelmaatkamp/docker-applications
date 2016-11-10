@@ -37,11 +37,8 @@ services:
   image: danielguerra/alpine-xfce4-xrdp
   environment:
    - USER=root
-  links:
-   - nodered
-   - phreeze
-   - graylog
-   - livemap-web
+  volumes:
+   - ./contrib/desktop/bookmarks.json:/home/alpine/Desktop
   networks:
    mynet:
     ipv4_address: ${SHOWCASE_IP_ADDRESS_DESKTOP}
