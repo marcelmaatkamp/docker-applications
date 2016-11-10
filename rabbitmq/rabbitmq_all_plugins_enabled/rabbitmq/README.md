@@ -1,9 +1,10 @@
 # RabbitMQ with all plugins enabled
 
 Latest rabbitmq with the following enabled plugins:
+* rabbitmq_mqtt
+* rabbitmq_management
 * rabbitmq_federation
 * rabbitmq_federation_management
-* rabbitmq_management,rabbitmq_mqtt
 * rabbitmq_shovel
 * rabbitmq_shovel_management 
 
