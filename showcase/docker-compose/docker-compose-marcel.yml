@@ -38,7 +38,7 @@ services:
   environment:
    - USER=root
   volumes:
-   - ./contrib/desktop/bookmarks.json:/home/alpine/Desktop
+   - ./contrib/desktop/bookmarks.json:/home/alpine/Desktop/bookmarks.json
   networks:
    mynet:
     ipv4_address: ${SHOWCASE_IP_ADDRESS_DESKTOP}
