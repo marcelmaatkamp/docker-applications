@@ -158,6 +158,7 @@ services:
 
  graylog:
   image: "graylog2/server"
+  hostname: graylog
   restart: always
   volumes:
    - graylog-data:/usr/share/graylog/data/journal
@@ -165,7 +166,7 @@ services:
   environment:
       GRAYLOG_PASSWORD_SECRET: somepasswordpepper
       GRAYLOG_ROOT_PASSWORD_SHA2: 8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
-      GRAYLOG_WEB_ENDPOINT_URI: http://127.0.0.1:9000/api
+      GRAYLOG_WEB_ENDPOINT_URI: http://graylog:9000/api
 # ports:
 #  - "9000:9000"
 #  - "12201:12201"
