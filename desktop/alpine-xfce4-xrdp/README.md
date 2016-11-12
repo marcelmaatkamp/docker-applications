@@ -16,3 +16,6 @@ screenshot carina 'desktop' cluster
 $ eval "$( carina env desktop )"
 $ docker-compose up -d
 ```
+
+## Connect to desktop
+![](https://github.com/marcelmaatkamp/docker-applications/blob/master/desktop/alpine-xfce4-xrdp/Schermafbeelding%202016-11-12%20om%2008.32.25.png?raw=true)
