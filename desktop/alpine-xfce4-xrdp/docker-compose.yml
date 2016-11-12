@@ -21,11 +21,11 @@ services:
 
  desktop:
   image: danielguerra/alpine-xfce4-xrdp
-  command: bash -c "vncserver :1 -geometry 1280x800 -depth 24 && tail -F /root/.vnc/*.log"
-  expose:
-   - "5901"
-  ports:
-   - "2223:22"
-   - "3389:3389"
+  # command: bash -c "vncserver :1 -geometry 1280x800 -depth 24 && tail -F /root/.vnc/*.log"
+  # expose:
+  #  - "5901"
+  # ports:
+  #  - "2223:22"
+  #  - "3389:3389"
   environment: 
    - USER=root
