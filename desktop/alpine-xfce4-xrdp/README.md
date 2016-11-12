@@ -8,7 +8,7 @@ export CARINA_APIKEY=<<CARINA_API_KEY>>
 [[ -s \"$(brew --prefix dvm)/dvm.sh\" ]] && source \"$(brew --prefix dvm)/dvm.sh\"
 [[ -s \"$(brew --prefix dvm)/bash_completion\" ]] && source \"$(brew --prefix dvm)/bash_completion\"" >> ~/.bash_profile
 ```
-## Define new cluseter
+## Define new cluster
 screenshot carina 'desktop' cluster
 
 ## Run desktop on cluster
