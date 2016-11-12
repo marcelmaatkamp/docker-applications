@@ -19,7 +19,7 @@ services:
   ports:
     - "8080:8080"
 
- dektop:
+ desktop:
   image: danielguerra/alpine-xfce4-xrdp
   command: bash -c "vncserver :1 -geometry 1280x800 -depth 24 && tail -F /root/.vnc/*.log"
   expose:
