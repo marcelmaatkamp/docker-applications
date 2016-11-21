@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+ kodi:
+  image: "celedhrim/kodi-server"
+  restart: "always"
+  network_mode: "host"
+  volumes:
+   - "kodi:/opt/kodi-server/share/kodi/portable_data"
+
+volumes:
+ kodi:

@@ -1,0 +1,31 @@
+version: '2'
+
+services:
+
+ guacd:
+  hostname: guacd
+  image: danielguerra/guacamole-guacd
+ guadb:
+  hostname: guadb
+  image: danielguerra/guacamole-db
+  environment:
+    - MYSQL_ROOT_PASSWORD=mypass
+ guaweb:
+  image: danielguerra/guacamole-webserver
+  links:
+    - guacd
+    - desktop
+    - "guadb:db"
+  ports:
+    - "8080:8080"
+
+ desktop:
+  image: danielguerra/alpine-xfce4-xrdp
+  # command: bash -c "vncserver :1 -geometry 1280x800 -depth 24 && tail -F /root/.vnc/*.log"
+  # expose:
+  #  - "5901"
+  # ports:
+  #  - "2223:22"
+  #  - "3389:3389"
+  environment: 
+   - USER=root
