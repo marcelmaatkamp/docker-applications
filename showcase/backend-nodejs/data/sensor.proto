@@ -1,0 +1,21 @@
+syntax = "proto2";
+
+message SensorReading {
+	optional uint32 id = 1;
+	optional uint32 error = 2;
+	optional sint32 value1 = 3;
+	optional sint32 value2 = 4;
+	optional sint32 value3 = 5;
+	optional sint32 value4 = 6;
+	optional sint32 value5 = 7;
+	optional sint64 value6 = 8;
+	optional sint64 value7 = 9;
+	optional sint64 value8 = 10;
+	optional sint64 value9 = 11;
+	optional sint64 value10 = 12;
+}
+
+message NodeMessage {
+    repeated SensorReading reading = 1;
+}
+

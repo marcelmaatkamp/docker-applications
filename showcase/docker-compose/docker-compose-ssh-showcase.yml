@@ -1,0 +1,78 @@
+version: '2'
+
+services:
+
+ docker-ui:
+  image: uifd/ui-for-docker
+  restart: always
+  privileged: true
+  ports:
+   - 8080:9000
+  volumes:
+   - /var/run/docker.sock:/var/run/docker.sock
+
+ rabbitmq:
+  image: marcelmaatkamp/rabbitmq-mqtt-ldap
+  restart: always
+  hostname: rabbitmq
+  ports:
+   - 1883:1883
+   - 5672:5672
+   - 15672:15672
+   - 25673:25672
+  environment:
+    RABBITMQ_NODENAME: rabbitmq@rabbitmq
+  volumes:
+   - ./volumes/rabbitmq/mnesia:/var/lib/rabbitmq/mnesia
+
+ mysql:
+  image: mysql
+  restart: always
+  hostname: mysql
+  environment:
+   - MYSQL_ROOT_PASSWORD=my-secret-pw
+  ports:
+   - 3306:3306
+  volumes:
+   - ./volumes/mysql:/var/lib/mysql/
+   - ./mysql:/docker-entrypoint-initdb.d/
+
+ nodered:
+  build: raptor-node-red
+  restart: always
+  hostname: nodered
+  depends_on:
+   - rabbitmq
+   - mysql
+  links:
+   - rabbitmq:rabbitmq
+   - mysql:mysql
+  ports:
+   - 8081:1880
+  volumes:
+   - ./volumes/nodered:/node-red-data/
+
+ phpmyadmin:
+  image: phpmyadmin/phpmyadmin
+  restart: always
+  hostname: phpmyadmin
+  ports:
+   - 8082:80
+  depends_on:
+   - mysql
+  links:
+   - mysql:db
+  volumes:
+   - ./volumes/phpmyadmin:/sessions
+
+ phreeze:
+  image: marcelmaatkamp/phreeze
+  links:
+   - mysql:mysql
+  depends_on:
+   - mysql
+  volumes:
+   - ./volumes/phreeze/showcase:/var/www/html/showcase
+  ports:
+   - 8003:80
+

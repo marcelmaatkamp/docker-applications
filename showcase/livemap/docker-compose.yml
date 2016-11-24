@@ -1,0 +1,19 @@
+web:
+  build: .
+  command: node app.js
+  ports:
+    - "3000:3000"
+  volumes:
+  - ./volumes/overlays:/src/staticlayers
+  links:
+    - db
+  environment:
+    PORT: 3000
+    DATABASE_URL: postgres://livemap:livemap@db/livemapdb
+db:
+  build: ./postgres
+  ports:
+    - "5432:5432"
+  volumes:
+  - livemapdbdata:/var/lib/postgresql/data
+  restart: always
