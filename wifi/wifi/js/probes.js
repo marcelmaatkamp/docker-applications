@@ -1,4 +1,4 @@
-var pcap=require('../node_pcap/pcap');
+var pcap=require('node_pcap/pcap');
 pcap.createSession(process.env.LOCATION_DEVICE, '(type mgt) and (type mgt subtype probe-req )').
         on('packet', function (raw_packet) {
                 console.log(JSON.stringify(pcap.decode.packet(raw_packet)));
