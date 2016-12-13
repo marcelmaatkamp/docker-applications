@@ -1,0 +1,44 @@
+version: '2'
+services:
+
+ nodered:
+  extends:
+   file: docker-compose/docker-compose-ttn-test.yml
+   service: nodered
+  environment:
+   - SHOWCASE_TELEGRAM_TOKEN=${SHOWCASE_TELEGRAM_BOT_MARCEL}
+
+ guacd:
+  hostname: guacd
+  image: danielguerra/guacamole-guacd
+  networks:
+   mynet:
+    ipv4_address: ${SHOWCASE_IP_ADDRESS_GUACAMOLE_CD}
+ guadb:
+  hostname: guadb
+  image: danielguerra/guacamole-db
+  environment:
+    - MYSQL_ROOT_PASSWORD=mypass
+  networks:
+   mynet:
+    ipv4_address: ${SHOWCASE_IP_ADDRESS_GUACAMOLE_DB}
+ guaweb:
+  image: danielguerra/guacamole-webserver
+  links:
+    - guacd
+    - "guadb:db"
+    - desktop
+  ports:
+    - "8080:8080"
+  networks:
+   mynet:
+    ipv4_address: ${SHOWCASE_IP_ADDRESS_GUACAMOLE_WEB}
+ desktop:
+  image: danielguerra/alpine-xfce4-xrdp
+  environment:
+   - USER=root
+  volumes:
+   - ./contrib/desktop/bookmarks.json:/home/alpine/Desktop/bookmarks.json
+  networks:
+   mynet:
+    ipv4_address: ${SHOWCASE_IP_ADDRESS_DESKTOP}

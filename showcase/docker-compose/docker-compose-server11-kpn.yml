@@ -1,0 +1,39 @@
+version: '2'
+services:
+
+ https:
+  image: steveltn/https-portal
+  ports:
+    - "80:80"
+    - "443:443"
+  restart: always
+  volumes:
+   - ./volumes/https/comodo:/var/www/vhosts/nodered.188.202.226.61.dns.uk.ms
+   - ./volumes/https/keys:/var/lib/https-portal/nodered.188.202.226.61.dns.uk.ms/local/
+  environment:
+   - STAGE=local
+   #- STAGE=production
+   - WEBSOCKET=true
+   - DOMAINS=nodered.${SHOWCASE_IP_ADDRESS}.dns.uk.ms -> http://kpn_lora:8080
+
+ dns:
+  build: ../dns/
+  ports:
+   - "53:53/udp"
+
+ rabbitmq:
+  image: marcelmaatkamp/rabbitmq-mqtt-ldap
+  restart: always
+  hostname: rabbitmq
+  environment:
+    RABBITMQ_NODENAME: rabbitmq@rabbitmq
+  volumes:
+   - ./volumes/rabbitmq/mnesia:/var/lib/rabbitmq/mnesia
+  ports:
+   - "5672:5672"
+
+ kpn_lora:
+  build: ../kpn_lora/
+  hostname: kpn_lora
+  environment:
+   - AMQP_URL=amqp://kpn:37vn5snhagb8gyw2ws@rabbitmq
