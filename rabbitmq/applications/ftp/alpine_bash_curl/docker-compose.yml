@@ -1,0 +1,31 @@
+version: '2'
+
+services:
+
+ pureftpd:
+  image: vimagick/pure-ftpd
+  ports:
+    - "21:21"
+  volumes:
+    - ftpuser:/home/ftpuser
+    - pure-ftpd:/etc/pure-ftpd
+  privileged: true
+  restart: always
+
+ amqp-tools:
+  image: marcelmaatkamp/alpine-amqp-tools
+  build: .
+  links:
+   - pureftpd:pureftpd
+  environment:
+   - AMQP_USERNAME=guest
+   - AMQP_PASSWORD=guest
+   - AMQP_SERVER=stein.pirod.nl
+   - AMQP_QUEUE=ftp
+   - FTP_USERNAME=kev
+   - FTP_PASSWORD=ftpuser
+   - FTP_SERVER=pureftpd
+
+volumes:
+ ftpuser:
+ pure-ftpd:

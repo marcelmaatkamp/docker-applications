@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+
+ wifi:
+  build: wifi/
+# privileged: true
+  network_mode: "host"
+  cap_add:
+   - ALL

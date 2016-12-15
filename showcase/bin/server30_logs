@@ -1,4 +1,0 @@
-#!/bin/bash
-shopt -s expand_aliases
-alias dc="docker-compose -f docker-compose.yml -f docker-compose/docker-compose-server30-kpn.yml"
-dc logs -f

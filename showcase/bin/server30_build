@@ -1,7 +1,0 @@
-#!/bin/bash
-shopt -s expand_aliases
-alias dc='docker-compose -f docker-compose.yml -f docker-compose/docker-compose-server30-kpn.yml'
-dc stop dns kpn_lora &&\
-dc rm -f dns kpn_lora &&\
-dc build dns kpn_lora &&\
-dc up -d dns kpn_lora

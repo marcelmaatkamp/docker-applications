@@ -1,1 +1,0 @@
-docker exec -it showcase_backend_1 bash

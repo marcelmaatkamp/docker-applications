@@ -1,5 +1,0 @@
-#!/bin/bash
-shopt -s expand_aliases
-alias dc="docker-compose -f docker-compose.yml -f docker-compose/docker-compose-server11-kpn.yml"
-dc build kpn_lora &&\
-dc up dns https kpn_lora
