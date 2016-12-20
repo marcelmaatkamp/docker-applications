@@ -1,0 +1,10 @@
+Step 1 : FROM mhart/alpine-node
+ ---> 424ad866f30f
+Step 2 : WORKDIR js
+ ---> Using cache
+ ---> d50c0dcb52f8
+Step 3 : COPY js/package.json package.json
+ ---> Using cache
+ ---> 3d6d9940bc69
+Step 4 : COPY js/amqp_ftp.js amqp_ftp.js
+Gracefully stopping... (press Ctrl+C again to force)

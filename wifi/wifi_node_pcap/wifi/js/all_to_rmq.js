@@ -4,7 +4,7 @@ var amqp = require("amqp-ts");
 
 var amqp_hostname = (process.env.AMQP_HOSTNAME != undefined ? process.env.AMQP_HOSTNAME : "rabbitmq");
 var amqp_username = (process.env.AMQP_USERNAME != undefined ? process.env.AMQP_USERNAME : "guest");
-var amqp_password = (process.env.AMQP_PASSWORD != undefined ? process.env.AMQP_USERNAME : "guest");
+var amqp_password = (process.env.AMQP_PASSWORD != undefined ? process.env.AMQP_PASSWORD : "guest");
 var amqp_exchange = (process.env.AMQP_EXCHANGE != undefined ? process.env.AMQP_USERNAME : "wifi");
 
 var amqp_url = "amqp://"+process.env.AMQP_USERNAME+":"+process.env.AMQP_PASSWORD+"@"+process.env.AMQP_HOSTNAME;
