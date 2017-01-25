@@ -20,7 +20,8 @@ services:
   environment:
    - AMQP_USERNAME=guest
    - AMQP_PASSWORD=guest
-   - AMQP_SERVER=stein.pirod.nl
+   - AMQP_HOSTNAME=stein.pirod.nl
+   - AMQP_VHOST=/
    - AMQP_QUEUE=ftp
    - FTP_USERNAME=kev
    - FTP_PASSWORD=ftpuser

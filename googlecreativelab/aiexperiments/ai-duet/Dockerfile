@@ -7,10 +7,12 @@ WORKDIR aiexperiments-ai-duet/static \
  && webpack -p
 
 WORKDIR ../server
-RUN apt-get update && apt-get install -y python-pip python-dev
+RUN apt-get update && apt-get install -y python-pip python-dev bash
 RUN pip2 install -r requirements.txt
 
-RUN bash <(curl -s https://repo.continuum.io/archive/Anaconda2-4.2.0-Linux-x86_64.sh)
+RUN wget https://repo.continuum.io/archive/Anaconda2-4.2.0-Linux-x86_64.sh && \
+    chmod a+rx Anaconda2-4.2.0-Linux-x86_64.sh
+
 EXPOSE 8080
 
 CMD ["python", "server.py"]

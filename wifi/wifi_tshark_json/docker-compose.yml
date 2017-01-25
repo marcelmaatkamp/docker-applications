@@ -1,0 +1,97 @@
+version: '2'
+
+services:
+
+ rabbitmq:
+  image: marcelmaatkamp/rabbitmq-mqtt-ldap
+  restart: always
+  hostname: rabbitmq
+  environment:
+    RABBITMQ_NODENAME: rabbitmq@rabbitmq
+  volumes:
+   - rabbitmq-data:/var/lib/rabbitmq/mnesia
+  ports:
+   - "15672:15672"
+
+ elasticsearch-master:
+  image: danielguerra/alpine-elasticsearch
+  restart: always
+  command: -Des.network.bind_host=elasticsearch-master --cluster.name=graylog --node.name=elasticsearch-master --discovery.zen.ping.multicast.enabled=false --network.host=elasticsearch-master
+  hostname: elasticsearch-master
+  volumes:
+   - elastic-data:/usr/share/elasticsearch/data
+
+ elasticsearch-node01:
+  image: danielguerra/alpine-elasticsearch
+  restart: always
+  command: -Des.network.bind_host=elasticsearch-node01 --cluster.name=graylog --node.name=elasticsearch-node01 --discovery.zen.ping.unicast.hosts=master:9300  --network.host=elasticsearch-node01
+  hostname: elasticsearch-node01
+  links:
+   - "elasticsearch-master:master"
+  volumes:
+    - elastic-data:/usr/share/elasticsearch/data
+
+ mongodb:
+  image: mongo:3
+  restart: always
+  command: "mongod --smallfiles"
+  volumes:
+   - mongodb-conf:/etc/mongod.conf:ro
+   - mongodb-data:/data/db
+
+ graylog:
+  image: "graylog2/server"
+  hostname: graylog
+  restart: always
+  volumes:
+   - graylog-data:/usr/share/graylog/data/journal
+   - graylog-conf:/usr/share/graylog/data/config
+  environment:
+   - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
+   - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+   - GRAYLOG_WEB_ENDPOINT_URI=http://graylog:9000/api
+  links:
+   - mongodb:mongo
+   - elasticsearch-master:elasticsearch
+  depends_on:
+   - mongodb
+   - elasticsearch-master
+   - elasticsearch-node01
+  ports:
+   - 12201:12201/udp
+
+ ssh:
+  image: danielguerra/alpine-sshd
+  hostname: ssh
+  ports:
+   - "2222:22"
+  volumes:
+   - ssh-keys:/root/.ssh/
+# logging:
+#  driver: "gelf"
+#  options:
+#   gelf-address: "${GELF_ADDRESS}"
+
+ wifi:
+  # image: marcelmaatkamp/wifi
+  build: wifi/
+  privileged: true
+  network_mode: "host"
+  links:
+   - "rabbitmq:rabbitmq" 
+# command: tshark -T ek -x -i mon0 | grep '{"timestamp"' | amqp-publish -u amqp://guest:guest@rabbitmq -e wifi_sens -l
+  command: tshark -T ek -i mon0 | grep '{"timestamp"' | amqp-publish -u amqp://guest:guest@rabbitmq -e wifi_sens -l
+#  logging:
+#   driver: "gelf"
+#   options:
+#    gelf-address: "${GELF_ADDRESS}"
+
+volumes:
+ wifi:
+ ssh-keys:
+ rabbitmq-data:
+ mongodb-conf:
+ mongodb-data:
+ elastic-data:
+ graylog-conf:
+ graylog-data:

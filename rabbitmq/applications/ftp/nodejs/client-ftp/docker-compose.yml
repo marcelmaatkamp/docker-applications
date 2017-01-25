@@ -12,24 +12,24 @@ services:
   privileged: true
   restart: always
 
- bogemftp:
-  image: bogem/ftp
-  ports:
-   - "20:20" 
-   - "21:21" 
-   - "47400-47470:47400-47470"  
-  volumes:
-   - bogemftp:/home/vsftpd
-  environment:
-   - FTP_USER=kev
-   - FTP_PASS=ftpuser
-   - PASV_ADDRESS=127.0.0.1
+#bogemftp:
+# image: bogem/ftp
+# ports:
+#  - "20:20" 
+#  - "21:21" 
+#  - "47400-47470:47400-47470"  
+# volumes:
+#  - bogemftp:/home/vsftpd
+# environment:
+#  - FTP_USER=kev
+#  - FTP_PASS=ftpuser
+#  - PASV_ADDRESS=127.0.0.1
 
  amqp_ftp:
   image: marcelmaatkamp/node_amqp_ftp
   build: .
   links:
-   - bogemftp:ftp
+   - pureftpd:ftp
   environment:
    - AMQP_USERNAME=guest
    - AMQP_PASSWORD=guest

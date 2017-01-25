@@ -6,7 +6,7 @@ services:
   restart: always
   hostname: rabbitmq
   ports:
-   - 15672:15672
+   - 15674:15672
    - 5672:5672
    - 1883
   environment:
@@ -21,11 +21,12 @@ services:
    - "domoticz:/config"
    - "/etc/localtime:/etc/localtime:ro"
   devices:
-   - "/dev/ttyUSB0:/dev/ttyUSB0"
+#  - "/dev/ttyUSB0:/dev/ttyUSB0"
+   - "/dev/ttyACM0:/dev/ttyACM0"
   links:
    - rabbitmq
   ports:
-   - 8080:8080
+   - 8091:8080
 
 volumes:
  rabbitmq:

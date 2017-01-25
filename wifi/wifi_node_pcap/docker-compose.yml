@@ -79,10 +79,10 @@ services:
   network_mode: "host"
   env_file: 
    - ./env.env
-  logging:
-   driver: "gelf"
-   options:
-    gelf-address: "${GELF_ADDRESS}"
+#  logging:
+#   driver: "gelf"
+#   options:
+#    gelf-address: "${GELF_ADDRESS}"
 
 volumes:
  wifi:

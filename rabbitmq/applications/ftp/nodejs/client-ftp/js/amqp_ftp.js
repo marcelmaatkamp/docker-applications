@@ -19,6 +19,8 @@ var ftp_connect = { host: ftp_hostname, user: ftp_username, password: ftp_passwo
 console.log("ftp: " + JSON.stringify(ftp_connect));
 
 var connection = new amqp.Connection(amqp_url);
+queue.prefetch(1);
+
 var queue = connection.declareQueue(amqp_queue);
 
 var i = 0;
@@ -28,12 +30,14 @@ c.on('ready', function() {
  queue.activateConsumer((message) => {
   var filename = "/"+uuidV4()+".json";
   var content = new Buffer(JSON.stringify(message.getContent()));
+  message.ack();
 
   c.put(content, filename, function(err) {
    if (err) throw err;
     console.log("["+(i++)+"] filename("+filename+"): " + content.length + " bytes..");
     c.end();
   });
+
 
  });
 });

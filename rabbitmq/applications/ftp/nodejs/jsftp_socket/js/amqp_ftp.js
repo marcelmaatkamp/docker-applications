@@ -20,6 +20,7 @@ console.log("amqp_url: " + amqp_url);
 
 var connection = new amqp.Connection(amqp_url);
 var queue = connection.declareQueue(amqp_queue);
+queue.prefetch(1);
 
 ftp.auth(ftp_username, ftp_password, function (err, data) {
  queue.activateConsumer((message) => {
@@ -33,5 +34,5 @@ ftp.auth(ftp_username, ftp_password, function (err, data) {
    s.pipe(socket); // Transfer from source to the remote file
    s.resume();
   });
- });
+ },{noAck: true});
 });
