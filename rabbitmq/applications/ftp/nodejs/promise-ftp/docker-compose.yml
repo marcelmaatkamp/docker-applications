@@ -12,8 +12,8 @@ services:
   privileged: true
   restart: always
 
- amqp-tools:
-  image: marcelmaatkamp/alpine-amqp-tools
+ amqp_ftp:
+  image: marcelmaatkamp/node_amqp_ftp
   build: .
   links:
    - pureftpd:pureftpd
@@ -21,11 +21,11 @@ services:
    - AMQP_USERNAME=guest
    - AMQP_PASSWORD=guest
    - AMQP_HOSTNAME=stein.pirod.nl
-   - AMQP_VHOST=/
    - AMQP_QUEUE=ftp
+
    - FTP_USERNAME=kev
    - FTP_PASSWORD=ftpuser
-   - FTP_SERVER=pureftpd
+   - FTP_HOSTNAME=pureftpd
 
 volumes:
  ftpuser:

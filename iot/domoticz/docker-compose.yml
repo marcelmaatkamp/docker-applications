@@ -6,7 +6,7 @@ services:
   restart: always
   hostname: rabbitmq
   ports:
-   - 15672:15672
+   - 15674:15672
    - 5672:5672
    - 1883
   environment:
@@ -26,7 +26,7 @@ services:
   links:
    - rabbitmq
   ports:
-   - 8080:8080
+   - 8091:8080
 
 volumes:
  rabbitmq:

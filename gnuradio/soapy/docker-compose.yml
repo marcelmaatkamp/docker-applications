@@ -11,3 +11,4 @@ services:
 #  ports:
 #   - 55132:55132
 #   - 1900:1900/udp
+  restart: "always"

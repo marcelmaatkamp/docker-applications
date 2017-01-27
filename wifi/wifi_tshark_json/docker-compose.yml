@@ -67,18 +67,20 @@ services:
    - "2222:22"
   volumes:
    - ssh-keys:/root/.ssh/
-  logging:
-   driver: "gelf"
-   options:
-    gelf-address: "${GELF_ADDRESS}"
+# logging:
+#  driver: "gelf"
+#  options:
+#   gelf-address: "${GELF_ADDRESS}"
 
  wifi:
   # image: marcelmaatkamp/wifi
   build: wifi/
   privileged: true
   network_mode: "host"
-  env_file: 
-   - ./env.env
+  links:
+   - "rabbitmq:rabbitmq" 
+# command: tshark -T ek -x -i mon0 | grep '{"timestamp"' | amqp-publish -u amqp://guest:guest@rabbitmq -e wifi_sens -l
+  command: tshark -T ek -i mon0 | grep '{"timestamp"' | amqp-publish -u amqp://guest:guest@rabbitmq -e wifi_sens -l
 #  logging:
 #   driver: "gelf"
 #   options:

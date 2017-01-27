@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+
+ nifi:
+  image: xemuliam/nifi
+  ports:
+   - 8092:8080 
+   - 8081:8081 
+   - 8443:8443
