@@ -4,10 +4,10 @@ services:
  soapy:
   # build: docker/
   image: marcelmaatkamp/soapy-remote
-  command: SoapySDRServer --bind="0.0.0.0:55132"
+#  command: SoapySDRServer --bind="0.0.0.0:55132"
+  command: SoapySDRServer --bind
   privileged: true
   network_mode: "host"
-  ports:
-   - 55132:55132
-   - 1900:1900
-   - 1900:1900/udp
+#  ports:
+#   - 55132:55132
+#   - 1900:1900/udp

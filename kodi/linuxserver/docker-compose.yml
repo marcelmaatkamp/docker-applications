@@ -2,17 +2,21 @@ version: '2'
 
 services:
  kodi:
-  image: linuxserver/kodi-headless
+# image: linuxserver/kodi-headless:Helix
+  image: linuxserver/kodi-headless:Isengard
+# image: linuxserver/kodi-headless:Jarvis
+# image: linuxserver/kodi-headless:Krypton
   restart: always
   privileged: true
+#  network_mode: "host"
   ports:
-   - 8081:8080 
+   - 8081:8080
    - 9777:9777/udp 
   volumes:
-   - kodi:/config/.kodi
+#  - kodi:/config/.kodi
    - ./guisettings.xml:/config/.kodi/userdata/guisettings.xml
    - ./advancedsettings.xml:/config/.kodi/userdata/advancedsettings.xml
-   - ./temp/:/config/.kodi/temp/
+   - ./kodi.log:/config/.kodi/temp/kodi.log
   environment:
    - MYSQL_USER=kodi
    - MYSQL_PASSWORD=kodi

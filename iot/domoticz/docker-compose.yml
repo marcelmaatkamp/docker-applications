@@ -21,7 +21,8 @@ services:
    - "domoticz:/config"
    - "/etc/localtime:/etc/localtime:ro"
   devices:
-   - "/dev/ttyUSB0:/dev/ttyUSB0"
+#  - "/dev/ttyUSB0:/dev/ttyUSB0"
+   - "/dev/ttyACM0:/dev/ttyACM0"
   links:
    - rabbitmq
   ports:
