@@ -1,0 +1,60 @@
+version: '3'
+
+services:
+#ssh:
+# image: danielguerra/alpine-sshd
+# ports:
+#  - "4848:22"
+ zk:
+  image: "zookeeper:3.4.9"
+  restart: always
+ db:
+  image: "cassandra:3.9"
+  volumes:
+   - "cassandra:/var/lib/cassandra"
+ rabbitmq:
+  image: marcelmaatkamp/rabbitmq-mqtt-ldap
+  restart: always
+  hostname: rabbitmq
+  environment:
+   - RABBITMQ_NODENAME=rabbitmq
+  volumes:
+   - rabbitmq:/var/lib/rabbitmq/
+  ports:
+   - 15673:15672
+   - 1887:1883
+
+ thingsboard:
+  image: "thingsboard/application:1.1.0"
+  ports:
+   - "8080:8080"
+   - "1888:1883"
+   - "5683:5683/udp"
+  env_file:
+   - thingsboard.env
+  entrypoint: ./run_thingsboard.sh
+  volumes:
+   - ./thingsboard/application:/thingsboard/application
+   - ./thingsboard/log:/var/log/thingsboard/
+
+ thingsboard-gateway:
+  build: ../thingsboard-gateway/
+  image: thingsboard/gateway
+  volumes:
+   - ./thingsboard/log:/var/log/tb-gateway
+   - ./conf/mqtt-config.json:/etc/tb-gateway/conf/mqtt-config.json
+  environment:
+   - brokers[0].host=rabbitmq
+   - gateway.connection.host=thingsboard
+   - gateway.connection.security.accessToken=3dx4UbijcTcKrAJ0oOob
+   - mqtt.enabled=true
+
+ thingsboard-db-schema:
+  image: "thingsboard/thingsboard-db-schema:1.1.0"
+  env_file:
+   - thingsboard-db-schema.env
+  entrypoint: ./install_schema.sh
+
+volumes:
+ rabbitmq:
+ cassandra:

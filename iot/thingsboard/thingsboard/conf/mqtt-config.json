@@ -1,0 +1,52 @@
+{
+  "brokers": [
+    {
+      "host": "rabbitmq",
+      "port": 1883,
+      "ssl": false,
+      "retryInterval": 3000,
+      "credentials": {
+        "type": "anonymous"
+      },
+      "mapping": [
+        {
+          "topicFilter": "sensors",
+          "converter": {
+            "type": "json",
+            "filterExpression": "",
+            "deviceNameJsonExpression": "${$.serialNumber}",
+            "attributes": [
+              {
+                "type": "string",
+                "key": "model",
+                "value": "${$.model}"
+              }
+            ],
+            "timeseries": [
+              {
+                "type": "double",
+                "key": "temperature",
+                "value": "${$.temperature}"
+              }
+            ]
+          }
+        },
+        {
+          "topicFilter": "sensor/+/temperature",
+          "converter": {
+            "type": "json",
+            "filterExpression": "",
+            "deviceNameTopicExpression": "(?<=sensor\/)(.*?)(?=\/temperature)",
+            "timeseries": [
+              {
+                "type": "double",
+                "key": "temperature",
+                "value": "${$.value}"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

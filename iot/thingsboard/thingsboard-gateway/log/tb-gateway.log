@@ -1,0 +1,695 @@
+2017-02-16 08:16:49,218 [main] INFO  o.t.gateway.GatewayApplication - Starting GatewayApplication v1.0.0 on 608673b8e13c with PID 48 (/usr/share/tb-gateway/bin/tb-gateway.jar started by root in /usr/share/tb-gateway/bin)
+2017-02-16 08:16:49,220 [main] INFO  o.t.gateway.GatewayApplication - No active profile set, falling back to default profiles: default
+2017-02-16 08:16:49,288 [main] INFO  o.s.b.c.e.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@2cfb4a64: startup date [Thu Feb 16 08:16:49 UTC 2017]; root of context hierarchy
+2017-02-16 08:16:51,310 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 5.2.4.Final
+2017-02-16 08:16:52,221 [main] INFO  o.s.b.c.e.t.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 9090 (http)
+2017-02-16 08:16:52,246 [main] INFO  o.a.catalina.core.StandardService - Starting service Tomcat
+2017-02-16 08:16:52,248 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.6
+2017-02-16 08:16:52,500 [localhost-startStop-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2017-02-16 08:16:52,500 [localhost-startStop-1] INFO  o.s.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 3212 ms
+2017-02-16 08:20:31,271 [main] INFO  o.t.gateway.GatewayApplication - Starting GatewayApplication v1.0.0 on 9e30955f0017 with PID 27 (/usr/share/tb-gateway/bin/tb-gateway.jar started by root in /usr/share/tb-gateway/bin)
+2017-02-16 08:20:31,274 [main] INFO  o.t.gateway.GatewayApplication - No active profile set, falling back to default profiles: default
+2017-02-16 08:20:31,319 [main] INFO  o.s.b.c.e.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@2cfb4a64: startup date [Thu Feb 16 08:20:31 UTC 2017]; root of context hierarchy
+2017-02-16 08:20:31,529 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 5.2.4.Final
+2017-02-16 08:21:07,578 [main] INFO  o.t.gateway.GatewayApplication - Starting GatewayApplication v1.0.0 on 113a7478e455 with PID 26 (/usr/share/tb-gateway/bin/tb-gateway.jar started by root in /usr/share/tb-gateway/bin)
+2017-02-16 08:21:07,581 [main] INFO  o.t.gateway.GatewayApplication - No active profile set, falling back to default profiles: default
+2017-02-16 08:21:07,641 [main] INFO  o.s.b.c.e.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@2cfb4a64: startup date [Thu Feb 16 08:21:07 UTC 2017]; root of context hierarchy
+2017-02-16 08:21:07,829 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 5.2.4.Final
+2017-02-16 08:21:09,647 [main] INFO  o.s.b.c.e.t.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 9090 (http)
+2017-02-16 08:21:09,660 [main] INFO  o.a.catalina.core.StandardService - Starting service Tomcat
+2017-02-16 08:21:09,661 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.6
+2017-02-16 08:21:09,755 [localhost-startStop-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2017-02-16 08:21:09,755 [localhost-startStop-1] INFO  o.s.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 2114 ms
+2017-02-16 08:21:09,930 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2017-02-16 08:21:09,931 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2017-02-16 08:21:09,931 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2017-02-16 08:21:09,931 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2017-02-16 08:21:09,932 [localhost-startStop-1] INFO  o.s.b.w.s.DelegatingFilterProxyRegistrationBean - Mapping filter: 'springSecurityFilterChain' to: [/*]
+2017-02-16 08:21:09,932 [localhost-startStop-1] INFO  o.s.b.w.s.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+2017-02-16 08:21:10,082 [main] INFO  o.t.g.s.c.TbPersistenceConfiguration - Initializing file persistence using directory: storage
+2017-02-16 08:21:10,725 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:21:14,192 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:21:17,613 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:21:21,033 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:21:24,470 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:21:27,886 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:21:31,314 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:21:34,736 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:21:38,162 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:21:41,598 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:21:45,014 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:21:48,437 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:21:51,887 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:21:55,301 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:21:58,729 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:22:02,234 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:22:05,677 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:22:09,093 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:22:12,527 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:22:15,951 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:22:19,365 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:22:22,808 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:22:26,236 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:22:29,658 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:22:33,079 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:22:36,585 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:22:40,014 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:22:43,452 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:22:46,877 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:22:50,320 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:22:53,745 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:22:57,197 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:23:00,638 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:23:04,074 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:23:07,509 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:23:10,934 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:23:14,387 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:23:17,804 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:23:21,220 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:23:24,684 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:23:28,114 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:23:31,536 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:23:34,963 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:23:38,374 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:23:41,785 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:23:45,221 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:23:48,901 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:23:53,771 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:23:57,384 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:24:00,808 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:24:04,689 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:24:08,254 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:24:11,678 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:24:15,111 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:24:18,531 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:24:21,958 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:24:25,495 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:24:28,917 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:24:32,343 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:24:35,767 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:24:39,187 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:24:42,616 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:24:46,054 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:24:49,477 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:24:52,910 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:24:56,329 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:24:59,747 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:25:03,158 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:25:06,602 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:25:10,023 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:25:13,451 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:25:16,879 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:25:20,315 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
+2017-02-16 08:25:23,753 [main] WARN  o.t.g.service.MqttGatewayService - Failed to connect to Thingsboard!
+org.eclipse.paho.client.mqttv3.MqttException: Connection lost
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.EOFException: null
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at org.eclipse.paho.client.mqttv3.internal.wire.MqttInputStream.readMqttWireMessage(MqttInputStream.java:92)
+	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:113)
+	... 1 common frames omitted
