@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+ thingsboard-gateway:
+  build: .
+  image: thingsboard/gateway
+  volumes:
+   - ./log:/var/log/tb-gateway
