@@ -18,7 +18,6 @@
         <audiodevice default="true">default</audiodevice>
         <channels default="true">1</channels>
         <config default="true">2</config>
-        <dspaddonsenabled default="true">false</dspaddonsenabled>
         <dtshdpassthrough default="true">false</dtshdpassthrough>
         <dtspassthrough default="true">false</dtspassthrough>
         <eac3passthrough default="true">false</eac3passthrough>
@@ -30,12 +29,8 @@
         <samplerate default="true">48000</samplerate>
         <stereoupmix default="true">false</stereoupmix>
         <streamsilence default="true">1</streamsilence>
-        <supportdtshdcpudecoding default="true">false</supportdtshdcpudecoding>
         <truehdpassthrough default="true">false</truehdpassthrough>
     </audiooutput>
-    <bluray>
-        <playerregion default="true">1</playerregion>
-    </bluray>
     <cache>
         <harddisk default="true">256</harddisk>
     </cache>
@@ -78,10 +73,6 @@
         <preventupdateswhileplayingtv default="true">false</preventupdateswhileplayingtv>
         <selectaction default="true">2</selectaction>
     </epg>
-    <eventlog>
-        <enabled default="true">true</enabled>
-        <enablednotifications default="true">false</enablednotifications>
-    </eventlog>
     <filelists>
         <allowfiledeletion default="true">false</allowfiledeletion>
         <ignorethewhensorting default="true">true</ignorethewhensorting>
@@ -96,16 +87,20 @@
         <addonnotifications>false</addonnotifications>
         <addonupdates default="true">0</addonupdates>
         <settinglevel>1</settinglevel>
-        <eventlog>
-            <level>0</level>
-            <showhigherlevels>true</showhigherlevels>
-        </eventlog>
         <systemtotaluptime>0</systemtotaluptime>
     </general>
     <input>
         <enablejoystick default="true">true</enablejoystick>
         <enablemouse>false</enablemouse>
     </input>
+    <karaoke>
+        <autopopupselector default="true">false</autopopupselector>
+        <charset default="true">DEFAULT</charset>
+        <enabled default="true">false</enabled>
+        <font default="true">arial.ttf</font>
+        <fontcolors default="true">0</fontcolors>
+        <fontheight default="true">36</fontheight>
+    </karaoke>
     <locale>
         <audiolanguage default="true">original</audiolanguage>
         <charset default="true">DEFAULT</charset>
@@ -118,7 +113,7 @@
         <subtitlelanguage default="true">original</subtitlelanguage>
         <temperatureunit default="true">regional</temperatureunit>
         <timeformat default="true">regional</timeformat>
-        <timezone default="true"></timezone>
+        <timezone>Etc/UTC</timezone>
         <timezonecountry default="true"></timezonecountry>
         <use24hourclock default="true">regional</use24hourclock>
     </locale>
@@ -132,7 +127,6 @@
         <skinzoom default="true">0</skinzoom>
         <soundskin default="true">resource.uisounds.confluence</soundskin>
         <startupwindow default="true">10000</startupwindow>
-        <stereostrength default="true">5</stereostrength>
     </lookandfeel>
     <masterlock>
         <maxretries default="true">3</maxretries>
@@ -141,8 +135,11 @@
     <musicfiles>
         <findremotethumbs default="true">true</findremotethumbs>
         <librarytrackformat default="true"></librarytrackformat>
+        <librarytrackformatright default="true"></librarytrackformatright>
         <nowplayingtrackformat default="true"></nowplayingtrackformat>
+        <nowplayingtrackformatright default="true"></nowplayingtrackformatright>
         <trackformat default="true">[%N. ]%A - %T</trackformat>
+        <trackformatright default="true">%D</trackformatright>
         <usetags default="true">true</usetags>
     </musicfiles>
     <musiclibrary>
@@ -166,7 +163,7 @@
         <replaygaintype default="true">1</replaygaintype>
         <seekdelay default="true">750</seekdelay>
         <seeksteps default="true">-60,-30,-10,10,30,60</seeksteps>
-        <visualisation default="true">visualization.spectrum</visualisation>
+        <visualisation default="true">visualization.glspectrum</visualisation>
     </musicplayer>
     <mymusic>
         <defaultlibview default="true"></defaultlibview>
@@ -176,7 +173,7 @@
             <repeat>false</repeat>
             <shuffle>false</shuffle>
         </playlist>
-        <needsupdate>0</needsupdate>
+        <needsupdate>58</needsupdate>
     </mymusic>
     <myvideos>
         <extractchapterthumbs default="true">true</extractchapterthumbs>
@@ -208,6 +205,8 @@
         <displayresolution default="true">14</displayresolution>
         <generatethumbs default="true">true</generatethumbs>
         <showvideos default="true">true</showvideos>
+        <useexifrotation default="true">true</useexifrotation>
+        <usetags default="true">true</usetags>
     </pictures>
     <powermanagement>
         <displaysoff default="true">0</displaysoff>
@@ -235,15 +234,11 @@
     <pvrplayback>
         <channelentrytimeout default="true">0</channelentrytimeout>
         <confirmchannelswitch default="true">false</confirmchannelswitch>
-        <enableradiords default="true">true</enableradiords>
         <fps default="true">0</fps>
         <playminimized default="true">true</playminimized>
         <scantime default="true">10</scantime>
-        <sendrdstrafficmsg default="true">false</sendrdstrafficmsg>
         <signalquality default="true">true</signalquality>
         <startlast default="true">0</startlast>
-        <trafficadvisory default="true">false</trafficadvisory>
-        <trafficadvisoryvolume default="true">10</trafficadvisoryvolume>
     </pvrplayback>
     <pvrpowermanagement>
         <backendidletime default="true">15</backendidletime>
@@ -259,15 +254,11 @@
         <instantrecordtime default="true">120</instantrecordtime>
         <marginend default="true">0</marginend>
         <marginstart default="true">0</marginstart>
-        <preventduplicateepisodes default="true">0</preventduplicateepisodes>
         <timernotifications default="true">true</timernotifications>
     </pvrrecord>
-    <pvrtimers>
-        <timertypefilter default="true">true</timertypefilter>
-    </pvrtimers>
     <scrapers>
         <moviesdefault default="true">metadata.themoviedb.org</moviesdefault>
-        <musicvideosdefault default="true">metadata.local</musicvideosdefault>
+        <musicvideosdefault default="true">metadata.musicvideos.theaudiodb.com</musicvideosdefault>
         <tvshowsdefault default="true">metadata.tvdb.com</tvshowsdefault>
     </scrapers>
     <screensaver>
@@ -278,8 +269,8 @@
     </screensaver>
     <services>
         <airplay default="true">false</airplay>
+        <airplayios8compat default="true">true</airplayios8compat>
         <airplaypassword default="true"></airplaypassword>
-        <airplayvideosupport default="true">true</airplayvideosupport>
         <airplayvolumecontrol default="true">true</airplayvolumecontrol>
         <devicename>XBMC Server</devicename>
         <esallinterfaces>true</esallinterfaces>
@@ -337,9 +328,7 @@
         <backgroundupdate>true</backgroundupdate>
         <flattentvshows default="true">1</flattentvshows>
         <groupmoviesets default="true">false</groupmoviesets>
-        <groupsingleitemsets default="true">false</groupsingleitemsets>
         <showallitems default="true">true</showallitems>
-        <showemptytvshows default="true">false</showemptytvshows>
         <showunwatchedplots default="true">true</showunwatchedplots>
         <tvshowsincludeallseasonsandspecials default="true">0</tvshowsincludeallseasonsandspecials>
         <tvshowsselectfirstunwatcheditem default="true">0</tvshowsselectfirstunwatcheditem>
@@ -402,6 +391,7 @@
         <mute>false</mute>
         <fvolumelevel>1.000000</fvolumelevel>
     </audio>
+    <skinsettings />
     <resolutions />
     <defaultvideosettings>
         <deinterlacemode>1</deinterlacemode>
@@ -425,99 +415,6 @@
         <nonlinstretch>false</nonlinstretch>
         <stereomode>0</stereomode>
     </defaultvideosettings>
-    <defaultaudiosettings>
-        <masterstreamtype>7</masterstreamtype>
-        <masterstreamtypesel>7</masterstreamtypesel>
-        <masterstreambase>0</masterstreambase>
-        <masterprocess_0_0>0</masterprocess_0_0>
-        <masterprocess_0_1>0</masterprocess_0_1>
-        <masterprocess_0_2>0</masterprocess_0_2>
-        <masterprocess_0_3>0</masterprocess_0_3>
-        <masterprocess_0_4>0</masterprocess_0_4>
-        <masterprocess_0_5>0</masterprocess_0_5>
-        <masterprocess_0_6>0</masterprocess_0_6>
-        <masterprocess_0_7>0</masterprocess_0_7>
-        <masterprocess_0_8>0</masterprocess_0_8>
-        <masterprocess_0_9>0</masterprocess_0_9>
-        <masterprocess_0_10>0</masterprocess_0_10>
-        <masterprocess_1_0>0</masterprocess_1_0>
-        <masterprocess_1_1>0</masterprocess_1_1>
-        <masterprocess_1_2>0</masterprocess_1_2>
-        <masterprocess_1_3>0</masterprocess_1_3>
-        <masterprocess_1_4>0</masterprocess_1_4>
-        <masterprocess_1_5>0</masterprocess_1_5>
-        <masterprocess_1_6>0</masterprocess_1_6>
-        <masterprocess_1_7>0</masterprocess_1_7>
-        <masterprocess_1_8>0</masterprocess_1_8>
-        <masterprocess_1_9>0</masterprocess_1_9>
-        <masterprocess_1_10>0</masterprocess_1_10>
-        <masterprocess_2_0>0</masterprocess_2_0>
-        <masterprocess_2_1>0</masterprocess_2_1>
-        <masterprocess_2_2>0</masterprocess_2_2>
-        <masterprocess_2_3>0</masterprocess_2_3>
-        <masterprocess_2_4>0</masterprocess_2_4>
-        <masterprocess_2_5>0</masterprocess_2_5>
-        <masterprocess_2_6>0</masterprocess_2_6>
-        <masterprocess_2_7>0</masterprocess_2_7>
-        <masterprocess_2_8>0</masterprocess_2_8>
-        <masterprocess_2_9>0</masterprocess_2_9>
-        <masterprocess_2_10>0</masterprocess_2_10>
-        <masterprocess_3_0>0</masterprocess_3_0>
-        <masterprocess_3_1>0</masterprocess_3_1>
-        <masterprocess_3_2>0</masterprocess_3_2>
-        <masterprocess_3_3>0</masterprocess_3_3>
-        <masterprocess_3_4>0</masterprocess_3_4>
-        <masterprocess_3_5>0</masterprocess_3_5>
-        <masterprocess_3_6>0</masterprocess_3_6>
-        <masterprocess_3_7>0</masterprocess_3_7>
-        <masterprocess_3_8>0</masterprocess_3_8>
-        <masterprocess_3_9>0</masterprocess_3_9>
-        <masterprocess_3_10>0</masterprocess_3_10>
-        <masterprocess_4_0>0</masterprocess_4_0>
-        <masterprocess_4_1>0</masterprocess_4_1>
-        <masterprocess_4_2>0</masterprocess_4_2>
-        <masterprocess_4_3>0</masterprocess_4_3>
-        <masterprocess_4_4>0</masterprocess_4_4>
-        <masterprocess_4_5>0</masterprocess_4_5>
-        <masterprocess_4_6>0</masterprocess_4_6>
-        <masterprocess_4_7>0</masterprocess_4_7>
-        <masterprocess_4_8>0</masterprocess_4_8>
-        <masterprocess_4_9>0</masterprocess_4_9>
-        <masterprocess_4_10>0</masterprocess_4_10>
-        <masterprocess_5_0>0</masterprocess_5_0>
-        <masterprocess_5_1>0</masterprocess_5_1>
-        <masterprocess_5_2>0</masterprocess_5_2>
-        <masterprocess_5_3>0</masterprocess_5_3>
-        <masterprocess_5_4>0</masterprocess_5_4>
-        <masterprocess_5_5>0</masterprocess_5_5>
-        <masterprocess_5_6>0</masterprocess_5_6>
-        <masterprocess_5_7>0</masterprocess_5_7>
-        <masterprocess_5_8>0</masterprocess_5_8>
-        <masterprocess_5_9>0</masterprocess_5_9>
-        <masterprocess_5_10>0</masterprocess_5_10>
-        <masterprocess_6_0>0</masterprocess_6_0>
-        <masterprocess_6_1>0</masterprocess_6_1>
-        <masterprocess_6_2>0</masterprocess_6_2>
-        <masterprocess_6_3>0</masterprocess_6_3>
-        <masterprocess_6_4>0</masterprocess_6_4>
-        <masterprocess_6_5>0</masterprocess_6_5>
-        <masterprocess_6_6>0</masterprocess_6_6>
-        <masterprocess_6_7>0</masterprocess_6_7>
-        <masterprocess_6_8>0</masterprocess_6_8>
-        <masterprocess_6_9>0</masterprocess_6_9>
-        <masterprocess_6_10>0</masterprocess_6_10>
-        <masterprocess_7_0>0</masterprocess_7_0>
-        <masterprocess_7_1>0</masterprocess_7_1>
-        <masterprocess_7_2>0</masterprocess_7_2>
-        <masterprocess_7_3>0</masterprocess_7_3>
-        <masterprocess_7_4>0</masterprocess_7_4>
-        <masterprocess_7_5>0</masterprocess_7_5>
-        <masterprocess_7_6>0</masterprocess_7_6>
-        <masterprocess_7_7>0</masterprocess_7_7>
-        <masterprocess_7_8>0</masterprocess_7_8>
-        <masterprocess_7_9>0</masterprocess_7_9>
-        <masterprocess_7_10>0</masterprocess_7_10>
-    </defaultaudiosettings>
     <viewstates>
         <musicfiles>
             <viewmode>720896</viewmode>

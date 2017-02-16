@@ -1,19 +1,23 @@
 rtorrent:
- image: diameter/rtorrent-rutorrent:64-latest
+ image: diameter/rtorrent-rutorrent:latest
+#image: diameter/rtorrent-rutorrent:stable
+ restart: always
  ports:
-  - "8081:80"
+  - "8082:80"
   - "8442:443"
-  - "49160:49160"
+  - "49160:49160/udp"
   - "49161:49161"
  volumes: 
-  - "./volumes/rtorrent/downloads:/downloads"
+  - "/mnt/sdb1/rtorrent:/downloads"
+#  - "./downloads:/downloads"
 
 airvideohd:
  image: dmaxwell/airvideohd
+ restart: always
  ports:
   - "45633:45633/tcp"
  volumes:
   - "./volumes/airvideohd/config:/config"
   - "./volumes/airvideohd/temp:/conversionPath"
-  - "./volumes/rtorrent/downloads:/videos"
+  - "/mnt/sdb1/rtorrent/:/videos"
 

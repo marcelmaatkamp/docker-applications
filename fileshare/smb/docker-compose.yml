@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+ smb: 
+  image: grossws/smbd
+  restart: "always"
+  ports:
+   - 445:445
+  volumes:
+   - /mmt:/data
+

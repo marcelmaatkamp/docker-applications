@@ -1,0 +1,287 @@
+﻿07:53:52 T:140017883228968  NOTICE: special://profile/ is mapped to: special://masterprofile/
+07:53:52 T:140017883228968  NOTICE: -----------------------------------------------------------------------
+07:53:52 T:140017883228968  NOTICE: Starting Kodi (15.2 Git:Unknown). Platform: Linux x86 64-bit
+07:53:52 T:140017883228968  NOTICE: Using Release Kodi x64 build
+07:53:52 T:140017883228968  NOTICE: Kodi compiled Oct 23 2016 by GCC 5.3.0 for Linux x86 64-bit version 4.4.6 (263174)
+07:53:52 T:140017883228968  NOTICE: Running on Alpine Linux v3.4 3.4.4, kernel: Linux x86 64-bit version 3.13.0-101-generic
+07:53:52 T:140017883228968  NOTICE: FFmpeg statically linked, version: 2.6.4-kodi-2.6.4-Isengard
+07:53:52 T:140017883228968  NOTICE: Host CPU: Intel(R) Core(TM) i5-3427U CPU @ 1.80GHz, 4 cores available
+07:53:52 T:140017883228968  NOTICE: special://xbmc/ is mapped to: /usr/share/kodi
+07:53:52 T:140017883228968  NOTICE: special://xbmcbin/ is mapped to: /usr/lib/kodi
+07:53:52 T:140017883228968  NOTICE: special://masterprofile/ is mapped to: /config/.kodi/userdata
+07:53:52 T:140017883228968  NOTICE: special://home/ is mapped to: /config/.kodi
+07:53:52 T:140017883228968  NOTICE: special://temp/ is mapped to: /config/.kodi/temp
+07:53:52 T:140017883228968  NOTICE: The executable running is: /usr/lib/kodi/kodi.bin
+07:53:52 T:140017883228968  NOTICE: Local hostname: 617322b81a11
+07:53:52 T:140017883228968  NOTICE: Log File is located: /config/.kodi/temp/kodi.log
+07:53:52 T:140017883228968  NOTICE: -----------------------------------------------------------------------
+07:53:52 T:140017883228968  NOTICE: load settings...
+07:53:52 T:140017883228968 WARNING: CSettingInt: unknown options filler "audiocdactions" of "audiocds.autoaction"
+07:53:52 T:140017883228968  NOTICE: CAESinkOSS::EnumerateDevicesEx - No OSS mixer device present: /dev/mixer
+07:53:52 T:140017883228968  NOTICE: No Devices found - retry: 4
+07:53:53 T:140017883228968  NOTICE: CAESinkOSS::EnumerateDevicesEx - No OSS mixer device present: /dev/mixer
+07:53:53 T:140017883228968  NOTICE: No Devices found - retry: 3
+07:53:55 T:140017883228968  NOTICE: CAESinkOSS::EnumerateDevicesEx - No OSS mixer device present: /dev/mixer
+07:53:55 T:140017883228968  NOTICE: No Devices found - retry: 2
+07:53:56 T:140017883228968  NOTICE: CAESinkOSS::EnumerateDevicesEx - No OSS mixer device present: /dev/mixer
+07:53:56 T:140017883228968  NOTICE: No Devices found - retry: 1
+07:53:58 T:140017883228968  NOTICE: CAESinkOSS::EnumerateDevicesEx - No OSS mixer device present: /dev/mixer
+07:53:58 T:140017883228968  NOTICE: Found 0 Lists of Devices
+07:53:58 T:140017883228968  NOTICE: CAESinkOSS::EnumerateDevicesEx - No OSS mixer device present: /dev/mixer
+07:53:58 T:140017883228968  NOTICE: No Devices found - retry: 4
+07:53:59 T:140017883228968  NOTICE: CAESinkOSS::EnumerateDevicesEx - No OSS mixer device present: /dev/mixer
+07:53:59 T:140017883228968  NOTICE: No Devices found - retry: 3
+07:54:01 T:140017883228968  NOTICE: CAESinkOSS::EnumerateDevicesEx - No OSS mixer device present: /dev/mixer
+07:54:01 T:140017883228968  NOTICE: No Devices found - retry: 2
+07:54:02 T:140017883228968  NOTICE: CAESinkOSS::EnumerateDevicesEx - No OSS mixer device present: /dev/mixer
+07:54:02 T:140017883228968  NOTICE: No Devices found - retry: 1
+07:54:04 T:140017883228968  NOTICE: CAESinkOSS::EnumerateDevicesEx - No OSS mixer device present: /dev/mixer
+07:54:04 T:140017883228968  NOTICE: Found 0 Lists of Devices
+07:54:04 T:140017883228968  NOTICE: No settings file to load (special://xbmc/system/advancedsettings.xml)
+07:54:04 T:140017883228968  NOTICE: Loaded settings file from special://profile/advancedsettings.xml
+07:54:04 T:140017883228968  NOTICE: Contents of special://profile/advancedsettings.xml are...
+                                            <advancedsettings>
+                                              <!-- 
+                                            #####################################################
+                                            # For more information on the settings available in #
+                                            # this file, refer to the kodi wiki at              #
+                                            # http://kodi.wiki/view/Advancedsettings.xml        #
+                                            #####################################################
+                                            -->
+                                              <videodatabase>
+                                                <type>mysql</type>
+                                                <!-- don't change this value -->
+                                                <host>mysql</host>
+                                                <!-- change this to the IP address of your mysql/mariadb server  -->
+                                                <port>3306</port>
+                                                <!-- change this to the port of your mysql/mariadb server  -->
+                                                <user>kodi</user>
+                                                <!-- change this to the user for your database, not root  -->
+                                                <pass>kodi</pass>
+                                                <!-- change this to the password for your database -->
+                                              </videodatabase>
+                                              <musicdatabase>
+                                                <type>mysql</type>
+                                                <!-- don't change this value -->
+                                                <host>mysql</host>
+                                                <!-- change this to the IP address of your mysql/mariadb server  -->
+                                                <port>3306</port>
+                                                <!-- change this to the port of your mysql/mariadb server  -->
+                                                <user>kodi</user>
+                                                <!-- change this to the user for your database, not root  -->
+                                                <pass>kodi</pass>
+                                                <!-- change this to the password for your database -->
+                                              </musicdatabase>
+                                              <services>
+                                                <devicename>XBMC Server</devicename>
+                                                <esallinterfaces>true</esallinterfaces>
+                                                <!-- don't change this value -->
+                                                <escontinuousdelay>25</escontinuousdelay>
+                                                <esenabled>true</esenabled>
+                                                <!-- don't change this value -->
+                                                <esinitialdelay>750</esinitialdelay>
+                                                <esmaxclients>20</esmaxclients>
+                                                <esport>9777</esport>
+                                                <!-- don't change this value -->
+                                                <esportrange>10</esportrange>
+                                                <upnpannounce>true</upnpannounce>
+                                                <upnprenderer>false</upnprenderer>
+                                                <upnpserver>true</upnpserver>
+                                                <webserver>true</webserver>
+                                                <!-- don't change this value -->
+                                                <webserverpassword>xbmc</webserverpassword>
+                                                <webserverport>8080</webserverport>
+                                                <!-- don't change this value -->
+                                                <webserverusername>xbmc</webserverusername>
+                                                <webskin>webinterface.default</webskin>
+                                                <zeroconf>true</zeroconf>
+                                              </services>
+                                              <videolibrary>
+                                                <importresumepoint>true</importresumepoint>
+                                                <!-- import previously exported resume point from .nfo files -->
+                                                <importwatchedstate>true</importwatchedstate>
+                                                <!-- import previously exported playdate and playcount from .nfo files -->
+                                                <backgroundupdate>true</backgroundupdate>
+                                                <dateadded>1</dateadded>
+                                                <!-- 0 results in using the current datetime when adding a video;
+                                                                          1 (default) results in prefering to use the files mtime (if it's valid) and only using the file's ctime if the mtime isn't valid;
+                                                                          2 results in using the newer datetime of the file's mtime and ctime -->
+                                              </videolibrary>
+                                              <musiclibrary>
+                                                <backgroundupdate>true</backgroundupdate>
+                                                <!-- don't change this value -->
+                                              </musiclibrary>
+                                              <videoscanner>
+                                                <ignoreerrors>true</ignoreerrors>
+                                                <!-- Set to true to silently ignore errors while scanning videos. This prevents the error dialogue box, so you don't have to keep hitting "yes" to keep scanning.-->
+                                              </videoscanner>
+                                              <splash>false</splash>
+                                              <bginfoloadermaxthreads>2</bginfoloadermaxthreads>
+                                              <myvideos>
+                                                <extractflags>false</extractflags>
+                                                <extractthumb>false</extractthumb>
+                                              </myvideos>
+                                              <lookandfeel>
+                                                <enablerssfeeds>false</enablerssfeeds>
+                                              </lookandfeel>
+                                              <audiooutput>
+                                                <guisoundmode>0</guisoundmode>
+                                                <ac3passthrough>false</ac3passthrough>
+                                                <dtspassthrough>false</dtspassthrough>
+                                                <multichannellpcm>false</multichannellpcm>
+                                                <truehdpassthrough>false</truehdpassthrough>
+                                                <dtshdpassthrough>false</dtshdpassthrough>
+                                                <mode>2</mode>
+                                              </audiooutput>
+                                              <videoscreen>
+                                                <vsync>2</vsync>
+                                              </videoscreen>
+                                              <input>
+                                                <enablemouse>false</enablemouse>
+                                                <remoteaskeyboard>false</remoteaskeyboard>
+                                              </input>
+                                              <general>
+                                                <addonnotifications>false</addonnotifications>
+                                              </general>
+                                              <skinsettings>
+                                                <setting type="bool" name="skin.confluence.FirstTimeRun">false</setting>
+                                              </skinsettings>
+                                            </advancedsettings>
+07:54:04 T:140017883228968 WARNING: VIDEO database configuration is experimental.
+07:54:04 T:140017883228968  NOTICE: Default DVD Player: dvdplayer
+07:54:04 T:140017883228968  NOTICE: Default Video Player: dvdplayer
+07:54:04 T:140017883228968  NOTICE: Default Audio Player: paplayer
+07:54:04 T:140017883228968  NOTICE: Disabled debug logging due to GUI setting. Level 0.
+07:54:04 T:140017883228968  NOTICE: Log level changed to "LOG_LEVEL_NORMAL"
+07:54:04 T:140017883228968  NOTICE: Loading player core factory settings from special://xbmc/system/playercorefactory.xml.
+07:54:04 T:140017883228968  NOTICE: Loaded playercorefactory configuration
+07:54:04 T:140017883228968  NOTICE: Loading player core factory settings from special://masterprofile/playercorefactory.xml.
+07:54:04 T:140017883228968  NOTICE: special://masterprofile/playercorefactory.xml does not exist. Skipping.
+07:54:04 T:140017916328624  NOTICE: Thread ActiveAE start, auto delete: false
+07:54:04 T:140017883212464  NOTICE: Thread AESink start, auto delete: false
+07:54:04 T:140017916328624  NOTICE: CAESinkOSS::EnumerateDevicesEx - No OSS mixer device present: /dev/mixer
+07:54:04 T:140017916328624  NOTICE: No Devices found - retry: 4
+07:54:05 T:140017916328624  NOTICE: CAESinkOSS::EnumerateDevicesEx - No OSS mixer device present: /dev/mixer
+07:54:05 T:140017916328624  NOTICE: No Devices found - retry: 3
+07:54:07 T:140017916328624  NOTICE: CAESinkOSS::EnumerateDevicesEx - No OSS mixer device present: /dev/mixer
+07:54:07 T:140017916328624  NOTICE: No Devices found - retry: 2
+07:54:08 T:140017916328624  NOTICE: CAESinkOSS::EnumerateDevicesEx - No OSS mixer device present: /dev/mixer
+07:54:08 T:140017916328624  NOTICE: No Devices found - retry: 1
+07:54:10 T:140017916328624  NOTICE: CAESinkOSS::EnumerateDevicesEx - No OSS mixer device present: /dev/mixer
+07:54:10 T:140017916328624  NOTICE: Found 0 Lists of Devices
+07:54:10 T:140017525807792  NOTICE: Thread AESinkNull start, auto delete: false
+07:54:10 T:140017883228968  NOTICE: Running database version Addons19
+07:54:10 T:140017883228968  NOTICE: ADDONS: Using repository repository.xbmc.org
+07:54:10 T:140017522571952  NOTICE: Thread RemoteControl start, auto delete: false
+07:54:10 T:140017883228968  NOTICE: Running database version Addons19
+07:54:10 T:140017883228968  NOTICE: Running database version ViewModes6
+07:54:10 T:140017883228968  NOTICE: Running database version Textures13
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic52 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic51 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic50 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic49 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic48 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic47 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic46 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic45 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic44 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic43 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic42 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic41 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic40 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic39 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic38 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic37 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic36 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic35 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic34 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic33 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic32 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic31 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic30 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic29 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic28 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic27 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic26 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic25 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic24 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic23 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic22 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic21 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic20 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic19 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic18 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyMusic52 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to create new database
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyVideos93 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyVideos92 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyVideos91 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyVideos90 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyVideos89 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyVideos88 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyVideos87 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyVideos86 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyVideos85 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyVideos84 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyVideos83 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyVideos82 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyVideos81 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyVideos80 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyVideos79 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyVideos78 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyVideos77 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyVideos76 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyVideos75 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:10 T:140017883228968   ERROR: Unable to open database: MyVideos74 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:11 T:140017883228968   ERROR: Unable to open database: MyVideos73 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:11 T:140017883228968   ERROR: Unable to open database: MyVideos72 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:11 T:140017883228968   ERROR: Unable to open database: MyVideos71 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:11 T:140017883228968   ERROR: Unable to open database: MyVideos70 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:11 T:140017883228968   ERROR: Unable to open database: MyVideos69 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:11 T:140017883228968   ERROR: Unable to open database: MyVideos68 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:11 T:140017883228968   ERROR: Unable to open database: MyVideos67 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:11 T:140017883228968   ERROR: Unable to open database: MyVideos66 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:11 T:140017883228968   ERROR: Unable to open database: MyVideos65 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:11 T:140017883228968   ERROR: Unable to open database: MyVideos64 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:11 T:140017883228968   ERROR: Unable to open database: MyVideos63 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:11 T:140017883228968   ERROR: Unable to open database: MyVideos62 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:11 T:140017883228968   ERROR: Unable to open database: MyVideos61 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:11 T:140017883228968   ERROR: Unable to open database: MyVideos60 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:11 T:140017883228968   ERROR: Unable to open database: MyVideos93 [2005](Unknown MySQL server host 'mysql' (-2))
+07:54:11 T:140017883228968   ERROR: Unable to create new database
+07:54:11 T:140017883228968  NOTICE: Running database version TV29
+07:54:11 T:140017883228968  NOTICE: Running database version Epg10
+07:54:11 T:140017883228968 WARNING: JSONRPC: Could not parse type "PVR.Details.Channel"
+07:54:11 T:140017883228968 WARNING: JSONRPC: Could not parse type "PVR.Details.ChannelGroup.Extended"
+07:54:11 T:140017883228968 WARNING: JSONRPC: Could not parse type "GUI.Property.Value"
+07:54:11 T:140017883228968 WARNING: JSONRPC: Could not parse type "Setting.Details.SettingList"
+07:54:11 T:140017516767920  NOTICE: Thread LanguageInvoker start, auto delete: false
+07:54:11 T:140017883228968  NOTICE: initialize done
+07:54:11 T:140017883228968  NOTICE: Running the application...
+07:54:11 T:140017883228968  NOTICE: Webserver: Starting...
+07:54:11 T:140017883228968  NOTICE: WebServer: Started the webserver
+07:54:11 T:140017883228968  NOTICE: starting upnp client
+07:54:11 T:140017883228968  NOTICE: starting upnp server
+07:54:11 T:140017883228968  NOTICE: ES: Starting event server
+07:54:11 T:140017514654384  NOTICE: Thread TCPServer start, auto delete: false
+07:54:11 T:140017515711152  NOTICE: Thread EventServer start, auto delete: false
+07:54:11 T:140017515711152  NOTICE: ES: Starting UDP Event server on 0.0.0.0:9777
+07:54:11 T:140017515711152  NOTICE: UDP: Listening on port 9777
+07:54:11 T:140017516767920  NOTICE: -->Python Interpreter Initialized<--
+07:54:11 T:140017507084976  NOTICE: Thread JobWorker start, auto delete: true
+07:54:11 T:140017479809712  NOTICE: Thread FileCache start, auto delete: false
+07:54:26 T:140017516767920  NOTICE: Previous line repeats 1 times.
+07:54:26 T:140017516767920   ERROR: EXCEPTION: Error: Window is NULL, this is not possible :-)
+07:54:26 T:140017516767920   ERROR: EXCEPTION Thrown (PythonToCppException) : -->Python callback/script returned the following error<--
+                                             - NOTE: IGNORING THIS CAN LEAD TO MEMORY LEAKS!
+                                            Error Type: <type 'exceptions.RuntimeError'>
+                                            Error Contents: Error: Window is NULL, this is not possible :-)
+                                            Traceback (most recent call last):
+                                              File "/config/.kodi/addons/service.xbmc.versioncheck/service.py", line 104, in <module>
+                                                Main()
+                                              File "/config/.kodi/addons/service.xbmc.versioncheck/service.py", line 45, in __init__
+                                                _upgrademessage2( version_installed, version_available, version_stable, oldversion, False)
+                                              File "/config/.kodi/addons/service.xbmc.versioncheck/lib/common.py", line 130, in upgrade_message2
+                                                localise(32033))
+                                            RuntimeError: Error: Window is NULL, this is not possible :-)
+                                            -->End of Python script error report<--
