@@ -1,9 +1,0 @@
-2017-02-16 08:16:49,218 [main] INFO  o.t.gateway.GatewayApplication - Starting GatewayApplication v1.0.0 on 608673b8e13c with PID 48 (/usr/share/tb-gateway/bin/tb-gateway.jar started by root in /usr/share/tb-gateway/bin)
-2017-02-16 08:16:49,220 [main] INFO  o.t.gateway.GatewayApplication - No active profile set, falling back to default profiles: default
-2017-02-16 08:16:49,288 [main] INFO  o.s.b.c.e.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@2cfb4a64: startup date [Thu Feb 16 08:16:49 UTC 2017]; root of context hierarchy
-2017-02-16 08:16:51,310 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 5.2.4.Final
-2017-02-16 08:16:52,221 [main] INFO  o.s.b.c.e.t.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 9090 (http)
-2017-02-16 08:16:52,246 [main] INFO  o.a.catalina.core.StandardService - Starting service Tomcat
-2017-02-16 08:16:52,248 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.6
-2017-02-16 08:16:52,500 [localhost-startStop-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2017-02-16 08:16:52,500 [localhost-startStop-1] INFO  o.s.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 3212 ms
