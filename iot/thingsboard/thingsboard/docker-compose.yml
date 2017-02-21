@@ -21,21 +21,23 @@ services:
   volumes:
    - rabbitmq:/var/lib/rabbitmq/
   ports:
-   - 15673:15672
+   - 15672:15672
    - 1887:1883
 
  thingsboard:
   image: "thingsboard/application:1.1.0"
   ports:
    - "8080:8080"
-   - "1888:1883"
+   - "1883:1883"
    - "5683:5683/udp"
   env_file:
    - thingsboard.env
+  environment:
+   - logback.configurationFile=/etc/thingsboard/conf/logback.xml
   entrypoint: ./run_thingsboard.sh
   volumes:
    - ./thingsboard/application:/thingsboard/application
-   - ./thingsboard/log:/var/log/thingsboard/
+   - ./conf/logback.xml:/etc/thingsboard/conf/logback.xml
 
  thingsboard-gateway:
   build: ../thingsboard-gateway/
@@ -43,11 +45,14 @@ services:
   volumes:
    - ./thingsboard/log:/var/log/tb-gateway
    - ./conf/mqtt-config.json:/etc/tb-gateway/conf/mqtt-config.json
+   - ./conf/logback.xml:/etc/tb-gateway/conf/logback.xml
   environment:
-   - brokers[0].host=rabbitmq
+   - logback.configurationFile=/etc/tb-gateway/conf/logback.xml
    - gateway.connection.host=thingsboard
-   - gateway.connection.security.accessToken=3dx4UbijcTcKrAJ0oOob
+   - gateway.connection.security.accessToken=zrd7C755PaxGl8bs7CzK
    - mqtt.enabled=true
+  ports:
+   - "8081:9090"
 
  thingsboard-db-schema:
   image: "thingsboard/thingsboard-db-schema:1.1.0"
