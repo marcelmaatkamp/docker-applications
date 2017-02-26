@@ -26,7 +26,7 @@ $ docker-compose up
 
 ## Upload the public ssh key
 ```
-$ docker-compose run ssh sh -c "echo `cat ~/.ssh/id_rsa.pub` > ~/.ssh/authorized_keys"
+$ docker-compose run ssh sh -c "mkdir -p ~/.ssh && echo `cat ~/.ssh/id_rsa.pub` > ~/.ssh/authorized_keys"
 ```
 
 ## Login
