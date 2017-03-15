@@ -1,5 +1,9 @@
 FROM rabbitmq:management
 
+RUN apt-get update &&\
+    apt-get install -y openssl ca-certificates &&\
+    rm -rf /var/lib/apt/lists/*
+
 RUN rabbitmq-plugins enable --offline \
     rabbitmq_federation \
     rabbitmq_federation_management \
@@ -13,4 +17,4 @@ ADD rabbitmq.config /etc/rabbitmq/rabbitmq.config
 ADD enabled_plugins /etc/rabbitmq/enabled_plugins
 
 COPY rabbitmq.config /etc/rabbitmq/rabbitmq.config"
-EXPOSE 1883 5672 15672 25672
+EXPOSE 1883 5671 5672 15672 25672
