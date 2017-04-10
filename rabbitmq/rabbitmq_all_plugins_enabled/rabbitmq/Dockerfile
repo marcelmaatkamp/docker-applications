@@ -1,7 +1,7 @@
 FROM rabbitmq:management
 
 RUN apt-get update &&\
-    apt-get install -y openssl ca-certificates gettext &&\
+    apt-get install -y openssl ca-certificates gettext amqp-tools &&\
     rm -rf /var/lib/apt/lists/*
 
 RUN rabbitmq-plugins enable --offline \
