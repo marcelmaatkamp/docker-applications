@@ -12,8 +12,8 @@ def set_conf():
         for link in links.links():
             name=links.links()[link]['names'][1]
             path = "/var/lib/tor/hidden_service/{service}".format(service=name)
-            if ( name == 'bro' or name == 'bro-xinetd' ):
-               continue
+#           if ( name == 'bro' or name == 'bro-xinetd' ):
+#              continue
             # Test if link has ports
             if len(links.links()[link]['ports']) == 0:
                 print("{link} has no port")
